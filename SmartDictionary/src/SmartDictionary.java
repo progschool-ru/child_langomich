@@ -21,29 +21,17 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	private StringItem si = new StringItem("", "");
 	private TextField tf = new TextField("Введите текст:", "", 20, TextField.ANY);
 
-        private RecordStore rs = null;
-        private RecordEnumeration re;
-
-        private ByteArrayOutputStream byteOutputStream;
-        private DataOutputStream writer;
-        private ByteArrayInputStream byteInputStream;
-        private DataInputStream reader;
+        private Records records;
 	
 	public void startApp() 
 	{
-                byteOutputStream = new ByteArrayOutputStream();
-                writer = new DataOutputStream(byteOutputStream);
+                records = new Records();
 
 		listInit();
 		form1Init();
 		form2Init();
 
-        	try {
-			rs = RecordStore.openRecordStore("DB", true);
-			re = rs.enumerateRecords(null, null, false);
-		}
-		catch( RecordStoreException e ) {}
-		Display.getDisplay(this).setCurrent(myList);
+        	Display.getDisplay(this).setCurrent(myList);
 	}
 	public void pauseApp() {}
 
@@ -53,19 +41,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	{
 		if(c == exitMIDlet)
 		{
-			try
-			{
-				rs.closeRecordStore();
-				re.destroy();
-			}
-			catch (RecordStoreException e) { }
-                        try {
-                            writer.close();
-                            byteOutputStream.close();
-                            reader.close();
-                            byteInputStream.close();
-                        }
-                        catch(IOException ioe){}
+			records.destroy();
 			destroyApp(false);
 			notifyDestroyed();
 		}
@@ -75,18 +51,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		}
 		if(c == OK) 
 		{
-			try {
-				writer.writeUTF(tf.getString());
-				byte[] data = byteOutputStream.toByteArray();
-				tf.delete(0, tf.getString().length());
-				try {
-					rs.addRecord( data, 0, data.length );
-				}
-				catch( RecordStoreException e ){}
-				writer.flush();
-				byteOutputStream.reset();
-			}
-			catch(IOException ioe){}
+
 			Display.getDisplay(this).setCurrent(myList);
 		}
 		if (c == choice)
@@ -99,28 +64,18 @@ public class SmartDictionary extends MIDlet implements CommandListener
 			if (i == 1)
 			{
 				String str = "\n";
-                                String[] sm = getS();
-				for(int j = 0; j < sm.length; j++) {
-					str = str +Integer.toString(j+1)+" - "+ sm[j] +"\n";
-				}
 				si.setText(str);
 				Display.getDisplay(this).setCurrent(myForm2);
 			}
 			if (i == 2)
 			{
-				re.rebuild();
 				list2Init();
 				Display.getDisplay(this).setCurrent(myList2);
 			}
 		}
                 if (c == delete) 
 		{
-			int id = getId(myList2.getSelectedIndex());
-			try {
-				rs.deleteRecord(id);
-			}
-			catch( RecordStoreException e ){}
-			re.rebuild();
+                        records.deleteRecord(myList2.getSelectedIndex());
 			list2Init();
 			Display.getDisplay(this).setCurrent(myList2);
                 }
@@ -131,7 +86,6 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		myList.addCommand(choice);
 		myList.addCommand(exitMIDlet);
 		myList.setCommandListener(this);
-
 	}
 	private void form1Init()
 	{
@@ -139,7 +93,6 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		myForm1.addCommand(OK);
 		myForm1.addCommand(back);
 		myForm1.setCommandListener(this);
-
 	}
 	private void form2Init()
 	{
@@ -149,53 +102,9 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	}
         private void list2Init() 
 	{
-		myList2 = new List("Словарь", Choice.IMPLICIT, getS(), null);
+		myList2 = new List("Словарь", Choice.IMPLICIT, records.getS(1), null);
 		myList2.addCommand(back);
 		myList2.addCommand(delete);
 		myList2.setCommandListener(this);
         }
-        private int getId(int n) 
-	{
-		int id = 0;
-		for(int i = 0;i <= n;i++ ) {
-			try {
-				id = re.nextRecordId();
-			}
-			catch(RecordStoreException e){}
-		}
-		re.rebuild();
-		return id;
-        }
-	private String[] getS() 
-	{
-		int n = 0;
-		try {
-			n = rs.getNumRecords();
-		}
-		catch(RecordStoreException e){}
-		if (n != 0)
-	 	{
-			String SM[] = new String[n];
-			for (int k = 0; k <  n; k++) {
-				try {
-					int id = re.nextRecordId();
-					byte[] data = new byte[rs.getRecordSize(id)];
-					data = rs.getRecord(id);
-					byteInputStream = new ByteArrayInputStream(data);
-					reader = new DataInputStream(byteInputStream);
-					SM[k] = reader.readUTF();
-				}
-				catch(RecordStoreException e){}
-				catch(IOException ioe){}
-			}
-			re.rebuild();
-			return SM;
-		}
-		else {
-			String strS[] = new String[2];
-			strS[0] = "";
-			strS[1] = ""; 
-			return strS;
-		}
-	}
 }
