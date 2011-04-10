@@ -9,6 +9,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	private Command exitMIDlet = new Command("Выход", Command.EXIT, 0);
 	private Command choice = new Command("Выбор", Command.SCREEN, 1);
 	private Command back = new Command("Назад", Command.EXIT, 0);
+        private Command backF2 = new Command("Назад", Command.EXIT, 0);
 	private Command OK = new Command("OK", Command.SCREEN, 1);
         private Command Save = new Command("Сохранить", Command.SCREEN, 1);
         private Command delete = new Command("Удалить", Command.SCREEN, 1);
@@ -28,6 +29,8 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	private TextField tf = new TextField("Введите текст:", "", 20, TextField.ANY);
 
         private Records records;
+
+        private int N;
 	
 	public void startApp() 
 	{
@@ -55,6 +58,11 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		{
 			Display.getDisplay(this).setCurrent(myList);
 		}
+		if(c == backF2)
+		{            
+                    Display.getDisplay(this).setCurrent(myList);
+                    F2reset();
+		}
 		if(c == OK) 
 		{
 
@@ -62,17 +70,17 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		}
                 if(c == Save)
 		{
-                        String str1 = tfRus.getString();
-                        String str2 = tfEng.getString();
-                        int n = mycg.getSelectedIndex()*2;
-                        records.newRecord(str1, str2, n);
+                        records.newRecord(tfRus.getString(), tfEng.getString(), mycg.getSelectedIndex()*2); 
 			Display.getDisplay(this).setCurrent(myList);
+                        F2reset();
 		}
 		if (c == choice)
 		{
 			int i = myList.getSelectedIndex();
 			if(i == 0)
 			{
+                                String str = Integer.toString(getRandomN());
+                                si.setText(str);
 				Display.getDisplay(this).setCurrent(myForm1);
 			}
 			if (i == 1)
@@ -93,6 +101,16 @@ public class SmartDictionary extends MIDlet implements CommandListener
 			Display.getDisplay(this).setCurrent(myList2);
                 }
 	}
+	private void F2reset()
+	{
+		mycg = new ChoiceGroup("Оцените то, как вы знаете это слово:", ChoiceGroup.EXCLUSIVE, cgName, null);
+                tfRus.delete(0, tfRus.getString().length());
+                tfEng.delete(0, tfEng.getString().length());
+                myForm2.deleteAll();
+                myForm2.append(tfRus);
+                myForm2.append(tfEng);
+		myForm2.append(mycg);
+	}
 	private void listInit()
 	{
 		myList = new List("Меню", Choice.IMPLICIT, name, null);
@@ -102,8 +120,6 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	}
 	private void form1Init()
 	{
-                String str = "Известное слово";
-                si.setText(str);
                 myForm1.append(si);
 		myForm1.append(tf);
 		myForm1.addCommand(OK);
@@ -121,7 +137,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	}
         private void list2Init() 
 	{
-                if(records.getNumRecords(records.rs) == 0)
+                if(records.getNumRecords() == 0)
                 {
                         String S[] = new String[1];
                         S[0] = "Словарь пуст";
@@ -136,5 +152,28 @@ public class SmartDictionary extends MIDlet implements CommandListener
                     myList2.addCommand(delete);
                     myList2.setCommandListener(this);
                 }
+        }
+        private int getRandomN()
+	{
+            if(records.getNumRecords() == 0)
+                return 0;
+            Random random = new Random ();
+            int AllPoint = 0;
+            String []S = records.getS(3);
+            int []Point = new int[records.getNumRecords()];
+            for(int i = 0; i < records.getNumRecords(); i++){
+                Point[i] = 10 - Integer.parseInt(S[i]);
+                AllPoint += Point[i];
+            }
+
+            int r = Math.abs(random.nextInt())%AllPoint;
+            System.out.println(AllPoint+" "+r);
+            for (int i = 0; i < records.getNumRecords(); i++)
+		{
+			r -= Point[i];
+			if(r <= 0 )
+				return i+1;
+		}
+            return records.getNumRecords();
         }
 }

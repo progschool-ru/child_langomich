@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Records
 {
-        public RecordStore rs = null;
+        private RecordStore rs = null;
         private RecordEnumeration re;
 
         private ByteArrayOutputStream byteOutputStream;
@@ -45,7 +45,7 @@ public class Records
 		}
 		else {
 			String S[] = new String[1];
-			return S;
+			return null;
 		}
 	}
 	public String getS(int n, int p)
@@ -108,7 +108,15 @@ public class Records
 		re.rebuild();
 		return id;
         }
-        public int getNumRecords(RecordStore rs) {
+        private int getNumRecords(RecordStore rs) {
+		int n = 0;
+                try {
+			n = rs.getNumRecords();
+		}
+		catch(RecordStoreException e){}
+                return n;
+        }
+        public int getNumRecords() {
 		int n = 0;
                 try {
 			n = rs.getNumRecords();
@@ -127,8 +135,8 @@ public class Records
                 try {
                         writer.close();
                         byteOutputStream.close();
-                        reader.close();
-                        byteInputStream.close();
+ //                      reader.close();
+ //                       byteInputStream.close();
                 }
                 catch(IOException ioe){}    
         }
