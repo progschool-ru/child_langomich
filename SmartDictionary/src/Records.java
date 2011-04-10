@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Records
 {
-        private RecordStore rs = null;
+        public RecordStore rs = null;
         private RecordEnumeration re;
 
         private ByteArrayOutputStream byteOutputStream;
@@ -108,7 +108,7 @@ public class Records
 		re.rebuild();
 		return id;
         }
-        private int getNumRecords(RecordStore rs) {
+        public int getNumRecords(RecordStore rs) {
 		int n = 0;
                 try {
 			n = rs.getNumRecords();

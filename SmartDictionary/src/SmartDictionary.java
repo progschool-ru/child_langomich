@@ -10,6 +10,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	private Command choice = new Command("Выбор", Command.SCREEN, 1);
 	private Command back = new Command("Назад", Command.EXIT, 0);
 	private Command OK = new Command("OK", Command.SCREEN, 1);
+        private Command Save = new Command("Сохранить", Command.SCREEN, 1);
         private Command delete = new Command("Удалить", Command.SCREEN, 1);
 
 	private List myList;
@@ -17,7 +18,12 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	private Form myForm1 = new Form("Пуск");
 	private Form myForm2 = new Form("Добавить новую пару");
 
-	private String[] name = { "Пуск", "Добавить новую пару", "Словарь"};
+        private String[] cgName = {"Не знаю", "Плохо", "Нормально", "Хорошо", "Отлично"};
+        private TextField tfRus = new TextField("Введите слово на русском:", "", 20, TextField.ANY);
+        private TextField tfEng = new TextField("Введите это же слово на изучаемом языке:", "", 20, TextField.ANY);
+        private ChoiceGroup mycg = new ChoiceGroup("Оцените то, как вы знаете это слово:", ChoiceGroup.EXCLUSIVE, cgName, null);
+
+        private String[] name = {"Пуск", "Добавить новую пару", "Словарь"};   
 	private StringItem si = new StringItem("", "");
 	private TextField tf = new TextField("Введите текст:", "", 20, TextField.ANY);
 
@@ -54,6 +60,14 @@ public class SmartDictionary extends MIDlet implements CommandListener
 
 			Display.getDisplay(this).setCurrent(myList);
 		}
+                if(c == Save)
+		{
+                        String str1 = tfRus.getString();
+                        String str2 = tfEng.getString();
+                        int n = mycg.getSelectedIndex()*2;
+                        records.newRecord(str1, str2, n);
+			Display.getDisplay(this).setCurrent(myList);
+		}
 		if (c == choice)
 		{
 			int i = myList.getSelectedIndex();
@@ -63,8 +77,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 			}
 			if (i == 1)
 			{
-				String str = "\n";
-				si.setText(str);
+				
 				Display.getDisplay(this).setCurrent(myForm2);
 			}
 			if (i == 2)
@@ -89,6 +102,9 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	}
 	private void form1Init()
 	{
+                String str = "Известное слово";
+                si.setText(str);
+                myForm1.append(si);
 		myForm1.append(tf);
 		myForm1.addCommand(OK);
 		myForm1.addCommand(back);
@@ -96,15 +112,29 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	}
 	private void form2Init()
 	{
-		myForm2.append(si);
+                myForm2.append(tfRus);
+                myForm2.append(tfEng);
+		myForm2.append(mycg);
 		myForm2.addCommand(back);
+                myForm2.addCommand(Save);
 		myForm2.setCommandListener(this);
 	}
         private void list2Init() 
 	{
-		myList2 = new List("Словарь", Choice.IMPLICIT, records.getS(1), null);
-		myList2.addCommand(back);
-		myList2.addCommand(delete);
-		myList2.setCommandListener(this);
+                if(records.getNumRecords(records.rs) == 0)
+                {
+                        String S[] = new String[1];
+                        S[0] = "Словарь пуст";
+                        myList2 = new List("Словарь", Choice.IMPLICIT, S, null);
+                        myList2.addCommand(back);
+                        myList2.setCommandListener(this);
+                }
+                else
+                {
+                    myList2 = new List("Словарь", Choice.IMPLICIT, records.getS(1), null);
+                    myList2.addCommand(back);
+                    myList2.addCommand(delete);
+                    myList2.setCommandListener(this);
+                }
         }
 }
