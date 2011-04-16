@@ -25,8 +25,8 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private ChoiceGroup mycg = new ChoiceGroup("Оцените то, как вы знаете это слово:", ChoiceGroup.EXCLUSIVE, cgName, null);
 
         private String[] name = {"Пуск", "Добавить новую пару", "Словарь"};   
-	private StringItem si = new StringItem("", "");
 	private TextField tf = new TextField("Введите текст:", "", 20, TextField.ANY);
+        private StringItem si = new StringItem("Словарь пуст","");
 
         private Records records;
 
@@ -61,31 +61,28 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		if(c == backF2)
 		{            
                     Display.getDisplay(this).setCurrent(myList);
-                    F2reset();
 		}
 		if(c == OK) 
 		{
-
-			Display.getDisplay(this).setCurrent(myList);
+                        boolean an = records.answer(N, tf.getString());
+                        F1reset();
 		}
                 if(c == Save)
 		{
                         records.newRecord(tfRus.getString(), tfEng.getString(), mycg.getSelectedIndex()*2); 
-			Display.getDisplay(this).setCurrent(myList);
-                        F2reset();
+			Display.getDisplay(this).setCurrent(myList); 
 		}
 		if (c == choice)
 		{
 			int i = myList.getSelectedIndex();
 			if(i == 0)
 			{
-                                String str = Integer.toString(getRandomN());
-                                si.setText(str);
+                                F1reset();
 				Display.getDisplay(this).setCurrent(myForm1);
 			}
 			if (i == 1)
 			{
-				
+				F2reset();
 				Display.getDisplay(this).setCurrent(myForm2);
 			}
 			if (i == 2)
@@ -96,10 +93,25 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		}
                 if (c == delete) 
 		{
-                        records.deleteRecord(myList2.getSelectedIndex());
-			list2Init();
+                        records.deleteRecord(myList2.getSelectedIndex()+1);
+			myList2.delete(myList2.getSelectedIndex());
 			Display.getDisplay(this).setCurrent(myList2);
                 }
+	}
+ 	private void F1reset()
+	{
+            if(records.getNumRecords() == 0)
+            {
+               myForm1.deleteAll();
+               myForm1.append(si);
+            }
+            else
+            {
+                N  = getRandomN();
+                tf = new TextField("  "+records.getS(N, 1)+"  -  ", "", 20, TextField.ANY);
+                myForm1.deleteAll();
+		myForm1.append(tf);
+            }
 	}
 	private void F2reset()
 	{
@@ -120,17 +132,12 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	}
 	private void form1Init()
 	{
-                myForm1.append(si);
-		myForm1.append(tf);
 		myForm1.addCommand(OK);
 		myForm1.addCommand(back);
 		myForm1.setCommandListener(this);
 	}
 	private void form2Init()
 	{
-                myForm2.append(tfRus);
-                myForm2.append(tfEng);
-		myForm2.append(mycg);
 		myForm2.addCommand(back);
                 myForm2.addCommand(Save);
 		myForm2.setCommandListener(this);
@@ -147,7 +154,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 }
                 else
                 {
-                    myList2 = new List("Словарь", Choice.IMPLICIT, records.getS(1), null);
+                    myList2 = new List("Словарь", Choice.IMPLICIT, getS(), null);
                     myList2.addCommand(back);
                     myList2.addCommand(delete);
                     myList2.setCommandListener(this);
@@ -165,15 +172,22 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 Point[i] = 10 - Integer.parseInt(S[i]);
                 AllPoint += Point[i];
             }
-
             int r = Math.abs(random.nextInt())%AllPoint;
-            System.out.println(AllPoint+" "+r);
             for (int i = 0; i < records.getNumRecords(); i++)
 		{
-			r -= Point[i];
+			r = r - Point[i];
 			if(r <= 0 )
 				return i+1;
 		}
             return records.getNumRecords();
+        }
+        private String[] getS(){
+            String []S = new String[records.getNumRecords()];
+            String []S1 = records.getS(1);
+            String []S2 = records.getS(2);
+            String []S3 = records.getS(3);
+            for(int i = 0; i < records.getNumRecords(); i++)
+                S[i] = S1[i] +" "+ S2[i] +" "+ S3[i];
+            return S;
         }
 }

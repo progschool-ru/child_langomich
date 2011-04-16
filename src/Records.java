@@ -96,10 +96,53 @@ public class Records
 		catch( RecordStoreException e ){}
 		re.rebuild();
         }
-        private int getId(int n) 
+        private void setRecord(String str1, String str2,int p, int id)
+	{
+		try{
+			writer.writeUTF(str1);
+			writer.writeUTF(str2);
+			String str3 = Integer.toString(p);
+			writer.writeUTF(str3);
+			byte[] data = byteOutputStream.toByteArray();
+			rs.setRecord(id, data, 0, data.length );
+			writer.flush();
+			byteOutputStream.reset();
+		}
+		catch( RecordStoreException e ){}
+		catch(IOException ioe){}
+		re.rebuild();
+        }
+        public boolean answer(int n, String str)
+	{
+		int id = getId(n);
+                int p = Integer.parseInt(getS(n, 3));
+                int pl = 2;
+                int mi = 3;
+                if(getS(n, 2).equals(str))
+                {
+                    if(p > 9-pl)
+                        p = 9;
+                    else
+                        p += pl;
+                    setRecord(getS(n, 1), getS(n, 2), p, id);
+                    re.rebuild();
+                    return true;
+                }
+                else
+                {
+                    if(p < mi)
+                        p = 0;
+                    else
+                        p -= mi;
+                    setRecord(getS(n, 1), getS(n, 2), p, id);
+                    re.rebuild();
+                    return false;
+                }
+        }
+        public int getId(int n)
 	{
 		int id = 0;
-		for(int i = 0;i <= n; i++ ) {
+		for(int i = 0;i < n; i++ ) {
 			try {
 				id = re.nextRecordId();
 			}
