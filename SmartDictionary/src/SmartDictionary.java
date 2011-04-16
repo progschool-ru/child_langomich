@@ -13,6 +13,8 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	private Command OK = new Command("OK", Command.SCREEN, 1);
         private Command Save = new Command("Сохранить", Command.SCREEN, 1);
         private Command delete = new Command("Удалить", Command.SCREEN, 1);
+        private Command ordering1 = new Command("Сорт. по 1 записи", Command.SCREEN, 1);
+        private Command ordering2 = new Command("Сорт. по 2 записи", Command.SCREEN, 1);
 
 	private List myList;
 	private List myList2;
@@ -31,7 +33,8 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private Records records;
 
         private int N;
-	
+	private int P = 1;
+
 	public void startApp() 
 	{
                 records = new Records();
@@ -95,11 +98,28 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		{
                         records.deleteRecord(myList2.getSelectedIndex()+1);
 			myList2.delete(myList2.getSelectedIndex());
+                        if(records.getNumRecords() == 0)
+                            list2Init();
 			Display.getDisplay(this).setCurrent(myList2);
+                }
+                if (c == ordering1)
+		{
+                    P = 1;
+                    records.newOrdering(P);
+                    list2Init();
+                    Display.getDisplay(this).setCurrent(myList2);
+                }
+                if (c == ordering2)
+		{
+                    P = 2;
+                    records.newOrdering(P);
+                    list2Init();
+                    Display.getDisplay(this).setCurrent(myList2);
                 }
 	}
  	private void F1reset()
 	{
+            myForm1.removeCommand(OK);
             if(records.getNumRecords() == 0)
             {
                myForm1.deleteAll();
@@ -107,6 +127,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
             }
             else
             {
+                myForm1.addCommand(OK);
                 N  = getRandomN();
                 tf = new TextField("  "+records.getS(N, 1)+"  -  ", "", 20, TextField.ANY);
                 myForm1.deleteAll();
@@ -154,9 +175,12 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 }
                 else
                 {
+
                     myList2 = new List("Словарь", Choice.IMPLICIT, getS(), null);
                     myList2.addCommand(back);
                     myList2.addCommand(delete);
+                    myList2.addCommand(ordering1);
+                    myList2.addCommand(ordering2);
                     myList2.setCommandListener(this);
                 }
         }
@@ -187,7 +211,10 @@ public class SmartDictionary extends MIDlet implements CommandListener
             String []S2 = records.getS(2);
             String []S3 = records.getS(3);
             for(int i = 0; i < records.getNumRecords(); i++)
-                S[i] = S1[i] +" "+ S2[i] +" "+ S3[i];
+                if(P == 1)
+                    S[i] = S1[i] +" "+ S2[i] +" "+ S3[i];
+                else
+                    S[i] = S2[i] +" "+ S1[i] +" "+ S3[i];
             return S;
         }
 }

@@ -18,7 +18,7 @@ public class Records
                 writer = new DataOutputStream(byteOutputStream);
         	try {
 			rs = RecordStore.openRecordStore("DB", true);
-			re = rs.enumerateRecords(null, null, false);
+			re = rs.enumerateRecords(null, new Ordering(1), false);
 		}
 		catch( RecordStoreException e ) {}  
         }
@@ -166,6 +166,16 @@ public class Records
 		}
 		catch(RecordStoreException e){}
                 return n;
+        }
+        public void newOrdering(int p)
+        {
+            if(p != 1 && p != 2) {
+                return;
+            }
+            try {
+                re = rs.enumerateRecords(null, new Ordering(p), false);
+            }
+            catch( RecordStoreException e ) {} 
         }
         public void destroy()
         {
