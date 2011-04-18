@@ -15,31 +15,38 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private Command delete = new Command("Удалить", Command.SCREEN, 1);
         private Command ordering1 = new Command("Сорт. по 1 записи", Command.SCREEN, 1);
         private Command ordering2 = new Command("Сорт. по 2 записи", Command.SCREEN, 1);
+        private Command settingChoice = new Command("Выбрать", Command.SCREEN, 1);
 
 	private List myList;
 	private List myList2;
+        private Form settingsForm = new Form("Настройки");
 	private Form myForm1 = new Form("Пуск");
 	private Form myForm2 = new Form("Добавить новую пару");
+
+        private String[] wordsNumName = {"1", "2", "3", "4", "5"};
+        private ChoiceGroup wordsNum = new ChoiceGroup("Количество слов", ChoiceGroup.POPUP, wordsNumName, null);
 
         private String[] cgName = {"Не знаю", "Плохо", "Нормально", "Хорошо", "Отлично"};
         private TextField tfRus = new TextField("Введите слово на русском:", "", 20, TextField.ANY);
         private TextField tfEng = new TextField("Введите это же слово на изучаемом языке:", "", 20, TextField.ANY);
-        private ChoiceGroup mycg = new ChoiceGroup("Оцените то, как вы знаете это слово:", ChoiceGroup.EXCLUSIVE, cgName, null);
+        private ChoiceGroup mycg = new ChoiceGroup("Оцените то, как вы знаете это слово:", ChoiceGroup.POPUP, cgName, null);
 
-        private String[] name = {"Пуск", "Добавить новую пару", "Словарь"};   
-	private TextField tf = new TextField("Введите текст:", "", 20, TextField.ANY);
+        private String[] name = {"Пуск", "Добавить новую пару", "Словарь", "Настрйки"};
+	private TextField[] tf;
         private StringItem si = new StringItem("Словарь пуст","");
 
         private Records records;
 
-        private int N;
+        private int N[];
 	private int P = 1;
+        private int wordsN = 1;
 
 	public void startApp() 
 	{
                 records = new Records();
 
 		listInit();
+                settingsFormInit();
 		form1Init();
 		form2Init();
 
@@ -67,7 +74,11 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		}
 		if(c == OK) 
 		{
-                        boolean an = records.answer(N, tf.getString());
+
+                        boolean an[] = new boolean[wordsN];
+                        for(int i = 0; i < wordsN;i++){
+                           an[i] = records.answer(N[i], tf[i].getString());
+                        }
                         F1reset();
 		}
                 if(c == Save)
@@ -93,6 +104,11 @@ public class SmartDictionary extends MIDlet implements CommandListener
 				list2Init();
 				Display.getDisplay(this).setCurrent(myList2);
 			}
+                        if (i == 3)
+			{
+
+				Display.getDisplay(this).setCurrent(settingsForm);
+			}
 		}
                 if (c == delete) 
 		{
@@ -116,6 +132,11 @@ public class SmartDictionary extends MIDlet implements CommandListener
                     list2Init();
                     Display.getDisplay(this).setCurrent(myList2);
                 }
+               if (c ==  settingChoice)
+               {
+                   wordsN = wordsNum.getSelectedIndex()+1;
+                   System.out.println(wordsN);
+               }
 	}
  	private void F1reset()
 	{
@@ -128,15 +149,27 @@ public class SmartDictionary extends MIDlet implements CommandListener
             else
             {
                 myForm1.addCommand(OK);
-                N  = getRandomN();
-                tf = new TextField("  "+records.getS(N, 1)+"  -  ", "", 20, TextField.ANY);
                 myForm1.deleteAll();
-		myForm1.append(tf);
+                N = new int[wordsN];
+                tf = new TextField[wordsN];
+                for(int i = 0; i < wordsN; i++) {
+                    for(;;) {
+                        N[i]  = getRandomN();
+                        boolean f = true;
+                        for(int j = 0; j < i; j++)
+                            if(N[i] == N[j])
+                                f = false;
+                        if(f)
+                            break;
+                    }
+                    tf[i] = new TextField("  "+records.getS(N[i], 1)+"  -  ", "", 20, TextField.ANY);
+                    myForm1.append(tf[i]);
+                }
             }
 	}
 	private void F2reset()
 	{
-		mycg = new ChoiceGroup("Оцените то, как вы знаете это слово:", ChoiceGroup.EXCLUSIVE, cgName, null);
+		mycg = new ChoiceGroup("Оцените то, как вы знаете это слово:", ChoiceGroup.POPUP, cgName, null);
                 tfRus.delete(0, tfRus.getString().length());
                 tfEng.delete(0, tfEng.getString().length());
                 myForm2.deleteAll();
@@ -163,6 +196,13 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 myForm2.addCommand(Save);
 		myForm2.setCommandListener(this);
 	}
+        private void settingsFormInit()
+        {
+                settingsForm.append(wordsNum);
+                settingsForm.addCommand(back);
+		settingsForm.addCommand(settingChoice);
+		settingsForm.setCommandListener(this);
+        }
         private void list2Init() 
 	{
                 if(records.getNumRecords() == 0)
@@ -197,6 +237,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 AllPoint += Point[i];
             }
             int r = Math.abs(random.nextInt())%AllPoint;
+            System.out.println(r);
             for (int i = 0; i < records.getNumRecords(); i++)
 		{
 			r = r - Point[i];
