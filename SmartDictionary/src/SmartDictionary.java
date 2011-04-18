@@ -15,7 +15,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private Command delete = new Command("Удалить", Command.SCREEN, 1);
         private Command ordering1 = new Command("Сорт. по 1 записи", Command.SCREEN, 1);
         private Command ordering2 = new Command("Сорт. по 2 записи", Command.SCREEN, 1);
-        private Command settingChoice = new Command("Выбрать", Command.SCREEN, 1);
+        private Command settingsSave = new Command("Сохранить", Command.SCREEN, 1);
 
 	private List myList;
 	private List myList2;
@@ -39,6 +39,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 
         private int N[];
 	private int P = 1;
+        private int wN = 1;
         private int wordsN = 1;
 
 	public void startApp() 
@@ -132,10 +133,10 @@ public class SmartDictionary extends MIDlet implements CommandListener
                     list2Init();
                     Display.getDisplay(this).setCurrent(myList2);
                 }
-               if (c ==  settingChoice)
+               if (c ==  settingsSave)
                {
-                   wordsN = wordsNum.getSelectedIndex()+1;
-                   System.out.println(wordsN);
+                   wN = wordsNum.getSelectedIndex()+1;
+                   System.out.println(wN);
                }
 	}
  	private void F1reset()
@@ -150,6 +151,10 @@ public class SmartDictionary extends MIDlet implements CommandListener
             {
                 myForm1.addCommand(OK);
                 myForm1.deleteAll();
+                if(wN > records.getNumRecords())
+                    wordsN = records.getNumRecords();
+                else
+                    wordsN = wN;
                 N = new int[wordsN];
                 tf = new TextField[wordsN];
                 for(int i = 0; i < wordsN; i++) {
@@ -200,7 +205,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
         {
                 settingsForm.append(wordsNum);
                 settingsForm.addCommand(back);
-		settingsForm.addCommand(settingChoice);
+		settingsForm.addCommand(settingsSave);
 		settingsForm.setCommandListener(this);
         }
         private void list2Init() 
