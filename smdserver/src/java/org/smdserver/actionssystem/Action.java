@@ -1,6 +1,6 @@
 package org.smdserver.actionssystem;
 
-abstract public class Action implements IAction
+public abstract class Action implements IAction
 {
 	private ISmdServletContext servletContext;
 	

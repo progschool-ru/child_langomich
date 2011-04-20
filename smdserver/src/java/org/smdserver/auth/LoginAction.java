@@ -1,10 +1,11 @@
-package org.smdserver;
+package org.smdserver.auth;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.actionssystem.Action;
 import org.smdserver.users.UsersStorage;
 
@@ -13,8 +14,8 @@ public class LoginAction extends Action
 	public String perform(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{
-		String login = request.getParameter("login");
-		String password = request.getParameter("password").toString();
+		String login = request.getParameter(ActionParams.LOGIN);
+		String password = request.getParameter(ActionParams.PASSWORD).toString();
 		UsersStorage storage = getServletContext().getUsersStorage();
 
 		PrintWriter writer = response.getWriter();

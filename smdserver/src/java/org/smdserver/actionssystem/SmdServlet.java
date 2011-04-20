@@ -1,19 +1,20 @@
 package org.smdserver.actionssystem;
 
-import org.smdserver.FirstAction;
 import java.io.IOException;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.smdserver.LoginAction;
-import org.smdserver.SecondAction;
 import org.smdserver.users.UsersStorage;
 
-public class SmdServlet extends HttpServlet
+public abstract class SmdServlet extends HttpServlet
 {
 	private IActionsFactory factory;
 	private Class defaultActionClass;
+	
+	abstract protected Class getDefaultActionClass();
+	abstract protected Map<String, Class> getActionsClasses();
 
 	@Override
 	public void init() throws ServletException
@@ -25,11 +26,10 @@ public class SmdServlet extends HttpServlet
 
 		factory = new ActionsFactory(context);
 
-		factory.registerAction("first", FirstAction.class);
-		factory.registerAction("second", SecondAction.class);
-		factory.registerAction("login", LoginAction.class);
+		factory.registerMap(getActionsClasses());
 
-		defaultActionClass = FirstAction.class;
+
+		defaultActionClass = getDefaultActionClass();
 	}
 
 	@Override

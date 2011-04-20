@@ -2,8 +2,9 @@ package org.smdserver.actionssystem;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
-public class ActionsFactory implements IActionsFactory
+class ActionsFactory implements IActionsFactory
 {
 	private Map<String, Class<IAction> > actionClasses = new HashMap<String, Class<IAction> >();
 	private ISmdServletContext servletContext;
@@ -19,6 +20,15 @@ public class ActionsFactory implements IActionsFactory
 			return;
 
 		actionClasses.put(name, value);
+	}
+
+	public void registerMap(Map<String, Class> map)
+	{
+		Set<Map.Entry<String, Class> > set = map.entrySet();
+		for(Map.Entry<String, Class> entry : set)
+		{
+			registerAction(entry.getKey(), entry.getValue());
+		}
 	}
 
 	public IAction createAction(String name)
