@@ -1,28 +1,33 @@
 package org.smdserver.actionssystem;
 
-import org.smdserver.actionssystem.IActionsFactory;
-import org.smdserver.actionssystem.IAction;
 import org.smdserver.FirstAction;
-import org.smdserver.actionssystem.ActionsFactory;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.smdserver.LoginAction;
 import org.smdserver.SecondAction;
+import org.smdserver.users.UsersStorage;
 
 public class SmdServlet extends HttpServlet
 {
 	private IActionsFactory factory;
 	private Class defaultActionClass;
 
-	public SmdServlet()
+	@Override
+	public void init() throws ServletException
 	{
-		super();
+		super.init();
+		
+		UsersStorage usersStorage = new UsersStorage();
+		ISmdServletContext context = new SmdServletContext(usersStorage);
 
-		factory = new ActionsFactory();
+		factory = new ActionsFactory(context);
+
 		factory.registerAction("first", FirstAction.class);
 		factory.registerAction("second", SecondAction.class);
+		factory.registerAction("login", LoginAction.class);
 
 		defaultActionClass = FirstAction.class;
 	}

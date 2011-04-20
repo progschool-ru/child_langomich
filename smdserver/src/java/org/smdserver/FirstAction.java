@@ -5,9 +5,10 @@ import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.smdserver.actionssystem.Action;
 import org.smdserver.actionssystem.IAction;
 
-public class FirstAction implements IAction
+public class FirstAction extends Action implements IAction
 {
 	public String perform(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
