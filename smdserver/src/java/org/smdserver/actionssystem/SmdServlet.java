@@ -22,12 +22,11 @@ public abstract class SmdServlet extends HttpServlet
 		super.init();
 		
 		UsersStorage usersStorage = new UsersStorage();
+
 		ISmdServletContext context = new SmdServletContext(usersStorage);
 
 		factory = new ActionsFactory(context);
-
 		factory.registerMap(getActionsClasses());
-
 
 		defaultActionClass = getDefaultActionClass();
 	}

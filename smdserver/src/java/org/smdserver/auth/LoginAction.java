@@ -1,5 +1,6 @@
 package org.smdserver.auth;
 
+import org.smdserver.actionssystem.SessionKeys;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -18,8 +19,19 @@ public class LoginAction extends Action
 		String password = request.getParameter(ActionParams.PASSWORD).toString();
 		UsersStorage storage = getServletContext().getUsersStorage();
 
+		boolean success = storage.checkPassword(login, password);
+
+		if(success)
+		{
+			request.getSession().setAttribute(SessionKeys.CURRENT_LOGIN, login);
+		}
+		else
+		{
+			request.getSession().setAttribute(SessionKeys.CURRENT_LOGIN, null);
+		}
+
 		PrintWriter writer = response.getWriter();
-		writer.println( storage.checkPassword(login, password) ? "success" : "failure");
+		writer.println( success ? "success" : "failure");
 		writer.close();
 
 		return null;
