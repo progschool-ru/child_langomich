@@ -15,7 +15,16 @@ public class LoginAction extends Action
 		UsersStorage storage = getServletContext().getUsersStorage();
 
 		boolean success = storage.checkPassword(login, password);
-		request.getSession().setAttribute(SessionKeys.CURRENT_LOGIN, success ? login : null);
+
+		if(success)
+		{
+			setAnswerParam(ActionParams.USER, storage.getUserByLogin(login));
+			request.getSession().setAttribute(SessionKeys.CURRENT_LOGIN, login);
+		}
+		else
+		{
+			request.getSession().setAttribute(SessionKeys.CURRENT_LOGIN, null);
+		}
 
 		setAnswerParam(ActionParams.SUCCESS, new Boolean(success));
 		return null;

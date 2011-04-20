@@ -23,11 +23,11 @@ public class User
 		this.login = login;
 	}
 
-	public String getPsw() {
+	String getPsw() {
 		return psw;
 	}
 
-	public void setPsw(String psw) {
+	void setPsw(String psw) {
 		this.psw = psw;
 	}
 
