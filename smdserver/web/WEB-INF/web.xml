@@ -20,7 +20,7 @@
     <!-- Main Smart Dictionary servlet. -->
     <servlet>
         <servlet-name>smd</servlet-name>
-        <servlet-class>org.smdserver.actionssystem.SmdServlet</servlet-class>
+        <servlet-class>org.smdserver.MainServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>smd</servlet-name>

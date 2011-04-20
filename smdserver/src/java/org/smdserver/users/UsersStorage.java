@@ -6,12 +6,12 @@ import java.util.Map;
 
 public class UsersStorage
 {
-	private Map<String, String> users = new HashMap<String, String>();
+	private Map<String, User> users = new HashMap<String, User>();
 
 	public UsersStorage()
 	{
-		users.put("chivorotkiv", getMD5Sum("password"));
-		users.put("kkauut", getMD5Sum("password"));
+		users.put("chivorotkiv", new User("1", "chivorotkiv", getMD5Sum("password")));
+		users.put("kkaut", new User("2", "kkauut", getMD5Sum("password")));
 	}
 
 	public void setPassword(String login, String password)
@@ -19,12 +19,20 @@ public class UsersStorage
 		if(!users.containsKey(login))
 			return;
 
-		users.put(login, getMD5Sum(password));
+		users.get(login).setPsw(getMD5Sum(password));
 	}
 
 	public boolean checkPassword(String login, String password)
 	{
-		return users.containsKey(login) && users.get(login).equals(getMD5Sum(password));
+		return users.containsKey(login) && users.get(login).getPsw().equals(getMD5Sum(password));
+	}
+
+	public User getUserByLogin(String login)
+	{
+		if(!users.containsKey(login))
+			return null;
+		
+		return users.get(login);
 	}
 
 	private String getMD5Sum(String password)

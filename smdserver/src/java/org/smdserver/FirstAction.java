@@ -10,6 +10,7 @@ import org.smdserver.actionssystem.IAction;
 
 public class FirstAction extends Action implements IAction
 {
+	@Override
 	public String perform(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{
@@ -19,4 +20,6 @@ public class FirstAction extends Action implements IAction
 
 		return null;
 	}
+
+	protected String doAction(HttpServletRequest request){return null;}
 }
