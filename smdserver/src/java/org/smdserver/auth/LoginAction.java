@@ -4,7 +4,7 @@ import org.smdserver.actionssystem.SessionKeys;
 import javax.servlet.http.HttpServletRequest;
 import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.actionssystem.Action;
-import org.smdserver.users.UsersStorage;
+import org.smdserver.users.IUsersStorage;
 
 public class LoginAction extends Action
 {
@@ -12,7 +12,7 @@ public class LoginAction extends Action
 	{
 		String login = request.getParameter(ActionParams.LOGIN);
 		String password = request.getParameter(ActionParams.PASSWORD).toString();
-		UsersStorage storage = getServletContext().getUsersStorage();
+		IUsersStorage storage = getServletContext().getUsersStorage();
 
 		boolean success = storage.checkPassword(login, password);
 

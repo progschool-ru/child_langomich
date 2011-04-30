@@ -16,7 +16,15 @@ public class SetPasswordAction extends Action
 
 		if(success)
 		{
-			getServletContext().getUsersStorage().setPassword(login, password);
+			try
+			{
+				getServletContext().getUsersStorage().setPassword(login, password);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				success = false;
+			}
 		}
 
 		setAnswerParam(ActionParams.SUCCESS, new Boolean(success));

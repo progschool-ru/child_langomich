@@ -1,8 +1,8 @@
 package org.smdserver.actionssystem;
 
-import org.smdserver.users.UsersStorage;
+import org.smdserver.users.IUsersStorage;
 
 public interface ISmdServletContext
 {
-	public UsersStorage getUsersStorage();
+	public IUsersStorage getUsersStorage();
 }

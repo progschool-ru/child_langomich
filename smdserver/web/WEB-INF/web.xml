@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-    <session-config>
+
+	<session-config>
         <session-timeout>
             30
         </session-timeout>
@@ -8,6 +9,26 @@
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+
+	<!-- Запрещаем доступ к файлам конфигурации -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>HTTP-Protected-Resource-1</web-resource-name>
+			<description>Description here</description>
+			<url-pattern>/config/*</url-pattern>
+			<url-pattern>/storage/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>NOSOUPFORYOU</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<security-role>
+		<role-name>NOSOUPFORYOU</role-name>
+	</security-role>
+
     <!-- First servlet example. I's a simplies servlet -->
     <servlet>
         <servlet-name>first</servlet-name>
