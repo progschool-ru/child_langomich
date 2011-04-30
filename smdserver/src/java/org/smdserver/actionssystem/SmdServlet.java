@@ -6,8 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.smdserver.users.IUsersStorage;
-import org.smdserver.users.UsersFileStorage;
 
 public abstract class SmdServlet extends HttpServlet
 {
@@ -16,14 +16,14 @@ public abstract class SmdServlet extends HttpServlet
 	
 	abstract protected Class getDefaultActionClass();
 	abstract protected Map<String, Class> getActionsClasses();
+	abstract protected IUsersStorage createUsersStorage();
 
 	@Override
 	public void init() throws ServletException
 	{
 		super.init();
 		
-		IUsersStorage usersStorage = new UsersFileStorage(getServletContext());
-
+		IUsersStorage usersStorage = createUsersStorage();
 		ISmdServletContext context = new SmdServletContext(usersStorage);
 
 		factory = new ActionsFactory(context);

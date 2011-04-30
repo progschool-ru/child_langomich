@@ -9,19 +9,19 @@ import javax.servlet.ServletContext;
 
 public class UsersFileStorage extends UsersStorage
 {
-	private final String STORAGE_PATH = "/storage/users.dat";
-
-	ServletContext context;
+	private ServletContext context;
+	private String storagePath;
 	
-	public UsersFileStorage(ServletContext context)
+	public UsersFileStorage(ServletContext context, String storagePath)
 	{
 		super();
 
 		this.context = context;
+		this.storagePath = storagePath;
 		
 		try
 		{
-			BufferedReader br = new BufferedReader(new FileReader(context.getRealPath(STORAGE_PATH)));
+			BufferedReader br = new BufferedReader(new FileReader(context.getRealPath(storagePath)));
 			String str;
 			while((str = br.readLine()) != null)
 			{
@@ -55,7 +55,7 @@ public class UsersFileStorage extends UsersStorage
 
 		SaveUserCallback() throws IOException
 		{
-			bw = new BufferedWriter(new FileWriter(context.getRealPath(STORAGE_PATH)));
+			bw = new BufferedWriter(new FileWriter(context.getRealPath(storagePath)));
 		}
 		public void process(User user) throws IOException
 		{
