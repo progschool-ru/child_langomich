@@ -1,15 +1,13 @@
 package org.smdserver.auth;
 
-import org.smdserver.actionssystem.SessionKeys;
 import javax.servlet.http.HttpServletRequest;
-import org.smdserver.actionssystem.Action;
 import org.smdserver.actionssystem.ActionParams;
 
-public class SetPasswordAction extends Action
+public class SetPasswordAction extends CheckLoginAction
 {
 	protected String doAction(HttpServletRequest request)
 	{
-		String login = (String)request.getSession().getAttribute(SessionKeys.CURRENT_LOGIN);
+		String login = getLogin();
 		String password = request.getParameter(ActionParams.PASSWORD);
 
 		boolean success = (login != null && password != null && !password.isEmpty());

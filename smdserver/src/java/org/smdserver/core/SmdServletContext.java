@@ -1,8 +1,8 @@
-package org.smdserver.actionssystem;
+package org.smdserver.core;
 
 import org.smdserver.users.IUsersStorage;
 
-class SmdServletContext implements ISmdServletContext
+public class SmdServletContext implements ISmdServletContext
 {
 	private IUsersStorage usersStorage;
 

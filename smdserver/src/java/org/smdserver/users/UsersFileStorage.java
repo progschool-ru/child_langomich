@@ -38,8 +38,17 @@ public class UsersFileStorage extends UsersStorage
 	@Override
 	public void setPassword(String login, String password) throws Exception
 	{
+		String psw = super.getPswByLogin(login);
 		super.setPassword(login, password);
-		store();
+		try
+		{
+			store();
+		}
+		catch(Exception e)
+		{
+			super.setPswByLogin(login, psw);
+			throw e;
+		}
 	}
 
 	private void store() throws Exception

@@ -11,20 +11,16 @@ import org.json.JSONObject;
 
 public abstract class Action implements IAction
 {
-	private ISmdServletContext servletContext;
 	private Map<String, Object> map = new HashMap<String, Object>();
 
 	abstract protected String doAction(HttpServletRequest request);
-	
-	public void initServletContext(ISmdServletContext context)
-	{
-		if(servletContext == null)
-			servletContext = context;
-	}
 
 	public String perform(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{
+		if(!validateParams(request) || !validateContext(request))
+			return null;
+		
 		String url = doAction(request);
 		JSONObject object = new JSONObject(map);
 
@@ -34,13 +30,18 @@ public abstract class Action implements IAction
 		return url;
 	}
 
-	protected ISmdServletContext getServletContext()
-	{
-		return servletContext;
-	}
-
 	protected void setAnswerParam(String key, Object value)
 	{
 		map.put(key, value);
+	}
+
+	protected boolean validateParams(HttpServletRequest request)
+	{
+		return true;
+	}
+
+	protected boolean validateContext(HttpServletRequest request)
+	{
+		return true;
 	}
 }

@@ -3,10 +3,10 @@ package org.smdserver.auth;
 import org.smdserver.actionssystem.SessionKeys;
 import javax.servlet.http.HttpServletRequest;
 import org.smdserver.actionssystem.ActionParams;
-import org.smdserver.actionssystem.Action;
+import org.smdserver.core.SmdAction;
 import org.smdserver.users.IUsersStorage;
 
-public class LoginAction extends Action
+public class LoginAction extends SmdAction
 {
 	protected String doAction(HttpServletRequest request)
 	{

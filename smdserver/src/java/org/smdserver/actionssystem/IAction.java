@@ -9,6 +9,4 @@ public interface IAction
 {
 	public String perform(HttpServletRequest request, HttpServletResponse response)
 					throws ServletException, IOException;
-	
-	public void initServletContext(ISmdServletContext context);
 }

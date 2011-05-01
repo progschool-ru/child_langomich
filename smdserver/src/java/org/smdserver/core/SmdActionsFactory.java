@@ -1,15 +1,17 @@
-package org.smdserver.actionssystem;
+package org.smdserver.core;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.smdserver.actionssystem.IAction;
+import org.smdserver.actionssystem.IActionsFactory;
 
-class ActionsFactory implements IActionsFactory
+public class SmdActionsFactory implements IActionsFactory
 {
-	private Map<String, Class<IAction> > actionClasses = new HashMap<String, Class<IAction> >();
+	private Map<String, Class<ISmdAction> > actionClasses = new HashMap<String, Class<ISmdAction> >();
 	private ISmdServletContext servletContext;
 
-	public ActionsFactory(ISmdServletContext context)
+	public SmdActionsFactory(ISmdServletContext context)
 	{
 		servletContext = context;
 	}
@@ -37,7 +39,7 @@ class ActionsFactory implements IActionsFactory
 		{
 			if(actionClasses.containsKey(name))
 			{
-				IAction action = actionClasses.get(name).newInstance();
+				ISmdAction action = actionClasses.get(name).newInstance();
 				action.initServletContext(servletContext);
 				return action;
 			}

@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UsersStorage implements IUsersStorage
+class UsersStorage implements IUsersStorage
 {
 	private Map<String, User> users = new HashMap<String, User>();
 
@@ -53,6 +53,22 @@ public class UsersStorage implements IUsersStorage
 		{
 			callback.process(user);
 		}
+	}
+
+	protected String getPswByLogin(String login)
+	{
+		if(!users.containsKey(login))
+			return null;
+		
+		return users.get(login).getPsw();
+	}
+
+	protected void setPswByLogin(String login, String psw)
+	{
+		if(!users.containsKey(login))
+			return;
+
+		users.get(login).setPsw(psw);
 	}
 
 	private String getMD5Sum(String password)
