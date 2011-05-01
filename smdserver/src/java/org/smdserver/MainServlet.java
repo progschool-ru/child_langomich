@@ -14,6 +14,10 @@ import org.smdserver.auth.SetPasswordAction;
 import org.smdserver.core.SmdActionsFactory;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.users.UsersFileStorage;
+import org.smdserver.words.GetWordsAction;
+import org.smdserver.words.IWordsStorage;
+import org.smdserver.words.SetWordsAction;
+import org.smdserver.words.WordsStorage;
 
 public class MainServlet extends SmdServlet
 {
@@ -32,6 +36,8 @@ public class MainServlet extends SmdServlet
 
 		map.put("setPassword", SetPasswordAction.class);
 		map.put("login", LoginAction.class);
+		map.put("setWords", SetWordsAction.class);
+		map.put("getWords", GetWordsAction.class);
 
 		return map;
 	}
@@ -40,7 +46,8 @@ public class MainServlet extends SmdServlet
 	{
 		String path = ResourceBundle.getBundle(CONFIG_RESOURCE).getString(USERS_STORAGE_PATH_KEY);
 		IUsersStorage usersStorage =  new UsersFileStorage(getServletContext(), path);
-		ISmdServletContext context = new SmdServletContext(usersStorage);
+		IWordsStorage wordsStorage = new WordsStorage();
+		ISmdServletContext context = new SmdServletContext(usersStorage, wordsStorage);
 
 		return new SmdActionsFactory(context);
 	}

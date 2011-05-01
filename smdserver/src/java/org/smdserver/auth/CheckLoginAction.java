@@ -1,6 +1,7 @@
 package org.smdserver.auth;
 
-import javax.servlet.http.HttpServletRequest;;
+import javax.servlet.http.HttpServletRequest;import org.smdserver.users.User;
+;
 import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.actionssystem.SessionKeys;
 import org.smdserver.core.SmdAction;
@@ -21,5 +22,10 @@ public abstract class CheckLoginAction extends SmdAction
 	protected String getLogin()
 	{
 		return login;
+	}
+
+	protected User getUser()
+	{
+		return getServletContext().getUsersStorage().getUserByLogin(login);
 	}
 }
