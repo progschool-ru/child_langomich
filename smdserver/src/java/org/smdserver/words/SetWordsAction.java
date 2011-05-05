@@ -1,5 +1,6 @@
 package org.smdserver.words;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -29,10 +30,15 @@ public class SetWordsAction extends CheckLoginAction
 			setAnswerParam(ActionParams.SUCCESS, false);
 			setAnswerParam(ActionParams.MESSAGE, e.getMessage());
 		}
+		catch(ParseException e)
+		{
+			setAnswerParam(ActionParams.SUCCESS, false);
+			setAnswerParam(ActionParams.MESSAGE, e.getMessage());
+		}
 		return null;
 	}
 
-	private List<Language> parseJSON(JSONArray json) throws JSONException
+	private List<Language> parseJSON(JSONArray json) throws JSONException, ParseException
 	{
 		List<Language> languages = new ArrayList<Language>();
 		int length = json.length();

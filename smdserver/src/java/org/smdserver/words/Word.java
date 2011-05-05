@@ -13,6 +13,8 @@ public class Word
 	private double rating;
 	private Date modified;
 
+	private static DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG);
+
 	public Word(String original, String translation, double rating, Date modified)
 	{
 		this.original = original;
@@ -27,7 +29,7 @@ public class Word
 		this.translation = json.getString("translation");
 		this.rating = json.getDouble("rating");
 
-		this.modified = DateFormat.getDateInstance(DateFormat.SHORT).parse(json.getString("modified"));
+		this.modified = dateFormat.parse(json.getString("modified"));
 	}
 
 	public Date getModified() {
@@ -44,5 +46,10 @@ public class Word
 
 	public String getTranslation() {
 		return translation;
+	}
+
+	static void setDateFormat(DateFormat format)
+	{
+		dateFormat = format;
 	}
 }

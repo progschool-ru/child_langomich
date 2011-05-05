@@ -1,5 +1,6 @@
 package org.smdserver.words;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
@@ -16,7 +17,7 @@ public class Language
 		this.name = name;
 	}
 
-	public Language(JSONObject json) throws JSONException
+	public Language(JSONObject json) throws JSONException, ParseException
 	{
 		name = json.getString("name");
 
