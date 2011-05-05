@@ -1,8 +1,6 @@
 package org.smdserver.words;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.json.JSONArray;
@@ -30,7 +28,7 @@ public class SetWordsAction extends CheckLoginAction
 			setAnswerParam(ActionParams.SUCCESS, false);
 			setAnswerParam(ActionParams.MESSAGE, e.getMessage());
 		}
-		catch(ParseException e)
+		catch(WordsException e)
 		{
 			setAnswerParam(ActionParams.SUCCESS, false);
 			setAnswerParam(ActionParams.MESSAGE, e.getMessage());
@@ -38,15 +36,22 @@ public class SetWordsAction extends CheckLoginAction
 		return null;
 	}
 
-	private List<Language> parseJSON(JSONArray json) throws JSONException, ParseException
+	private List<Language> parseJSON(JSONArray json) throws WordsException
 	{
 		List<Language> languages = new ArrayList<Language>();
 		int length = json.length();
 
-		for(int i = 0; i < length; i++)
+		try
 		{
-            JSONObject value = json.getJSONObject(i);
-			languages.add(new Language(value));
+			for(int i = 0; i < length; i++)
+			{
+				JSONObject value = json.getJSONObject(i);
+				languages.add(new Language(value));
+			}
+		}
+		catch(JSONException e)
+		{
+			throw new WordsException(WordsException.JSON_ERROR + "; " + e.getMessage());
 		}
 
 		return languages;

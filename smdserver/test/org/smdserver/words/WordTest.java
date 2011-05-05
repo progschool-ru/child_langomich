@@ -1,6 +1,5 @@
 package org.smdserver.words;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,7 +12,7 @@ import static org.junit.Assert.*;
 public class WordTest
 {
 	@Test
-	public void testParseJSONSuccess() throws JSONException, ParseException
+	public void testParseJSONSuccess() throws WordsException, JSONException
 	{
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeZone(TimeZone.getTimeZone("GMT+6"));

@@ -23,13 +23,24 @@ public class Word
 		this.modified = modified;
 	}
 
-	public Word(JSONObject json) throws JSONException, ParseException
+	public Word(JSONObject json) throws WordsException
 	{
-		this.original = json.getString("original");
-		this.translation = json.getString("translation");
-		this.rating = json.getDouble("rating");
+		try
+		{
+			this.original = json.getString("original");
+			this.translation = json.getString("translation");
+			this.rating = json.getDouble("rating");
 
-		this.modified = dateFormat.parse(json.getString("modified"));
+			this.modified = dateFormat.parse(json.getString("modified"));
+		}
+		catch(JSONException e)
+		{
+			throw new WordsException(WordsException.JSON_ERROR + "; " + e.getMessage());
+		}
+		catch(ParseException e)
+		{
+			throw new WordsException(WordsException.ICORRECT_DATE_FORMAT + "; " + e.getMessage());
+		}
 	}
 
 	public Date getModified() {

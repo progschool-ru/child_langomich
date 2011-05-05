@@ -1,6 +1,5 @@
 package org.smdserver.words;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,7 +9,7 @@ import static org.junit.Assert.*;
 public class LanguageTest
 {
 	@Test
-	public void testParseJSONSuccess() throws ParseException, JSONException
+	public void testParseJSONSuccess() throws WordsException, JSONException
 	{
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z");
 		Word.setDateFormat(format);
