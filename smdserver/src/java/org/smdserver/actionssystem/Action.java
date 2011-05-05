@@ -13,9 +13,9 @@ public abstract class Action implements IAction
 {
 	private Map<String, Object> map = new HashMap<String, Object>();
 
-	abstract protected String doAction(HttpServletRequest request);
+	abstract protected String doAction (HttpServletRequest request);
 
-	public String perform(HttpServletRequest request, HttpServletResponse response)
+	public String perform (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{
 		if(!validateParams(request) || !validateContext(request))
@@ -30,17 +30,17 @@ public abstract class Action implements IAction
 		return url;
 	}
 
-	protected void setAnswerParam(String key, Object value)
+	protected void setAnswerParam (String key, Object value)
 	{
 		map.put(key, value);
 	}
 
-	protected boolean validateParams(HttpServletRequest request)
+	protected boolean validateParams (HttpServletRequest request)
 	{
 		return true;
 	}
 
-	protected boolean validateContext(HttpServletRequest request)
+	protected boolean validateContext (HttpServletRequest request)
 	{
 		return true;
 	}

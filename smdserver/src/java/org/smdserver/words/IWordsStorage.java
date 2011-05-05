@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface IWordsStorage
 {
-	public List<Language> getUserWords(String userId);
-	public void setUserWords(String userId, List<Language> languages);
+	public List<Language> getUserWords (String userId);
+	public void setUserWords (String userId, List<Language> languages);
 }

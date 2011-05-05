@@ -13,7 +13,7 @@ public class WordsStorageTest
 	private WordsStorage storage;
 
     @Before
-    public void setUp() throws ParseException
+    public void setUp () throws ParseException
 	{
 		storage = new WordsStorage();
 		List<Language> list = new ArrayList<Language>();
@@ -28,7 +28,7 @@ public class WordsStorageTest
     }
 
     @After
-    public void tearDown()
+    public void tearDown ()
 	{
 		storage = null;
     }
@@ -37,7 +37,8 @@ public class WordsStorageTest
 	 * Test of setUserWords method, of class WordsStorage.
 	 */
 	@Test
-	public void testSetUserWords() {
+	public void testSetUserWords ()
+	{
 		System.out.println("setUserWords");
 
 		List<Language> languages = new ArrayList<Language>();
@@ -59,7 +60,7 @@ public class WordsStorageTest
 	 * Test of getUserWords method, of class WordsStorage.
 	 */
 	@Test
-	public void testGetUserWords()
+	public void testGetUserWords ()
 	{
 		System.out.println("getUserWords");
 

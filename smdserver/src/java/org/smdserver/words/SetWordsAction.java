@@ -11,7 +11,7 @@ import org.smdserver.auth.CheckLoginAction;
 
 public class SetWordsAction extends CheckLoginAction
 {	
-	protected String doAction(HttpServletRequest request)
+	protected String doAction (HttpServletRequest request)
 	{
 		String dataString = request.getParameter(ActionParams.DATA);
 
@@ -36,7 +36,7 @@ public class SetWordsAction extends CheckLoginAction
 		return null;
 	}
 
-	private List<Language> parseJSON(JSONArray json) throws WordsException
+	private List<Language> parseJSON (JSONArray json) throws WordsException
 	{
 		List<Language> languages = new ArrayList<Language>();
 		int length = json.length();
@@ -58,7 +58,7 @@ public class SetWordsAction extends CheckLoginAction
 	}
 
 	@Override
-	protected boolean validateParams(HttpServletRequest request)
+	protected boolean validateParams (HttpServletRequest request)
 	{
 		return request.getParameter(ActionParams.DATA) != null;
 	}

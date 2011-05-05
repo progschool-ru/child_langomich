@@ -12,12 +12,12 @@ public abstract class SmdServlet extends HttpServlet
 	private IActionsFactory factory;
 	private Class defaultActionClass;
 	
-	abstract protected Class getDefaultActionClass();
-	abstract protected Map<String, Class> getActionsClasses();
-	abstract protected IActionsFactory createActionsFactory();
+	abstract protected Class getDefaultActionClass ();
+	abstract protected Map<String, Class> getActionsClasses ();
+	abstract protected IActionsFactory createActionsFactory ();
 
 	@Override
-	public void init() throws ServletException
+	public void init () throws ServletException
 	{
 		super.init();
 		
@@ -28,7 +28,7 @@ public abstract class SmdServlet extends HttpServlet
 	}
 
 	@Override
-	public void service(HttpServletRequest request, HttpServletResponse response)
+	public void service (HttpServletRequest request, HttpServletResponse response)
 											throws ServletException, IOException
 	{
 //		try
@@ -60,7 +60,7 @@ public abstract class SmdServlet extends HttpServlet
 //		}
 	}
 
-	private String getActionName(HttpServletRequest request)
+	private String getActionName (HttpServletRequest request)
 	{
 		String pathInfo = request.getPathInfo();
 		if(pathInfo == null)

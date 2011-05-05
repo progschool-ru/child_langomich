@@ -3,8 +3,6 @@ package org.smdserver;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
-import org.apache.juli.logging.LogFactory;
 import org.smdserver.actionssystem.IActionsFactory;
 import org.smdserver.core.ISmdServletContext;
 import org.smdserver.actionssystem.SmdServlet;
@@ -25,12 +23,12 @@ public class MainServlet extends SmdServlet
 	private static final String USERS_STORAGE_PATH_KEY = "path.users.storage";
 //	private static final String WORDS_STORAGE_PATH_KEY = "path.words.storageDir";
 
-	protected Class getDefaultActionClass()
+	protected Class getDefaultActionClass ()
 	{
 		return FirstAction.class;
 	}
 
-	protected Map<String, Class> getActionsClasses()
+	protected Map<String, Class> getActionsClasses ()
 	{
 		Map<String, Class> map = new HashMap<String, Class>();
 
@@ -42,7 +40,7 @@ public class MainServlet extends SmdServlet
 		return map;
 	}
 
-	protected IActionsFactory createActionsFactory()
+	protected IActionsFactory createActionsFactory ()
 	{
 		String path = ResourceBundle.getBundle(CONFIG_RESOURCE).getString(USERS_STORAGE_PATH_KEY);
 		IUsersStorage usersStorage =  new UsersFileStorage(getServletContext(), path);

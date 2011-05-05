@@ -8,7 +8,7 @@ import org.smdserver.users.IUsersStorage;
 
 public class LoginAction extends SmdAction
 {
-	protected String doAction(HttpServletRequest request)
+	protected String doAction (HttpServletRequest request)
 	{
 		String login = request.getParameter(ActionParams.LOGIN);
 		String password = request.getParameter(ActionParams.PASSWORD).toString();

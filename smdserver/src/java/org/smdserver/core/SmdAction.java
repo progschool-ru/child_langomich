@@ -6,13 +6,13 @@ public abstract class SmdAction extends Action implements ISmdAction
 {
 	private ISmdServletContext servletContext;
 
-	public void initServletContext(ISmdServletContext context)
+	public void initServletContext (ISmdServletContext context)
 	{
 		if(servletContext == null)
 			servletContext = context;
 	}
 
-	protected ISmdServletContext getServletContext()
+	protected ISmdServletContext getServletContext ()
 	{
 		return servletContext;
 	}

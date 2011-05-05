@@ -6,37 +6,43 @@ public class User
 	private String login;
 	private String psw;
 
-	public User()
+	public User ()
 	{}
 
-	public User(String userId, String login, String psw) {
+	public User (String userId, String login, String psw)
+	{
 		this.userId = userId;
 		this.login = login;
 		this.psw = psw;
 	}
 
-	public String getLogin() {
+	public String getLogin ()
+	{
 		return login;
 	}
 
-	public void setLogin(String login) {
+	public void setLogin (String login)
+	{
 		this.login = login;
 	}
 
-	String getPsw() {
+	String getPsw ()
+	{
 		return psw;
 	}
 
-	void setPsw(String psw) {
+	void setPsw (String psw)
+	{
 		this.psw = psw;
 	}
 
-	public String getUserId() {
+	public String getUserId ()
+	{
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId (String userId)
+	{
 		this.userId = userId;
 	}
-
 }

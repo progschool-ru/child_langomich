@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 public class WordTest
 {
 	@Test
-	public void testParseJSONSuccess() throws WordsException, JSONException
+	public void testParseJSONSuccess () throws WordsException, JSONException
 	{
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeZone(TimeZone.getTimeZone("GMT+6"));

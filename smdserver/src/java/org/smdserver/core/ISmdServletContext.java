@@ -5,6 +5,6 @@ import org.smdserver.words.IWordsStorage;
 
 public interface ISmdServletContext
 {
-	public IUsersStorage getUsersStorage();
-	public IWordsStorage getWordsStorage();
+	public IUsersStorage getUsersStorage ();
+	public IWordsStorage getWordsStorage ();
 }

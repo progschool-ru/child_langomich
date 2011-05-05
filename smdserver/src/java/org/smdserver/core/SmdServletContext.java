@@ -8,18 +8,18 @@ public class SmdServletContext implements ISmdServletContext
 	private IUsersStorage usersStorage;
 	private IWordsStorage wordsStorage;
 
-	public SmdServletContext(IUsersStorage usersStorage, IWordsStorage wordsStorage)
+	public SmdServletContext (IUsersStorage usersStorage, IWordsStorage wordsStorage)
 	{
 		this.usersStorage = usersStorage;
 		this.wordsStorage = wordsStorage;
 	}
 
-	public IUsersStorage getUsersStorage()
+	public IUsersStorage getUsersStorage ()
 	{
 		return usersStorage;
 	}
 
-	public IWordsStorage getWordsStorage()
+	public IWordsStorage getWordsStorage ()
 	{
 		return wordsStorage;
 	}

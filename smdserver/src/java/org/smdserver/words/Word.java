@@ -15,7 +15,7 @@ public class Word
 
 	private static DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG);
 
-	public Word(String original, String translation, double rating, Date modified)
+	public Word (String original, String translation, double rating, Date modified)
 	{
 		this.original = original;
 		this.translation = translation;
@@ -23,7 +23,7 @@ public class Word
 		this.modified = modified;
 	}
 
-	public Word(JSONObject json) throws WordsException
+	public Word (JSONObject json) throws WordsException
 	{
 		try
 		{
@@ -43,23 +43,27 @@ public class Word
 		}
 	}
 
-	public Date getModified() {
+	public Date getModified ()
+	{
 		return modified;
 	}
 
-	public String getOriginal() {
+	public String getOriginal ()
+	{
 		return original;
 	}
 
-	public double getRating() {
+	public double getRating ()
+	{
 		return rating;
 	}
 
-	public String getTranslation() {
+	public String getTranslation ()
+	{
 		return translation;
 	}
 
-	static void setDateFormat(DateFormat format)
+	static void setDateFormat (DateFormat format)
 	{
 		dateFormat = format;
 	}

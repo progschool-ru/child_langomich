@@ -11,12 +11,12 @@ public class Language
 	private String name;
 	private List<Word> words = new ArrayList<Word>();
 
-	public Language(String name)
+	public Language (String name)
 	{
 		this.name = name;
 	}
 
-	public Language(JSONObject json) throws WordsException
+	public Language (JSONObject json) throws WordsException
 	{
 		try
 		{
@@ -36,12 +36,12 @@ public class Language
 		}
 	}
 
-	public String getName()
+	public String getName ()
 	{
 		return name;
 	}
 
-	public List<Word> getWords()
+	public List<Word> getWords ()
 	{
 		return words;
 	}

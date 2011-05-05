@@ -5,7 +5,7 @@ import org.smdserver.actionssystem.ActionParams;
 
 public class SetPasswordAction extends CheckLoginAction
 {
-	protected String doAction(HttpServletRequest request)
+	protected String doAction (HttpServletRequest request)
 	{
 		String login = getLogin();
 		String password = request.getParameter(ActionParams.PASSWORD);

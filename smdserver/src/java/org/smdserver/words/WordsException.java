@@ -4,10 +4,10 @@ import org.smdserver.core.SmdException;
 
 public class WordsException extends SmdException
 {
-	public static String ICORRECT_DATE_FORMAT = "Incorrect Date format";
-	public static String JSON_ERROR = "JSON error";
+	public static final String ICORRECT_DATE_FORMAT = "Incorrect Date format";
+	public static final String JSON_ERROR = "JSON error";
 
-	WordsException(String message)
+	WordsException (String message)
 	{
 		super(message);
 	}

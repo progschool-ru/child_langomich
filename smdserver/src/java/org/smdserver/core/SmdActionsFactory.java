@@ -11,12 +11,12 @@ public class SmdActionsFactory implements IActionsFactory
 	private Map<String, Class<ISmdAction> > actionClasses = new HashMap<String, Class<ISmdAction> >();
 	private ISmdServletContext servletContext;
 
-	public SmdActionsFactory(ISmdServletContext context)
+	public SmdActionsFactory (ISmdServletContext context)
 	{
 		servletContext = context;
 	}
 
-	public void registerAction(String name, Class value)
+	public void registerAction (String name, Class value)
 	{
 		if(actionClasses.containsKey(name))
 			return;
@@ -24,7 +24,7 @@ public class SmdActionsFactory implements IActionsFactory
 		actionClasses.put(name, value);
 	}
 
-	public void registerMap(Map<String, Class> map)
+	public void registerMap (Map<String, Class> map)
 	{
 		Set<Map.Entry<String, Class> > set = map.entrySet();
 		for(Map.Entry<String, Class> entry : set)
@@ -33,7 +33,7 @@ public class SmdActionsFactory implements IActionsFactory
 		}
 	}
 
-	public IAction createAction(String name)
+	public IAction createAction (String name)
 	{
 		try
 		{

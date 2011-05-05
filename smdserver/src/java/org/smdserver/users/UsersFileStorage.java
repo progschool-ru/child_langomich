@@ -12,7 +12,7 @@ public class UsersFileStorage extends UsersStorage
 	private ServletContext context;
 	private String storagePath;
 	
-	public UsersFileStorage(ServletContext context, String storagePath)
+	public UsersFileStorage (ServletContext context, String storagePath)
 	{
 		super();
 
@@ -36,7 +36,7 @@ public class UsersFileStorage extends UsersStorage
 	}
 
 	@Override
-	public void setPassword(String login, String password) throws Exception
+	public void setPassword (String login, String password) throws Exception
 	{
 		String psw = super.getPswByLogin(login);
 		super.setPassword(login, password);
@@ -51,7 +51,7 @@ public class UsersFileStorage extends UsersStorage
 		}
 	}
 
-	private void store() throws Exception
+	private void store () throws Exception
 	{
 			SaveUserCallback cb = new SaveUserCallback();
 			super.iterate(cb);
@@ -62,16 +62,16 @@ public class UsersFileStorage extends UsersStorage
 	{
 		private BufferedWriter bw;
 
-		SaveUserCallback() throws IOException
+		SaveUserCallback () throws IOException
 		{
 			bw = new BufferedWriter(new FileWriter(context.getRealPath(storagePath)));
 		}
-		public void process(User user) throws IOException
+		public void process (User user) throws IOException
 		{
 			bw.write(user.getUserId() + " " + user.getLogin() + " " + user.getPsw() + "\n");
 		}
 
-		void close() throws IOException
+		void close () throws IOException
 		{
 			bw.close();
 		}
