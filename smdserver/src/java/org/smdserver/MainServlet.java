@@ -45,7 +45,7 @@ public class MainServlet extends SmdServlet
 		String path = ResourceBundle.getBundle(CONFIG_RESOURCE).getString(USERS_STORAGE_PATH_KEY);
 		IUsersStorage usersStorage =  new UsersFileStorage(getServletContext(), path);
 		IWordsStorage wordsStorage = new WordsStorage();
-		ISmdServletContext context = new SmdServletContext(usersStorage, wordsStorage);
+		ISmdServletContext context = new SmdServletContext(usersStorage, wordsStorage, getServletContext());
 
 		return new SmdActionsFactory(context);
 	}

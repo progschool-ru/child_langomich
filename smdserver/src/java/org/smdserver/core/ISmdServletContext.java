@@ -7,4 +7,5 @@ public interface ISmdServletContext
 {
 	public IUsersStorage getUsersStorage ();
 	public IWordsStorage getWordsStorage ();
+	public void log (String message);
 }
