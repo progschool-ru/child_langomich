@@ -27,10 +27,10 @@ public class WordTest
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z");
 		Word.setDateFormat(format);
 
-		String json = "{original:\"первый\",translation:\"first\",rating:4,modified:\"2010-10-01 10:00:23 +0600\"}";
+		String json = "{original:\"РїРµСЂРІС‹Р№\",translation:\"first\",rating:4,modified:\"2010-10-01 10:00:23 +0600\"}";
 		Word word = new Word(new JSONObject(json));
 
-		assertEquals("original", "первый", word.getOriginal());
+		assertEquals("original", "РїРµСЂРІС‹Р№", word.getOriginal());
 		assertEquals("translation", "first", word.getTranslation());
 		assertEquals("rating", new Double(4), new Double(word.getRating()));
 		assertEquals("modified", format.format(date), format.format(word.getModified()));

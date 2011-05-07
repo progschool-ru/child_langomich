@@ -6,13 +6,13 @@
             <name>smdserver</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
-                <library dirs="200">
+                <library>
                     <file>${file.reference.douglascrockford-JSON-java-dced076.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
             <web-module-additional-libraries>
-                <library dirs="200">
+                <library>
                     <file>${file.reference.douglascrockford-JSON-java-dced076.jar}</file>
                     <path-in-war>/</path-in-war>
                 </library>
@@ -22,7 +22,8 @@
                 <root id="src.resources.dir"/>
             </source-roots>
             <test-roots>
-                <root id="test.src.dir"/>
+                <root id="test.it.dir" name="Integration test"/>
+                <root id="test.test.dir" name="Unit test"/>
             </test-roots>
         </data>
     </configuration>

@@ -15,9 +15,9 @@ public class LanguageTest
 		Word.setDateFormat(format);
 
 		String json = "{name:\"en\",words:[" +
-				"{original:\"первый\",translation:\"first\",rating:4," +
+				"{original:\"РїРµСЂРІС‹Р№\",translation:\"first\",rating:4," +
 				"modified:\"2010-10-01 10:00:23 +0600\"}," +
-				"{original:\"второй\",translation:\"second\",rating:0," +
+				"{original:\"РІС‚РѕСЂРѕР№\",translation:\"second\",rating:0," +
 				"modified:\"2011-10-01 10:10:23 +0600\"}" +
 				"]}";
 
@@ -29,11 +29,11 @@ public class LanguageTest
 		Word first = language.getWords().get(0);
 		Word second = language.getWords().get(1);
 
-		assertEquals("original", "первый", first.getOriginal());
+		assertEquals("original", "РїРµСЂРІС‹Р№", first.getOriginal());
 		assertEquals("translation", "first", first.getTranslation());
 		assertEquals("rating", new Double(4), new Double(first.getRating()));
 
-		assertEquals("original", "второй", second.getOriginal());
+		assertEquals("original", "РІС‚РѕСЂРѕР№", second.getOriginal());
 		assertEquals("translation", "second", second.getTranslation());
 		assertEquals("rating", new Double(0), new Double(second.getRating()));
 	}
