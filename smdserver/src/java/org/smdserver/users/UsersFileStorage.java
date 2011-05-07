@@ -5,23 +5,20 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import javax.servlet.ServletContext;
 
 public class UsersFileStorage extends UsersStorage
 {
-	private ServletContext context;
-	private String storagePath;
+	private String realPath;
 	
-	public UsersFileStorage (ServletContext context, String storagePath)
+	public UsersFileStorage (String realPath)
 	{
 		super();
 
-		this.context = context;
-		this.storagePath = storagePath;
+		this.realPath = realPath;
 		
 		try
 		{
-			BufferedReader br = new BufferedReader(new FileReader(context.getRealPath(storagePath)));
+			BufferedReader br = new BufferedReader(new FileReader(realPath));
 			String str;
 			while((str = br.readLine()) != null)
 			{
@@ -64,7 +61,8 @@ public class UsersFileStorage extends UsersStorage
 
 		SaveUserCallback () throws IOException
 		{
-			bw = new BufferedWriter(new FileWriter(context.getRealPath(storagePath)));
+//			bw = new BufferedWriter(new FileWriter(context.getRealPath(storagePath)));
+			bw = new BufferedWriter(new FileWriter(realPath));
 		}
 		public void process (User user) throws IOException
 		{

@@ -43,7 +43,7 @@ public class MainServlet extends SmdServlet
 	protected IActionsFactory createActionsFactory ()
 	{
 		String path = ResourceBundle.getBundle(CONFIG_RESOURCE).getString(USERS_STORAGE_PATH_KEY);
-		IUsersStorage usersStorage =  new UsersFileStorage(getServletContext(), path);
+		IUsersStorage usersStorage =  new UsersFileStorage(getServletContext().getRealPath(path));
 		IWordsStorage wordsStorage = new WordsStorage();
 		ISmdServletContext context = new SmdServletContext(usersStorage, wordsStorage, getServletContext());
 

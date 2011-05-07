@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-class UsersStorage implements IUsersStorage
+public class UsersStorage implements IUsersStorage
 {
 	private Map<String, User> users = new HashMap<String, User>();
 
