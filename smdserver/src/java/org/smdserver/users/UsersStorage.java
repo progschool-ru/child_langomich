@@ -4,6 +4,7 @@ import java.security.MessageDigest;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import org.smdserver.core.ISmdServletContext;
 
 public class UsersStorage implements IUsersStorage
 {
@@ -11,24 +12,24 @@ public class UsersStorage implements IUsersStorage
 
 	public void setPassword (String login, String password) throws Exception
 	{
+		checkUpdated();
+
 		if(!users.containsKey(login))
 			return;
 
 		users.get(login).setPsw(getPsw(login, password));
 	}
 
-	public void addUser (String userId, String login, String psw)
-	{
-		users.put(login, new User(userId, login, psw));
-	}
-
 	public boolean checkPassword (String login, String password)
 	{
+		checkUpdated();
 		return users.containsKey(login) && users.get(login).getPsw().equals(getPsw(login, password));
 	}
 
 	public User getUserByLogin (String login)
 	{
+		checkUpdated();
+
 		if(!users.containsKey(login))
 			return null;
 		
@@ -38,6 +39,23 @@ public class UsersStorage implements IUsersStorage
 	public String getPsw (String login, String password)
 	{
 		return getMD5Sum(login + password);
+	}
+
+	public void createUser (String userId, String login, String password)
+	{
+		checkUpdated();
+		System.out.println("login: " + login + "; password: " + password + "; psw: " + getPsw(login,password));
+		addUser(userId, login, getPsw(login, password));
+	}
+
+	protected void addUser (String userId, String login, String psw)
+	{
+		users.put(login, new User(userId, login, psw));
+	}
+
+	protected void removeUserByLogin (String login)
+	{
+		users.remove(login);
 	}
 
 	protected void iterate (IUsersCallback callback) throws Exception
@@ -63,6 +81,10 @@ public class UsersStorage implements IUsersStorage
 			return;
 
 		users.get(login).setPsw(psw);
+	}
+
+	protected void checkUpdated()
+	{
 	}
 
 	private String getMD5Sum (String password)

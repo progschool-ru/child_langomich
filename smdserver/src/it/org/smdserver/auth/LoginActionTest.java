@@ -7,7 +7,6 @@ import com.meterware.httpunit.WebResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.ResourceBundle;
-import javax.servlet.http.HttpServletRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
@@ -20,15 +19,15 @@ import static org.junit.Assert.*;
 
 public class LoginActionTest
 {
-	private static final String LOGIN = "chivorotkiv";
-	private static final String PASSWORD = "1";
-//	private static final String USER_ID = "TestUUID";
-//	private static final String LOGIN = "testLogin";
-//	private static final String PASSWORD = "testPassword";
+	private static final String USER_ID = "TestUUID";
+	private static final String LOGIN = "testLogin";
+	private static final String PASSWORD = "testPassword";
+
+	private static ResourceBundle resource;
+	private static UsersFileStorage storage;
 
 	private WebConversation wc;
 	private WebRequest req;
-	private static ResourceBundle resource;
 
     public LoginActionTest() {
     }
@@ -37,16 +36,17 @@ public class LoginActionTest
 	public static void setUpClass() throws Exception
 	{
 		resource = ResourceBundle.getBundle("org.smdserver.config");
-//
-//		File file = new File(resource.getString("test.server.path") + resource.getString("path.users.storage"));
-//		System.out.println(file.getAbsolutePath());
-//		UsersFileStorage storage = new UsersFileStorage(file.getAbsolutePath());
-//		storage.addUser(USER_ID, LOGIN, "");
-//		storage.setPassword(LOGIN, PASSWORD);
+
+		File file = new File(resource.getString("test.server.path") + resource.getString("path.users.storage"));
+		System.out.println(file.getAbsolutePath());
+		storage = new UsersFileStorage(file.getAbsolutePath());
+		storage.createUser(USER_ID, LOGIN, PASSWORD);
 	}
 
 	@AfterClass
-	public static void tearDownClass() throws Exception {
+	public static void tearDownClass() throws Exception 
+	{
+		storage.removeUserByLogin(LOGIN);
 	}
 
     @Before
@@ -57,9 +57,12 @@ public class LoginActionTest
 		req = new GetMethodWebRequest(url + "/login");
     }
 
-    @After
-    public void tearDown() {
-    }
+	@After
+	public void tearDown()
+	{
+		wc = null;
+		req = null;
+	}
 
 	@Test
 	public void testIncorrectPassword() throws IOException, JSONException
