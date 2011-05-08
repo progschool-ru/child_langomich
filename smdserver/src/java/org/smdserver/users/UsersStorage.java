@@ -44,7 +44,6 @@ public class UsersStorage implements IUsersStorage
 	public void createUser (String userId, String login, String password)
 	{
 		checkUpdated();
-		System.out.println("login: " + login + "; password: " + password + "; psw: " + getPsw(login,password));
 		addUser(userId, login, getPsw(login, password));
 	}
 

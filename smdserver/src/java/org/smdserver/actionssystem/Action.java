@@ -18,10 +18,15 @@ public abstract class Action implements IAction
 	public String perform (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{
+		String url = null;
 		if(!validateParams(request) || !validateContext(request))
-			return null;
-		
-		String url = doAction(request);
+		{
+			setAnswerParam(ActionParams.SUCCESS, false);
+		}
+		else
+		{
+			url = doAction(request);
+		}
 		JSONObject object = new JSONObject(map);
 
 		PrintWriter writer = response.getWriter();
