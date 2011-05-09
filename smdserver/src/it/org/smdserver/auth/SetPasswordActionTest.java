@@ -12,6 +12,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 import static org.junit.Assert.*;
 
 public class SetPasswordActionTest extends UsersTestBase
@@ -43,26 +44,19 @@ public class SetPasswordActionTest extends UsersTestBase
 	}
 
 	@Test
-	public void testSuccessChange() throws IOException, JSONException
+	public void testSuccessChange() throws IOException, JSONException, SAXException
 	{
 		WebRequest req = new GetMethodWebRequest(getActionUrl() + WebActions.LOGIN);
 		req.setParameter(WebParams.LOGIN, LOGIN);
 		req.setParameter(WebParams.PASSWORD, PASSWORD);
 
-		WebResponse response = wc.getResource(req);
-		String cookie = response.getHeaderField("Set-cookie");
-		int start = cookie.indexOf(WebParams.JSESSIONID);
-		assertTrue(start != -1);
-		int end = cookie.indexOf(';', start);
-		String sessIdCookie = end == -1 ? cookie.substring(start) : cookie.substring(start, end);
-
+		WebResponse response = wc.getResponse(req);
 		JSONObject loginResponse = new JSONObject(response.getText());
 
 		String newPassword = "lalala";
 
 		req = new GetMethodWebRequest(getActionUrl() + WebActions.SET_PASSWORD);
 		req.setParameter(WebParams.PASSWORD, newPassword);
-		req.setHeaderField("Cookie", sessIdCookie);
 		JSONObject setPasswordResponse = getJSONResource(wc, req);
 
 		req = new GetMethodWebRequest(getActionUrl() + WebActions.LOGIN);

@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smdserver.users.UsersFileStorage;
+import org.xml.sax.SAXException;
 
 public class UsersTestBase
 {
@@ -23,7 +24,6 @@ public class UsersTestBase
 		resource = ResourceBundle.getBundle("org.smdserver.config");
 
 		File file = new File(resource.getString("test.server.path") + resource.getString("path.users.storage"));
-		System.out.println(file.getAbsolutePath());
 		storage = new UsersFileStorage(file.getAbsolutePath());
 		storage.createUser(USER_ID, LOGIN, PASSWORD);
 	}
@@ -43,10 +43,9 @@ public class UsersTestBase
 		return resource;
 	}
 
-	protected static JSONObject getJSONResource(WebConversation wc, WebRequest req) throws JSONException, IOException
+	protected static JSONObject getJSONResource(WebConversation wc, WebRequest req) throws JSONException, IOException, SAXException
 	{
 		String text = wc.getResource(req).getText();
-//		System.out.println(text);
 		return new JSONObject(text);
 	}
 }
