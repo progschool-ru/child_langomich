@@ -12,6 +12,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 import static org.junit.Assert.*;
 
 public class LoginActionTest extends UsersTestBase
@@ -68,5 +69,20 @@ public class LoginActionTest extends UsersTestBase
 		String text = resp.getText();
 		JSONObject json = new JSONObject(text);
 		assertTrue(json.getBoolean(WebParams.SUCCESS));
+	}
+
+	@Test
+	public void testPasswordIsNull() throws IOException, JSONException, SAXException
+	{
+		req.setParameter(WebParams.LOGIN, LOGIN);
+		JSONObject json = getJSONResource(wc, req);
+		assertFalse(json.getBoolean(WebParams.SUCCESS));
+	}
+
+	@Test
+	public void testAllParamsAreNull() throws IOException, JSONException, SAXException
+	{
+		JSONObject json = getJSONResource(wc, req);
+		assertFalse(json.getBoolean(WebParams.SUCCESS));
 	}
 }

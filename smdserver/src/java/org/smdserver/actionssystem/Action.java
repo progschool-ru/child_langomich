@@ -25,7 +25,14 @@ public abstract class Action implements IAction
 		}
 		else
 		{
-			url = doAction(request);
+			try
+			{
+				url = doAction(request);
+			}
+			catch(Exception e)
+			{
+				setAnswerParam(ActionParams.SUCCESS, false);
+			}
 		}
 		JSONObject object = new JSONObject(map);
 
