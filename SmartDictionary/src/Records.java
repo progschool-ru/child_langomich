@@ -22,6 +22,9 @@ public class Records
 		}
 		catch( RecordStoreException e ) {}  
         }
+        public String[] getList(){
+            return rs.listRecordStores();
+        }
 	public String[] getS(int p)
 	{
 		if (getNumRecords(rs) != 0)
