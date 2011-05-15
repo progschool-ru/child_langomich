@@ -20,7 +20,17 @@ public class Records
 			rs = RecordStore.openRecordStore("DB", true);
 			re = rs.enumerateRecords(null, new Ordering(1), false);
 		}
-		catch( RecordStoreException e ) {}  
+		catch( RecordStoreException e ) {}
+        }
+        Records(String language)
+        {
+                byteOutputStream = new ByteArrayOutputStream();
+                writer = new DataOutputStream(byteOutputStream);
+        	try {
+			rs = RecordStore.openRecordStore(language, true);
+			re = rs.enumerateRecords(null, new Ordering(1), false);
+		}
+		catch( RecordStoreException e ) {}
         }
         public String[] getList(){
             return rs.listRecordStores();
