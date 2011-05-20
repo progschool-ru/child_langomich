@@ -20,12 +20,17 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private Command ordering2 = new Command("Сорт. по 2 записи", Command.SCREEN, 1);
         private Command settingsSave = new Command("Сохранить", Command.SCREEN, 1);
 
+        private Command saveNewLen = new Command("Сохранить", Command.SCREEN, 1);
+        private Command cancel = new Command("Отмена", Command.EXIT, 0);
+
 	private List myList;
 	private List myList2;
         private Form settingsForm = new Form("Настройки");
-        private Form settingsForm2 = new Form("Настройки языка");
+ //       private Form settingsForm2 = new Form("Настройки языка");
 	private Form myForm1 = new Form("Пуск");
 	private Form myForm2 = new Form("Добавить новую пару");
+
+        private TextBox nLen;
 
         private String[] wordsNumName = {"1", "2", "3", "4", "5"};
         private ChoiceGroup wordsNum = new ChoiceGroup("Количество слов", ChoiceGroup.POPUP, wordsNumName, null);
@@ -59,6 +64,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 settingsFormInit();
 		form1Init();
 		form2Init();
+                newLenInit();
 
         	Display.getDisplay(this).setCurrent(myList);
 	}
@@ -119,7 +125,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 			}
                         if (i == 3)
 			{
-
+                                settingsFormReset();
 				Display.getDisplay(this).setCurrent(settingsForm);
 			}
 		}
@@ -148,12 +154,25 @@ public class SmartDictionary extends MIDlet implements CommandListener
                if (c ==  settingsSave)
                {
                    wN = wordsNum.getSelectedIndex()+1;
+                   language = records.getList()[recordsList.getSelectedIndex()];
+                   records = new Records(language);
                    Display.getDisplay(this).setCurrent(myList);
                }
                if (c ==  newLen)
                {
-                   wN = wordsNum.getSelectedIndex()+1;
-                   Display.getDisplay(this).setCurrent(myList);
+                    newLenReset();
+                    Display.getDisplay(this).setCurrent(nLen);  
+               }
+               if (c ==  cancel)
+               {
+                    Display.getDisplay(this).setCurrent(settingsForm);
+               }
+               if (c ==  saveNewLen)
+               {
+                    language = nLen.getString();
+                    records = new Records(language);
+                    settingsFormReset();
+                    Display.getDisplay(this).setCurrent(settingsForm);
                }
 	}
  	private void F1reset()
@@ -214,6 +233,26 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 myForm2.append(tfEng);
 		myForm2.append(mycg);
 	}
+	private void settingsFormReset()
+	{
+                settingsForm.deleteAll();
+                wns = new StringItem(Integer.toString(wN),"");
+                lns = new StringItem(language,"");
+                settingsForm.append(wordsNum);
+                settingsForm.append(wns);
+                recordsList = new ChoiceGroup("Язык", ChoiceGroup.POPUP, records.getList(), null);
+                settingsForm.append(recordsList);
+                settingsForm.append(lns);
+	}
+        private void newLenReset(){
+                nLen.delete(0, nLen.getString().length());
+        }
+        private void newLenInit(){
+                nLen = new TextBox("Назовите новый язык:", "", 20, TextField.ANY);
+ 		nLen.addCommand(cancel);
+		nLen.addCommand(saveNewLen);
+		nLen.setCommandListener(this);
+        }
 	private void listInit()
 	{
 		myList = new List("Меню", Choice.IMPLICIT, name, null);
@@ -234,24 +273,18 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	}
         private void settingsFormInit()
         {
-                wns = new StringItem(Integer.toString(wN),"");
-                lns = new StringItem(language,"");
-                settingsForm.append(wordsNum);
-                settingsForm.append(wns);
-                recordsList = new ChoiceGroup("Язык", ChoiceGroup.POPUP, records.getList(), null);
-                settingsForm.append(recordsList);
-                settingsForm.append(lns);
+                settingsFormReset();
                 settingsForm.addCommand(back);
 		settingsForm.addCommand(settingsSave);
                 settingsForm.addCommand(newLen);
 		settingsForm.setCommandListener(this);
         }
-        private void settingsForm2Init()
+ /*       private void settingsForm2Init()
         {
                 settingsForm2.append(recordsList);
                 settingsForm2.addCommand(backToSet);
 		settingsForm2.setCommandListener(this);
-        }
+        } */
         private void list2Init() 
 	{
                 if(records.getNumRecords() == 0)
