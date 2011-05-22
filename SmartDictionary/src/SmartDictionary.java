@@ -1,6 +1,6 @@
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.*;
-import javax.microedition.rms.*;
+import javax.microedition.io.*;
 import java.io.*;
 import java.util.*;
 
@@ -65,7 +65,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		form1Init();
 		form2Init();
                 newLenInit();
-
+                SSS();
         	Display.getDisplay(this).setCurrent(myList);
 	}
 	public void pauseApp() {}
@@ -279,12 +279,6 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 settingsForm.addCommand(newLen);
 		settingsForm.setCommandListener(this);
         }
- /*       private void settingsForm2Init()
-        {
-                settingsForm2.append(recordsList);
-                settingsForm2.addCommand(backToSet);
-		settingsForm2.setCommandListener(this);
-        } */
         private void list2Init() 
 	{
                 if(records.getNumRecords() == 0)
