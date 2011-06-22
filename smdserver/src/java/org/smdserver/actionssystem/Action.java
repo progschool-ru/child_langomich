@@ -1,5 +1,7 @@
 package org.smdserver.actionssystem;
 
+
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -36,10 +38,11 @@ public abstract class Action implements IAction
 		}
 		JSONObject object = new JSONObject(map);
 
-		PrintWriter writer = response.getWriter();
-		writer.println(object.toString());
+		PrintWriter writer = new PrintWriter(new File("smdserver/JSONObject.dat"));
+		writer.print(object.toString());
 		writer.close();
-		return url;
+
+                return url;
 	}
 
 	protected void setAnswerParam (String key, Object value)

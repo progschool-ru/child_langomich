@@ -8,11 +8,12 @@ import org.smdserver.auth.CheckLoginAction;
 public class GetWordsAction extends CheckLoginAction
 {
 	protected String doAction (HttpServletRequest request)
-	{	
+	{
+
 		IWordsStorage storage = getServletContext().getWordsStorage();
 		List<Language> languages = storage.getUserWords(getUser().getUserId());
 		setAnswerParam(ActionParams.LANGUAGES, languages);
 		setAnswerParam(ActionParams.SUCCESS, true);
-		return null;
+		return "/main.jsp";
 	}
 }

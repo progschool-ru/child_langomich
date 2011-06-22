@@ -6,10 +6,6 @@
             30
         </session-timeout>
     </session-config>
-    <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
-
 	<!-- Запрещаем доступ к файлам конфигурации -->
 	<security-constraint>
 		<web-resource-collection>

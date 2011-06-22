@@ -1,6 +1,7 @@
 package org.smdserver.auth;
 
-import javax.servlet.http.HttpServletRequest;import org.smdserver.users.User;
+import javax.servlet.http.HttpServletRequest;
+import org.smdserver.users.User;
 import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.actionssystem.SessionKeys;
 import org.smdserver.core.SmdAction;
@@ -14,7 +15,7 @@ public abstract class CheckLoginAction extends SmdAction
 	{
 		login = (String)request.getSession().getAttribute(SessionKeys.CURRENT_LOGIN);
 		boolean success = login != null;
-		setAnswerParam(ActionParams.SUCCESS, new Boolean(success));
+		setAnswerParam(ActionParams.SUCCESS, success);
 		return success;
 	}
 

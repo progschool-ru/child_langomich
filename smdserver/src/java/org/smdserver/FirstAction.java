@@ -14,12 +14,9 @@ public class FirstAction extends Action implements IAction
 	public String perform (HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{
-		PrintWriter writer = response.getWriter();
-		writer.println("It's a first action!");
-		writer.close();
 
-		return null;
-	}
+		return "/"+"FirstAction.jsp";
+        }
 
 	protected String doAction (HttpServletRequest request){return null;}
 }

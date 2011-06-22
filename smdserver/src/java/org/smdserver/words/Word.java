@@ -10,12 +10,12 @@ public class Word
 {
 	private String original;
 	private String translation;
-	private double rating;
+	private int rating;
 	private Date modified;
 
 	private static DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG);
 
-	public Word (String original, String translation, double rating, Date modified)
+	public Word (String original, String translation, int rating, Date modified)
 	{
 		this.original = original;
 		this.translation = translation;
@@ -29,8 +29,7 @@ public class Word
 		{
 			this.original = json.getString("original");
 			this.translation = json.getString("translation");
-			this.rating = json.getDouble("rating");
-
+			this.rating = json.getInt("rating");
 			this.modified = dateFormat.parse(json.getString("modified"));
 		}
 		catch(JSONException e)
@@ -42,7 +41,21 @@ public class Word
 			throw new WordsException(WordsException.ICORRECT_DATE_FORMAT + "; " + e.getMessage());
 		}
 	}
-
+	public Word (String word) throws WordsException
+	{
+		try
+		{
+                        String []arr = word.split(",");
+			this.original = arr[0];
+			this.translation = arr[1];
+			this.rating = Integer.valueOf(arr[2]);
+			this.modified = dateFormat.parse(arr[3]);
+		}
+		catch(ParseException e)
+		{
+			throw new WordsException(WordsException.ICORRECT_DATE_FORMAT + "; " + e.getMessage());
+		}
+	}
 	public Date getModified ()
 	{
 		return modified;
@@ -53,7 +66,7 @@ public class Word
 		return original;
 	}
 
-	public double getRating ()
+	public int getRating ()
 	{
 		return rating;
 	}

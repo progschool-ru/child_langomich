@@ -1,16 +1,16 @@
 package org.smdserver.words;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.smdserver.actionssystem.SessionKeys;
 import javax.servlet.http.HttpServletRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.auth.CheckLoginAction;
-import org.smdserver.actionssystem.SessionKeys;
+import java.util.List;
+import java.util.ArrayList;
 
-public class SetWordsAction extends CheckLoginAction
+public class AddWordsAction extends CheckLoginAction
 {	
 	protected String doAction (HttpServletRequest request)
 	{
@@ -21,8 +21,16 @@ public class SetWordsAction extends CheckLoginAction
 			JSONObject json = new JSONObject(dataString);
 			List<Language> languages = parseJSON(json.getJSONArray(ActionParams.LANGUAGES));
 			IWordsStorage storage = getServletContext().getWordsStorage();
-			storage.setUserWords(getUser().getUserId(), languages);
+			storage.addUserWords(getUser().getUserId(), languages);
 			setAnswerParam(ActionParams.SUCCESS, true);
+
+
+                        languages = storage.getUserWords(getUser().getUserId());
+                        ArrayList al = new ArrayList();
+                        for(int i = 0; i < languages.size();i++)
+                            al.add(languages.get(i));
+                        request.getSession().setAttribute(SessionKeys.LANGUAGES, al);
+                        return "/main.jsp";
 		}
 		catch(JSONException e)
 		{
@@ -34,11 +42,7 @@ public class SetWordsAction extends CheckLoginAction
 			setAnswerParam(ActionParams.SUCCESS, false);
 			setAnswerParam(ActionParams.MESSAGE, e.getMessage());
 		}
-                
-                IWordsStorage storage = getServletContext().getWordsStorage();
-		List<Language> languages = storage.getUserWords(getUser().getUserId());
-                request.getSession().setAttribute(SessionKeys.LANGUAGES, languages);
-		return "/main.jsp";
+		return "/addWords.jsp";
 	}
 
 	private List<Language> parseJSON (JSONArray json) throws WordsException

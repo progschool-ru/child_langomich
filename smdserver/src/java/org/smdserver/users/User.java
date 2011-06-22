@@ -26,7 +26,7 @@ public class User
 		this.login = login;
 	}
 
-	String getPsw ()
+	public String getPsw ()
 	{
 		return psw;
 	}

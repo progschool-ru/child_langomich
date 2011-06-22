@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+
 public class UsersFileStorage extends UsersStorage
 {
 	private String realPath;
@@ -85,7 +86,6 @@ public class UsersFileStorage extends UsersStorage
 				String [] arr = str.split(" ");
 				addUser(arr[0], arr[1], arr[2]);
 			}
-
 			File file = new File(realPath);
 			lastModified = file.lastModified();
 		}
