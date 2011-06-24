@@ -36,11 +36,11 @@ public abstract class Action implements IAction
 				setAnswerParam(ActionParams.SUCCESS, false);
 			}
 		}
-		JSONObject object = new JSONObject(map);
-
-		PrintWriter writer = new PrintWriter(new File("smdserver/JSONObject.dat"));
-		writer.print(object.toString());
-		writer.close();
+//		JSONObject object = new JSONObject(map);
+//
+//		PrintWriter writer = new PrintWriter(new File("smdserver/JSONObject.dat"));
+//		writer.print(object.toString());
+//		writer.close();
 
                 return url;
 	}

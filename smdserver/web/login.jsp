@@ -1,4 +1,4 @@
-<%@ include file='JSONObject.jsp'%>
+
 <html>
     <head>
         <title>Login</title>

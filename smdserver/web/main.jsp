@@ -1,4 +1,3 @@
-<%@ include file='JSONObject.jsp'%>
 <%@ page import="org.smdserver.words.Language" %>
 
 <html>
@@ -57,34 +56,29 @@
             <form method="post" action="addWord">
                  <input type="hidden" name="data">
                 <input type="submit" name="addWord" value="  AddWord  ">
-            </form>
-            <form method="post" action="getWords">
-                <input type="submit" name="GetWord" value="  GetWord  ">
-            </form>
-                    
-                    <table frame="below" width="100%">
-                        <legend><b>Words</b></legend>
+            </form>       
+            <table frame="below" width="100%">
+                <legend><b>Words</b></legend>
+                <tr>
+                    <th align="left">Language</th>
+                    <th align="left">Original</th>
+                    <th align="left">Translation</th>
+                    <th align="left">Rating</th>
+                    <th align="left">Modified</th>
+                </tr>
+                <%for(int i = 0; i < languages.size(); i++) {
+                    Language l = (Language)languages.get(i);
+                    for(int j = 0; j < l.getWords().size(); j++) {%>
                         <tr>
-                            <th align="left">Language</th>
-                            <th align="left">Original</th>
-                            <th align="left">Translation</th>
-                            <th align="left">Rating</th>
-                            <th align="left">Modified</th>
+                            <td width="100"><%=l.getName()%></td>
+                            <td width="100"><%=l.getWords().get(j).getOriginal()%></td>
+                            <td width="100"><%=l.getWords().get(j).getTranslation()%></td>
+                            <td width="100"><%=l.getWords().get(j).getRating()%></td>
+                            <td width="300-"><%=l.getWords().get(j).getModified().toString()%></td>
                         </tr>
-                        <%for(int i = 0; i < languages.size(); i++) {
-                            Language l = (Language)languages.get(i);
-                            for(int j = 0; j < l.getWords().size(); j++) {%>
-                                <tr>
-                                    <td width="100"><%=l.getName()%></td>
-                                    <td width="100"><%=l.getWords().get(j).getOriginal()%></td>
-                                    <td width="100"><%=l.getWords().get(j).getTranslation()%></td>
-                                    <td width="100"><%=l.getWords().get(j).getRating()%></td>
-                                    <td width="300-"><%=l.getWords().get(j).getModified().toString()%></td>
-                                </tr>
-                            <%}%>
-                        <%}%>
-                    </table>
-          
+                    <%}%>
+                <%}%>
+            </table>
         <%}%>
     </body>
 </html>

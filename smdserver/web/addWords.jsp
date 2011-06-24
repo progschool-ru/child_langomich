@@ -1,6 +1,6 @@
-<%@ include file='JSONObject.jsp'%>
 <%@ page import="org.smdserver.words.Language" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
 <html>
     <head>
         <title>AddWords</title>
@@ -65,7 +65,7 @@
                             <th>Word</th>
                         </tr>
                         <tr>
-                            <td width="200">
+                            <td width="300">
                                 Select language:<br>
                                 <select name="language" size="1">
                                     <%
@@ -78,15 +78,15 @@
                                 </select><br><br>
                                 New language:<input type="text" name="newLen">
                             </td>
-                            <td width="200">
-                                Original:<input type="text" name="original">
-                                Translation:<input type="text" name="translation">
+                            <td width="400">
+                                <p>Original:<input type="text" name="original"></p>
+                                <p>Translation:<input type="text" name="translation"></p>
                                 Knowledge:<br>
                                 <input type="radio" name="rating" value="0" checked="checked" />I don't know <br>                               
                                 <input type="radio" name="rating" value="2"/>Bad<br>
                                 <input type="radio" name="rating" value="4"/>Normally<br>
                                 <input type="radio" name="rating" value="6"/>Good<br>
-                                <input type="radio" name="rating" value="6"/>Very good
+                                <input type="radio" name="rating" value="8"/>Very good
                             </td>
                         </tr>
                     </table>

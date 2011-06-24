@@ -1,4 +1,3 @@
-<%@ include file='JSONObject.jsp'%>
 <html>
     <head>
         <title>Registr</title>
