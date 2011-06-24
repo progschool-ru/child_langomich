@@ -15,7 +15,8 @@ public class WordsStorage implements IWordsStorage
 	{
 		usersWords = new HashMap<String, List<Language> > ();
 		//TODO: find a better place for it
-                s = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss ZZZ");
+                s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ZZZ");
+          
 		Word.setDateFormat(s);
 	}
 	public void addUserWords (String userId, List<Language> languages)

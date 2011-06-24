@@ -1,6 +1,6 @@
 <%@ include file='JSONObject.jsp'%>
 <%@ page import="org.smdserver.words.Language" %>
-<%@ page import="org.smdserver.form.Form" %>
+
 <html>
     <head>
         <title>Main</title>
@@ -16,9 +16,7 @@
     </head>
     <body>
         <jsp:useBean id="languages" scope="session" class="java.util.ArrayList"/>
-        <jsp:useBean id="form" scope="request" class="org.smdserver.form.Form">
-            <jsp:setProperty name = "form" property="*"/>
-        </jsp:useBean>
+
             <% if(session.getAttribute("currentLogin")==null)
         {%>
             <h2>Main</h2>
@@ -55,21 +53,14 @@
             <form method="post" action="logout">
                 <input type="submit" name="logout" value="  Logout  ">
             </form>
-
             <hr size="2"/>
             <form method="post" action="addWord">
-                <p>Data:<input type="text" size="30" name="data"></p>
-                <input type="submit" name="addWor" value="  addWord  ">
+                 <input type="hidden" name="data">
+                <input type="submit" name="addWord" value="  AddWord  ">
             </form>
             <form method="post" action="getWords">
-                <input type="submit" name="addWor" value="  getWord  ">
+                <input type="submit" name="GetWord" value="  GetWord  ">
             </form>
-            DATA:
-            <br/>
-            <p>{languages:[{name:"english",words:[{original:<br/>
-               "????"  ,translation:"mother",rating:3,modified:<br/>
-               "2010-04-28 20:05:23 UTC+7"}]}]}
-            </p>
                     
                     <table frame="below" width="100%">
                         <legend><b>Words</b></legend>
