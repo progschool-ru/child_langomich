@@ -32,7 +32,8 @@
                     l = form.language.value;
                 else
                     l = form.newLen.value;
-                if(form.original.value == "" || form.translation.value == "" ) {
+                if(form.original.value == "" || form.translation.value == "" ||
+                    (form.newLen.value=="" && form.language.value=="")) {
                     alert("This form was completed incorrectly");
                     return false;
                 }
