@@ -1,7 +1,6 @@
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.*;
-import javax.microedition.io.*;
-import java.io.*;
+
 import java.util.*;
 
 public class SmartDictionary extends MIDlet implements CommandListener
@@ -23,13 +22,13 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private Command saveNewLen = new Command("Сохранить", Command.SCREEN, 1);
         private Command cancel = new Command("Отмена", Command.EXIT, 0);
 
-	private List myList;
-	private List myList2;
+	private List mainList;
+        private Form workForm = new Form("Пуск");
+        private Form addWordForm = new Form("Добавить новую пару");
+	private List dictionaryList;
         private Form settingsForm = new Form("Настройки");
- //       private Form settingsForm2 = new Form("Настройки языка");
-	private Form myForm1 = new Form("Пуск");
-	private Form myForm2 = new Form("Добавить новую пару");
-
+//        private Form settingsForm2 = new Form("Настройки языка");
+	
         private TextBox nLen;
 
         private String[] wordsNumName = {"1", "2", "3", "4", "5"};
@@ -46,27 +45,29 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private StringItem[] siAnswer;
         private StringItem si = new StringItem("Словарь пуст","");
 
-        private Records records;
+        private Dictionary dictionary;
+        private Languages languages;
+        private Settings settings = new Settings();;
 
         private int N[];
 	private int P = 1;
-        private int wN = 1;
         private int wordsN = 1;
-        private String language = "english";
-        private StringItem wns = new StringItem(Integer.toString(wN),"");
-        private StringItem lns = new StringItem(language,"");
+        private StringItem wns = new StringItem(Integer.toString(settings.getNumberOfWords()),"");
+        private StringItem lns = new StringItem(settings.getLanguage(),"");
 
 	public void startApp() 
 	{
-                records = new Records(language);
+                dictionary = new Dictionary(settings.getLanguage());
+                languages = new Languages();
+                if(languages.getLanguages() == null)
+                   languages.newLanguage(settings.getLanguage());
+		mainListInit();
+                    workFormInit();
+                    addWordFormInit();
+                    settingsFormInit();
+                        newLenInit();
 
-		listInit();
-                settingsFormInit();
-		form1Init();
-		form2Init();
-                newLenInit();
-                SSS();
-        	Display.getDisplay(this).setCurrent(myList);
+                Display.getDisplay(this).setCurrent(mainList);
 	}
 	public void pauseApp() {}
 
@@ -76,52 +77,53 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	{
 		if(c == exitMIDlet)
 		{
-			records.destroy();
+			dictionary.destroy();
+                        languages.destroy();
 			destroyApp(false);
 			notifyDestroyed();
 		}
 		if(c == back) 
 		{
-			Display.getDisplay(this).setCurrent(myList);
+			Display.getDisplay(this).setCurrent(mainList);
 		}
 		if(c == backF2)
 		{            
-                    Display.getDisplay(this).setCurrent(myList);
+                    Display.getDisplay(this).setCurrent(mainList);
 		}
 		if(c == OK) 
 		{
                         boolean answer[] = new boolean[wordsN];
                         for(int i = 0; i < wordsN;i++){
-                           answer[i] = records.answer(N[i], tf[i].getString());
+                           answer[i] = dictionary.answer(N[i], tf[i].getString());
                         }
-                        F1_answer(answer);
+                        workFormAnswer(answer);
 		}
 		if(c == next)
 		{
-                        F1reset();
+                        workFormReset();
 		}
                 if(c == Save)
 		{
-                        records.newRecord(tfRus.getString(), tfEng.getString(), mycg.getSelectedIndex()*2); 
-			Display.getDisplay(this).setCurrent(myList); 
+                        dictionary.newRecord(tfRus.getString(), tfEng.getString(), mycg.getSelectedIndex()*2);
+			Display.getDisplay(this).setCurrent(mainList);
 		}
 		if (c == choice)
 		{
-			int i = myList.getSelectedIndex();
+			int i = mainList.getSelectedIndex();
 			if(i == 0)
 			{
-                                F1reset();
-				Display.getDisplay(this).setCurrent(myForm1);
+                                workFormReset();
+				Display.getDisplay(this).setCurrent(workForm);
 			}
 			if (i == 1)
 			{
-				F2reset();
-				Display.getDisplay(this).setCurrent(myForm2);
+				addWordFormReset();
+				Display.getDisplay(this).setCurrent(addWordForm);
 			}
 			if (i == 2)
 			{
-				list2Init();
-				Display.getDisplay(this).setCurrent(myList2);
+				dictionaryListInit();
+				Display.getDisplay(this).setCurrent(dictionaryList);
 			}
                         if (i == 3)
 			{
@@ -131,32 +133,32 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		}
                 if (c == delete) 
 		{
-                        records.deleteRecord(myList2.getSelectedIndex()+1);
-			myList2.delete(myList2.getSelectedIndex());
-                        if(records.getNumRecords() == 0)
-                            list2Init();
-			Display.getDisplay(this).setCurrent(myList2);
+                        dictionary.deleteRecord(dictionaryList.getSelectedIndex()+1);
+			dictionaryList.delete(dictionaryList.getSelectedIndex());
+                        if(dictionary.getNumRecords() == 0)
+                            dictionaryListInit();
+			Display.getDisplay(this).setCurrent(dictionaryList);
                 }
                 if (c == ordering1)
 		{
                     P = 1;
-                    records.newOrdering(P);
-                    list2Init();
-                    Display.getDisplay(this).setCurrent(myList2);
+                    dictionary.newOrdering(P);
+                    dictionaryListInit();
+                    Display.getDisplay(this).setCurrent(dictionaryList);
                 }
                 if (c == ordering2)
 		{
                     P = 2;
-                    records.newOrdering(P);
-                    list2Init();
-                    Display.getDisplay(this).setCurrent(myList2);
+                    dictionary.newOrdering(P);
+                    dictionaryListInit();
+                    Display.getDisplay(this).setCurrent(dictionaryList);
                 }
                if (c ==  settingsSave)
                {
-                   wN = wordsNum.getSelectedIndex()+1;
-                   language = records.getList()[recordsList.getSelectedIndex()];
-                   records = new Records(language);
-                   Display.getDisplay(this).setCurrent(myList);
+                   settings.setNumberOfWords(wordsNum.getSelectedIndex()+1);
+                   settings.setLanguage(languages.getLanguages()[recordsList.getSelectedIndex()]);
+                   dictionary = new Dictionary(settings.getLanguage());
+                   Display.getDisplay(this).setCurrent(mainList);
                }
                if (c ==  newLen)
                {
@@ -169,29 +171,43 @@ public class SmartDictionary extends MIDlet implements CommandListener
                }
                if (c ==  saveNewLen)
                {
-                    language = nLen.getString();
-                    records = new Records(language);
+                    settings.setLanguage(nLen.getString());
+                    languages.newLanguage(settings.getLanguage());
+                    dictionary = new Dictionary(settings.getLanguage());
                     settingsFormReset();
                     Display.getDisplay(this).setCurrent(settingsForm);
                }
 	}
- 	private void F1reset()
+	private void mainListInit()
 	{
-            myForm1.removeCommand(OK);
-            myForm1.removeCommand(next);
-            if(records.getNumRecords() == 0)
+		mainList = new List("Меню", Choice.IMPLICIT, name, null);
+		mainList.addCommand(choice);
+		mainList.addCommand(exitMIDlet);
+		mainList.setCommandListener(this);
+	}
+        private void workFormInit()
+	{
+		workForm.addCommand(OK);
+		workForm.addCommand(back);
+		workForm.setCommandListener(this);
+	}
+ 	private void workFormReset()
+	{
+            workForm.removeCommand(OK);
+            workForm.removeCommand(next);
+            if(dictionary.getNumRecords() == 0)
             {
-               myForm1.deleteAll();
-               myForm1.append(si);
+               workForm.deleteAll();
+               workForm.append(si);
             }
             else
             {
-                myForm1.addCommand(OK);
-                myForm1.deleteAll();
-                if(wN > records.getNumRecords())
-                    wordsN = records.getNumRecords();
+                workForm.addCommand(OK);
+                workForm.deleteAll();
+                if(settings.getNumberOfWords() > dictionary.getNumRecords())
+                    wordsN = dictionary.getNumRecords();
                 else
-                    wordsN = wN;
+                    wordsN = settings.getNumberOfWords();
                 N = new int[wordsN];
                 tf = new TextField[wordsN];
                 for(int i = 0; i < wordsN; i++) {
@@ -204,14 +220,15 @@ public class SmartDictionary extends MIDlet implements CommandListener
                         if(f)
                             break;
                     }
-                    tf[i] = new TextField("  "+records.getS(N[i], 1)+"  -  ", "", 20, TextField.ANY);
-                    myForm1.append(tf[i]);
+                    tf[i] = new TextField("  "+dictionary.getS(N[i], 1)+"  -  ", "", 20, TextField.ANY);
+                    workForm.append(tf[i]);
                 }
             }
 	}
-        private void F1_answer(boolean answer[]) {
-            myForm1.removeCommand(OK);
-            myForm1.addCommand(next);
+        private void workFormAnswer(boolean answer[])
+        {
+            workForm.removeCommand(OK);
+            workForm.addCommand(next);
             String m = new String();
             siAnswer = new StringItem[wordsN];
             for(int i = 0; i < wordsN; i++) {
@@ -219,58 +236,46 @@ public class SmartDictionary extends MIDlet implements CommandListener
                     m = "Правильно";
                 else
                     m = "Ошибка";
-                siAnswer[i] = new StringItem(records.getS(N[i], 1)+" - "+records.getS(N[i], 2)+"  "+records.getS(N[i], 3)  , m);
-                myForm1.append(siAnswer[i]);
+                siAnswer[i] = new StringItem(dictionary.getS(N[i], 1)+" - "+dictionary.getS(N[i], 2)+"  "+dictionary.getS(N[i], 3)  , m);
+                workForm.append(siAnswer[i]);
             }
         }
-	private void F2reset()
+	private void addWordFormInit()
+        {
+                addWordForm.addCommand(back);
+                addWordForm.addCommand(Save);
+		addWordForm.setCommandListener(this);
+	}
+	private void addWordFormReset()
 	{
 		mycg = new ChoiceGroup("Оцените то, как вы знаете это слово:", ChoiceGroup.POPUP, cgName, null);
                 tfRus.delete(0, tfRus.getString().length());
                 tfEng.delete(0, tfEng.getString().length());
-                myForm2.deleteAll();
-                myForm2.append(tfRus);
-                myForm2.append(tfEng);
-		myForm2.append(mycg);
+                addWordForm.deleteAll();
+                addWordForm.append(tfRus);
+                addWordForm.append(tfEng);
+		addWordForm.append(mycg);
 	}
-	private void settingsFormReset()
+        private void dictionaryListInit()
 	{
-                settingsForm.deleteAll();
-                wns = new StringItem(Integer.toString(wN),"");
-                lns = new StringItem(language,"");
-                settingsForm.append(wordsNum);
-                settingsForm.append(wns);
-                recordsList = new ChoiceGroup("Язык", ChoiceGroup.POPUP, records.getList(), null);
-                settingsForm.append(recordsList);
-                settingsForm.append(lns);
-	}
-        private void newLenReset(){
-                nLen.delete(0, nLen.getString().length());
+                if(dictionary.getNumRecords() == 0)
+                {
+                        String S[] = new String[1];
+                        S[0] = "Словарь пуст";
+                        dictionaryList = new List("Словарь", Choice.IMPLICIT, S, null);
+                        dictionaryList.addCommand(back);
+                        dictionaryList.setCommandListener(this);
+                }
+                else
+                {
+                    dictionaryList = new List("Словарь", Choice.IMPLICIT, getS(), null);
+                    dictionaryList.addCommand(back);
+                    dictionaryList.addCommand(delete);
+                    dictionaryList.addCommand(ordering1);
+                    dictionaryList.addCommand(ordering2);
+                    dictionaryList.setCommandListener(this);
+                }
         }
-        private void newLenInit(){
-                nLen = new TextBox("Назовите новый язык:", "", 20, TextField.ANY);
- 		nLen.addCommand(cancel);
-		nLen.addCommand(saveNewLen);
-		nLen.setCommandListener(this);
-        }
-	private void listInit()
-	{
-		myList = new List("Меню", Choice.IMPLICIT, name, null);
-		myList.addCommand(choice);
-		myList.addCommand(exitMIDlet);
-		myList.setCommandListener(this);
-	}
-	private void form1Init()
-	{
-		myForm1.addCommand(OK);
-		myForm1.addCommand(back);
-		myForm1.setCommandListener(this);
-	}
-	private void form2Init(){
-                myForm2.addCommand(back);
-                myForm2.addCommand(Save);
-		myForm2.setCommandListener(this);
-	}
         private void settingsFormInit()
         {
                 settingsFormReset();
@@ -279,54 +284,56 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 settingsForm.addCommand(newLen);
 		settingsForm.setCommandListener(this);
         }
-        private void list2Init() 
+        private void settingsFormReset()
 	{
-                if(records.getNumRecords() == 0)
-                {
-                        String S[] = new String[1];
-                        S[0] = "Словарь пуст";
-                        myList2 = new List("Словарь", Choice.IMPLICIT, S, null);
-                        myList2.addCommand(back);
-                        myList2.setCommandListener(this);
-                }
-                else
-                {
-                    myList2 = new List("Словарь", Choice.IMPLICIT, getS(), null);
-                    myList2.addCommand(back);
-                    myList2.addCommand(delete);
-                    myList2.addCommand(ordering1);
-                    myList2.addCommand(ordering2);
-                    myList2.setCommandListener(this);
-                }
+                settingsForm.deleteAll();
+                wns = new StringItem(Integer.toString(settings.getNumberOfWords()),"");
+                lns = new StringItem(settings.getLanguage(),"");
+                settingsForm.append(wordsNum);
+                settingsForm.append(wns);
+                recordsList = new ChoiceGroup("Язык", ChoiceGroup.POPUP, languages.getLanguages(), null);
+                settingsForm.append(recordsList);
+                settingsForm.append(lns);
+	}
+        private void newLenReset()
+        {
+                nLen.delete(0, nLen.getString().length());
+        }
+        private void newLenInit()
+        {
+                nLen = new TextBox("Назовите новый язык:", "", 20, TextField.ANY);
+ 		nLen.addCommand(cancel);
+		nLen.addCommand(saveNewLen);
+		nLen.setCommandListener(this);
         }
         private int getRandomN()
 	{
-            if(records.getNumRecords() == 0)
+            if(dictionary.getNumRecords() == 0)
                 return 0;
             Random random = new Random ();
             int AllPoint = 0;
-            String []S = records.getS(3);
-            int []Point = new int[records.getNumRecords()];
-            for(int i = 0; i < records.getNumRecords(); i++){
+            String []S = dictionary.getS(3);
+            int []Point = new int[dictionary.getNumRecords()];
+            for(int i = 0; i < dictionary.getNumRecords(); i++){
                 Point[i] = 10 - Integer.parseInt(S[i]);
                 AllPoint += Point[i];
             }
             int r = Math.abs(random.nextInt())%AllPoint;
             System.out.println(r);
-            for (int i = 0; i < records.getNumRecords(); i++)
+            for (int i = 0; i < dictionary.getNumRecords(); i++)
 		{
 			r = r - Point[i];
 			if(r <= 0 )
 				return i+1;
 		}
-            return records.getNumRecords();
+            return dictionary.getNumRecords();
         }
         private String[] getS(){
-            String []S = new String[records.getNumRecords()];
-            String []S1 = records.getS(1);
-            String []S2 = records.getS(2);
-            String []S3 = records.getS(3);
-            for(int i = 0; i < records.getNumRecords(); i++)
+            String []S = new String[dictionary.getNumRecords()];
+            String []S1 = dictionary.getS(1);
+            String []S2 = dictionary.getS(2);
+            String []S3 = dictionary.getS(3);
+            for(int i = 0; i < dictionary.getNumRecords(); i++)
                 if(P == 1)
                     S[i] = S1[i] +" "+ S2[i] +" "+ S3[i];
                 else
