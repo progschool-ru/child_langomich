@@ -1,8 +1,6 @@
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.*;
 
-import java.util.*;
-
 public class SmartDictionary extends MIDlet implements CommandListener
 {
 	private Command exitMIDlet = new Command("Выход", Command.EXIT, 0);
@@ -12,6 +10,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private Command backToSet = new Command("Назад", Command.EXIT, 0);
 	private Command OK = new Command("OK", Command.SCREEN, 1);
         private Command newLen = new Command("Новый язык", Command.SCREEN, 1);
+        private Command timing = new Command("Синхронизация", Command.SCREEN, 1);
         private Command next = new Command("Продолжить", Command.SCREEN, 1);
         private Command Save = new Command("Сохранить", Command.SCREEN, 1);
         private Command delete = new Command("Удалить", Command.SCREEN, 1);
@@ -47,20 +46,27 @@ public class SmartDictionary extends MIDlet implements CommandListener
 
         private Dictionary dictionary;
         private Languages languages;
-        private Settings settings = new Settings();;
+        private Settings settings = new Settings();
 
-        private int N[];
+        private int rows[];
 	private int P = 1;
         private int wordsN = 1;
         private StringItem wns = new StringItem(Integer.toString(settings.getNumberOfWords()),"");
         private StringItem lns = new StringItem(settings.getLanguage(),"");
 
+        private StringItem test = new StringItem("test -","null");
+
+        private TextField loginField ;
+        private TextField passwordField;
+        private TextField urlField;
+
 	public void startApp() 
 	{
+                if(settings.getLanguage().equals("null"))
+                    dictionary = new Dictionary();
                 dictionary = new Dictionary(settings.getLanguage());
                 languages = new Languages();
-                if(languages.getLanguages() == null)
-                   languages.newLanguage(settings.getLanguage());
+
 		mainListInit();
                     workFormInit();
                     addWordFormInit();
@@ -94,7 +100,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		{
                         boolean answer[] = new boolean[wordsN];
                         for(int i = 0; i < wordsN;i++){
-                           answer[i] = dictionary.answer(N[i], tf[i].getString());
+                           answer[i] = dictionary.answer(rows[i], tf[i].getString());
                         }
                         workFormAnswer(answer);
 		}
@@ -116,9 +122,17 @@ public class SmartDictionary extends MIDlet implements CommandListener
 				Display.getDisplay(this).setCurrent(workForm);
 			}
 			if (i == 1)
-			{
-				addWordFormReset();
-				Display.getDisplay(this).setCurrent(addWordForm);
+			{       
+                                if(settings.getLanguage().equals("null"))
+                                {
+                                    newLenReset();
+                                    Display.getDisplay(this).setCurrent(nLen);
+                                }
+                                else
+                                {
+                                    addWordFormReset();
+                                    Display.getDisplay(this).setCurrent(addWordForm);
+                                }
 			}
 			if (i == 2)
 			{
@@ -155,9 +169,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 }
                if (c ==  settingsSave)
                {
-                   settings.setNumberOfWords(wordsNum.getSelectedIndex()+1);
-                   settings.setLanguage(languages.getLanguages()[recordsList.getSelectedIndex()]);
-                   dictionary = new Dictionary(settings.getLanguage());
+                   settingsSave();
                    Display.getDisplay(this).setCurrent(mainList);
                }
                if (c ==  newLen)
@@ -165,6 +177,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
                     newLenReset();
                     Display.getDisplay(this).setCurrent(nLen);  
                }
+
                if (c ==  cancel)
                {
                     Display.getDisplay(this).setCurrent(settingsForm);
@@ -173,6 +186,16 @@ public class SmartDictionary extends MIDlet implements CommandListener
                {
                     settings.setLanguage(nLen.getString());
                     languages.newLanguage(settings.getLanguage());
+                    dictionary = new Dictionary(settings.getLanguage());
+                    settingsFormReset();
+                    Display.getDisplay(this).setCurrent(settingsForm);
+               }
+               if (c ==  timing)
+               {
+                    settingsSave();
+                    test = new StringItem("test -", new Timing().timing());
+                    settings = new Settings();
+                    languages = new Languages();
                     dictionary = new Dictionary(settings.getLanguage());
                     settingsFormReset();
                     Display.getDisplay(this).setCurrent(settingsForm);
@@ -208,19 +231,19 @@ public class SmartDictionary extends MIDlet implements CommandListener
                     wordsN = dictionary.getNumRecords();
                 else
                     wordsN = settings.getNumberOfWords();
-                N = new int[wordsN];
+                rows = new int[wordsN];
                 tf = new TextField[wordsN];
                 for(int i = 0; i < wordsN; i++) {
                     for(;;) {
-                        N[i]  = getRandomN();
+                        rows[i]  = dictionary.getRandomRow();
                         boolean f = true;
                         for(int j = 0; j < i; j++)
-                            if(N[i] == N[j])
+                            if(rows[i] == rows[j])
                                 f = false;
                         if(f)
                             break;
                     }
-                    tf[i] = new TextField("  "+dictionary.getS(N[i], 1)+"  -  ", "", 20, TextField.ANY);
+                    tf[i] = new TextField("  "+dictionary.getCell(rows[i], dictionary.ORIGINAL)+"  -  ", "", 20, TextField.ANY);
                     workForm.append(tf[i]);
                 }
             }
@@ -236,7 +259,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
                     m = "Правильно";
                 else
                     m = "Ошибка";
-                siAnswer[i] = new StringItem(dictionary.getS(N[i], 1)+" - "+dictionary.getS(N[i], 2)+"  "+dictionary.getS(N[i], 3)  , m);
+                siAnswer[i] = new StringItem(dictionary.getCell(rows[i], dictionary.ORIGINAL)+" - "+dictionary.getCell(rows[i], dictionary.TRANSLATION)+"  "+dictionary.getCell(rows[i], dictionary.RATING)  , m);
                 workForm.append(siAnswer[i]);
             }
         }
@@ -260,21 +283,20 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	{
                 if(dictionary.getNumRecords() == 0)
                 {
-                        String S[] = new String[1];
-                        S[0] = "Словарь пуст";
-                        dictionaryList = new List("Словарь", Choice.IMPLICIT, S, null);
-                        dictionaryList.addCommand(back);
-                        dictionaryList.setCommandListener(this);
+                        String emptyDictionary[] = new String[1];
+                        emptyDictionary[0] = "Словарь пуст";
+                        dictionaryList = new List("Словарь", Choice.IMPLICIT, emptyDictionary, null);
                 }
                 else
                 {
-                    dictionaryList = new List("Словарь", Choice.IMPLICIT, getS(), null);
-                    dictionaryList.addCommand(back);
+                    dictionaryList = new List("Словарь", Choice.IMPLICIT, dictionary.getRecords(), null);
                     dictionaryList.addCommand(delete);
                     dictionaryList.addCommand(ordering1);
                     dictionaryList.addCommand(ordering2);
-                    dictionaryList.setCommandListener(this);
+                    
                 }
+                dictionaryList.addCommand(back);
+                dictionaryList.setCommandListener(this);
         }
         private void settingsFormInit()
         {
@@ -282,62 +304,48 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 settingsForm.addCommand(back);
 		settingsForm.addCommand(settingsSave);
                 settingsForm.addCommand(newLen);
+                settingsForm.addCommand(timing);
 		settingsForm.setCommandListener(this);
         }
         private void settingsFormReset()
 	{
-                settingsForm.deleteAll();
-                wns = new StringItem(Integer.toString(settings.getNumberOfWords()),"");
-                lns = new StringItem(settings.getLanguage(),"");
+                settingsForm.deleteAll(); 
+                settingsForm.append(test);
                 settingsForm.append(wordsNum);
-                settingsForm.append(wns);
-                recordsList = new ChoiceGroup("Язык", ChoiceGroup.POPUP, languages.getLanguages(), null);
-                settingsForm.append(recordsList);
-                settingsForm.append(lns);
+                wns = new StringItem(Integer.toString(settings.getNumberOfWords()),"");
+                settingsForm.append(wns);   
+                if(languages.getLanguages() != null) {
+                    recordsList = new ChoiceGroup("Язык:", ChoiceGroup.POPUP, languages.getLanguages(), null);
+                    settingsForm.append(recordsList);
+                    lns = new StringItem(settings.getLanguage(),"");
+                    settingsForm.append(lns);
+                }
+                loginField = new TextField("login:", settings.getLogin(), 20, TextField.ANY);
+                passwordField = new TextField("password:", settings.getPassword(), 20, TextField.ANY);
+                urlField = new TextField("url:", settings.getURL(), 20, TextField.ANY);
+                settingsForm.append(loginField);
+                settingsForm.append(passwordField);
+                settingsForm.append(urlField);
 	}
+        private void settingsSave()
+        {
+                   settings.setNumberOfWords(wordsNum.getSelectedIndex()+1);
+                   if(languages.getLanguages() != null)
+                       settings.setLanguage(languages.getLanguages()[recordsList.getSelectedIndex()]);
+                   settings.setLogin(loginField.getString());
+                   settings.setPassword(passwordField.getString());
+                   settings.setURL(urlField.getString());
+                   dictionary = new Dictionary(settings.getLanguage());
+        }
         private void newLenReset()
         {
                 nLen.delete(0, nLen.getString().length());
         }
         private void newLenInit()
         {
-                nLen = new TextBox("Назовите новый язык:", "", 20, TextField.ANY);
+                nLen = new TextBox("Новый язык:", "", 20, TextField.ANY);
  		nLen.addCommand(cancel);
 		nLen.addCommand(saveNewLen);
 		nLen.setCommandListener(this);
-        }
-        private int getRandomN()
-	{
-            if(dictionary.getNumRecords() == 0)
-                return 0;
-            Random random = new Random ();
-            int AllPoint = 0;
-            String []S = dictionary.getS(3);
-            int []Point = new int[dictionary.getNumRecords()];
-            for(int i = 0; i < dictionary.getNumRecords(); i++){
-                Point[i] = 10 - Integer.parseInt(S[i]);
-                AllPoint += Point[i];
-            }
-            int r = Math.abs(random.nextInt())%AllPoint;
-            System.out.println(r);
-            for (int i = 0; i < dictionary.getNumRecords(); i++)
-		{
-			r = r - Point[i];
-			if(r <= 0 )
-				return i+1;
-		}
-            return dictionary.getNumRecords();
-        }
-        private String[] getS(){
-            String []S = new String[dictionary.getNumRecords()];
-            String []S1 = dictionary.getS(1);
-            String []S2 = dictionary.getS(2);
-            String []S3 = dictionary.getS(3);
-            for(int i = 0; i < dictionary.getNumRecords(); i++)
-                if(P == 1)
-                    S[i] = S1[i] +" "+ S2[i] +" "+ S3[i];
-                else
-                    S[i] = S2[i] +" "+ S1[i] +" "+ S3[i];
-            return S;
         }
 }
