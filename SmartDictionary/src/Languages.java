@@ -1,6 +1,5 @@
 import javax.microedition.rms.*;
 import java.io.*;
-import java.util.*;
 
 public class Languages
 {
@@ -12,9 +11,6 @@ public class Languages
         private ByteArrayInputStream byteInputStream;
         private DataInputStream reader;
         
-        private String language;
-
-
         Languages()
         {
                 byteOutputStream = new ByteArrayOutputStream();
@@ -45,17 +41,18 @@ public class Languages
 			re.rebuild();
 			return Languages;
 		}
-		else 
+		else {
                     return null;
+                }
 	}
-	public String getLanguage(int n)
+	public String getLanguage(int row)
 	{
 		if (getNumRecords() != 0)
 	 	{
 			String Language = new String();
 			try {
-				byte[] data = new byte[rs.getRecordSize(getId(n))];
-				data = rs.getRecord(getId(n));
+				byte[] data = new byte[rs.getRecordSize(getId(row))];
+				data = rs.getRecord(getId(row));
 				byteInputStream = new ByteArrayInputStream(data);
 				reader = new DataInputStream(byteInputStream);
                                 Language = reader.readUTF();
@@ -68,33 +65,36 @@ public class Languages
 		else 
                     return null;
 	}
-        public void newLanguage(String name)
+        public void newLanguage(String language)
 	{
+                String languages[] = getLanguages();
+                for(int i = 0; i < getNumRecords(); i++)
+                    if(language.equals(languages[i]))
+                        return;
 		try{
-			writer.writeUTF(name);
+			writer.writeUTF(language);
 			byte[] data = byteOutputStream.toByteArray();
 			rs.addRecord( data, 0, data.length );
 			writer.flush();
 			byteOutputStream.reset();
 		}
-		catch( RecordStoreException e ){}
-		catch(IOException ioe){}
+		catch(RecordStoreException e ){System.out.println("error1 - "+e.getMessage());}
+		catch(IOException ioe){System.out.println("error2 - "+ioe.getMessage());}
 		re.rebuild();
         }
-        public void deleteLanguage(int n)
+        public void deleteLanguage(int row)
 	{
-		int id = getId(n);
+		int id = getId(row);
 		try {
 			rs.deleteRecord(id);
 		}
 		catch( RecordStoreException e ){}
 		re.rebuild();
         }
-
-        public int getId(int n)
+        public int getId(int row)
 	{
 		int id = 0;
-		for(int i = 0;i < n; i++ ) {
+		for(int i = 0;i < row; i++ ) {
 			try {
 				id = re.nextRecordId();
 			}
@@ -104,12 +104,7 @@ public class Languages
 		return id;
         }
         public int getNumRecords() {
-		int n = 0;
-                try {
-			n = rs.getNumRecords();
-		}
-		catch(RecordStoreException e){}
-                return n;
+                return re.numRecords();
         }
         public void destroy()
         {

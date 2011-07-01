@@ -11,14 +11,14 @@ public class LanguageTest
 	@Test
 	public void testParseJSONSuccess () throws WordsException, JSONException
 	{
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z");
-		Word.setDateFormat(format);
+//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z");
+//		Word.setDateFormat(format);
 
 		String json = "{name:\"en\",words:[" +
 				"{original:\"первый\",translation:\"first\",rating:4," +
-				"modified:\"2010-10-01 10:00:23 +0600\"}," +
+				"modified:1309263860924}," +
 				"{original:\"второй\",translation:\"second\",rating:0," +
-				"modified:\"2011-10-01 10:10:23 +0600\"}" +
+				"modified:1309263860924}" +
 				"]}";
 
 		Language language = new Language(new JSONObject(json));

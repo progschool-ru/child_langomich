@@ -9,6 +9,7 @@ import org.smdserver.actionssystem.SmdServlet;
 import org.smdserver.core.SmdServletContext;
 import org.smdserver.auth.EnterAction;
 import org.smdserver.auth.LoginAction;
+import org.smdserver.auth.MobileLoginAction;
 import org.smdserver.auth.LogoutAction;
 import org.smdserver.auth.SetPasswordAction;
 import org.smdserver.auth.RegistrAction;
@@ -19,6 +20,7 @@ import org.smdserver.words.GetWordsAction;
 import org.smdserver.words.IWordsStorage;
 import org.smdserver.words.SetWordsAction;
 import org.smdserver.words.WordsFileStorage;
+import org.smdserver.words.AddWordsMobileAction;
 import org.smdserver.words.AddWordsAction;
 
 public class MainServlet extends SmdServlet
@@ -39,10 +41,12 @@ public class MainServlet extends SmdServlet
                 map.put("enter", EnterAction.class);
                 map.put("setPassword", SetPasswordAction.class);
 		map.put("login", LoginAction.class);
+                map.put("mobileLogin", MobileLoginAction.class);
                 map.put("logout", LogoutAction.class);
 		map.put("setWords", SetWordsAction.class);
 		map.put("getWords", GetWordsAction.class);
                 map.put("addWord", AddWordsAction.class);
+                map.put("mobileAddWords", AddWordsMobileAction.class);
                 map.put("registr", RegistrAction.class);
 
 		return map;

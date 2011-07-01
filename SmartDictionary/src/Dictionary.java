@@ -4,6 +4,12 @@ import java.util.*;
 
 public class Dictionary
 {
+        public final int ORIGINAL = 1;
+        public final int TRANSLATION = 2;
+        public final int RATING = 3;
+        public final int LANGUAGE = 4;
+        public final int LAST_TIMING = 5;
+
         private RecordStore rs = null;
         private RecordEnumeration re;
         private Filter filter;
@@ -15,30 +21,32 @@ public class Dictionary
         
         private String language;
 
-
         Dictionary()
         {
-                byteOutputStream = new ByteArrayOutputStream();
-                writer = new DataOutputStream(byteOutputStream);
-        	try {
-			rs = RecordStore.openRecordStore("Dicionary", true);
-			re = rs.enumerateRecords(null, new Ordering(1), false);
-		}
-		catch( RecordStoreException e ) {}
+                dictionaryInit(null);
         }
         Dictionary(String language)
         {
                 this.language = language;
+                filter = new Filter(language);
+                dictionaryInit(filter);
+        }
+        Dictionary(String language, long lastTiming)
+        {
+                this.language = language;
+                filter = new Filter(language, lastTiming);
+                dictionaryInit(filter);
+        }
+        private void dictionaryInit(Filter filter){
                 byteOutputStream = new ByteArrayOutputStream();
                 writer = new DataOutputStream(byteOutputStream);
         	try {
-                        filter = new Filter(language, 4);
 			rs = RecordStore.openRecordStore("Dicionary", true);
-			re = rs.enumerateRecords(filter, new Ordering(1), false);
+			re = rs.enumerateRecords(filter, new Ordering(ORIGINAL), false);
 		}
 		catch( RecordStoreException e ) {}
         }
-	public String[] getS(int p)
+	public String[] getColumn(int column)
 	{
 		if (getNumRecords() != 0)
 	 	{
@@ -50,7 +58,7 @@ public class Dictionary
 					data = rs.getRecord(id);
 					byteInputStream = new ByteArrayInputStream(data);
 					reader = new DataInputStream(byteInputStream);
-                                        for(int j = 0; j < p; j++)
+                                        for(int j = 0; j < column; j++)
                                             S[k] = reader.readUTF();
 				}
 				catch(RecordStoreException e){}
@@ -59,46 +67,111 @@ public class Dictionary
 			re.rebuild();
 			return S;
 		}
-		else {
-			String S[] = new String[1];
-			return null;
-		}
+		else 
+                    return null;
 	}
-	public String getS(int n, int p)
+	public String getCell(int row, int column)
 	{
 		if (getNumRecords() != 0)
 	 	{
-			String S = new String();
+			String cell = new String();
 			try {
-				byte[] data = new byte[rs.getRecordSize(getId(n))];
-				data = rs.getRecord(getId(n));
+				byte[] data = new byte[rs.getRecordSize(getId(row))];
+				data = rs.getRecord(getId(row));
 				byteInputStream = new ByteArrayInputStream(data);
 				reader = new DataInputStream(byteInputStream);
-                                for(int j = 0; j < p; j++)
-                                        S = reader.readUTF();
+                                for(int j = 0; j < column; j++)
+                                        cell = reader.readUTF();
 			}
 			catch(RecordStoreException e){}
 			catch(IOException ioe){}
 			re.rebuild();
-			return S;
+			return cell;
 		}
-		else {
-			String S = new String();
-			return S;
-		}
+		else 
+                    return null;
 	}
-        public void newRecord(String str1, String str2, int n)
+        public String[] getRecords(){
+            if(getNumRecords() > 0)
+            {
+                String []Records = new String[getNumRecords()];
+                String []Original = getColumn(ORIGINAL);
+                String []Translation = getColumn(TRANSLATION);
+                String []Rating = getColumn(RATING);
+                for(int i = 0; i < getNumRecords(); i++)
+                    Records[i] = Original[i] +" "+ Translation[i] +" "+ Rating[i];
+                return Records;
+            }
+            else
+                return null;
+        }
+        public int getRandomRow()
+	{
+            if(getNumRecords() == 0)
+                return 0;
+            Random random = new Random ();
+            int AllPoint = 0;
+            String []rating = getColumn(RATING);
+            int []Point = new int[getNumRecords()];
+            for(int i = 0; i < getNumRecords(); i++){
+                Point[i] = 10 - Integer.parseInt(rating[i]);
+                AllPoint += Point[i];
+            }
+            int r = Math.abs(random.nextInt())%AllPoint;
+            for (int i = 0; i < getNumRecords(); i++)
+		{
+			r = r - Point[i];
+			if(r <= 0 )
+				return i+1;
+		}
+            return getNumRecords();
+        }
+        public void newRecord(String original, String translation, int rating)
 	{
 		try{
-                        Date d =new Date();
-			writer.writeUTF(str1);
-			writer.writeUTF(str2);
-			String str3 = Integer.toString(n);
-			writer.writeUTF(str3);
+                        Date date = new Date();
+			writer.writeUTF(original);
+			writer.writeUTF(translation);
+			writer.writeUTF(Integer.toString(rating));
                         writer.writeUTF(language);
-                        writer.writeUTF(d.toString());
+                        writer.writeUTF(Long.toString(date.getTime()));
 			byte[] data = byteOutputStream.toByteArray();
 			rs.addRecord( data, 0, data.length );
+			writer.flush();
+			byteOutputStream.reset();
+		}
+		catch( RecordStoreException e ){}
+		catch(IOException ioe){}
+		re.rebuild();
+        }
+        public void newRecord(String original, String translation, int rating, long lastModified)
+	{
+		try{
+			writer.writeUTF(original);
+			writer.writeUTF(translation);
+			writer.writeUTF(Integer.toString(rating));
+                        writer.writeUTF(language);
+                        writer.writeUTF(Long.toString(lastModified));
+			byte[] data = byteOutputStream.toByteArray();
+			rs.addRecord( data, 0, data.length );
+			writer.flush();
+			byteOutputStream.reset();
+		}
+		catch( RecordStoreException e ){}
+		catch(IOException ioe){}
+		re.rebuild();
+        }
+        private void setRecord(String original, String translation, int rating, int id)
+	{
+		try{
+                        Date date = new Date();
+			writer.writeUTF(original);
+			writer.writeUTF(translation);
+			writer.writeUTF(Integer.toString(rating));
+                        writer.writeUTF(language);
+                        writer.writeUTF(Long.toString(date.getTime()));
+			byte[] data = byteOutputStream.toByteArray();
+			rs.setRecord(id, data, 0, data.length );
 			writer.flush();
 			byteOutputStream.reset();
 		}
@@ -115,56 +188,37 @@ public class Dictionary
 		catch( RecordStoreException e ){}
 		re.rebuild();
         }
-        private void setRecord(String str1, String str2, int p, int id)
+        public boolean answer(int row, String answer)
 	{
-		try{
-                        Date d =new Date();
-			writer.writeUTF(str1);
-			writer.writeUTF(str2);
-			String str3 = Integer.toString(p);
-			writer.writeUTF(str3);
-                        writer.writeUTF(language);
-                        writer.writeUTF(d.toString());
-			byte[] data = byteOutputStream.toByteArray();
-			rs.setRecord(id, data, 0, data.length );
-			writer.flush();
-			byteOutputStream.reset();
-		}
-		catch( RecordStoreException e ){}
-		catch(IOException ioe){}
-		re.rebuild();
-        }
-        public boolean answer(int n, String str)
-	{
-		int id = getId(n);
-                int p = Integer.parseInt(getS(n, 3));
+		int id = getId(row);
+                int rating = Integer.parseInt(getCell(row, RATING));
                 int pl = 2;
                 int mi = 3;
-                if(getS(n, 2).equals(str))
+                if(getCell(row, TRANSLATION).equals(answer))
                 {
-                    if(p > 9-pl)
-                        p = 9;
+                    if(rating  > 9-pl)
+                        rating  = 9;
                     else
-                        p += pl;
-                    setRecord(getS(n, 1), getS(n, 2), p, id);
+                        rating += pl;
+                    setRecord(getCell(row, ORIGINAL), getCell(row, TRANSLATION), rating, id);
                     re.rebuild();
                     return true;
                 }
                 else
                 {
-                    if(p < mi)
-                        p = 0;
+                    if(rating < mi)
+                        rating = 0;
                     else
-                        p -= mi;
-                    setRecord(getS(n, 1), getS(n, 2), p, id);
+                        rating -= mi;
+                    setRecord(getCell(row, ORIGINAL), getCell(row, TRANSLATION), rating, id);
                     re.rebuild();
                     return false;
                 }
         }
-        public int getId(int n)
+        public int getId(int row)
 	{
 		int id = 0;
-		for(int i = 0;i < n; i++ ) {
+		for(int i = 0;i < row; i++ ) {
 			try {
 				id = re.nextRecordId();
 			}
@@ -176,13 +230,13 @@ public class Dictionary
         public int getNumRecords() {
                 return re.numRecords();
         }
-        public void newOrdering(int p)
+        public void newOrdering(int column)
         {
-            if(p != 1 && p != 2) {
+            if(column != 1 && column != 2) {
                 return;
             }
             try {
-                re = rs.enumerateRecords(null, new Ordering(p), false);
+                re = rs.enumerateRecords(null, new Ordering(column), false);
             }
             catch( RecordStoreException e ) {} 
         }
@@ -197,8 +251,6 @@ public class Dictionary
                 try {
                         writer.close();
                         byteOutputStream.close();
- //                      reader.close();
- //                       byteInputStream.close();
                 }
                 catch(IOException ioe){}    
         }

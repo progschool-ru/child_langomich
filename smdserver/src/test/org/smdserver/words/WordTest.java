@@ -24,15 +24,15 @@ public class WordTest
 		calendar.set(Calendar.SECOND, 23);
 		Date date = calendar.getTime();
 
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z");
-		Word.setDateFormat(format);
+//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z");
+//		Word.setDateFormat(format);
 
-		String json = "{original:\"первый\",translation:\"first\",rating:4,modified:\"2010-10-01 10:00:23 +0600\"}";
+		String json = "{original:\"первый\",translation:\"first\",rating:4,modified:1309263860924}";
 		Word word = new Word(new JSONObject(json));
 
 		assertEquals("original", "первый", word.getOriginal());
 		assertEquals("translation", "first", word.getTranslation());
 		assertEquals("rating", new Double(4), new Double(word.getRating()));
-		assertEquals("modified", format.format(date), format.format(word.getModified()));
+		assertEquals("modified", new Long("1309263860924"), new Long(word.getModified()));
 	}
 }

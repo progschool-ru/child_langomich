@@ -1,12 +1,11 @@
 import javax.microedition.rms.*;
 import java.io.*;
-import java.util.*;
 
 class Ordering implements RecordComparator
 {
-    int p;
-    Ordering(int p) {
-      this.p = p;
+    int column;
+    Ordering(int column) {
+      this.column = column;
     }
     public int compare(byte [] reel, byte [] rec2)
     {
@@ -20,7 +19,7 @@ class Ordering implements RecordComparator
         {
             namel = disl.readUTF ();
             name2 = dis2.readUTF () ;
-            if(p > 1)
+            if(column > 1)
             {
                 namel = disl.readUTF ();
                 name2 = dis2.readUTF () ;

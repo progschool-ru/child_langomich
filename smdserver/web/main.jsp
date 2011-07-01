@@ -1,4 +1,5 @@
 <%@ page import="org.smdserver.words.Language" %>
+<%@ page import="java.util.Date" %>
 
 <html>
     <head>
@@ -56,7 +57,14 @@
             <form method="post" action="addWord">
                  <input type="hidden" name="data">
                 <input type="submit" name="addWord" value="  AddWord  ">
-            </form>       
+            </form>
+            <form method="post" action="getWords">
+                <input type="submit" name="getWords" value="  Get Words  ">
+            </form>
+            <form method="post" action="setWords">
+                <input type="text" size="30" name="data">
+                <input type="submit" name="setWords" value="  Set Words  ">
+            </form>
             <table frame="below" width="100%">
                 <legend><b>Words</b></legend>
                 <tr>
@@ -74,7 +82,7 @@
                             <td width="100"><%=l.getWords().get(j).getOriginal()%></td>
                             <td width="100"><%=l.getWords().get(j).getTranslation()%></td>
                             <td width="100"><%=l.getWords().get(j).getRating()%></td>
-                            <td width="300-"><%=l.getWords().get(j).getModified().toString()%></td>
+                            <td width="300-"><%=new Date(l.getWords().get(j).getModified()).toString()%></td>
                         </tr>
                     <%}%>
                 <%}%>

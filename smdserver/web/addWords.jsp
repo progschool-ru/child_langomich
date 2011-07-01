@@ -1,6 +1,4 @@
 <%@ page import="org.smdserver.words.Language" %>
-<%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.util.Date" %>
 <html>
     <head>
         <title>AddWords</title>
@@ -21,6 +19,7 @@
         <script language="JavaScript">
             var hellow = "Hellow";
             function addWord(form) {
+                var date = new Date().getTime();
                 var t =  '"';
                 var r;
                 for(i=0; i < form.rating.length; i++){
@@ -39,14 +38,8 @@
                 }
                 data = "{languages:[{name:"+t+l+t;
                 data = data+",words:[{original:"+t+form.original.value+t;
-                data = data+",translation:"+t+form.translation.value+t+",rating:";
-                <%
-                    String date = "2010-04-28 20:05:23 UTC+7";
-                    SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ZZZ");
-                    Date d = new Date();
-                    date = s.format(d).toString();
-                %>                
-                data = data+r+",modified:"+t+"<%=date%>"+t+"}]}]}";
+                data = data+",translation:"+t+form.translation.value+t+",rating:";              
+                data = data+r+",modified:"+t+date+t+"}]}]}";
                 form.data.value = data;
                 return true;
             }

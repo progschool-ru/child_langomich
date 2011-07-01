@@ -35,10 +35,10 @@ public class SetWordsAction extends CheckLoginAction
 			setAnswerParam(ActionParams.MESSAGE, e.getMessage());
 		}
                 
-                IWordsStorage storage = getServletContext().getWordsStorage();
-		List<Language> languages = storage.getUserWords(getUser().getUserId());
-                request.getSession().setAttribute(SessionKeys.LANGUAGES, languages);
-		return "/main.jsp";
+ //               IWordsStorage storage = getServletContext().getWordsStorage();
+//		List<Language> languages = storage.getUserWords(getUser().getUserId());
+ //               request.getSession().setAttribute(SessionKeys.LANGUAGES, languages);
+		return null;
 	}
 
 	private List<Language> parseJSON (JSONArray json) throws WordsException

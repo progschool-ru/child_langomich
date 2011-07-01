@@ -14,10 +14,6 @@ public class WordsStorage implements IWordsStorage
 	public WordsStorage ()
 	{
 		usersWords = new HashMap<String, List<Language> > ();
-		//TODO: find a better place for it
-                s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ZZZ");
-          
-		Word.setDateFormat(s);
 	}
 	public void addUserWords (String userId, List<Language> languages)
 	{
@@ -63,5 +59,23 @@ public class WordsStorage implements IWordsStorage
 			usersWords.put(userId, new ArrayList<Language>());
 		}
 		return usersWords.get(userId);
+	}
+	public List<Language> getUserWords (String userId, long lastModified)
+	{
+                checkUpdated(userId);
+		if(!usersWords.containsKey(userId))
+		{
+			usersWords.put(userId, new ArrayList<Language>());
+		}
+                List<Language> languages =  new ArrayList<Language>();
+                for(int j = 0; j < usersWords.get(userId).size(); j++) {
+                    languages.add(new Language(usersWords.get(userId).get(j).getName()));
+                    for(int i = 0; i < usersWords.get(userId).get(j).getWords().size(); i++)
+                        if(usersWords.get(userId).get(j).getWords().get(i).getModified() > lastModified)
+                        {
+                            languages.get(j).getWords().add(usersWords.get(userId).get(j).getWords().get(i));
+                        }
+                }
+		return languages;
 	}
 }

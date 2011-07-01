@@ -8,6 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 public class WordsFileStorage extends WordsStorage
 {
@@ -54,34 +57,52 @@ public class WordsFileStorage extends WordsStorage
 	{
 		try
                 {
-                        List<Language> languages = new ArrayList<Language>();
-			BufferedReader br = new BufferedReader(new FileReader(realPath+"/"+userId+".dat"));
-                        String str;
-			while((str = br.readLine()) != null)
-				languages.add(new Language(str));
+                        BufferedReader br = new BufferedReader(new FileReader(realPath+"/"+userId+".dat"));
+                        String str = br.readLine();
+                        JSONObject json = new JSONObject(str);
+                        List<Language> languages = parseJSON(json.getJSONArray("languages"));
                         super.setUserWords(userId, languages);
+                        
 			File file = new File(realPath+"/"+userId+".dat");
 			lastModified = file.lastModified();
 		}
 		catch(IOException ioe){}
+                catch(JSONException e){}
+		catch(WordsException e){}
 
 	}
 
 	private void SaveLanguages(String userId, List<Language> languages)  throws IOException
 	{
 		BufferedWriter bw = new BufferedWriter(new FileWriter(realPath+"/"+userId+".dat"));
-                for(int i = 0;i<languages.size();i++)
+                try
                 {
-                    bw.write(languages.get(i).getName()+"@@@");
-                    for(int j = 0;j<languages.get(i).getWords().size(); j++)
-                    {
-                        bw.write(languages.get(i).getWords().get(j).getOriginal()+",");
-                        bw.write(languages.get(i).getWords().get(j).getTranslation()+",");
-                        bw.write(languages.get(i).getWords().get(j).getRating()+",");
-                        bw.write(s.format(languages.get(i).getWords().get(j).getModified())+"     ");
-                    }
-                    bw.write("\n");
+                    JSONObject object = new JSONObject();
+                    object.put("languages", languages);
+                
+                    bw.write(object.toString());
                 }
+                catch (JSONException ex) {}
                 bw.close();
+	}
+	private List<Language> parseJSON (JSONArray json) throws WordsException
+	{
+		List<Language> languages = new ArrayList<Language>();
+		int length = json.length();
+
+		try
+		{
+			for(int i = 0; i < length; i++)
+			{
+				JSONObject value = json.getJSONObject(i);
+				languages.add(new Language(value));
+			}
+		}
+		catch(JSONException e)
+		{
+			throw new WordsException(WordsException.JSON_ERROR + "; " + e.getMessage());
+		}
+
+		return languages;
 	}
 }

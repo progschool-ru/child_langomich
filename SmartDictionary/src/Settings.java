@@ -6,8 +6,11 @@ public class Settings
 {
         public final int NUMBER_OF_WORDS = 1;
         public final int LANGUAGE = 2;
-        public final int LAST_MODIFIED = 3;
+        public final int LAST_TIMING = 3;
         public final int NUMBER_OF_TIMING = 4;
+        public final int LOGIN = 5;
+        public final int PASSWORD = 6;
+        public final int URL = 7;
 
         private RecordStore rs = null;
         private RecordEnumeration re;
@@ -28,13 +31,21 @@ public class Settings
 		catch( RecordStoreException e ){}
         	if(getRecord(NUMBER_OF_WORDS) == null ||
                    getRecord(LANGUAGE) == null ||
-                   getRecord(LAST_MODIFIED) == null ||
+                   getRecord(LAST_TIMING) == null ||
                    getRecord(NUMBER_OF_TIMING) == null)
                 {
                     addRecord("1");
-                    addRecord("english");
+                    addRecord("null");
                     addRecord(Long.toString(new Date().getTime()));
                     addRecord("0");
+                }
+        	if(getRecord(LOGIN) == null ||
+                   getRecord(PASSWORD) == null ||
+                   getRecord(URL) == null)
+                {
+                    addRecord("null");
+                    addRecord("null");
+                    addRecord("localhost:8080");
                 }
         }
         public void setNumberOfWords(int numberOfWords)
@@ -59,13 +70,13 @@ public class Settings
                 return record;
             return "1";
         }
-        public void setLastModified(long lastModified)
+        public void setLastTiming(long lastTiming)
         {
-            setRecord(Long.toString(lastModified), LAST_MODIFIED);
+            setRecord(Long.toString(lastTiming), LAST_TIMING);
         }
-        public long getLastModified()
+        public long getLastTiming()
         {
-            String record = getRecord(LAST_MODIFIED);
+            String record = getRecord(LAST_TIMING);
             if(record != null)
                 return Long.parseLong(record);
             return new Date().getTime();
@@ -81,11 +92,44 @@ public class Settings
                 return Integer.parseInt(record);
             return 0;
         }
-        private void addRecord(String str)
+        public void setLogin(String login)
+        {
+            setRecord(login, LOGIN);
+        }
+        public String getLogin()
+        {
+            String record = getRecord(LOGIN);
+            if(!record.equals("null"))
+                return record;
+            return null;
+        }
+        public void setPassword(String password)
+        {
+            setRecord(password, PASSWORD);
+        }
+        public String getPassword()
+        {
+            String record = getRecord(PASSWORD);
+            if(!record.equals("null"))
+                return record;
+            return null;
+        }
+        public void setURL(String url)
+        {
+            setRecord(url, URL);
+        }
+        public String getURL()
+        {
+            String record = getRecord(URL);
+            if(!record.equals("null"))
+                return record;
+            return null;
+        }
+        private void addRecord(String record)
         {
  		try
                 {
-			writer.writeUTF(str);
+			writer.writeUTF(record);
 			byte[] data = byteOutputStream.toByteArray();
 			rs.addRecord(data, 0, data.length );
 			writer.flush();
@@ -95,11 +139,11 @@ public class Settings
 		catch(IOException ioe){}
 		re.rebuild();
         }
-        private void setRecord(String str, int id)
+        private void setRecord(String record, int id)
 	{
 		try
                 {
-			writer.writeUTF(str);
+			writer.writeUTF(record);
 			byte[] data = byteOutputStream.toByteArray();
 			rs.setRecord(id, data, 0, data.length );
 			writer.flush();

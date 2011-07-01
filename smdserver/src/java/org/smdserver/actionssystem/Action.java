@@ -1,7 +1,5 @@
 package org.smdserver.actionssystem;
 
-
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -24,6 +22,7 @@ public abstract class Action implements IAction
 		if(!validateParams(request) || !validateContext(request))
 		{
 			setAnswerParam(ActionParams.SUCCESS, false);
+                        System.out.println("ddsafghfdasgh1111");
 		}
 		else
 		{
@@ -34,14 +33,16 @@ public abstract class Action implements IAction
 			catch(Exception e)
 			{
 				setAnswerParam(ActionParams.SUCCESS, false);
+                                System.out.println("ddsafghfdasgh22222");
 			}
 		}
-//		JSONObject object = new JSONObject(map);
-//
-//		PrintWriter writer = new PrintWriter(new File("smdserver/JSONObject.dat"));
-//		writer.print(object.toString());
-//		writer.close();
+                if (url == null) {
+                    JSONObject object = new JSONObject(map);
 
+                    PrintWriter writer = response.getWriter();
+                    writer.println(object.toString());
+                    writer.close();
+                }
                 return url;
 	}
 
