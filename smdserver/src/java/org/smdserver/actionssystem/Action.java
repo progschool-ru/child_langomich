@@ -22,7 +22,6 @@ public abstract class Action implements IAction
 		if(!validateParams(request) || !validateContext(request))
 		{
 			setAnswerParam(ActionParams.SUCCESS, false);
-                        System.out.println("ddsafghfdasgh1111");
 		}
 		else
 		{
@@ -33,7 +32,6 @@ public abstract class Action implements IAction
 			catch(Exception e)
 			{
 				setAnswerParam(ActionParams.SUCCESS, false);
-                                System.out.println("ddsafghfdasgh22222");
 			}
 		}
                 if (url == null) {
