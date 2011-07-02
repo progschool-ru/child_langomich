@@ -39,7 +39,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private TextField tfEng = new TextField("Введите это же слово на изучаемом языке:", "", 20, TextField.ANY);
         private ChoiceGroup mycg = new ChoiceGroup("Оцените то, как вы знаете это слово:", ChoiceGroup.POPUP, cgName, null);
 
-        private String[] name = {"Пуск", "Добавить новую пару", "Словарь", "Настрйки"};
+        private String[] name = {"Пуск", "Добавить новую пару", "Словарь", "Настройки"};
 	private TextField[] tf;
         private StringItem[] siAnswer;
         private StringItem si = new StringItem("Словарь пуст","");
@@ -193,7 +193,10 @@ public class SmartDictionary extends MIDlet implements CommandListener
                if (c ==  timing)
                {
                     settingsSave();
-                    test = new StringItem("test -", new Timing().timing());
+                    try{
+                        test = new StringItem("test -", new Timing().timing());
+                    }
+                    catch(Exception e){test = new StringItem("test -", e.getMessage());}
                     settings = new Settings();
                     languages = new Languages();
                     dictionary = new Dictionary(settings.getLanguage());
