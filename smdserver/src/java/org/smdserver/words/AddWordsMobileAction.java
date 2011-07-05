@@ -19,8 +19,8 @@ public class AddWordsMobileAction extends CheckLoginAction
 		try
 		{
                         JSONObject json = new JSONObject(dataString);
-                        long lastModified = json.getLong("lM");
-                        int numberOfTiming = json.getInt("nOT");
+                        long lastModified = json.getLong("lastModified");
+                        int numberOfTiming = json.getInt("numberOfTiming");
                         
                         IWordsStorage storage = getServletContext().getWordsStorage();
                         List<Language> languagesOut;
