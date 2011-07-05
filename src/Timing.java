@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.Date;
 import org.json.me.*;
 
-public class Timing
+public class Timing implements Runnable
 {
     private Dictionary dictionary;
     private Languages languages;
@@ -13,11 +13,13 @@ public class Timing
     private String query;
     private OutputStream os;
     private InputStream is;
+
+    Thread t;
+
     Timing()
     {
-        settings = new Settings();
-        dictionary = new Dictionary();
-        languages = new Languages();
+        t = new Thread(this,"Timing");
+        t.start();
     }
     private JSONObject getData(){
         JSONObject main = new JSONObject();
@@ -50,9 +52,13 @@ public class Timing
 
         return main;
     }
-    public String timing()
+    public void run()
         {
+            settings = new Settings();
+            dictionary = new Dictionary();
+            languages = new Languages();
             String test = "";
+
             try
             {
                 hc = (HttpConnection)Connector.open("http://"+settings.getURL()+"/smdserver/action/mobileLogin");
@@ -86,8 +92,7 @@ public class Timing
                 settings.setNumberOfTiming(settings.getNumberOfTiming()+1);
                 settings.setLastTiming(new Date().getTime());
             }
-            catch(IOException ioe){ test = "error - "+ioe.getMessage(); }
-        return test;
+            catch(IOException ioe){}
     }
     private String setData(String data){
         try

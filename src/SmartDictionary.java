@@ -17,6 +17,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private Command ordering1 = new Command("Сорт. по 1 записи", Command.SCREEN, 1);
         private Command ordering2 = new Command("Сорт. по 2 записи", Command.SCREEN, 1);
         private Command settingsSave = new Command("Сохранить", Command.SCREEN, 1);
+        private Command completeTiming = new Command("Продолжить", Command.SCREEN, 1);
 
         private Command saveNewLen = new Command("Сохранить", Command.SCREEN, 1);
         private Command cancel = new Command("Отмена", Command.EXIT, 0);
@@ -26,7 +27,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private Form addWordForm = new Form("Добавить новую пару");
 	private List dictionaryList;
         private Form settingsForm = new Form("Настройки");
-//        private Form settingsForm2 = new Form("Настройки языка");
+        private Form timingForm = new Form("Синхронизация");
 	
         private TextBox nLen;
 
@@ -72,6 +73,8 @@ public class SmartDictionary extends MIDlet implements CommandListener
                     addWordFormInit();
                     settingsFormInit();
                         newLenInit();
+
+                timingFormInit();
 
                 Display.getDisplay(this).setCurrent(mainList);
 	}
@@ -194,9 +197,13 @@ public class SmartDictionary extends MIDlet implements CommandListener
                {
                     settingsSave();
                     try{
-                        test = new StringItem("test -", new Timing().timing());
+                        Timing t = new Timing();     
                     }
                     catch(Exception e){test = new StringItem("test -", e.getMessage());}
+                    Display.getDisplay(this).setCurrent(timingForm);
+               }
+               if (c == completeTiming )
+               {
                     settings = new Settings();
                     languages = new Languages();
                     dictionary = new Dictionary(settings.getLanguage());
@@ -350,5 +357,10 @@ public class SmartDictionary extends MIDlet implements CommandListener
  		nLen.addCommand(cancel);
 		nLen.addCommand(saveNewLen);
 		nLen.setCommandListener(this);
+        }
+        private void timingFormInit()
+        {
+		timingForm.addCommand(completeTiming);
+		timingForm.setCommandListener(this);
         }
 }
