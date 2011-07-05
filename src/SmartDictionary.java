@@ -27,7 +27,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private Form addWordForm = new Form("Добавить новую пару");
 	private List dictionaryList;
         private Form settingsForm = new Form("Настройки");
-        private Form timingForm = new Form("Синхронизация");
+        private TimingForm timingForm;
 	
         private TextBox nLen;
 
@@ -73,8 +73,6 @@ public class SmartDictionary extends MIDlet implements CommandListener
                     addWordFormInit();
                     settingsFormInit();
                         newLenInit();
-
-                timingFormInit();
 
                 Display.getDisplay(this).setCurrent(mainList);
 	}
@@ -197,9 +195,11 @@ public class SmartDictionary extends MIDlet implements CommandListener
                {
                     settingsSave();
                     try{
-                        Timing t = new Timing();     
+                         timingForm = new TimingForm(new Timing(), completeTiming);
                     }
                     catch(Exception e){test = new StringItem("test -", e.getMessage());}
+                    
+                    timingForm.setCommandListener(this);
                     Display.getDisplay(this).setCurrent(timingForm);
                }
                if (c == completeTiming )
@@ -302,8 +302,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
                     dictionaryList = new List("Словарь", Choice.IMPLICIT, dictionary.getRecords(), null);
                     dictionaryList.addCommand(delete);
                     dictionaryList.addCommand(ordering1);
-                    dictionaryList.addCommand(ordering2);
-                    
+                    dictionaryList.addCommand(ordering2);     
                 }
                 dictionaryList.addCommand(back);
                 dictionaryList.setCommandListener(this);
@@ -357,10 +356,5 @@ public class SmartDictionary extends MIDlet implements CommandListener
  		nLen.addCommand(cancel);
 		nLen.addCommand(saveNewLen);
 		nLen.setCommandListener(this);
-        }
-        private void timingFormInit()
-        {
-		timingForm.addCommand(completeTiming);
-		timingForm.setCommandListener(this);
         }
 }

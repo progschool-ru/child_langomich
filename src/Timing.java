@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.Date;
 import org.json.me.*;
 
-public class Timing implements Runnable
+public class Timing extends Thread
 {
     private Dictionary dictionary;
     private Languages languages;
@@ -18,47 +18,15 @@ public class Timing implements Runnable
 
     Timing()
     {
-        t = new Thread(this,"Timing");
-        t.start();
-    }
-    private JSONObject getData(){
-        JSONObject main = new JSONObject();
-        try
-        {
-            JSONArray JSONLanguages = new JSONArray();
-            for(int i = 1; i <= languages.getNumRecords();i++)
-            {
-                JSONObject JSONLanguage = new JSONObject();
-                JSONArray words = new JSONArray();
-                dictionary = new Dictionary(languages.getLanguage(i), settings.getLastTiming());
-                for(int row = 1; row <= dictionary.getNumRecords();row++)
-                {
-                    JSONObject word = new JSONObject();
-                    word.put("original",dictionary.getCell(row, dictionary.ORIGINAL));
-                    word.put("translation",dictionary.getCell(row, dictionary.TRANSLATION));
-                    word.put("rating",Integer.parseInt(dictionary.getCell(row, dictionary.RATING)));
-                    word.put("modified",Long.parseLong(dictionary.getCell(row, dictionary.LAST_TIMING)));
-                    words.put(word);
-                }
-                JSONLanguage.put("name", languages.getLanguage(i));
-                JSONLanguage.put("words", words);
-                JSONLanguages.put(JSONLanguage);
-            }
-            main.put("languages", JSONLanguages);
-            main.put("lastModified", settings.getLastTiming());
-            main.put("numberOfTiming", settings.getNumberOfTiming());
-        }
-        catch(JSONException e){}
-
-        return main;
+        super("Timing");
+        start();
     }
     public void run()
-        {
+    {
             settings = new Settings();
             dictionary = new Dictionary();
             languages = new Languages();
             String test = "";
-
             try
             {
                 hc = (HttpConnection)Connector.open("http://"+settings.getURL()+"/smdserver/action/mobileLogin");
@@ -93,6 +61,36 @@ public class Timing implements Runnable
                 settings.setLastTiming(new Date().getTime());
             }
             catch(IOException ioe){}
+    }
+    private JSONObject getData(){
+        JSONObject main = new JSONObject();
+        try
+        {
+            JSONArray JSONLanguages = new JSONArray();
+            for(int i = 1; i <= languages.getNumRecords();i++)
+            {
+                JSONObject JSONLanguage = new JSONObject();
+                JSONArray words = new JSONArray();
+                dictionary = new Dictionary(languages.getLanguage(i), settings.getLastTiming());
+                for(int row = 1; row <= dictionary.getNumRecords();row++)
+                {
+                    JSONObject word = new JSONObject();
+                    word.put("original",dictionary.getCell(row, dictionary.ORIGINAL));
+                    word.put("translation",dictionary.getCell(row, dictionary.TRANSLATION));
+                    word.put("rating",Integer.parseInt(dictionary.getCell(row, dictionary.RATING)));
+                    word.put("modified",Long.parseLong(dictionary.getCell(row, dictionary.LAST_TIMING)));
+                    words.put(word);
+                }
+                JSONLanguage.put("name", languages.getLanguage(i));
+                JSONLanguage.put("words", words);
+                JSONLanguages.put(JSONLanguage);
+            }
+            main.put("languages", JSONLanguages);
+            main.put("lastModified", settings.getLastTiming());
+            main.put("numberOfTiming", settings.getNumberOfTiming());
+        }
+        catch(JSONException e){}
+        return main;
     }
     private String setData(String data){
         try
