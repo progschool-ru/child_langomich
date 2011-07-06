@@ -11,6 +11,7 @@ public class Settings
         public final int LOGIN = 5;
         public final int PASSWORD = 6;
         public final int URL = 7;
+        public final int TEXT = 8;
 
         private RecordStore rs = null;
         private RecordEnumeration re;
@@ -46,6 +47,10 @@ public class Settings
                     addRecord("null");
                     addRecord("null");
                     addRecord("localhost:8080");
+                }
+        	if(getRecord(TEXT) == null)
+                {
+                    addRecord("null");
                 }
         }
         public void setNumberOfWords(int numberOfWords)
@@ -121,6 +126,17 @@ public class Settings
         public String getURL()
         {
             String record = getRecord(URL);
+            if(!record.equals("null"))
+                return record;
+            return null;
+        }
+        public void setText(String text)
+        {
+            setRecord(text, TEXT);
+        }
+        public String getText()
+        {
+            String record = getRecord(TEXT);
             if(!record.equals("null"))
                 return record;
             return null;

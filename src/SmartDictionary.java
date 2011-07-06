@@ -3,47 +3,49 @@ import javax.microedition.midlet.*;
 
 public class SmartDictionary extends MIDlet implements CommandListener
 {
-	private Command exitMIDlet = new Command("Выход", Command.EXIT, 0);
-	private Command choice = new Command("Выбор", Command.SCREEN, 1);
-	private Command back = new Command("Назад", Command.EXIT, 0);
-        private Command backF2 = new Command("Назад", Command.EXIT, 0);
-        private Command backToSet = new Command("Назад", Command.EXIT, 0);
-	private Command OK = new Command("OK", Command.SCREEN, 1);
-        private Command newLen = new Command("Новый язык", Command.SCREEN, 1);
-        private Command timing = new Command("Синхронизация", Command.SCREEN, 1);
-        private Command next = new Command("Продолжить", Command.SCREEN, 1);
-        private Command Save = new Command("Сохранить", Command.SCREEN, 1);
-        private Command delete = new Command("Удалить", Command.SCREEN, 1);
-        private Command ordering1 = new Command("Сорт. по 1 записи", Command.SCREEN, 1);
-        private Command ordering2 = new Command("Сорт. по 2 записи", Command.SCREEN, 1);
-        private Command settingsSave = new Command("Сохранить", Command.SCREEN, 1);
-        private Command completeTiming = new Command("Продолжить", Command.SCREEN, 1);
+        private Text text = new Text();
 
-        private Command saveNewLen = new Command("Сохранить", Command.SCREEN, 1);
-        private Command cancel = new Command("Отмена", Command.EXIT, 0);
+	private Command exitMIDlet = new Command(text.EXIT, Command.EXIT, 0);
+	private Command choice = new Command(text.CHOICE, Command.SCREEN, 1);
+	private Command back = new Command(text.BACK, Command.EXIT, 0);
+        private Command backF2 = new Command(text.BACK, Command.EXIT, 0);
+        private Command backToSet = new Command(text.BACK, Command.EXIT, 0);
+	private Command OK = new Command(text.OK, Command.SCREEN, 1);
+        private Command newLen = new Command(text.NEW_LANGUAGE, Command.SCREEN, 1);
+        private Command timing = new Command(text.TIMING, Command.SCREEN, 1);
+        private Command next = new Command(text.NEXT, Command.SCREEN, 1);
+        private Command Save = new Command(text.SAVE, Command.SCREEN, 1);
+        private Command delete = new Command(text.DELETE, Command.SCREEN, 1);
+        private Command ordering1 = new Command(text.ORDERING_1, Command.SCREEN, 1);
+        private Command ordering2 = new Command(text.ORDERING_2, Command.SCREEN, 1);
+        private Command settingsSave = new Command(text.SAVE, Command.SCREEN, 1);
+        private Command completeTiming = new Command(text.NEXT, Command.SCREEN, 1);
+
+        private Command saveNewLen = new Command(text.SAVE, Command.SCREEN, 1);
+        private Command cancel = new Command(text.CANCEL, Command.EXIT, 0);
 
 	private List mainList;
-        private Form workForm = new Form("Пуск");
-        private Form addWordForm = new Form("Добавить новую пару");
+        private Form workForm = new Form(text.START);
+        private Form addWordForm = new Form(text.ADD_WORD);
 	private List dictionaryList;
-        private Form settingsForm = new Form("Настройки");
+        private Form settingsForm = new Form(text.SETTINGS);
         private TimingForm timingForm;
 	
         private TextBox nLen;
 
         private String[] wordsNumName = {"1", "2", "3", "4", "5"};
-        private ChoiceGroup wordsNum = new ChoiceGroup("Количество слов", ChoiceGroup.POPUP, wordsNumName, null);
+        private ChoiceGroup wordsNum = new ChoiceGroup(text.NUMBER_OF_WORDS, ChoiceGroup.POPUP, wordsNumName, null);
         private ChoiceGroup recordsList;
 
-        private String[] cgName = {"Не знаю", "Плохо", "Нормально", "Хорошо", "Отлично"};
-        private TextField tfRus = new TextField("Введите слово на русском:", "", 20, TextField.ANY);
-        private TextField tfEng = new TextField("Введите это же слово на изучаемом языке:", "", 20, TextField.ANY);
-        private ChoiceGroup mycg = new ChoiceGroup("Оцените то, как вы знаете это слово:", ChoiceGroup.POPUP, cgName, null);
+        private String[] cgName = {text.DONT_KNOW, text.BAD, text.NORMALLY, text.GOOD, text.VERY_GOOD};
+        private TextField tfRus = new TextField(text.ENTER_THE_WORD_ORIGINALLY, "", 20, TextField.ANY);
+        private TextField tfEng = new TextField(text.ENTER_TRANSLATION, "", 20, TextField.ANY);
+        private ChoiceGroup mycg = new ChoiceGroup(text.KNOWLEDGE, ChoiceGroup.POPUP, cgName, null);
 
-        private String[] name = {"Пуск", "Добавить новую пару", "Словарь", "Настройки"};
+        private String[] name = {text.START, text.ADD_WORD, text.DICTIONARY, text.SETTINGS};
 	private TextField[] tf;
         private StringItem[] siAnswer;
-        private StringItem si = new StringItem("Словарь пуст","");
+        private StringItem si = new StringItem(text.EMPTY_DICTIONARY,"");
 
         private Dictionary dictionary;
         private Languages languages;
@@ -213,7 +215,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	}
 	private void mainListInit()
 	{
-		mainList = new List("Меню", Choice.IMPLICIT, name, null);
+		mainList = new List(text.MENU, Choice.IMPLICIT, name, null);
 		mainList.addCommand(choice);
 		mainList.addCommand(exitMIDlet);
 		mainList.setCommandListener(this);
@@ -266,9 +268,9 @@ public class SmartDictionary extends MIDlet implements CommandListener
             siAnswer = new StringItem[wordsN];
             for(int i = 0; i < wordsN; i++) {
                 if(answer[i])
-                    m = "Правильно";
+                    m = text.TRUE;
                 else
-                    m = "Ошибка";
+                    m = text.FALSE;
                 siAnswer[i] = new StringItem(dictionary.getCell(rows[i], dictionary.ORIGINAL)+" - "+dictionary.getCell(rows[i], dictionary.TRANSLATION)+"  "+dictionary.getCell(rows[i], dictionary.RATING)  , m);
                 workForm.append(siAnswer[i]);
             }
@@ -281,7 +283,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	}
 	private void addWordFormReset()
 	{
-		mycg = new ChoiceGroup("Оцените то, как вы знаете это слово:", ChoiceGroup.POPUP, cgName, null);
+		mycg = new ChoiceGroup(text.KNOWLEDGE, ChoiceGroup.POPUP, cgName, null);
                 tfRus.delete(0, tfRus.getString().length());
                 tfEng.delete(0, tfEng.getString().length());
                 addWordForm.deleteAll();
@@ -294,12 +296,12 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 if(dictionary.getNumRecords() == 0)
                 {
                         String emptyDictionary[] = new String[1];
-                        emptyDictionary[0] = "Словарь пуст";
-                        dictionaryList = new List("Словарь", Choice.IMPLICIT, emptyDictionary, null);
+                        emptyDictionary[0] = text.EMPTY_DICTIONARY;
+                        dictionaryList = new List(text.DICTIONARY, Choice.IMPLICIT, emptyDictionary, null);
                 }
                 else
                 {
-                    dictionaryList = new List("Словарь", Choice.IMPLICIT, dictionary.getRecords(), null);
+                    dictionaryList = new List(text.DICTIONARY, Choice.IMPLICIT, dictionary.getRecords(), null);
                     dictionaryList.addCommand(delete);
                     dictionaryList.addCommand(ordering1);
                     dictionaryList.addCommand(ordering2);     
@@ -324,14 +326,14 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 wns = new StringItem(Integer.toString(settings.getNumberOfWords()),"");
                 settingsForm.append(wns);   
                 if(languages.getLanguages() != null) {
-                    recordsList = new ChoiceGroup("Язык:", ChoiceGroup.POPUP, languages.getLanguages(), null);
+                    recordsList = new ChoiceGroup(text.LANGUAGE, ChoiceGroup.POPUP, languages.getLanguages(), null);
                     settingsForm.append(recordsList);
                     lns = new StringItem(settings.getLanguage(),"");
                     settingsForm.append(lns);
                 }
-                loginField = new TextField("login:", settings.getLogin(), 20, TextField.ANY);
-                passwordField = new TextField("password:", settings.getPassword(), 20, TextField.ANY);
-                urlField = new TextField("url:", settings.getURL(), 20, TextField.ANY);
+                loginField = new TextField(text.LOGIN, settings.getLogin(), 20, TextField.ANY);
+                passwordField = new TextField(text.PASSWORD, settings.getPassword(), 20, TextField.ANY);
+                urlField = new TextField(text.URL, settings.getURL(), 20, TextField.ANY);
                 settingsForm.append(loginField);
                 settingsForm.append(passwordField);
                 settingsForm.append(urlField);
@@ -352,7 +354,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
         }
         private void newLenInit()
         {
-                nLen = new TextBox("Новый язык:", "", 20, TextField.ANY);
+                nLen = new TextBox(text.NEW_LANGUAGE, "", 20, TextField.ANY);
  		nLen.addCommand(cancel);
 		nLen.addCommand(saveNewLen);
 		nLen.setCommandListener(this);
