@@ -16,6 +16,8 @@ public class Timing extends Thread
 
     Thread t;
 
+    private String text = "";
+    
     Timing()
     {
         super("Timing");
@@ -26,7 +28,7 @@ public class Timing extends Thread
             settings = new Settings();
             dictionary = new Dictionary();
             languages = new Languages();
-            String test = "";
+
             try
             {
                 hc = (HttpConnection)Connector.open("http://"+settings.getURL()+"/smdserver/action/mobileLogin");
@@ -56,11 +58,20 @@ public class Timing extends Thread
                 byte[] buff = new byte[length];
                 is.read(buff);
                 is.close();
-                test = test + setData(new String(buff));
+                text = "success - " + setData(new String(buff));
                 settings.setNumberOfTiming(settings.getNumberOfTiming()+1);
                 settings.setLastTiming(new Date().getTime());
+                settings.setText(text);
             }
-            catch(IOException ioe){}
+            catch(IOException ioe)
+            {
+                text = "error - "+ioe.getMessage();
+                settings.setText(text);
+            }
+    }
+    public String getText()
+    {
+        return text;
     }
     private JSONObject getData(){
         JSONObject main = new JSONObject();
