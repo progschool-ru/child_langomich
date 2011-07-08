@@ -1,5 +1,7 @@
 package org.smdserver.words;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import org.smdserver.actionssystem.SessionKeys;
 import javax.servlet.http.HttpServletRequest;
 import org.json.JSONArray;
@@ -18,7 +20,7 @@ public class AddWordsAction extends CheckLoginAction
 
 		try
 		{
-			JSONObject json = new JSONObject(dataString);
+			JSONObject json = new JSONObject(URLDecoder.decode(dataString, "utf8"));
 			List<Language> languages = parseJSON(json.getJSONArray(ActionParams.LANGUAGES));
 			IWordsStorage storage = getServletContext().getWordsStorage();
 			storage.addUserWords(getUser().getUserId(), languages);
@@ -42,6 +44,11 @@ public class AddWordsAction extends CheckLoginAction
 			setAnswerParam(ActionParams.SUCCESS, false);
 			setAnswerParam(ActionParams.MESSAGE, e.getMessage());
 		}
+                catch(UnsupportedEncodingException e)
+                {
+                        setAnswerParam(ActionParams.SUCCESS, false);
+                        setAnswerParam(ActionParams.MESSAGE, e.getMessage());
+                }
 		return "/addWords.jsp";
 	}
 

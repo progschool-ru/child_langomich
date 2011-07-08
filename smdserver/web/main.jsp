@@ -1,6 +1,6 @@
 <%@ page import="org.smdserver.words.Language" %>
 <%@ page import="java.util.Date" %>
-
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <html>
     <head>
         <title>Main</title>
@@ -15,6 +15,7 @@
         </style>
     </head>
     <body>
+        Привет
         <jsp:useBean id="languages" scope="session" class="java.util.ArrayList"/>
 
             <% if(session.getAttribute("currentLogin")==null)

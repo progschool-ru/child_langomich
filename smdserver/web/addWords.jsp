@@ -1,4 +1,5 @@
 <%@ page import="org.smdserver.words.Language" %>
+<%@ page contentType="text/html; charset=utf8" pageEncoding="UTF-8"%>
 <html>
     <head>
         <title>AddWords</title>
@@ -36,11 +37,11 @@
                     alert("This form was completed incorrectly");
                     return false;
                 }
-                data = "{languages:[{name:"+t+l+t;
+                var data = "{languages:[{name:"+t+l+t;
                 data = data+",words:[{original:"+t+form.original.value+t;
                 data = data+",translation:"+t+form.translation.value+t+",rating:";              
                 data = data+r+",modified:"+t+date+t+"}]}]}";
-                form.data.value = data;
+                form.data.value = encodeURI(data);
                 return true;
             }
         </script>
