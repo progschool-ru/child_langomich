@@ -1,5 +1,7 @@
 <%@ page import="org.smdserver.words.Language" %>
 <%@ page contentType="text/html; charset=utf8" pageEncoding="UTF-8"%>
+
+<% String basePath = request.getContextPath(); %>
 <html>
     <head>
         <title>AddWords</title>
@@ -13,38 +15,13 @@
             }
         </style>
 
+        <script type="text/javascript" src="<%= basePath %>/js/Smd/Smd.Unicode2Java.js"></script>
+
     </head>
     <body>
         <jsp:useBean id="languages" scope="session" class="java.util.ArrayList"/>
 
-        <script language="JavaScript">
-function hexdigit(v) {
-hexdigitSymbs = "0123456789ABCDEF";
-return hexdigitSymbs.charAt(v & 0x0f);
-}
-function hexval(v) {
-return hexdigit(v >>> 12) + hexdigit(v >>> 8) + hexdigit(v >>> 4) + hexdigit(v);
-}
-function uni2j(val) {
-if (val == 10) return "\\n"
-else if (val == 13) return "\\r"
-else if (val == 92) return "\\\\"
-else if (val == 34) return "\\\""
-else if (val < 32 || val > 126) return "\\u" + hexval(val)
-else return String.fromCharCode(val);
-}
-function uni2java(uni) {
-var lit = '';
-for (var i = 0; i < uni.length; i++) {
-var v = uni.charCodeAt(i);
-lit = lit + uni2j(v);
-}
-return lit;
-}
-
-
-
-
+        <script type="text/javascript" language="JavaScript">
             var hellow = "Hellow";
             function addWord(form) {
                 var date = new Date().getTime();
@@ -68,7 +45,7 @@ return lit;
                 data = data+",words:[{original:"+t+form.original.value+t;
                 data = data+",translation:"+t+form.translation.value+t+",rating:";              
                 data = data+r+",modified:"+t+date+t+"}]}]}";
-                form.data.value = uni2java(data);
+                form.data.value = Smd.Unicode2Java.uni2java(data);
                 return true;
             }
         </script>
