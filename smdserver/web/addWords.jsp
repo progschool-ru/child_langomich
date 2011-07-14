@@ -1,6 +1,9 @@
 <%@ page import="org.smdserver.words.Language" %>
 <%@ page contentType="text/html; charset=utf8" pageEncoding="UTF-8"%>
-
+<%
+//TODO: 2.medium Делать проверку того, что пользователь залогинен,
+//если нет, то отправлять его куда подальше
+%>
 <% String basePath = request.getContextPath(); %>
 <html>
     <head>
@@ -50,11 +53,9 @@
             }
         </script>
         <h2>AddWords - <%=session.getAttribute("currentLogin")%></h2>
-            <form method="post" action="../main.jsp">
-                <input type="submit" name="newPassword" value="  Main  ">
-            </form>
+		<a href="main.jsp">Main</a>
             <hr size="2"/>
-            <form method="post" action="addWord">
+            <form method="post" action="action/addWord?redirectSuccess=../main.jsp&redirectFailure=../addWords.jsp">
                 <input type="hidden" name="data">
                 <fieldset>
                     <table width="50%">
@@ -89,7 +90,7 @@
                         </tr>
                     </table>
                 </fieldset>
-                <input type="submit" name="test" value="  AddWord  " onClick="return(addWord(this.form));">
+                <input type="submit" name="test" value="AddWord" onClick="return(addWord(this.form));">
             </form>
     </body>
 </html>

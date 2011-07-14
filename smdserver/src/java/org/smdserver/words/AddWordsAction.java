@@ -30,7 +30,6 @@ public class AddWordsAction extends AddWordsBase
 			for(int i = 0; i < languages.size();i++)
 				al.add(languages.get(i));
 			request.getSession().setAttribute(SessionKeys.LANGUAGES, al);
-			return "/main.jsp";
 		}
 		catch(JSONException e)
 		{
@@ -47,6 +46,6 @@ public class AddWordsAction extends AddWordsBase
 				setAnswerParam(ActionParams.SUCCESS, false);
 				setAnswerParam(ActionParams.MESSAGE, e.getMessage());
 		}
-		return "/addWords.jsp";
+		return null;
 	}
 }

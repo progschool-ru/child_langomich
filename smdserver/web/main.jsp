@@ -53,10 +53,7 @@
 			</ul>
 			
             <hr size="2"/>
-            <form method="post" action="action/addWord">
-                 <input type="hidden" name="data">
-                <input type="submit" name="addWord" value="  AddWord  ">
-            </form>
+			<a href="addWords.jsp">Add Word</a>
             <form method="post" action="action/getWords">
                 <input type="submit" name="getWords" value="  Get Words  ">
             </form>
