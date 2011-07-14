@@ -1,16 +1,13 @@
 package org.smdserver.words;
 
-import org.smdserver.actionssystem.SessionKeys;
 import javax.servlet.http.HttpServletRequest;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smdserver.actionssystem.ActionParams;
-import org.smdserver.auth.CheckLoginAction;
 import java.util.List;
 import java.util.ArrayList;
 
-public class AddWordsMobileAction extends CheckLoginAction
+public class AddWordsMobileAction extends AddWordsBase
 {	
 	protected String doAction (HttpServletRequest request)
 	{
@@ -53,31 +50,5 @@ public class AddWordsMobileAction extends CheckLoginAction
 			setAnswerParam(ActionParams.MESSAGE, e.getMessage());
 		}
 		return null;
-	}
-	private List<Language> parseJSON (JSONArray json) throws WordsException
-	{
-		List<Language> languages = new ArrayList<Language>();
-		int length = json.length();
-
-		try
-		{
-			for(int i = 0; i < length; i++)
-			{
-				JSONObject value = json.getJSONObject(i);
-				languages.add(new Language(value));
-			}
-		}
-		catch(JSONException e)
-		{
-			throw new WordsException(WordsException.JSON_ERROR + "; " + e.getMessage());
-		}
-
-		return languages;
-	}
-
-	@Override
-	protected boolean validateParams (HttpServletRequest request)
-	{
-		return request.getParameter(ActionParams.DATA) != null;
 	}
 }
