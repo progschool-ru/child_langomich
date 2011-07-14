@@ -1,6 +1,7 @@
 /**
- * Source (modified a bit): http://www.snible.org/java2/uni2java.html
- * License is not clear:  "Copyright 2001 by Ed Snible (esnible@acm.org) and released under an appropriate open source license."
+ * Source (modified here a bit): http://www.snible.org/java2/uni2java.html
+ * Original license is not quite clear:
+ *   "Copyright 2001 by Ed Snible (esnible@acm.org) and released under an appropriate open source license."
  */
 
 Smd = window.Smd || {}; 

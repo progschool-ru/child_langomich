@@ -27,12 +27,12 @@ public class AddWordsAction extends CheckLoginAction
 			setAnswerParam(ActionParams.SUCCESS, true);
 
 
-                        languages = storage.getUserWords(getUser().getUserId());
-                        ArrayList al = new ArrayList();
-                        for(int i = 0; i < languages.size();i++)
-                            al.add(languages.get(i));
-                        request.getSession().setAttribute(SessionKeys.LANGUAGES, al);
-                        return "/main.jsp";
+			languages = storage.getUserWords(getUser().getUserId());
+			ArrayList al = new ArrayList();
+			for(int i = 0; i < languages.size();i++)
+				al.add(languages.get(i));
+			request.getSession().setAttribute(SessionKeys.LANGUAGES, al);
+			return "/main.jsp";
 		}
 		catch(JSONException e)
 		{
@@ -44,11 +44,11 @@ public class AddWordsAction extends CheckLoginAction
 			setAnswerParam(ActionParams.SUCCESS, false);
 			setAnswerParam(ActionParams.MESSAGE, e.getMessage());
 		}
-                catch(ParseException e)
-                {
-                        setAnswerParam(ActionParams.SUCCESS, false);
-                        setAnswerParam(ActionParams.MESSAGE, e.getMessage());
-                }
+		catch(ParseException e)
+		{
+				setAnswerParam(ActionParams.SUCCESS, false);
+				setAnswerParam(ActionParams.MESSAGE, e.getMessage());
+		}
 		return "/addWords.jsp";
 	}
 

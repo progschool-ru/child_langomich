@@ -38,16 +38,16 @@ public class MainServlet extends SmdServlet
 	{
 		Map<String, Class> map = new HashMap<String, Class>();
 
-                map.put("enter", EnterAction.class);
-                map.put("setPassword", SetPasswordAction.class);
+		map.put("enter", EnterAction.class);
+		map.put("setPassword", SetPasswordAction.class);
 		map.put("login", LoginAction.class);
-                map.put("mobileLogin", MobileLoginAction.class);
-                map.put("logout", LogoutAction.class);
+		map.put("mobileLogin", MobileLoginAction.class);
+		map.put("logout", LogoutAction.class);
 		map.put("setWords", SetWordsAction.class);
 		map.put("getWords", GetWordsAction.class);
-                map.put("addWord", AddWordsAction.class);
-                map.put("mobileAddWords", AddWordsMobileAction.class);
-                map.put("registr", RegistrAction.class);
+		map.put("addWord", AddWordsAction.class);
+		map.put("mobileAddWords", AddWordsMobileAction.class);
+		map.put("registr", RegistrAction.class);
 
 		return map;
 	}
@@ -55,7 +55,7 @@ public class MainServlet extends SmdServlet
 	protected IActionsFactory createActionsFactory ()
 	{
 		String usersPath = ResourceBundle.getBundle(CONFIG_RESOURCE).getString(USERS_STORAGE_PATH_KEY);
-                String wordsPath = ResourceBundle.getBundle(CONFIG_RESOURCE).getString(WORDS_STORAGE_PATH_KEY);
+		String wordsPath = ResourceBundle.getBundle(CONFIG_RESOURCE).getString(WORDS_STORAGE_PATH_KEY);
 		IUsersStorage usersStorage =  new UsersFileStorage(getServletContext().getRealPath(usersPath));
 		IWordsStorage wordsStorage = new WordsFileStorage(getServletContext().getRealPath(wordsPath));
 		ISmdServletContext context = new SmdServletContext(usersStorage, wordsStorage, getServletContext());

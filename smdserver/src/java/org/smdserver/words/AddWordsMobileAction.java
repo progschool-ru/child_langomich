@@ -18,29 +18,29 @@ public class AddWordsMobileAction extends CheckLoginAction
 
 		try
 		{
-                        JSONObject json = new JSONObject(dataString);
-                        long lastModified = json.getLong("lastModified");
-                        int numberOfTiming = json.getInt("numberOfTiming");
-                        
-                        IWordsStorage storage = getServletContext().getWordsStorage();
-                        List<Language> languagesOut;
-                        if(numberOfTiming == 0)
-                            languagesOut = storage.getUserWords(getUser().getUserId());
-                        else
-                            languagesOut = storage.getUserWords(getUser().getUserId(), lastModified);
+			JSONObject json = new JSONObject(dataString);
+			long lastModified = json.getLong("lastModified");
+			int numberOfTiming = json.getInt("numberOfTiming");
 
-                        setAnswerParam(ActionParams.LANGUAGES, languagesOut);
+			IWordsStorage storage = getServletContext().getWordsStorage();
+			List<Language> languagesOut;
+			if(numberOfTiming == 0)
+				languagesOut = storage.getUserWords(getUser().getUserId());
+			else
+				languagesOut = storage.getUserWords(getUser().getUserId(), lastModified);
+
+			setAnswerParam(ActionParams.LANGUAGES, languagesOut);
 
 			List<Language> languagesIn = new ArrayList(parseJSON(json.getJSONArray(ActionParams.LANGUAGES)));
 			storage.addUserWords(getUser().getUserId(), languagesIn);
 			setAnswerParam(ActionParams.SUCCESS, true);
 
-//                        languagesIn = storage.getUserWords(getUser().getUserId());
-//                        ArrayList al = new ArrayList();
-//                        for(int i = 0; i < languagesIn.size();i++)
-//                            al.add(languagesIn.get(i));
-//                        request.getSession().setAttribute(SessionKeys.LANGUAGES, al);
-                        return null;
+//			languagesIn = storage.getUserWords(getUser().getUserId());
+//			ArrayList al = new ArrayList();
+//			for(int i = 0; i < languagesIn.size();i++)
+//				al.add(languagesIn.get(i));
+//			request.getSession().setAttribute(SessionKeys.LANGUAGES, al);
+			return null;
 		}
 		catch(JSONException e)
 		{
