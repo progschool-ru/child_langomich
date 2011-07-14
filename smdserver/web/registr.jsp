@@ -14,15 +14,13 @@
     </head>
     <body>
         <h2>Registr</h2>
-        <form method="post" action="enter">
-            <input type="submit" name="newPassword" value="  Main  ">
-        </form>
+		<a href="main.jsp">Main</a>
         <hr size="2"/>
         <br/>
         <br/>
         <br/>
         <fieldset>
-            <form method="post" action="registr">
+            <form method="post" action="action/registr?redirectSuccess=../main.jsp&redirectFailure=../registr.jsp">
                 <table>
                     <tr>
                         <td>Login:</td>

@@ -59,6 +59,30 @@ public abstract class Action implements IAction
 		return redirectUrl;
 	}
 
+	protected String getRedirectParamsURI(HttpServletRequest request)
+	{
+		String [] keys = {REDIRECT, REDIRECT_FAILURE, REDIRECT_SUCCESS};
+
+		StringBuilder sb = new StringBuilder();
+
+		for(String key : keys)
+		{
+			String value = request.getParameter(key);
+			if(value != null)
+			{
+				if(sb.length() > 0)
+				{
+					sb.append('&');
+				}
+				sb.append(key);
+				sb.append('=');
+				sb.append(value);
+			}
+		}
+
+		return sb.toString();
+	}
+
 	protected void setAnswerParam (String key, Object value)
 	{
 		map.put(key, value);

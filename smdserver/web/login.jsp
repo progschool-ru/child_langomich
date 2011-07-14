@@ -1,4 +1,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+//TODO: 2.medium. Если пользователь залогинен, то отправлять его на главную
+%>
 <html>
     <head>
         <title>Login</title>
@@ -14,15 +17,13 @@
     </head>
     <body>
             <h2>Login</h2>
-            <form method="post" action="enter">
-                <input type="submit" name="newPassword" value="  Main  ">
-            </form>
+			<a href="main.jsp">Main</a>
             <hr size="2"/>
             <br/>
             <br/>
             <br/>
             <fieldset>
-                <form method="post" action="login">
+                <form method="post" action="action/login?redirectSuccess=../main.jsp&redirectFailure=../login.jsp">
                     <table>
                         <tr>
                             <td>Login:</td>
@@ -36,9 +37,7 @@
                     <br/>
                     <input type="submit" name="Login" value="  Login  ">
                 </form>
-                <form method="post" action="registr">
-                    <input type="submit" name="registr" value="  Registr  ">
-                </form>
+				<a href="registr.jsp">Create account</a>
             </fieldset>
     </body>
 </html>

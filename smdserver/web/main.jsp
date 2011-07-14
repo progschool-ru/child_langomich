@@ -39,9 +39,7 @@
                     <br/>
                     <input type="submit" name="Login" value="  Login  ">
                 </form>
-                <form method="post" action="registr">
-                    <input type="submit" name="registr" value="  Registr  ">
-                </form>
+                <a href="registr.jsp">Create account</a>
             </fieldset>
         <%}
         else

@@ -15,19 +15,30 @@ public class RegistrAction extends SmdAction
 
 		boolean success = (login != null && password != null && !password.isEmpty() && storage.checkLogin(login));
 
-                if(success)
-                        try
+		if(success)
+		{
+			try
 			{
-                                getServletContext().getUsersStorage().createUser( storage.getID(),login, password);
-                                setAnswerParam(ActionParams.SUCCESS, success);
-                                return "/action/login?login="+login+"&password="+password;
+				getServletContext().getUsersStorage().createUser( storage.getID(),login, password);
+				setAnswerParam(ActionParams.SUCCESS, success);
+
+				StringBuilder sb = new StringBuilder();
+				sb.append("/action/login?login=");
+				sb.append(login);
+				sb.append("&password=");
+				sb.append(password);
+				sb.append('&');
+				sb.append(getRedirectParamsURI(request));
+
+				return sb.toString();
 			}
 			catch(Exception e)
 			{
 				e.printStackTrace();
 				success = false;
 			}
-                setAnswerParam(ActionParams.SUCCESS, success);
-                return "/registr.jsp";
-        }
+		}
+		setAnswerParam(ActionParams.SUCCESS, success);
+		return null;
+	}
 }
