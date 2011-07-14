@@ -53,6 +53,10 @@ public abstract class SmdServlet extends HttpServlet
 			{
 				getServletContext().getRequestDispatcher(url).forward(request, response);
 			}
+			else if(action.getRedirectUrl() != null)
+			{
+				response.sendRedirect(action.getRedirectUrl());
+			}
 
 //		}
 //		catch(Exception e)

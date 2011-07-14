@@ -18,7 +18,7 @@
             <input type="submit" name="newPassword" value="  New Password  ">
         </form>
 
-        <form method="post" action="enter">
+        <form method="post" action="../main.jsp">
             <input type="submit" name="newPassword" value="  Main  ">
         </form>
 

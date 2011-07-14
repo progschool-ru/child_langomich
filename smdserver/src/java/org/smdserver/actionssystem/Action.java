@@ -8,10 +8,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
+import static org.smdserver.actionssystem.ActionParams.*;
 
 public abstract class Action implements IAction
 {
 	private Map<String, Object> map = new HashMap<String, Object>();
+	private String redirectUrl;
 
 	abstract protected String doAction (HttpServletRequest request);
 
@@ -19,29 +21,42 @@ public abstract class Action implements IAction
 			throws ServletException, IOException
 	{
 		String url = null;
-		if(!validateParams(request) || !validateContext(request))
-		{
-			setAnswerParam(ActionParams.SUCCESS, false);
-		}
-		else
+
+		boolean success = false;
+		if(validateParams(request) && validateContext(request))
 		{
 			try
 			{
 				url = doAction(request);
+				success = true;
 			}
 			catch(Exception e)
 			{
-				setAnswerParam(ActionParams.SUCCESS, false);
+				log(e.getMessage());
 			}
 		}
-                if (url == null) {
-                    JSONObject object = new JSONObject(map);
 
-                    PrintWriter writer = response.getWriter();
-                    writer.println(object.toString());
-                    writer.close();
-                }
-                return url;
+		setAnswerParam(SUCCESS, success);
+
+		if (url == null)
+		{
+			redirectUrl = extractRedirectUrl(success, request);
+
+			if (redirectUrl == null)
+			{
+				JSONObject object = new JSONObject(map);
+
+				PrintWriter writer = response.getWriter();
+				writer.println(object.toString());
+				writer.close();
+			}
+		}
+		return url;
+	}
+
+	public String getRedirectUrl()
+	{
+		return redirectUrl;
 	}
 
 	protected void setAnswerParam (String key, Object value)
@@ -57,5 +72,28 @@ public abstract class Action implements IAction
 	protected boolean validateContext (HttpServletRequest request)
 	{
 		return true;
+	}
+
+	protected void log(String message)
+	{
+	}
+
+	private String extractRedirectUrl(boolean success, HttpServletRequest request)
+	{
+		String redirect = request.getParameter(REDIRECT);
+		String redirectFailure = request.getParameter(REDIRECT_FAILURE);
+		String redirectSuccess = request.getParameter(REDIRECT_SUCCESS);
+
+		if(success && redirectSuccess != null)
+		{
+			return redirectSuccess;
+		}
+
+		if(!success && redirectFailure != null)
+		{
+			return redirectFailure;
+		}
+
+		return redirect;
 	}
 }

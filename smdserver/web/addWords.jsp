@@ -50,7 +50,7 @@
             }
         </script>
         <h2>AddWords - <%=session.getAttribute("currentLogin")%></h2>
-            <form method="post" action="enter">
+            <form method="post" action="../main.jsp">
                 <input type="submit" name="newPassword" value="  Main  ">
             </form>
             <hr size="2"/>

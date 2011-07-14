@@ -15,6 +15,10 @@ public class LoginAction extends SmdAction
 	protected String doAction (HttpServletRequest request)
 	{
                 if(request.getSession().getAttribute(SessionKeys.CURRENT_LOGIN)!= null) {
+				//TODO: 3.low. Посте того, как разберёмся со всеми jsp страницами,
+				//эту логику надо будет уобрать.
+				//Кажется более логичным, разлогиниваться
+				//в случае, если послан запрос на логин с нправильным паролем.
                     return "/profile.jsp";
                 }
 		String login = request.getParameter(ActionParams.LOGIN);
@@ -36,14 +40,15 @@ public class LoginAction extends SmdAction
                         for(int i = 0; i < languages.size();i++)
                             al.add(languages.get(i));
                         request.getSession().setAttribute(SessionKeys.LANGUAGES, al);
-                        return "/main.jsp";
+                        //return "/main.jsp";
+						return null;
                 }
 		else
 		{
 			request.getSession().setAttribute(SessionKeys.CURRENT_LOGIN, null);
                         request.getSession().setAttribute(SessionKeys.LANGUAGES, null);
-                        return "/login.jsp";
-
+                        //return "/login.jsp";
+						return null;
                 }
 	}
 }

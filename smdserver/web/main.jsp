@@ -15,7 +15,6 @@
         </style>
     </head>
     <body>
-        Привет
         <jsp:useBean id="languages" scope="session" class="java.util.ArrayList"/>
 
             <% if(session.getAttribute("currentLogin")==null)
@@ -26,7 +25,7 @@
             <br/>
             <br/>
             <fieldset>
-                <form method="post" action="login">
+                <form method="post" action="action/login?redirect=../main.jsp">
                     <table>
                         <tr>
                             <td>Login:</td>
@@ -48,21 +47,21 @@
         else
         {%>
             <h2>Main - <%=session.getAttribute("currentLogin")%></h2>
-            <form method="post" action="login">
+            <form method="post" action="action/login">
                 <input type="submit" name="profile" value="  Profile  ">
             </form>
-            <form method="post" action="logout">
+            <form method="post" action="action/logout">
                 <input type="submit" name="logout" value="  Logout  ">
             </form>
             <hr size="2"/>
-            <form method="post" action="addWord">
+            <form method="post" action="action/addWord">
                  <input type="hidden" name="data">
                 <input type="submit" name="addWord" value="  AddWord  ">
             </form>
-            <form method="post" action="getWords">
+            <form method="post" action="action/getWords">
                 <input type="submit" name="getWords" value="  Get Words  ">
             </form>
-            <form method="post" action="setWords">
+            <form method="post" action="action/setWords">
                 <input type="text" size="30" name="data">
                 <input type="submit" name="setWords" value="  Set Words  ">
             </form>
