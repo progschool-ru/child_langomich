@@ -8,8 +8,8 @@ public class LogoutAction extends SmdAction
 {
 	protected String doAction (HttpServletRequest request)
 	{
-            request.getSession().setAttribute(SessionKeys.CURRENT_LOGIN, null);
-            request.getSession().setAttribute(SessionKeys.LANGUAGES, null);
-            return "/main.jsp";
+			request.getSession().setAttribute(SessionKeys.CURRENT_LOGIN, null);
+			request.getSession().setAttribute(SessionKeys.LANGUAGES, null);
+			return null;
 	}
 }

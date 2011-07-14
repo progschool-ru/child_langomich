@@ -47,12 +47,11 @@
         else
         {%>
             <h2>Main - <%=session.getAttribute("currentLogin")%></h2>
-            <form method="post" action="action/login">
-                <input type="submit" name="profile" value="  Profile  ">
-            </form>
-            <form method="post" action="action/logout">
-                <input type="submit" name="logout" value="  Logout  ">
-            </form>
+			<ul>
+				<li><a href="profile.jsp">Profile</a></li>
+				<li><a href="action/logout?redirect=../main.jsp">Logout</a></li>
+			</ul>
+			
             <hr size="2"/>
             <form method="post" action="action/addWord">
                  <input type="hidden" name="data">

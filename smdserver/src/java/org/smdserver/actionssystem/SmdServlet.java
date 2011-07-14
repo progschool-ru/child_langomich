@@ -31,8 +31,6 @@ public abstract class SmdServlet extends HttpServlet
 	public void service (HttpServletRequest request, HttpServletResponse response)
 											throws ServletException, IOException
 	{
-//		try
-//		{
 			IAction action = factory.createAction(getActionName(request));
 
 			if(action == null)
@@ -57,12 +55,6 @@ public abstract class SmdServlet extends HttpServlet
 			{
 				response.sendRedirect(action.getRedirectUrl());
 			}
-
-//		}
-//		catch(Exception e)
-//		{
-//			e.printStackTrace();
-//		}
 	}
 
 	private String getActionName (HttpServletRequest request)
