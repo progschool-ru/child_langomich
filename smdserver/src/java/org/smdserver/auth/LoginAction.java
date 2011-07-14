@@ -19,7 +19,7 @@ public class LoginAction extends SmdAction
 				//эту логику надо будет уобрать.
 				//Кажется более логичным, разлогиниваться
 				//в случае, если послан запрос на логин с нправильным паролем.
-                    return "/profile.jsp";
+                    return null;
                 }
 		String login = request.getParameter(ActionParams.LOGIN);
 		String password = request.getParameter(ActionParams.PASSWORD);

@@ -1,4 +1,8 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+//TODO: 2.medium Делать проверку того, что пользователь залогинен,
+//если нет, то отправлять его куда подальше
+%>
 <html>
     <head>
         <title>Profile</title>
@@ -14,13 +18,10 @@
     </head>
     <body>
         <h2>Profile - <%=session.getAttribute("currentLogin")%></h2>
-        <form method="post" action="setPassword">
-            <input type="submit" name="newPassword" value="  New Password  ">
-        </form>
-
-        <form method="post" action="../main.jsp">
-            <input type="submit" name="newPassword" value="  Main  ">
-        </form>
+		<ul>
+			<li><a href="setPassword.jsp">New Password</a></li>
+			<li><a href="main.jsp">Main</a></li>
+		</ul>
 
         <hr size="2"/>
 

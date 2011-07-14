@@ -28,7 +28,7 @@ public abstract class Action implements IAction
 			try
 			{
 				url = doAction(request);
-				success = true;
+				success = true && (!map.containsKey(SUCCESS) || (Boolean)map.get(SUCCESS));
 			}
 			catch(Exception e)
 			{
