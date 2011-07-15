@@ -2,6 +2,7 @@
 <%
 //TODO: 2.medium. Если пользователь залогинен, то отправлять его на главную
 %>
+<jsp:useBean id="smdconf" scope="session" class="org.smdserver.core.SmdConfigBean"/>
 <html>
     <head>
         <title>Login</title>
@@ -23,7 +24,7 @@
             <br/>
             <br/>
             <fieldset>
-                <form method="post" action="action/login?redirectSuccess=../main.jsp&redirectFailure=../login.jsp">
+                <form method="post" action="<%= smdconf.getActionsPath() %>/login?redirectSuccess=../main.jsp&redirectFailure=../login.jsp">
                     <table>
                         <tr>
                             <td>Login:</td>

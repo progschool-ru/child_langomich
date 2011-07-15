@@ -4,28 +4,18 @@
 //TODO: 2.medium Делать проверку того, что пользователь залогинен,
 //если нет, то отправлять его куда подальше
 %>
+<jsp:useBean id="smdconf" scope="session" class="org.smdserver.core.SmdConfigBean"/>
 <% String basePath = request.getContextPath(); %>
 <html>
     <head>
         <title>AddWords</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <style type="text/css">
-            body, table, hr {
-                color: black;
-                background: whitesmoke;
-                font-family: Verdana, sans-serif;
-                font-size: x-small;
-            }
-        </style>
-
         <script type="text/javascript" src="<%= basePath %>/js/Smd/Smd.Unicode2Java.js"></script>
-
     </head>
     <body>
         <jsp:useBean id="languages" scope="session" class="java.util.ArrayList"/>
 
         <script type="text/javascript" language="JavaScript">
-            var hellow = "Hellow";
             function addWord(form) {
                 var date = new Date().getTime();
                 var t =  '"';
@@ -55,7 +45,7 @@
         <h2>AddWords - <%=session.getAttribute("currentLogin")%></h2>
 		<a href="main.jsp">Main</a>
             <hr size="2"/>
-            <form method="post" action="action/addWord?redirectSuccess=../main.jsp&redirectFailure=../addWords.jsp">
+            <form method="post" action="<%= smdconf.getActionsPath() %>/addWord?redirectSuccess=../main.jsp&redirectFailure=../addWords.jsp">
                 <input type="hidden" name="data">
                 <fieldset>
                     <table width="50%">

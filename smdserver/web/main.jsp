@@ -1,6 +1,7 @@
 <%@ page import="org.smdserver.words.Language" %>
 <%@ page import="java.util.Date" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="smdconf" scope="session" class="org.smdserver.core.SmdConfigBean"/>
 <html>
     <head>
         <title>Main</title>
@@ -25,7 +26,7 @@
             <br/>
             <br/>
             <fieldset>
-                <form method="post" action="action/login?redirect=../main.jsp">
+                <form method="post" action="<%= smdconf.getActionsPath() %>/login?redirect=../main.jsp">
                     <table>
                         <tr>
                             <td>Login:</td>
@@ -47,15 +48,15 @@
             <h2>Main - <%=session.getAttribute("currentLogin")%></h2>
 			<ul>
 				<li><a href="profile.jsp">Profile</a></li>
-				<li><a href="action/logout?redirect=../main.jsp">Logout</a></li>
+				<li><a href="<%= smdconf.getActionsPath() %>/logout?redirect=../main.jsp">Logout</a></li>
 			</ul>
 			
             <hr size="2"/>
 			<a href="addWords.jsp">Add Word</a>
-            <form method="post" action="action/getWords">
+            <form method="post" action="<%= smdconf.getActionsPath() %>/getWords">
                 <input type="submit" name="getWords" value="  Get Words  ">
             </form>
-            <form method="post" action="action/setWords">
+            <form method="post" action="<%= smdconf.getActionsPath() %>/setWords">
                 <input type="text" size="30" name="data">
                 <input type="submit" name="setWords" value="  Set Words  ">
             </form>

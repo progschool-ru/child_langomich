@@ -15,7 +15,7 @@ public class LoginAction extends SmdAction
 	protected String doAction (HttpServletRequest request)
 	{
                 if(request.getSession().getAttribute(SessionKeys.CURRENT_LOGIN)!= null) {
-				//TODO: 3.low. Посте того, как разберёмся со всеми jsp страницами,
+				//TODO: (3.low) Посте того, как разберёмся со всеми jsp страницами,
 				//эту логику надо будет уобрать.
 				//Кажется более логичным, разлогиниваться
 				//в случае, если послан запрос на логин с нправильным паролем.
