@@ -42,7 +42,7 @@ public class Timing extends Thread
 
                 String c = hc.getHeaderField("Set-Cookie");
 
-                hc = (HttpConnection)Connector.open("http://"+settings.getURL()+"/smdserver/action/mobileAddWords");
+                hc = (HttpConnection)Connector.open("http://"+settings.getURL()+"/smdserver/action/addWords");
                 hc.setRequestMethod(HttpConnection.POST);
                 hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 hc.setRequestProperty("Cookie", c);
