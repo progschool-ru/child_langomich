@@ -57,7 +57,7 @@
                 <input type="submit" name="getWords" value="  Get Words  ">
             </form>
             <form method="post" action="main.jsp">
-                <input type="submit" name="update" value="  Îáíîâèòü  ">
+                <input type="submit" name="update" value="ÐžÐ±Ð½Ð¾Ð²Ð¸Ñ‚ÑŒ">
             </form>
             <table frame="below" width="100%">
                 <legend><b>Words</b></legend>
