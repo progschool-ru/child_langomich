@@ -60,22 +60,39 @@ public class WordsStorage implements IWordsStorage
 		}
 		return usersWords.get(userId);
 	}
-	public List<Language> getUserWords (String userId, long lastModified)
+	public List<Language> getCopyUserWords (String userId)
 	{
                 checkUpdated(userId);
 		if(!usersWords.containsKey(userId))
 		{
 			usersWords.put(userId, new ArrayList<Language>());
 		}
-                List<Language> languages =  new ArrayList<Language>();
-                for(int j = 0; j < usersWords.get(userId).size(); j++) {
-                    languages.add(new Language(usersWords.get(userId).get(j).getName()));
-                    for(int i = 0; i < usersWords.get(userId).get(j).getWords().size(); i++)
-                        if(usersWords.get(userId).get(j).getWords().get(i).getModified() > lastModified)
-                        {
-                            languages.get(j).getWords().add(usersWords.get(userId).get(j).getWords().get(i));
-                        }
+		List<Language> languages =  new ArrayList<Language>();
+        for(int j = 0; j < usersWords.get(userId).size(); j++)
+		{
+			languages.add(new Language(usersWords.get(userId).get(j).getName()));
+			for(int i = 0; i < usersWords.get(userId).get(j).getWords().size(); i++)
+				languages.get(j).getWords().add(usersWords.get(userId).get(j).getWords().get(i));
+        }
+		return languages;
+	}
+	public List<Language> getCopyUserWords (String userId, long lastModified)
+	{
+                checkUpdated(userId);
+		if(!usersWords.containsKey(userId))
+		{
+			usersWords.put(userId, new ArrayList<Language>());
+		}
+        List<Language> languages =  new ArrayList<Language>();
+        for(int j = 0; j < usersWords.get(userId).size(); j++)
+		{
+			languages.add(new Language(usersWords.get(userId).get(j).getName()));
+			for(int i = 0; i < usersWords.get(userId).get(j).getWords().size(); i++)
+				if(usersWords.get(userId).get(j).getWords().get(i).getModified() > lastModified)
+                {
+					languages.get(j).getWords().add(usersWords.get(userId).get(j).getWords().get(i));
                 }
+        }
 		return languages;
 	}
 }

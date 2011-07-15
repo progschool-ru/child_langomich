@@ -19,9 +19,7 @@ import org.smdserver.users.IUsersStorage;
 import org.smdserver.users.UsersFileStorage;
 import org.smdserver.words.GetWordsAction;
 import org.smdserver.words.IWordsStorage;
-import org.smdserver.words.SetWordsAction;
 import org.smdserver.words.WordsFileStorage;
-import org.smdserver.words.AddWordsMobileAction;
 import org.smdserver.words.AddWordsAction;
 
 public class MainServlet extends SmdServlet
@@ -44,10 +42,8 @@ public class MainServlet extends SmdServlet
 		map.put("login", LoginAction.class);
 		map.put("mobileLogin", MobileLoginAction.class);
 		map.put("logout", LogoutAction.class);
-		map.put("setWords", SetWordsAction.class);
 		map.put("getWords", GetWordsAction.class);
-		map.put("addWord", AddWordsAction.class);
-		map.put("mobileAddWords", AddWordsMobileAction.class);
+		map.put("addWords", AddWordsAction.class);
 		map.put("registr", RegistrAction.class);
 
 		return map;

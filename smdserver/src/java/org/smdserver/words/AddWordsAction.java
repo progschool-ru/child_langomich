@@ -6,11 +6,13 @@ import org.smdserver.actionssystem.SessionKeys;
 import javax.servlet.http.HttpServletRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONArray;
 import org.smdserver.actionssystem.ActionParams;
 import java.util.List;
 import java.util.ArrayList;
+import org.smdserver.auth.CheckLoginAction;
 
-public class AddWordsAction extends AddWordsBase
+public class AddWordsAction extends CheckLoginAction
 {	
 	protected String doAction (HttpServletRequest request)
 	{
@@ -19,11 +21,29 @@ public class AddWordsAction extends AddWordsBase
 		try
 		{ 
 			JSONObject json = new JSONObject(JavaString.decode(dataString));
-			List<Language> languages = parseJSON(json.getJSONArray(ActionParams.LANGUAGES));
+			long lastModified = 0;
+			int numberOfTiming = 0;
+			try
+			{
+				lastModified = json.getLong("lastModified");
+				numberOfTiming = json.getInt("numberOfTiming");
+			}
+			catch(JSONException e){}
 			IWordsStorage storage = getServletContext().getWordsStorage();
+			if(lastModified != 0)
+			{
+				List<Language> languages;
+				if(numberOfTiming == 0)
+					languages = storage.getCopyUserWords(getUser().getUserId());
+				else
+					languages = storage.getCopyUserWords(getUser().getUserId(), lastModified);
+
+				setAnswerParam(ActionParams.LANGUAGES, languages);
+			}
+
+			List<Language> languages = parseJSON(json.getJSONArray(ActionParams.LANGUAGES));
 			storage.addUserWords(getUser().getUserId(), languages);
 			setAnswerParam(ActionParams.SUCCESS, true);
-
 
 			languages = storage.getUserWords(getUser().getUserId());
 			ArrayList al = new ArrayList();
@@ -47,5 +67,31 @@ public class AddWordsAction extends AddWordsBase
 				setAnswerParam(ActionParams.MESSAGE, e.getMessage());
 		}
 		return null;
+	}
+	protected List<Language> parseJSON (JSONArray json) throws WordsException
+	{
+		List<Language> languages = new ArrayList<Language>();
+		int length = json.length();
+
+		try
+		{
+			for(int i = 0; i < length; i++)
+			{
+				JSONObject value = json.getJSONObject(i);
+				languages.add(new Language(value));
+			}
+		}
+		catch(JSONException e)
+		{
+			throw new WordsException(WordsException.JSON_ERROR + "; " + e.getMessage());
+		}
+
+		return languages;
+	}
+
+	@Override
+	protected boolean validateParams (HttpServletRequest request)
+	{
+		return request.getParameter(ActionParams.DATA) != null;
 	}
 }

@@ -56,9 +56,8 @@
             <form method="post" action="<%= smdconf.getActionsPath() %>/getWords">
                 <input type="submit" name="getWords" value="  Get Words  ">
             </form>
-            <form method="post" action="<%= smdconf.getActionsPath() %>/setWords">
-                <input type="text" size="30" name="data">
-                <input type="submit" name="setWords" value="  Set Words  ">
+            <form method="post" action="main.jsp">
+                <input type="submit" name="update" value="  Обновить  ">
             </form>
             <table frame="below" width="100%">
                 <legend><b>Words</b></legend>

@@ -45,7 +45,7 @@
         <h2>AddWords - <%=session.getAttribute("currentLogin")%></h2>
 		<a href="main.jsp">Main</a>
             <hr size="2"/>
-            <form method="post" action="<%= smdconf.getActionsPath() %>/addWord?redirectSuccess=../main.jsp&redirectFailure=../addWords.jsp">
+            <form method="post" action="<%= smdconf.getActionsPath() %>/addWords?redirectSuccess=../main.jsp&redirectFailure=../addWords.jsp">
                 <input type="hidden" name="data">
                 <fieldset>
                     <table width="50%">
