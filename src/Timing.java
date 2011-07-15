@@ -5,6 +5,7 @@ import org.json.me.*;
 
 public class Timing extends Thread
 {
+	private static final String ACTION_PATH = "/smdserver/servlet";
     private Dictionary dictionary;
     private Languages languages;
     private Settings settings;
@@ -31,7 +32,7 @@ public class Timing extends Thread
 
             try
             {
-                hc = (HttpConnection)Connector.open("http://"+settings.getURL()+"/smdserver/action/mobileLogin");
+                hc = (HttpConnection)Connector.open("http://"+settings.getURL() + ACTION_PATH + "/mobileLogin");
                 hc.setRequestMethod(HttpConnection.POST);
                 hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
@@ -42,7 +43,7 @@ public class Timing extends Thread
 
                 String c = hc.getHeaderField("Set-Cookie");
 
-                hc = (HttpConnection)Connector.open("http://"+settings.getURL()+"/smdserver/action/addWords");
+                hc = (HttpConnection)Connector.open("http://"+settings.getURL() + ACTION_PATH + "/addWords");
                 hc.setRequestMethod(HttpConnection.POST);
                 hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 hc.setRequestProperty("Cookie", c);
