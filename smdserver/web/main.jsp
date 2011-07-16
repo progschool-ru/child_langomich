@@ -1,7 +1,7 @@
 <%@ page import="org.smdserver.words.Language" %>
+<%@ page import="org.smdserver.core.SmdConfigSingleton" %>
 <%@ page import="java.util.Date" %>
-<%@ page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="smdconf" scope="session" class="org.smdserver.core.SmdConfigBean"/>
+<% String actionsPath = SmdConfigSingleton.getInstance().getActionsPath(); %>
 <html>
     <head>
         <title>Main</title>
@@ -18,42 +18,23 @@
     <body>
         <jsp:useBean id="languages" scope="session" class="java.util.ArrayList"/>
 
-            <% if(session.getAttribute("currentLogin")==null)
-        {%>
+        <% if(session.getAttribute("currentLogin")==null)
+		{%>
             <h2>Main</h2>
             <hr size="2"/>
-            <br/>
-            <br/>
-            <br/>
-            <fieldset>
-                <form method="post" action="<%= smdconf.getActionsPath() %>/login?redirect=../main.jsp">
-                    <table>
-                        <tr>
-                            <td>Login:</td>
-                            <td><input type="text" size="30" name="login"></td>
-                        </tr>
-                        <tr>
-                            <td>Password:</td>
-                            <td><input  type="password" size="30" name="password"></td>
-                        </tr>
-                    </table>
-                    <br/>
-                    <input type="submit" name="Login" value="  Login  ">
-                </form>
-                <a href="registr.jsp">Create account</a>
-            </fieldset>
+			<jsp:include  page="templates/loginTpl.jsp" />
         <%}
         else
         {%>
             <h2>Main - <%=session.getAttribute("currentLogin")%></h2>
 			<ul>
 				<li><a href="profile.jsp">Profile</a></li>
-				<li><a href="<%= smdconf.getActionsPath() %>/logout?redirect=../main.jsp">Logout</a></li>
+				<li><a href="<%= actionsPath %>/logout?redirect=../main.jsp">Logout</a></li>
 			</ul>
 			
             <hr size="2"/>
 			<a href="addWords.jsp">Add Word</a>
-            <form method="post" action="<%= smdconf.getActionsPath() %>/getWords">
+            <form method="post" action="<%= actionsPath %>/getWords">
                 <input type="submit" name="getWords" value="  Get Words  ">
             </form>
             <form method="post" action="main.jsp">

@@ -1,9 +1,7 @@
-<%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 //TODO: 2.medium Делать проверку того, что пользователь залогинен,
 //если нет, то отправлять его куда подальше
 %>
-<jsp:useBean id="smdconf" scope="session" class="org.smdserver.core.SmdConfigBean"/>
 <html>
     <head>
         <title>New Password</title>
@@ -25,7 +23,9 @@
         <br/>
         <fieldset>
             <form method="post" 
-			   action="<%= smdconf.getActionsPath() %>/setPassword?redirectSuccess=../profile.jsp&redirectFailure=../setPassword.jsp">
+			   action="<%=
+			org.smdserver.core.SmdConfigSingleton.getInstance().getActionsPath()
+		%>/setPassword?redirectSuccess=../profile.jsp&redirectFailure=../setPassword.jsp">
                 <tr>
                         <td>Password:</td>
                         <td><input  type="password" size="30"

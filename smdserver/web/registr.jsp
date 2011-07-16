@@ -1,5 +1,3 @@
-<%@ page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="smdconf" scope="session" class="org.smdserver.core.SmdConfigBean"/>
 <html>
     <head>
         <title>Registr</title>
@@ -21,7 +19,9 @@
         <br/>
         <br/>
         <fieldset>
-            <form method="post" action="<%= smdconf.getActionsPath() %>/registr?redirectSuccess=../main.jsp&redirectFailure=../registr.jsp">
+            <form method="post" action="<%=
+			org.smdserver.core.SmdConfigSingleton.getInstance().getActionsPath()
+		%>/registr?redirectSuccess=../main.jsp&redirectFailure=../registr.jsp">
                 <table>
                     <tr>
                         <td>Login:</td>

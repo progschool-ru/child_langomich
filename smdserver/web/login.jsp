@@ -1,8 +1,6 @@
-<%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 //TODO: 2.medium. Если пользователь залогинен, то отправлять его на главную
 %>
-<jsp:useBean id="smdconf" scope="session" class="org.smdserver.core.SmdConfigBean"/>
 <html>
     <head>
         <title>Login</title>
@@ -20,25 +18,6 @@
             <h2>Login</h2>
 			<a href="main.jsp">Main</a>
             <hr size="2"/>
-            <br/>
-            <br/>
-            <br/>
-            <fieldset>
-                <form method="post" action="<%= smdconf.getActionsPath() %>/login?redirectSuccess=../main.jsp&redirectFailure=../login.jsp">
-                    <table>
-                        <tr>
-                            <td>Login:</td>
-                            <td><input type="text" size="30" name="login"></td>
-                        </tr>
-                        <tr>
-                            <td>Password:</td>
-                            <td><input  type="password" size="30" name="password"></td>
-                        </tr>
-                    </table>
-                    <br/>
-                    <input type="submit" name="Login" value="  Login  ">
-                </form>
-				<a href="registr.jsp">Create account</a>
-            </fieldset>
+ <%@ include file="templates/loginTpl.jsp" %>
     </body>
 </html>

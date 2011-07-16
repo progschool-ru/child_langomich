@@ -1,10 +1,8 @@
 <%@ page import="org.smdserver.words.Language" %>
-<%@ page contentType="text/html; charset=utf8" pageEncoding="UTF-8"%>
 <%
 //TODO: 2.medium Делать проверку того, что пользователь залогинен,
 //если нет, то отправлять его куда подальше
 %>
-<jsp:useBean id="smdconf" scope="session" class="org.smdserver.core.SmdConfigBean"/>
 <% String basePath = request.getContextPath(); %>
 <html>
     <head>
@@ -45,7 +43,9 @@
         <h2>AddWords - <%=session.getAttribute("currentLogin")%></h2>
 		<a href="main.jsp">Main</a>
             <hr size="2"/>
-            <form method="post" action="<%= smdconf.getActionsPath() %>/addWords?redirectSuccess=../main.jsp&redirectFailure=../addWords.jsp">
+            <form method="post" action="<%=
+			org.smdserver.core.SmdConfigSingleton.getInstance().getActionsPath()
+		%>/addWords?redirectSuccess=../main.jsp&redirectFailure=../addWords.jsp">
                 <input type="hidden" name="data">
                 <fieldset>
                     <table width="50%">

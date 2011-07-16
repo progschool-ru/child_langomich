@@ -7,9 +7,9 @@ import java.util.ResourceBundle;
  * There are a number of pages, that's why,
  * we want to have quick access to configuration.
  *
- * TODO: (3.low) Find way to include this bean to all JSP pages automatically.
+ * TODO: (3.low) Find way to avoid singleton here.
  */
-public class SmdConfigBean implements ISmdConfig
+public class SmdConfigSingleton implements ISmdConfig
 {
 	public static final String CONFIG_RESOURCE   = "org.smdserver.config";
 
@@ -20,9 +20,18 @@ public class SmdConfigBean implements ISmdConfig
 
 	private ResourceBundle bundle;
 
-	public SmdConfigBean()
+	private SmdConfigSingleton()
 	{
 		bundle = ResourceBundle.getBundle(CONFIG_RESOURCE);
+	}
+
+	public static ISmdConfig getInstance()
+	{
+		if(instance == null)
+		{
+			instance = new SmdConfigSingleton();
+		}
+		return instance;
 	}
 
 	public String getWebCharset()
