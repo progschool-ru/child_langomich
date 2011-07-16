@@ -2,6 +2,8 @@ import javax.microedition.io.*;
 import java.io.*;
 import java.util.Date;
 import org.json.me.*;
+import com.ccg.util.JavaString;
+
 
 public class Timing extends Thread
 {
@@ -34,7 +36,7 @@ public class Timing extends Thread
             {
                 hc = (HttpConnection)Connector.open("http://"+settings.getURL() + ACTION_PATH + "/mobileLogin");
                 hc.setRequestMethod(HttpConnection.POST);
-                hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
                 query = "login="+settings.getLogin()+"&password="+settings.getPassword()+"";
                 os = hc.openOutputStream();
@@ -45,10 +47,10 @@ public class Timing extends Thread
 
                 hc = (HttpConnection)Connector.open("http://"+settings.getURL() + ACTION_PATH + "/addWords");
                 hc.setRequestMethod(HttpConnection.POST);
-                hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
                 hc.setRequestProperty("Cookie", c);
 
-                query = "data="+getData().toString();
+                query = "data="+getData();
 
                 os = hc.openOutputStream();
                 os.write(query.getBytes());
@@ -59,7 +61,8 @@ public class Timing extends Thread
                 byte[] buff = new byte[length];
                 is.read(buff);
                 is.close();
-                text = "success - " + setData(new String(buff));
+
+                text = "success - " + setData(JavaString.decode(new String(buff)));
                 settings.setNumberOfTiming(settings.getNumberOfTiming()+1);
                 settings.setLastTiming(new Date().getTime());
                 settings.setText(text);
@@ -74,7 +77,7 @@ public class Timing extends Thread
     {
         return text;
     }
-    private JSONObject getData(){
+    private String getData(){
         JSONObject main = new JSONObject();
         try
         {
@@ -102,14 +105,13 @@ public class Timing extends Thread
             main.put("numberOfTiming", settings.getNumberOfTiming());
         }
         catch(JSONException e){}
-        return main;
+        return JavaString.encode(main.toString());
     }
     private String setData(String data){
         try
         {
             JSONObject json = new JSONObject(data);
             JSONArray JSONLanguages = json.getJSONArray("languages");
-            System.out.println(JSONLanguages.length());
             for(int i = 0; i < JSONLanguages.length();i++)
             {
                 JSONObject JSONLanguage = JSONLanguages.getJSONObject(i);

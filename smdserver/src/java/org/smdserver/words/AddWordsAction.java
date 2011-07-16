@@ -39,6 +39,7 @@ public class AddWordsAction extends CheckLoginAction
 					languages = storage.getCopyUserWords(getUser().getUserId(), lastModified);
 
 				setAnswerParam(ActionParams.LANGUAGES, languages);
+				setAnswerParam("mobile", "true");
 			}
 
 			List<Language> languages = parseJSON(json.getJSONArray(ActionParams.LANGUAGES));

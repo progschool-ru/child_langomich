@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import static org.smdserver.actionssystem.ActionParams.*;
+import com.ccg.util.JavaString;
 
 public abstract class Action implements IAction
 {
@@ -47,7 +48,16 @@ public abstract class Action implements IAction
 				JSONObject object = new JSONObject(map);
 
 				PrintWriter writer = response.getWriter();
-				writer.println(object.toString());
+				try
+				{
+					if(map.get("mobile").toString().equals("true")){
+						writer.println(JavaString.encode(object.toString()));
+					}
+				}
+				catch(Exception e)
+				{
+					writer.println(object.toString());
+				}
 				writer.close();
 			}
 		}
