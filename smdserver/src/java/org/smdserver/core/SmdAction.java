@@ -16,4 +16,10 @@ public abstract class SmdAction extends Action implements ISmdAction
 	{
 		return servletContext;
 	}
+
+	@Override
+	protected void log(String message)
+	{
+		getServletContext().log(message);
+	}
 }

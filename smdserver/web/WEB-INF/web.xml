@@ -25,15 +25,6 @@
 		<role-name>NOSOUPFORYOU</role-name>
 	</security-role>
 
-    <!-- First servlet example. I's a simplies servlet -->
-    <servlet>
-        <servlet-name>first</servlet-name>
-        <servlet-class>org.smdserver.First</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>first</servlet-name>
-        <url-pattern>/first</url-pattern>
-    </servlet-mapping>
     <!-- Main Smart Dictionary servlet. -->
     <servlet>
         <servlet-name>smd</servlet-name>

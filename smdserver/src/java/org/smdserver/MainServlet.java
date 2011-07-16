@@ -1,5 +1,6 @@
 package org.smdserver;
 
+import org.smdserver.core.NullAction;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -7,7 +8,6 @@ import org.smdserver.actionssystem.IActionsFactory;
 import org.smdserver.core.ISmdServletContext;
 import org.smdserver.actionssystem.SmdServlet;
 import org.smdserver.core.SmdServletContext;
-import org.smdserver.auth.EnterAction;
 import org.smdserver.auth.LoginAction;
 import org.smdserver.auth.MobileLoginAction;
 import org.smdserver.auth.LogoutAction;
@@ -27,17 +27,18 @@ public class MainServlet extends SmdServlet
 	private static final String CONFIG_RESOURCE = SmdConfigBean.CONFIG_RESOURCE;
 	private static final String USERS_STORAGE_PATH_KEY = "path.users.storage";
 	private static final String WORDS_STORAGE_PATH_KEY = "path.words.storageDir";
+	private static final String DEFAULT_ACTION = "default";
 
-	protected Class getDefaultActionClass ()
+	protected String getDefaultActionName ()
 	{
-		return FirstAction.class;
+		return DEFAULT_ACTION;
 	}
 
 	protected Map<String, Class> getActionsClasses ()
 	{
 		Map<String, Class> map = new HashMap<String, Class>();
 
-		map.put("enter", EnterAction.class);
+		map.put(DEFAULT_ACTION, NullAction.class);
 		map.put("setPassword", SetPasswordAction.class);
 		map.put("login", LoginAction.class);
 		map.put("mobileLogin", MobileLoginAction.class);

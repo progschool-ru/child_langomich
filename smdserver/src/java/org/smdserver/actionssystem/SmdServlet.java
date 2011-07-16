@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class SmdServlet extends HttpServlet
 {
 	private IActionsFactory factory;
-	private Class defaultActionClass;
+	private String defaultActionName;
 	
-	abstract protected Class getDefaultActionClass ();
+	abstract protected String getDefaultActionName ();
 	abstract protected Map<String, Class> getActionsClasses ();
 	abstract protected IActionsFactory createActionsFactory ();
 
@@ -24,7 +24,7 @@ public abstract class SmdServlet extends HttpServlet
 		factory = createActionsFactory();
 		factory.registerMap(getActionsClasses());
 
-		defaultActionClass = getDefaultActionClass();
+		defaultActionName = getDefaultActionName();
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public abstract class SmdServlet extends HttpServlet
 			{
 				try
 				{
-					action = (IAction) defaultActionClass.newInstance();
+					action = factory.createAction(defaultActionName);
 				}
 				catch(Exception e)
 				{
