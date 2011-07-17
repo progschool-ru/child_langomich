@@ -44,7 +44,7 @@
 		<a href="main.jsp">Main</a>
             <hr size="2"/>
             <form method="post" action="<%=
-			org.smdserver.core.SmdConfigSingleton.getInstance().getActionsPath()
+			org.smdserver.core.SmdConfigBean.getInstance().getActionsPath()
 		%>/addWords?redirectSuccess=../main.jsp&redirectFailure=../addWords.jsp">
                 <input type="hidden" name="data">
                 <fieldset>

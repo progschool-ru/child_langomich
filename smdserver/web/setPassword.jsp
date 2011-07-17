@@ -24,7 +24,7 @@
         <fieldset>
             <form method="post" 
 			   action="<%=
-			org.smdserver.core.SmdConfigSingleton.getInstance().getActionsPath()
+			org.smdserver.core.SmdConfigBean.getInstance().getActionsPath()
 		%>/setPassword?redirectSuccess=../profile.jsp&redirectFailure=../setPassword.jsp">
                 <tr>
                         <td>Password:</td>

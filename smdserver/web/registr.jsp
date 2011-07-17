@@ -20,7 +20,7 @@
         <br/>
         <fieldset>
             <form method="post" action="<%=
-			org.smdserver.core.SmdConfigSingleton.getInstance().getActionsPath()
+			org.smdserver.core.SmdConfigBean.getInstance().getActionsPath()
 		%>/registr?redirectSuccess=../main.jsp&redirectFailure=../registr.jsp">
                 <table>
                     <tr>

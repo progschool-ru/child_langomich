@@ -7,9 +7,9 @@ import java.util.ResourceBundle;
  * There are a number of pages, that's why,
  * we want to have quick access to configuration.
  *
- * TODO: (3.low) Find way to avoid singleton here.
+ * TODO: (3.low) Find way to use standard servlet configs.
  */
-public class SmdConfigSingleton implements ISmdConfig
+public class SmdConfigBean implements ISmdConfig
 {
 	public static final String CONFIG_RESOURCE   = "org.smdserver.config";
 
@@ -20,7 +20,7 @@ public class SmdConfigSingleton implements ISmdConfig
 
 	private ResourceBundle bundle;
 
-	private SmdConfigSingleton()
+	public SmdConfigBean()
 	{
 		bundle = ResourceBundle.getBundle(CONFIG_RESOURCE);
 	}
@@ -29,7 +29,7 @@ public class SmdConfigSingleton implements ISmdConfig
 	{
 		if(instance == null)
 		{
-			instance = new SmdConfigSingleton();
+			instance = new SmdConfigBean();
 		}
 		return instance;
 	}

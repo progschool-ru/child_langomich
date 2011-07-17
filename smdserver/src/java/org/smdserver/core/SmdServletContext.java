@@ -37,6 +37,6 @@ public class SmdServletContext implements ISmdServletContext
 
 	public ISmdConfig getConfig()
 	{
-		return SmdConfigSingleton.getInstance();
+		return SmdConfigBean.getInstance();
 	}
 }
