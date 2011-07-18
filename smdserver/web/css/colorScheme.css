@@ -1,0 +1,15 @@
+a:link { color: #008; }
+a:visited { color: #308; }
+
+/*** Header ***/
+.header
+{
+	background-color: silver;
+}
+
+.header .menu .current
+{
+	background-color: white;
+}
+
+/*  end of Header */

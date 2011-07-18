@@ -1,6 +1,78 @@
 @import 'cssReset.css';
-div
+@import 'colorScheme.css';
+html
 {
-	margin:3px;
-	border:1px solid black;
+	font-family:  Helvetica, sans-serif;
 }
+
+a { text-decoration: underline; }
+
+
+/******** Header *********/
+.header .menu,
+.header li
+{ float: left; }
+.header .user
+{ float: right; }
+.header:after
+{
+	display: block;
+	content: "";
+	clear: both;
+}
+
+.header
+{
+	padding: .5em .5em 0;
+}
+
+/*** menu ***/
+
+.header .menu li
+{
+	font-size: xx-large;
+}
+
+.header .menu li *
+{
+	display: block;
+	padding: .4em 1.5em;
+}
+
+.header .menu .mainPage > *
+{
+	background-image: url("../img/logo.png");
+	background-position: 0px -2px;
+	background-repeat: no-repeat;
+	padding-left: 90px;
+}
+/*** end of menu ***/
+
+/*** user ***/
+.header .user li
+{
+	margin: 0px .5em;
+}
+.header .user li > *
+{
+	display: block;
+}
+.header .user .profile > *
+{
+	background-image: url("../img/gear.png");
+	background-position: top right;
+	background-repeat: no-repeat;
+	padding: 6px 35px 0px 0px;
+	height: 26px;
+}
+.header .user .logout a
+{
+	overflow: hidden;
+	background-image: url("../img/logout.png");
+	background-repeat: no-repeat;
+	width: 70px;
+	height: 32px;
+	color: rgba(0,0,0,0);
+}
+/*** end of user ***/
+/******** end of Header *********/

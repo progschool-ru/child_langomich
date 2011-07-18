@@ -15,12 +15,12 @@
 		<smd:smdHTML>
 			<div class="header">
 				<ul class="menu">
-					<li><smd:ahref text="Play" url="main.jsp"/></li>
+					<li class="mainPage"><smd:ahref text="Play" url="main.jsp"/></li>
 					<li><span class="current">AllWords</span></li>
 				</ul>
 				<ul class="user">
-					<li><smd:ahref text='${sessionScope["currentLogin"]}' url="profile.jsp"/></li>
-					<li><smd:ahref text="Logout" url="${smdconfig.actionsPath}/logout?redirect=../main.jsp"/></li>
+					<li class="profile"><smd:ahref text='${sessionScope["currentLogin"]}' url="profile.jsp"/></li>
+					<li class="logout"><smd:ahref text="Logout" url="${smdconfig.actionsPath}/logout?redirect=../main.jsp"/></li>
 				</ul>
 			</div>
 			<div class="main">
