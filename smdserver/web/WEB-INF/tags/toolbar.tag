@@ -1,29 +1,20 @@
 <%@ tag import="org.smdserver.core.SmdConfigBean" %>
+<%@ tag import="org.smdserver.jsp.*" %>
 <%@ tag pageEncoding="UTF-8" %>
 <%-- TODO: (2.medium) Объединить код с menu.tag --%>
 <%!
-	private class Link {
-		public String url;
-		public String text;
-		public Link(String url, String text)
-		{
-			this.url = url;
-			this.text = text;
-		}
-	}
-
 	private String actionsPath = SmdConfigBean.getInstance().getActionsPath();
 
-	private Link [] links = {
-		new Link("addWords.jsp", "Add Word"),
-		new Link(actionsPath + "/getWords", "Get Words JSON"),
-		new Link("javascript:location.reload(true)", "Refresh"),
+	private ILink [] links = {
+		new SimpleLink("addWords.jsp", "Add Word"),
+		new SimpleLink(actionsPath + "/getWords", "Get Words JSON"),
+		new SimpleLink("javascript:location.reload(true)", "Refresh"),
 	};
 %>
 <div class="menu">
 	<ul>
-		<% for(Link link : links) { %>
-			<li><a href="<%= link.url %>"><%= link.text %></a></li>
+		<% for(ILink link : links) { %>
+			<li><a href="<%= link.getURL() %>"><%= link.getText() %></a></li>
 		<% } %>
 	</ul>
 </div>

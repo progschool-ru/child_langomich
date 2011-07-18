@@ -1,0 +1,6 @@
+@import 'cssReset.css';
+div
+{
+	margin:3px;
+	border:1px solid black;
+}

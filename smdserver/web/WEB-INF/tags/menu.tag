@@ -1,27 +1,18 @@
 <%@ tag import="org.smdserver.core.SmdConfigBean" %>
+<%@ tag import="org.smdserver.jsp.*" %>
 <%!
-	private class Link {
-		public String url;
-		public String text;
-		public Link(String url, String text)
-		{
-			this.url = url;
-			this.text = text;
-		}
-	}
-
 	private String actionsPath = SmdConfigBean.getInstance().getActionsPath();
 
-	private Link [] links = {
-		new Link("main.jsp", "Main"),
-		new Link("profile.jsp", "Profile"),
-		new Link(actionsPath + "/logout?redirect=../main.jsp", "Logout")
+	private ILink [] links = {
+		new SimpleLink("main.jsp", "Main"),
+		new SimpleLink("profile.jsp", "Profile"),
+		new SimpleLink(actionsPath + "/logout?redirect=../main.jsp", "Logout")
 	};
 %>
 <div class="menu">
 	<ul>
-		<% for(Link link : links) { %>
-			<li><a href="<%= link.url %>"><%= link.text %></a></li>
+		<% for(ILink link : links) { %>
+			<li><a href="<%= link.getURL() %>"><%= link.getText() %></a></li>
 		<% } %>
 	</ul>
 </div>
