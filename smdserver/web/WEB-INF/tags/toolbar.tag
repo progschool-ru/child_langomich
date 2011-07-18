@@ -12,6 +12,7 @@
 	};
 %>
 <div class="menu">
+	<h3>Toolbar</h3>
 	<ul>
 		<% for(ILink link : links) { %>
 			<li><a href="<%= link.getURL() %>"><%= link.getText() %></a></li>

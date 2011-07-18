@@ -7,6 +7,7 @@ html
 
 a { text-decoration: underline; }
 
+div { position: relative; }
 
 /******** Header *********/
 .header .menu,
@@ -63,7 +64,7 @@ a { text-decoration: underline; }
 	background-position: top right;
 	background-repeat: no-repeat;
 	padding: 6px 35px 0px 0px;
-	height: 26px;
+	height: 28px;
 }
 .header .user .logout a
 {
@@ -73,6 +74,114 @@ a { text-decoration: underline; }
 	width: 70px;
 	height: 32px;
 	color: rgba(0,0,0,0);
+	border: 1px white solid;
 }
 /*** end of user ***/
 /******** end of Header *********/
+
+/******** Main ***********/
+.main
+{
+	margin: 2em;
+	position: relative;
+}
+/******** end of Main ********/
+
+
+/******** Words ***********/
+table.words
+{
+}
+table.words td, table.words th
+{
+	border: 1px solid;
+	padding: .5em;
+}
+table.words caption
+{
+	display: none;
+}
+/******** end of Words *********/
+
+/******** Side Panel *********/
+.toolbar
+{
+	position: absolute;
+	top: -1em;
+	right: 0;
+	width: 30%;
+	padding: 1em;
+	-webkit-border-radius: 1em;
+	-moz-border-radius: 1em;
+	border-radius: 1em;
+}
+.toolbar h3
+{
+	margin: 0 0 1em;
+}
+
+.toolbar .menu li
+{
+	margin: .5em 0 0;
+}
+/******** end of Side Panel **********/
+
+/******** Footer *********/
+.footer
+{
+	border-top: solid;
+	margin: 2em 1em;
+	padding-top: .5em;
+	text-align: center;
+}
+
+.footer *
+{
+	font-size: x-small;
+}
+
+.footer .menu:after
+{
+	display: block;
+	content: "";
+	clear: both;
+}
+
+.footer .menu
+{
+	float: right;
+}
+
+.footer .menu li
+{
+	float: left;
+	margin: .5em 0;
+	padding: 0 1em;
+	border-left: solid 1px;
+}
+.footer .menu li:first-child
+{
+	border-left: none;
+}
+
+.footer p
+{
+	float: left;
+	clear: left;
+	margin: .5em 0;
+}
+
+.footer p.output-date
+{
+	display: inline-block;
+	float: none;
+	clear: none;
+	text-align: center;
+	background-image: url("../img/progschoolLogo.png");
+	background-repeat: no-repeat;
+	background-position: top left;
+	background-size: 2em 2em;
+	height: 1.3em;
+	padding: .7em 0 0 2em;
+}
+/******** end of Footer *********/

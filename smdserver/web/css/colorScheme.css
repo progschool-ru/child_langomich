@@ -13,3 +13,10 @@ a:visited { color: #308; }
 }
 
 /*  end of Header */
+
+/******** Side Panel *********/
+.toolbar
+{
+	background-color: silver;
+}
+/******** end of Side Panel **********/
