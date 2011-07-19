@@ -17,7 +17,7 @@ public class PagesServlet extends HttpServlet
 	private static final String MAIN_TEMPLATE_KEY = "mainTemplate";
 	private static final String TITLE_KEY = "title";
 
-	private static final String NEEDS_AUTHORITY_KEY = ".needsAuthority";
+	private static final String NEEDS_AUTHORITY_KEY = "needsAuthority";
 
 	@Override
 	public void service (HttpServletRequest request, HttpServletResponse response)
