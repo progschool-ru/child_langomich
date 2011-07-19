@@ -14,9 +14,10 @@ public class PagesServlet extends HttpServlet
 	private static final String LOGIN_PAGE = "login";
 	private static final String PAGE_404 = "words";
 	private static final String PAGES_KEY = "pages.";
-	private static final String MAIN_TEMPLATE_KEY = ".mainTemplate";
+	private static final String MAIN_TEMPLATE_KEY = "mainTemplate";
+	private static final String TITLE_KEY = "title";
+
 	private static final String NEEDS_AUTHORITY_KEY = ".needsAuthority";
-	private static final String MAIN_TEMPLATE_ATTRIBUTE = "mainTemplate";
 
 	@Override
 	public void service (HttpServletRequest request, HttpServletResponse response)
@@ -31,7 +32,7 @@ public class PagesServlet extends HttpServlet
 			return;
 		}
 		
-		String pagePrefix = PAGES_KEY + page;
+		String pagePrefix = PAGES_KEY + page + ".";
 
 		if(!rb.containsKey(pagePrefix + MAIN_TEMPLATE_KEY))
 		{
@@ -46,8 +47,11 @@ public class PagesServlet extends HttpServlet
 		}
 
 		String mainTemplate = rb.getString(pagePrefix + MAIN_TEMPLATE_KEY);
+		request.setAttribute(MAIN_TEMPLATE_KEY, mainTemplate);
+		String title = rb.containsKey(pagePrefix + TITLE_KEY) ? rb.getString(pagePrefix + TITLE_KEY) : null;
+		request.setAttribute(TITLE_KEY, title);
+
 		String url = "/main.jsp";
-		request.setAttribute(MAIN_TEMPLATE_ATTRIBUTE, mainTemplate);
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
 
