@@ -23,7 +23,15 @@ public class PagesServlet extends HttpServlet
 											throws ServletException, IOException
 	{
 		ResourceBundle rb = ResourceBundle.getBundle(SmdConfigBean.CONFIG_RESOURCE);
-		String pagePrefix = PAGES_KEY + getPageName(request);
+		String page = getPageName(request);
+
+		if(page == null)
+		{
+			response.sendRedirect(request.getServletPath().split("/")[2] + "/" + PAGE_404);
+			return;
+		}
+		
+		String pagePrefix = PAGES_KEY + page;
 
 		if(!rb.containsKey(pagePrefix + MAIN_TEMPLATE_KEY))
 		{
