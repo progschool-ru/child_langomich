@@ -4,4 +4,5 @@ public interface ISmdConfig
 {
 	public String getWebCharset();
 	public String getActionsPath();
+	public String getActionsAbsolutePath();
 }

@@ -11,11 +11,12 @@
 		<jsp-property-group>
 			<display-name>allPages</display-name>
 			<url-pattern>/index.jsp</url-pattern>
-            <url-pattern>/templates/loginTpl.jsp</url-pattern>
-            <url-pattern>/setPassword.jsp</url-pattern><url-pattern>/registr.jsp</url-pattern><url-pattern>/profile.jsp</url-pattern>
 			<url-pattern>/addWords.jsp</url-pattern>
 			<url-pattern>/main.jsp</url-pattern>
-			<url-pattern>/login.jsp</url-pattern>
+            <url-pattern>/WEB-INF/templates/login.jsp</url-pattern>
+            <url-pattern>/WEB-INF/templates/profile.jsp</url-pattern>
+            <url-pattern>/WEB-INF/templates/register.jsp</url-pattern>
+            <url-pattern>/WEB-INF/templates/words.jsp</url-pattern>
 			<page-encoding>UTF-8</page-encoding>
 			<trim-directive-whitespaces>true</trim-directive-whitespaces>
 		</jsp-property-group>
@@ -47,5 +48,14 @@
     <servlet-mapping>
         <servlet-name>smd</servlet-name>
         <url-pattern>/servlet/*</url-pattern>
+    </servlet-mapping>
+    <!-- Pages servlet. -->
+    <servlet>
+        <servlet-name>pages</servlet-name>
+        <servlet-class>org.smdserver.PagesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>pages</servlet-name>
+        <url-pattern>/servlet/page/*</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -6,7 +6,7 @@
 	private String actionsPath = SmdConfigBean.getInstance().getActionsPath();
 
 	private ILink [] links = {
-		new SimpleLink("addWords.jsp", "Add Word"),
+		new SimpleLink("../../addWords.jsp", "Add Word"),
 		new SimpleLink(actionsPath + "/getWords", "Get Words JSON"),
 		new SimpleLink("javascript:location.reload(true)", "Refresh"),
 	};

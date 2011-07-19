@@ -1,1 +1,1 @@
-<% response.sendRedirect("main.jsp"); %>
+<% response.sendRedirect("servlet/page/words"); %>

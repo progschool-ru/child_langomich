@@ -15,6 +15,7 @@ public class SmdConfigBean implements ISmdConfig
 
 	private static final String WEB_CHARSET_KEY  = "web.charset";
 	private static final String ACTIONS_PATH_KEY = "path.actions";
+	private static final String ACTIONS_ABSOLUTE_PATH_KEY = "path.actions.absolute";
 
 	private static ISmdConfig instance;
 
@@ -42,5 +43,10 @@ public class SmdConfigBean implements ISmdConfig
 	public String getActionsPath()
 	{
 		return bundle.getString(ACTIONS_PATH_KEY);
+	}
+	
+	public String getActionsAbsolutePath()
+	{
+		return bundle.getString(ACTIONS_ABSOLUTE_PATH_KEY);
 	}
 }

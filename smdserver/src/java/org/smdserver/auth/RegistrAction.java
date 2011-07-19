@@ -23,8 +23,7 @@ public class RegistrAction extends SmdAction
 				setAnswerParam(ActionParams.SUCCESS, success);
 
 				StringBuilder sb = new StringBuilder();
-				sb.append('/');
-				sb.append(getServletContext().getConfig().getActionsPath());
+				sb.append(getServletContext().getConfig().getActionsAbsolutePath());
 				sb.append("/login?login=");
 				sb.append(login);
 				sb.append("&password=");
