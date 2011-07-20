@@ -1,5 +1,4 @@
 <jsp:useBean id="smdconfig" class="org.smdserver.core.SmdConfigBean" scope="application"/>
-<h2>Registr</h2>
 <form method="post" action="${smdconfig.actionsPath}/registr?redirectSuccess=page/words&redirectFailure=page/register">
 	<table>
 		<tr>

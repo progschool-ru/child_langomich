@@ -18,7 +18,7 @@
 		<jsp:doBody/>
 		<div class="footer">
 			<ul class="menu">
-				<li><smd:ahref text="Main"           url="words"/></li>
+				<li><smd:ahref text="Main"           url="smd://page/play"/></li>
 				<li><smd:ahref text="About"          url="http://code.google.com/p/s7smart-dictionary/"/></li>
 				<li><smd:ahref text="Ask a question" url="http://olymp.omich.net/q2a/ask"/></li>
 				<li><smd:ahref text="Downloads"      url="http://code.google.com/p/s7smart-dictionary/downloads/list"/></li>

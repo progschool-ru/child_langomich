@@ -31,6 +31,7 @@ public class PagesServlet extends HttpServlet
 	private static final String MENU_ITEMS_KEY = "items";
 	private static final String URL_KEY = ".url";
 	private static final String TEXT_KEY = ".text";
+	private static final String CURRENT_LINK_KEY = "currentLink";
 
 	@Override
 	public void service (HttpServletRequest request, HttpServletResponse response)
@@ -63,8 +64,9 @@ public class PagesServlet extends HttpServlet
 		request.setAttribute(MAIN_TEMPLATE_KEY, mainTemplate);
 		String title = rb.containsKey(pagePrefix + TITLE_KEY) ? rb.getString(pagePrefix + TITLE_KEY) : null;
 		request.setAttribute(TITLE_KEY, title);
-
 		SmdLink currentLink = new SmdLink("page", page, rb, null);
+		request.setAttribute(CURRENT_LINK_KEY, currentLink);
+		
 		List<ILink> links = createMenu(rb, 
 				      isLoggedIn(request) ? LOGGED_MENU_KEY : ANONYMUS_MENU_KEY,
 					  currentLink);

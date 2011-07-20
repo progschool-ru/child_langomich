@@ -13,4 +13,3 @@
 	<br/>
 	<input type="submit" name="Login" value="  Login  ">
 </form>
-<a href="registr.jsp">Create account</a>
