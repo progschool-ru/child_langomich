@@ -124,7 +124,7 @@ public class Timing extends Thread
                 for(int j = 0; j < words.length();j++)
                 {
                     JSONObject word = words.getJSONObject(j);
-                    dictionary.newRecord(word.getString("original"),word.getString("translation"),word.getInt("rating"),word.getLong("modified"));
+                    dictionary.addRecord(word.getString("original"),word.getString("translation"),word.getInt("rating"),word.getLong("modified"));
                 }
             }
             return  json.get("success").toString();
