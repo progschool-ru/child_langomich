@@ -45,14 +45,17 @@ public class LinkCreator
 
 	private class SmdCreator implements ICreator
 	{
-		public ILink createLink(String url, String text, ResourceBundle rb,
+		public ILink createLink(String internalUrl, String text, ResourceBundle rb,
 				                Map<String, Object> parameters,
 				                SmdLink currentLink,
 				                String basePath)
 		{
-			url = url.substring(6); // Remove "smd://" from url
-			String [] urlParts = url.split("/");
-			return new SmdLink(urlParts[0], urlParts[1], text, rb, parameters,
+			RegularExpression re = new RegularExpression("\\w+://(.*?)/(.*)");
+			Match match = new Match();
+			re.matches(internalUrl, match);
+			String servlet = internalUrl.substring(match.getBeginning(1), match.getEnd(1));
+			String action = internalUrl.substring(match.getBeginning(2));
+			return new SmdLink(servlet, action, text, rb, parameters,
 					           currentLink, basePath);
 		}
 	}

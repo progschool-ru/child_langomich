@@ -5,6 +5,6 @@
 <c:if test='${sessionScope["currentLogin"] != null}'>
 	<ul class="user">
 		<li class="profile"><smd:ahref text='${sessionScope["currentLogin"]}' url="smd://page/profile"/></li>
-		<li class="logout"><smd:ahref text="Logout" url="${smdconfig.actionsPath}/logout?redirect=page/login"/></li>
+		<li class="logout"><smd:ahref text="Logout" url="smd://action/logout" redirect="smd://page/login"/></li>
 	</ul>
 </c:if>

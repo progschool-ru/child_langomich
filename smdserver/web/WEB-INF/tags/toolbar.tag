@@ -1,6 +1,3 @@
-<%@ tag import="org.smdserver.core.SmdConfigBean" %>
-<%@ tag import="org.smdserver.jsp.*" %>
-<%@ tag pageEncoding="UTF-8" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="smd" %>
 <div class="menu">
 	<h3>Toolbar</h3>

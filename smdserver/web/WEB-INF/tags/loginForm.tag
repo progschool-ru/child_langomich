@@ -1,5 +1,8 @@
-<%@attribute name="loginAction" required="true" rtexprvalue="true"%>
-<form method="post" action="${loginAction}">
+<%@ taglib tagdir="/WEB-INF/tags" prefix="smd" %>
+<form method="post" action="<smd:ahref 
+				url="smd://action/login" text=""
+				redirect="smd://page/play"
+				mode="url"/>">
 	<table>
 		<tr>
 			<td>Login:</td>
@@ -11,5 +14,5 @@
 		</tr>
 	</table>
 	<br/>
-	<input type="submit" name="Login" value="  Login  ">
+	<input type="submit" value="Login">
 </form>

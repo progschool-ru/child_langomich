@@ -1,4 +1,4 @@
-package org.smdserver;
+package org.smdserver.jsp;
 
 import java.io.IOException;
 import java.util.ArrayList;

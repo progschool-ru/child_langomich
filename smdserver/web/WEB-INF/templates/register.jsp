@@ -1,5 +1,8 @@
-<jsp:useBean id="smdconfig" class="org.smdserver.core.SmdConfigBean" scope="application"/>
-<form method="post" action="${smdconfig.actionsPath}/registr?redirectSuccess=page/words&redirectFailure=page/register">
+<%@ taglib tagdir="/WEB-INF/tags" prefix="smd" %>
+<form method="post" action="<smd:ahref url="smd://action/registr"
+		        redirectSuccess="smd://page/words"
+				redirectFailure="smd://page/register"
+				text="" mode="url"/>">
 	<table>
 		<tr>
 			<td>Login:</td>
@@ -13,5 +16,5 @@
 		</tr>
 	</table>
 	<br/>
-	<input type="submit" name="registr" value="  Registr  ">
+	<input type="submit" value="Register">
 </form>

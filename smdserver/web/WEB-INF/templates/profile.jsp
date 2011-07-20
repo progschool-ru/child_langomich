@@ -1,6 +1,7 @@
-<jsp:useBean id="smdconfig" class="org.smdserver.core.SmdConfigBean" scope="application"/>
-<form method="post" 
-   action="${smdconfig.actionsPath}/setPassword?redirect=page/profile">
+<%@ taglib tagdir="/WEB-INF/tags" prefix="smd" %>
+<form method="post"
+	  action="<smd:ahref url="smd://action/setPassword" text=""
+				 redirect="smd://page/profile" mode="url"/>">
 	<table>
 	<tr>
 			<td>Password:</td>
@@ -9,5 +10,5 @@
 	</tr>
 	</table>
 	<br/>
-	<input type="submit" name="ok" value="OK">
+	<input type="submit" value="OK">
 </form>

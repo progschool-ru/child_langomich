@@ -52,7 +52,7 @@
     <!-- Pages servlet. -->
     <servlet>
         <servlet-name>pages</servlet-name>
-        <servlet-class>org.smdserver.PagesServlet</servlet-class>
+        <servlet-class>org.smdserver.jsp.PagesServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>pages</servlet-name>
