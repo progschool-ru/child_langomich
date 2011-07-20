@@ -1,6 +1,8 @@
 package org.smdserver;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -8,16 +10,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.smdserver.actionssystem.SessionKeys;
 import org.smdserver.core.SmdConfigBean;
+import org.smdserver.jsp.ILink;
+import org.smdserver.jsp.SimpleLink;
 
 public class PagesServlet extends HttpServlet
 {
 	private static final String LOGIN_PAGE = "login";
 	private static final String PAGE_404 = "words";
-	private static final String PAGES_KEY = "pages.";
-	private static final String MAIN_TEMPLATE_KEY = "mainTemplate";
-	private static final String TITLE_KEY = "title";
 
+	private static final String MENU_PREFIX = "menu.";
+	private static final String PAGES_PREFIX = "pages.";
+
+	private static final String MAIN_TEMPLATE_KEY = "mainTemplate";
+	private static final String MENU_KEY = "menu";
 	private static final String NEEDS_AUTHORITY_KEY = "needsAuthority";
+	private static final String TITLE_KEY = "title";
+	private static final String LOGGED_MENU_KEY = "main";
+	private static final String ANONYMUS_MENU_KEY = "anonymus";
+	private static final String MENU_ITEMS_KEY = "items";
+	private static final String URL_KEY = ".url";
+	private static final String TEXT_KEY = ".text";
 
 	@Override
 	public void service (HttpServletRequest request, HttpServletResponse response)
@@ -32,7 +44,7 @@ public class PagesServlet extends HttpServlet
 			return;
 		}
 		
-		String pagePrefix = PAGES_KEY + page + ".";
+		String pagePrefix = PAGES_PREFIX + page + ".";
 
 		if(!rb.containsKey(pagePrefix + MAIN_TEMPLATE_KEY))
 		{
@@ -51,6 +63,9 @@ public class PagesServlet extends HttpServlet
 		String title = rb.containsKey(pagePrefix + TITLE_KEY) ? rb.getString(pagePrefix + TITLE_KEY) : null;
 		request.setAttribute(TITLE_KEY, title);
 
+		List<ILink> links = createMenu(rb, isLoggedIn(request) ? LOGGED_MENU_KEY : ANONYMUS_MENU_KEY);
+		request.setAttribute(MENU_KEY, links);
+
 		String url = "/main.jsp";
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
@@ -68,5 +83,20 @@ public class PagesServlet extends HttpServlet
 	{
 		String login = (String)request.getSession().getAttribute(SessionKeys.CURRENT_LOGIN);
 		return login != null;
+	}
+
+	private List<ILink> createMenu(ResourceBundle rb, String menu)
+	{
+		String menuPrefix = MENU_PREFIX + menu + ".";
+		String [] items = rb.getString(menuPrefix + MENU_ITEMS_KEY).split(",");
+		List<ILink> list = new ArrayList<ILink>();
+
+		for(String item : items)
+		{
+			String url = rb.getString(menuPrefix + item + URL_KEY);
+			String text = rb.getString(menuPrefix + item + TEXT_KEY);
+			list.add(new SimpleLink(url, text));
+		}
+		return list;
 	}
 }

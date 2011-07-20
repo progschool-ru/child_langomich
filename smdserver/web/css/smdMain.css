@@ -40,7 +40,7 @@ div { position: relative; }
 	padding: .4em 1.5em;
 }
 
-.header .menu .mainPage > *
+.header .menu li:first-child > *
 {
 	background-image: url("../img/logo.png");
 	background-position: 0px -2px;
