@@ -20,4 +20,9 @@ public class SimpleLink implements ILink
 		{
 			return text;
 		}
+
+		public String getHTML()
+		{
+			return String.format("<a href=\"%1$s\">%2$s</a>", url, text);
+		}
 }

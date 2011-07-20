@@ -10,6 +10,6 @@
 
 <ul${classAttr}>
 	<c:forEach var="item" items="${links}">
-		<li><smd:ahref url="${item.URL}" text="${item.text}"/></li>
+		<li>${item.HTML}</li>
 	</c:forEach>
 </ul>

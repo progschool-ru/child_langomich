@@ -1,5 +1,11 @@
 @import 'cssReset.css';
 @import 'colorScheme.css';
+
+/*
+TODO: (2.medium) fix this http://screencast.com/t/yqUwB8jJsN
+and this http://screencast.com/t/8hPXxn5t
+and this http://screencast.com/t/8hPXxn5t set min-width
+*/
 html
 {
 	font-family:  Helvetica, sans-serif;

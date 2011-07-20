@@ -11,7 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.smdserver.actionssystem.SessionKeys;
 import org.smdserver.core.SmdConfigBean;
 import org.smdserver.jsp.ILink;
-import org.smdserver.jsp.SimpleLink;
+import org.smdserver.jsp.LinkCreator;
+import org.smdserver.jsp.SmdLink;
 
 public class PagesServlet extends HttpServlet
 {
@@ -63,7 +64,10 @@ public class PagesServlet extends HttpServlet
 		String title = rb.containsKey(pagePrefix + TITLE_KEY) ? rb.getString(pagePrefix + TITLE_KEY) : null;
 		request.setAttribute(TITLE_KEY, title);
 
-		List<ILink> links = createMenu(rb, isLoggedIn(request) ? LOGGED_MENU_KEY : ANONYMUS_MENU_KEY);
+		SmdLink currentLink = new SmdLink("page", page, rb, null);
+		List<ILink> links = createMenu(rb, 
+				      isLoggedIn(request) ? LOGGED_MENU_KEY : ANONYMUS_MENU_KEY,
+					  currentLink);
 		request.setAttribute(MENU_KEY, links);
 
 		String url = "/main.jsp";
@@ -85,17 +89,19 @@ public class PagesServlet extends HttpServlet
 		return login != null;
 	}
 
-	private List<ILink> createMenu(ResourceBundle rb, String menu)
+	private List<ILink> createMenu(ResourceBundle rb, String menu, SmdLink currentLink)
 	{
 		String menuPrefix = MENU_PREFIX + menu + ".";
 		String [] items = rb.getString(menuPrefix + MENU_ITEMS_KEY).split(",");
 		List<ILink> list = new ArrayList<ILink>();
+		LinkCreator creator = new LinkCreator();
+		String basePath = getServletContext().getContextPath();
 
 		for(String item : items)
 		{
 			String url = rb.getString(menuPrefix + item + URL_KEY);
 			String text = rb.getString(menuPrefix + item + TEXT_KEY);
-			list.add(new SimpleLink(url, text));
+			list.add(creator.createLink(url, text, rb, currentLink, basePath));
 		}
 		return list;
 	}

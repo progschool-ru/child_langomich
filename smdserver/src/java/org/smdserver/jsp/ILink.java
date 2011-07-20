@@ -4,4 +4,5 @@ public interface ILink
 {
 	public String getURL();
 	public String getText();
+	public String getHTML();
 }
