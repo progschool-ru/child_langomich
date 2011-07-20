@@ -126,6 +126,27 @@ public class Dictionary
 		}
             return getNumRecords();
         }
+        public void addRecord(String original, String translation, int rating)
+	{
+            int id = getId(original);
+            if(id != 0)
+                setRecord(original, translation, rating, id);
+            else
+                newRecord(original, translation, rating);
+        }
+        public void addRecord(String original, String translation, int rating, long lastModified)
+	{
+            int id = getId(original);
+            if(id != 0) 
+            {
+                if(lastModified > getLastModified(id))
+                {
+                    setRecord(original, translation, rating, id, lastModified);
+                }
+            }
+            else
+                newRecord(original, translation, rating, lastModified);
+        }
         public void newRecord(String original, String translation, int rating)
 	{
 		try{
@@ -179,6 +200,23 @@ public class Dictionary
 		catch(IOException ioe){}
 		re.rebuild();
         }
+        private void setRecord(String original, String translation, int rating, int id, long lastModified)
+	{
+		try{
+			writer.writeUTF(original);
+			writer.writeUTF(translation);
+			writer.writeUTF(Integer.toString(rating));
+                        writer.writeUTF(language);
+                        writer.writeUTF(Long.toString(lastModified));
+			byte[] data = byteOutputStream.toByteArray();
+			rs.setRecord(id, data, 0, data.length );
+			writer.flush();
+			byteOutputStream.reset();
+		}
+		catch( RecordStoreException e ){}
+		catch(IOException ioe){}
+		re.rebuild();
+        }
         public void deleteRecord(int n)
 	{
 		int id = getId(n);
@@ -215,6 +253,20 @@ public class Dictionary
                     return false;
                 }
         }
+        public int getId(String original)
+	{
+		int id = 0;
+                if(getColumn(ORIGINAL) == null)     
+                    return id;
+                String [] originals = getColumn(ORIGINAL);
+		for(int i = 0;i < originals.length; i++ ) {
+                    if(originals[i].equals(original)){
+                        id = getId(i+1);
+                        break;
+                    }
+		}
+		return id;
+        }
         public int getId(int row)
 	{
 		int id = 0;
@@ -226,6 +278,27 @@ public class Dictionary
 		}
 		re.rebuild();
 		return id;
+        }
+        private long getLastModified(int id)
+        {
+            long lastModified = 0;
+            if (getNumRecords() != 0)
+            {
+                String record = "0";
+                try {
+
+                        byte[] data = new byte[rs.getRecordSize(id)];
+                        data = rs.getRecord(id);
+                        byteInputStream = new ByteArrayInputStream(data);
+                        reader = new DataInputStream(byteInputStream);
+                        for(int j = 0; j < LAST_TIMING; j++)
+                            record = reader.readUTF();
+                }
+                catch(RecordStoreException e){}
+                catch(IOException ioe){}
+                lastModified = Long.parseLong(record);
+            }
+            return lastModified;
         }
         public int getNumRecords() {
                 return re.numRecords();

@@ -113,7 +113,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		}
                 if(c == Save)
 		{
-                        dictionary.newRecord(tfRus.getString(), tfEng.getString(), mycg.getSelectedIndex()*2);
+                        dictionary.addRecord(tfRus.getString(), tfEng.getString(), mycg.getSelectedIndex()*2);
 			Display.getDisplay(this).setCurrent(mainList);
 		}
 		if (c == choice)
@@ -321,7 +321,6 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private void settingsFormReset()
 	{
                 settingsForm.deleteAll(); 
-                settingsForm.append(test);
                 settingsForm.append(wordsNum);
                 wns = new StringItem(Integer.toString(settings.getNumberOfWords()),"");
                 settingsForm.append(wns);   
