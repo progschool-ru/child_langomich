@@ -3,21 +3,30 @@ package org.smdserver.jsp;
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 public class LinkCreator
 {
-	public ILink createLink(String internalUrl, String text, ResourceBundle rb,
-			                SmdLink currentLink,
-			                String basePath)
+	public IUrl createUrl(String internalUrl, SmdUrl currentLink, String basePath)
 	{
-		return createLink(internalUrl, text, rb, null, currentLink, basePath);
+		ICreator creator = getCreator(internalUrl);
+		return creator.createUrl(internalUrl, currentLink, basePath);
 	}
 
-	public ILink createLink(String internalUrl, String text, ResourceBundle rb,
-			                Map<String, Object> parameters,
-			                SmdLink currentLink,
-							String basePath)
+	public ILink createLink(String internalUrl, String text, String basePath)
+	{
+		return createLink(internalUrl, text, null, basePath, null);
+	}
+
+	public ILink createLink(String internalUrl, String text,
+			                SmdUrl currentLink,
+							String basePath, Map<String, Object> parameters)
+	{
+		ICreator creator = getCreator(internalUrl);
+		return creator.createLink(internalUrl, text,
+				                        currentLink, basePath, parameters);
+	}
+
+	private ICreator getCreator(String internalUrl)
 	{
 		internalUrl.split("://");
 		RegularExpression re = new RegularExpression("((\\w+)(://))?(.*)");
@@ -28,44 +37,47 @@ public class LinkCreator
 				          ? internalUrl.substring(match.getBeginning(2), match.getEnd(2))
 						  : "";
 
-		ICreator creator = linkType.equals("smd") ? new SmdCreator() : new SimpleCreator();
-
-		ILink link = creator.createLink(internalUrl, text, rb, parameters,
-				                        currentLink, basePath);
-		return link;
+		return linkType.equals("smd") ? new SmdLinkCreator() : new SimpleCreator();
 	}
 
-	private interface ICreator
+	private static interface ICreator
 	{
-		public ILink createLink(String url, String text, ResourceBundle rb,
-				                Map<String, Object> parameters,
-				                SmdLink currentLink,
-				                String basePath);
+		public IUrl createUrl(String url, SmdUrl currentUrl, String basePath);
+		
+		public ILink createLink(String url, String text,
+				                SmdUrl currentLink,
+				                String basePath,
+				                Map<String, Object> parameters);
 	}
 
-	private class SmdCreator implements ICreator
+	private static class SmdLinkCreator implements ICreator
 	{
-		public ILink createLink(String internalUrl, String text, ResourceBundle rb,
-				                Map<String, Object> parameters,
-				                SmdLink currentLink,
-				                String basePath)
+		public IUrl createUrl(String url, SmdUrl currentUrl, String basePath)
 		{
-			RegularExpression re = new RegularExpression("\\w+://(.*?)/(.*)");
-			Match match = new Match();
-			re.matches(internalUrl, match);
-			String servlet = internalUrl.substring(match.getBeginning(1), match.getEnd(1));
-			String action = internalUrl.substring(match.getBeginning(2));
-			return new SmdLink(servlet, action, text, rb, parameters,
-					           currentLink, basePath);
+			return new SmdUrl(url, currentUrl, basePath);
+		}
+		
+		public SmdLink createLink(String internalUrl, String text,
+								SmdUrl currentLink,
+								String basePath,
+								Map<String, Object> parameters)
+		{
+			return new SmdLink(internalUrl, text,
+							   currentLink, basePath, parameters);
 		}
 	}
 
-	private class SimpleCreator implements ICreator
+	private static class SimpleCreator implements ICreator
 	{
-		public ILink createLink(String url, String text, ResourceBundle rb,
-				                Map<String, Object> parameters,
-				                SmdLink currentLink,
-				                String basePath)
+		public IUrl createUrl(String url, SmdUrl currentUrl, String basePath)
+		{
+			return new SimpleLink(url, null);
+		}
+
+		public ILink createLink(String url, String text,
+				                SmdUrl currentLink,
+				                String basePath,
+				                Map<String, Object> parameters)
 		{
 			return new SimpleLink(url, text);
 		}

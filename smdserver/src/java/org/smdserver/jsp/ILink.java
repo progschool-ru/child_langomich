@@ -1,8 +1,7 @@
 package org.smdserver.jsp;
 
-public interface ILink
+public interface ILink extends IUrl
 {
-	public String getURL();
 	public String getText();
 	public String getHTML();
 }

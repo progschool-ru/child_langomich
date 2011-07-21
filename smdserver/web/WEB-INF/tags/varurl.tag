@@ -1,14 +1,11 @@
 <%@attribute name="url" required="true" rtexprvalue="true"%>
-<%@attribute name="text" required="true" rtexprvalue="true"%>
 <%@tag trimDirectiveWhitespaces="true"%>
 <%@tag import="org.smdserver.jsp.*"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:useBean id="linkCreator" scope="application" class="org.smdserver.jsp.LinkCreator"/>
 <%
-	String basePath = request.getContextPath();
-
-	ILink link = linkCreator.createLink(getUrl(), getText(),
+	IUrl url = linkCreator.createUrl(getUrl(),
 					(SmdUrl)request.getAttribute("currentLink"),
-					basePath,
-					null);
+					request.getContextPath());
 %>
-<%=link.getHTML()%>
+<%=url.getURL()%>

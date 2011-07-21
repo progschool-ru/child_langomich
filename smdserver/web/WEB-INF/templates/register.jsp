@@ -1,5 +1,5 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="smd" %>
-<form method="post" action="<smd:ahref url="smd://action/registr"
+<form method="post" action="<smd:smdhref url="smd://action/registr"
 		        redirectSuccess="smd://page/words"
 				redirectFailure="smd://page/register"
 				text="" mode="url"/>">

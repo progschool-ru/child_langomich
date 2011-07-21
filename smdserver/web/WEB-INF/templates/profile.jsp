@@ -1,6 +1,6 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="smd" %>
 <form method="post"
-	  action="<smd:ahref url="smd://action/setPassword" text=""
+	  action="<smd:smdhref url="smd://action/setPassword" text=""
 				 redirect="smd://page/profile" mode="url"/>">
 	<table>
 	<tr>

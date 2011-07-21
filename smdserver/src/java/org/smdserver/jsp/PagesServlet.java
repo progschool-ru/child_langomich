@@ -12,7 +12,7 @@ import org.smdserver.actionssystem.SessionKeys;
 import org.smdserver.core.SmdConfigBean;
 import org.smdserver.jsp.ILink;
 import org.smdserver.jsp.LinkCreator;
-import org.smdserver.jsp.SmdLink;
+import org.smdserver.jsp.SmdUrl;
 
 public class PagesServlet extends HttpServlet
 {
@@ -64,12 +64,13 @@ public class PagesServlet extends HttpServlet
 		request.setAttribute(MAIN_TEMPLATE_KEY, mainTemplate);
 		String title = rb.containsKey(pagePrefix + TITLE_KEY) ? rb.getString(pagePrefix + TITLE_KEY) : null;
 		request.setAttribute(TITLE_KEY, title);
-		SmdLink currentLink = new SmdLink("page", page, rb, null);
-		request.setAttribute(CURRENT_LINK_KEY, currentLink);
+		SmdUrl.initRB(rb);
+		SmdUrl currentUrl = new SmdUrl("page", page);
+		request.setAttribute(CURRENT_LINK_KEY, currentUrl);
 		
 		List<ILink> links = createMenu(rb, 
 				      isLoggedIn(request) ? LOGGED_MENU_KEY : ANONYMUS_MENU_KEY,
-					  currentLink);
+					  currentUrl);
 		request.setAttribute(MENU_KEY, links);
 
 		String url = "/main.jsp";
@@ -91,7 +92,7 @@ public class PagesServlet extends HttpServlet
 		return login != null;
 	}
 
-	private List<ILink> createMenu(ResourceBundle rb, String menu, SmdLink currentLink)
+	private List<ILink> createMenu(ResourceBundle rb, String menu, SmdUrl currentLink)
 	{
 		String menuPrefix = MENU_PREFIX + menu + ".";
 		String [] items = rb.getString(menuPrefix + MENU_ITEMS_KEY).split(",");
@@ -103,7 +104,7 @@ public class PagesServlet extends HttpServlet
 		{
 			String url = rb.getString(menuPrefix + item + URL_KEY);
 			String text = rb.getString(menuPrefix + item + TEXT_KEY);
-			list.add(creator.createLink(url, text, rb, currentLink, basePath));
+			list.add(creator.createLink(url, text, currentLink, basePath, null));
 		}
 		return list;
 	}
