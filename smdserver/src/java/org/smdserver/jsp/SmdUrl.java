@@ -11,6 +11,7 @@ import java.util.Set;
 public class SmdUrl implements IUrl
 {
 	private static final String ABS_PATH_PREFIX = "link.path.";
+	private static final String WEB_CHARSET_KEY = "web.charset";
 
 	private static ResourceBundle rb;
 
@@ -93,10 +94,6 @@ public class SmdUrl implements IUrl
 
 	private static ResourceBundle getRB()
 	{
-		if(rb == null)
-		{
-			rb = ResourceBundle.getBundle("org.smdserver.config");
-		}
 		return rb;
 	}
 
@@ -210,7 +207,7 @@ public class SmdUrl implements IUrl
 			try
 			{
 				value = URLEncoder.encode(entry.getValue().toString(),
-							"UTF-8");
+						                  rb.getString(WEB_CHARSET_KEY));
 			}
 			catch(UnsupportedEncodingException e)
 			{

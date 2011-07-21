@@ -19,6 +19,6 @@
 
 	String result = (encode == null)
 			        ? link.getURL()
-			        : java.net.URLEncoder.encode(link.getURL(), "utf8");
+			        : java.net.URLEncoder.encode(link.getURL(), (String)request.getAttribute("web.charset"));
 %>
 <%=result%>

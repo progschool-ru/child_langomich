@@ -12,6 +12,7 @@ import org.smdserver.actionssystem.SessionKeys;
 
 public class PagesServlet extends HttpServlet
 {
+	private static final String CONFIG_PARAM = "config";
 	private static final String LOGIN_PAGE = "login";
 	private static final String PAGE_404 = "words";
 
@@ -28,12 +29,23 @@ public class PagesServlet extends HttpServlet
 	private static final String URL_KEY = ".url";
 	private static final String TEXT_KEY = ".text";
 	private static final String CURRENT_LINK_KEY = "currentLink";
+	private static final String WEB_CHARSET_KEY = "web.charset";
+
+	private String configResource;
+	
+	@Override
+	public void init() throws ServletException
+	{
+		super.init();
+		configResource = getServletConfig().getInitParameter(CONFIG_PARAM);
+		SmdUrl.initRB(ResourceBundle.getBundle(configResource));
+	}
 
 	@Override
 	public void service (HttpServletRequest request, HttpServletResponse response)
 											throws ServletException, IOException
 	{
-		ResourceBundle rb = ResourceBundle.getBundle("org.smdserver.config");
+		ResourceBundle rb = ResourceBundle.getBundle(configResource);
 		String page = getPageName(request);
 
 		if(page == null)
@@ -60,9 +72,10 @@ public class PagesServlet extends HttpServlet
 		request.setAttribute(MAIN_TEMPLATE_KEY, mainTemplate);
 		String title = rb.containsKey(pagePrefix + TITLE_KEY) ? rb.getString(pagePrefix + TITLE_KEY) : null;
 		request.setAttribute(TITLE_KEY, title);
-		SmdUrl.initRB(rb);
 		SmdUrl currentUrl = new SmdUrl("page", page);
 		request.setAttribute(CURRENT_LINK_KEY, currentUrl);
+		String webCharset = rb.getString(WEB_CHARSET_KEY);
+		request.setAttribute(WEB_CHARSET_KEY, webCharset);
 		
 		List<ILink> links = createMenu(rb, 
 				      isLoggedIn(request) ? LOGGED_MENU_KEY : ANONYMUS_MENU_KEY,

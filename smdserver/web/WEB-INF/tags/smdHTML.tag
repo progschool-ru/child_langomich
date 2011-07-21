@@ -11,7 +11,7 @@
 <html>
 	<head>
 		<title>${titlePrefix}LangOmich</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=<%=request.getAttribute("web.charset")%>"/>
 		<link rel="stylesheet" href="<%= request.getContextPath() %>/css/smdMain.css"/>
 		<script src="<%= request.getContextPath() %>/js/jQuery/jquery.js"></script>
 	</head>

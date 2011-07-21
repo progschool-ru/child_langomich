@@ -14,6 +14,7 @@ import org.smdserver.auth.LogoutAction;
 import org.smdserver.auth.SetPasswordAction;
 import org.smdserver.auth.RegistrAction;
 import org.smdserver.core.SmdActionsFactory;
+import org.smdserver.jsp.SmdUrl;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.users.UsersFileStorage;
 import org.smdserver.words.GetWordsAction;
@@ -23,10 +24,12 @@ import org.smdserver.words.AddWordsAction;
 
 public class MainServlet extends SmdServlet
 {
-	private static final String CONFIG_RESOURCE = "org.smdserver.config";
+	private static final String CONFIG_PARAM = "config";
 	private static final String USERS_STORAGE_PATH_KEY = "path.users.storage";
 	private static final String WORDS_STORAGE_PATH_KEY = "path.words.storageDir";
 	private static final String DEFAULT_ACTION = "default";
+
+	private String configResource;
 
 	protected String getDefaultActionName ()
 	{
@@ -51,8 +54,11 @@ public class MainServlet extends SmdServlet
 
 	protected IActionsFactory createActionsFactory ()
 	{
-		String usersPath = ResourceBundle.getBundle(CONFIG_RESOURCE).getString(USERS_STORAGE_PATH_KEY);
-		String wordsPath = ResourceBundle.getBundle(CONFIG_RESOURCE).getString(WORDS_STORAGE_PATH_KEY);
+		configResource = getServletConfig().getInitParameter(CONFIG_PARAM);
+		SmdUrl.initRB(ResourceBundle.getBundle(configResource));
+
+		String usersPath = ResourceBundle.getBundle(configResource).getString(USERS_STORAGE_PATH_KEY);
+		String wordsPath = ResourceBundle.getBundle(configResource).getString(WORDS_STORAGE_PATH_KEY);
 		IUsersStorage usersStorage =  new UsersFileStorage(getServletContext().getRealPath(usersPath));
 		IWordsStorage wordsStorage = new WordsFileStorage(getServletContext().getRealPath(wordsPath));
 		ISmdServletContext context = new SmdServletContext(usersStorage, wordsStorage, getServletContext());
