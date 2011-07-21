@@ -14,7 +14,6 @@ import org.smdserver.auth.LogoutAction;
 import org.smdserver.auth.SetPasswordAction;
 import org.smdserver.auth.RegistrAction;
 import org.smdserver.core.SmdActionsFactory;
-import org.smdserver.core.SmdConfigBean;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.users.UsersFileStorage;
 import org.smdserver.words.GetWordsAction;
@@ -24,7 +23,7 @@ import org.smdserver.words.AddWordsAction;
 
 public class MainServlet extends SmdServlet
 {
-	private static final String CONFIG_RESOURCE = SmdConfigBean.CONFIG_RESOURCE;
+	private static final String CONFIG_RESOURCE = "org.smdserver.config";
 	private static final String USERS_STORAGE_PATH_KEY = "path.users.storage";
 	private static final String WORDS_STORAGE_PATH_KEY = "path.words.storageDir";
 	private static final String DEFAULT_ACTION = "default";

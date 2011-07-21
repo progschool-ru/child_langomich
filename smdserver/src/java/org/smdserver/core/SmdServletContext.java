@@ -9,7 +9,6 @@ public class SmdServletContext implements ISmdServletContext
 	private IUsersStorage usersStorage;
 	private IWordsStorage wordsStorage;
 	private ServletContext servletContext;
-	private ISmdConfig config;
 
 	public SmdServletContext (IUsersStorage usersStorage, 
 								IWordsStorage wordsStorage,
@@ -33,10 +32,5 @@ public class SmdServletContext implements ISmdServletContext
 	public void log (String message)
 	{
 		servletContext.log(message);
-	}
-
-	public ISmdConfig getConfig()
-	{
-		return SmdConfigBean.getInstance();
 	}
 }

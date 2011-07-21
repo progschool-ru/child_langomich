@@ -5,20 +5,19 @@
 <%@tag trimDirectiveWhitespaces="true"%>
 <%@tag import="org.smdserver.jsp.*"%>
 
-<jsp:useBean id="smdCreator" scope="application"
-			 class="org.smdserver.jsp.SmdLinkCreator"/>
-<%!
-	private java.util.ResourceBundle rb =
-			java.util.ResourceBundle.getBundle("org.smdserver.config");
-%>
 <%
-	SmdUrl currentUrl = (getBaseServlet() == null)
+	String baseServlet = (String)jspContext.getAttribute("baseServlet");
+	String servlet = (String)jspContext.getAttribute("servlet");
+	String action = (String)jspContext.getAttribute("action");
+	Object encode = (String)jspContext.getAttribute("encode");
+
+	SmdUrl currentUrl = (baseServlet == null)
 			              ? (SmdUrl)request.getAttribute("currentLink")
-			              : new SmdUrl(getBaseServlet(), "");
-	SmdUrl link = new SmdUrl(getServlet(), getAction(), 
+			              : new SmdUrl(baseServlet, "");
+	SmdUrl link = new SmdUrl(servlet, action,
 			                 currentUrl, request.getContextPath(), null);
 
-	String result = getEncode() == null
+	String result = (encode == null)
 			        ? link.getURL()
 			        : java.net.URLEncoder.encode(link.getURL(), "utf8");
 %>

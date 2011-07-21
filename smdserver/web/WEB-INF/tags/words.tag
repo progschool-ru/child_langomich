@@ -1,5 +1,6 @@
-<%@ taglib tagdir="/WEB-INF/tags" prefix="smd" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@tag trimDirectiveWhitespaces="true"%>
+<%@taglib tagdir="/WEB-INF/tags" prefix="smd" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <table class="words">
 	<caption>Words</caption>
 	<tr>

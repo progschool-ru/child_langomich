@@ -7,38 +7,43 @@
 
 <%@tag trimDirectiveWhitespaces="true"%>
 <%@tag import="org.smdserver.jsp.*"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%
+	String redirect = (String)jspContext.getAttribute("redirect");
+	String redirectSuccess = (String)jspContext.getAttribute("redirectSuccess");
+	String redirectFailure = (String)jspContext.getAttribute("redirectFailure");
+
 	java.util.Map<String, Object> params = null;
-	if(getRedirect() != null || getRedirectSuccess() != null ||
-			getRedirectFailure() != null)
+	if(redirect != null || redirectSuccess != null ||
+			redirectFailure != null)
 	{
 		params = new java.util.HashMap<String, Object>();
 	}
 
 	String basePath = request.getContextPath();
 
-	ILink link = new SmdLink(getUrl(), getText(),
-					(SmdUrl)request.getAttribute("currentLink"),
-					basePath,
-					params);
+	ILink link = new SmdLink((String)jspContext.getAttribute("url"),
+			                 (String)jspContext.getAttribute("text"),
+					         (SmdUrl)request.getAttribute("currentLink"),
+					         basePath,
+					         params);
 
 	SmdLink targetLink = link instanceof SmdLink ? (SmdLink)link : null;
-	if(getRedirect() != null)
+	if(redirect != null)
 	{
 		params.put("redirect",
-				new SmdUrl(getRedirect(), targetLink, basePath));
+				new SmdUrl(redirect, targetLink, basePath));
 	}
-	if(getRedirectSuccess() != null)
+	if(redirectSuccess != null)
 	{
 		params.put("redirectSuccess",
-				new SmdUrl(getRedirectSuccess(), targetLink, basePath));
+				new SmdUrl(redirectSuccess, targetLink, basePath));
 	}
-	if(getRedirectFailure() != null)
+	if(redirectFailure != null)
 	{
 		params.put("redirectFailure",
-				new SmdUrl(getRedirectFailure(), targetLink, basePath));
+				new SmdUrl(redirectFailure, targetLink, basePath));
 	}
 %>
 <c:choose>

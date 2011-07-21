@@ -1,8 +1,11 @@
 package org.smdserver.auth;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.core.SmdAction;
+import org.smdserver.jsp.SmdUrl;
 import org.smdserver.users.IUsersStorage;
 
 public class RegistrAction extends SmdAction
@@ -22,16 +25,13 @@ public class RegistrAction extends SmdAction
 				getServletContext().getUsersStorage().createUser( storage.getID(),login, password);
 				setAnswerParam(ActionParams.SUCCESS, success);
 
-				StringBuilder sb = new StringBuilder();
-				sb.append(getServletContext().getConfig().getActionsAbsolutePath());
-				sb.append("/login?login=");
-				sb.append(login);
-				sb.append("&password=");
-				sb.append(password);
-				sb.append('&');
-				sb.append(getRedirectParamsURI(request));
-
-				return sb.toString();
+				Map<String, Object> params = new HashMap<String, Object>();
+				SmdUrl loginUrl = new SmdUrl("action",
+						                     "login?" + getRedirectParamsURI(request),
+											 null, "", params);		
+				params.put("password", password);
+				params.put("login", login);
+				return loginUrl.getURL();
 			}
 			catch(Exception e)
 			{

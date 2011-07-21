@@ -1,7 +1,7 @@
 <%@attribute name="title" rtexprvalue="true"%>
-<%@ tag trimDirectiveWhitespaces="true"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="smd"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@tag trimDirectiveWhitespaces="true"%>
+<%@taglib tagdir="/WEB-INF/tags" prefix="smd"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <c:if test="${title != null and title != ''}">
 	<c:set var="titlePrefix" value="${title} \ "/>
@@ -13,6 +13,7 @@
 		<title>${titlePrefix}LangOmich</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<link rel="stylesheet" href="<%= request.getContextPath() %>/css/smdMain.css"/>
+		<script src="<%= request.getContextPath() %>/js/jQuery/jquery.js"></script>
 	</head>
 	<body>
 		<jsp:doBody/>

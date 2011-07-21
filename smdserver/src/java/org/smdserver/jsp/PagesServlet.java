@@ -9,10 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.smdserver.actionssystem.SessionKeys;
-import org.smdserver.core.SmdConfigBean;
-import org.smdserver.jsp.ILink;
-import org.smdserver.jsp.LinkCreator;
-import org.smdserver.jsp.SmdUrl;
 
 public class PagesServlet extends HttpServlet
 {
@@ -37,7 +33,7 @@ public class PagesServlet extends HttpServlet
 	public void service (HttpServletRequest request, HttpServletResponse response)
 											throws ServletException, IOException
 	{
-		ResourceBundle rb = ResourceBundle.getBundle(SmdConfigBean.CONFIG_RESOURCE);
+		ResourceBundle rb = ResourceBundle.getBundle("org.smdserver.config");
 		String page = getPageName(request);
 
 		if(page == null)

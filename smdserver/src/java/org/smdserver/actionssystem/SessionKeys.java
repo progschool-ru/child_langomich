@@ -12,5 +12,5 @@ public class SessionKeys
 	 * Set in LoginAction. Attribute type is String or null.
 	 */
 	public static final String CURRENT_LOGIN = "currentLogin";
-        public static final String LANGUAGES = "languages";
+	public static final String LANGUAGES = "languages";
 }

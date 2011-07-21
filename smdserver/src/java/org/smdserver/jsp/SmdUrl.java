@@ -7,7 +7,6 @@ import java.net.URLEncoder;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-import org.smdserver.core.SmdConfigBean;
 
 public class SmdUrl implements IUrl
 {
@@ -211,7 +210,7 @@ public class SmdUrl implements IUrl
 			try
 			{
 				value = URLEncoder.encode(entry.getValue().toString(),
-							SmdConfigBean.getInstance().getWebCharset());
+							"UTF-8");
 			}
 			catch(UnsupportedEncodingException e)
 			{
