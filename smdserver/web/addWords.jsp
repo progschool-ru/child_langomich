@@ -1,8 +1,5 @@
 <%@ page import="org.smdserver.words.Language" %>
-<%
-//TODO: 2.medium Делать проверку того, что пользователь залогинен,
-//если нет, то отправлять его куда подальше
-%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="smd" %>
 <% String basePath = request.getContextPath(); %>
 <html>
     <head>
@@ -43,9 +40,9 @@
         <h2>AddWords - <%=session.getAttribute("currentLogin")%></h2>
 		<a href="main.jsp">Main</a>
             <hr size="2"/>
-            <form method="post" action="<%=
-			org.smdserver.core.SmdConfigBean.getInstance().getActionsPath()
-		%>/addWords?redirectSuccess=../main.jsp&redirectFailure=../addWords.jsp">
+            <form method="post" 
+				  action="<smd:smdhref url="smd://action/addWords"
+							   redirect="smd://page/play" mode="url"/>">
                 <input type="hidden" name="data">
                 <fieldset>
                     <table width="50%">

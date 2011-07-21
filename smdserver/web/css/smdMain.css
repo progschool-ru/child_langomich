@@ -1,15 +1,8 @@
 @import 'cssReset.css';
 @import 'colorScheme.css';
 
-/*
-TODO: (2.medium) fix this http://screencast.com/t/yqUwB8jJsN
-and this http://screencast.com/t/8hPXxn5t
-and this http://screencast.com/t/8hPXxn5t set min-width
-*/
-html
-{
-	font-family:  Helvetica, sans-serif;
-}
+html { font-family:  Helvetica, sans-serif; }
+body { margin: .0em .5em 0; }
 
 a { text-decoration: underline; }
 
@@ -30,7 +23,7 @@ div { position: relative; }
 
 .header
 {
-	padding: .5em .5em 0;
+	padding: .5em 0 0;
 }
 
 /*** menu ***/
@@ -85,14 +78,21 @@ div { position: relative; }
 /*** end of user ***/
 /******** end of Header *********/
 
-/******** Main ***********/
+/*********************** Main **************************/
 .main
 {
-	margin: 2em;
+	margin: 2em 2em 1em;
 	position: relative;
+	padding: 0 1em 0 0;
 }
-/******** end of Main ********/
-
+/** content **/
+.content
+{
+	float:left;
+	margin: 0 0 1em;
+	width: 70%;
+}
+/** end of content **/
 
 /******** Words ***********/
 table.words
@@ -112,11 +112,10 @@ table.words caption
 /******** Side Panel *********/
 .toolbar
 {
-	position: absolute;
 	top: -1em;
-	right: 0;
 	width: 30%;
 	padding: 1em;
+	margin: 0 0 -1em 70%;
 	-webkit-border-radius: 1em;
 	-moz-border-radius: 1em;
 	border-radius: 1em;
@@ -131,14 +130,23 @@ table.words caption
 	margin: .5em 0 0;
 }
 /******** end of Side Panel **********/
+/**************** end of Main ****************/
 
 /******** Footer *********/
 .footer
 {
+	clear:both;
 	border-top: solid;
-	margin: 2em 1em;
-	padding-top: .5em;
+	margin: 1em;
+	padding: .5em 0;
 	text-align: center;
+}
+
+.footer:after
+{
+	clear:both;
+	display:block;
+	content:"";
 }
 
 .footer *
