@@ -2,7 +2,7 @@ import javax.microedition.rms.*;
 import java.io.*;
 import java.util.*;
 
-public class Settings
+public class Settings extends Records
 {
         public final int NUMBER_OF_WORDS = 1;
         public final int LANGUAGE = 2;
@@ -13,42 +13,29 @@ public class Settings
         public final int URL = 7;
         public final int TEXT = 8;
 
-        private RecordStore rs = null;
-        private RecordEnumeration re;
-
-        private ByteArrayOutputStream byteOutputStream;
-        private DataOutputStream writer;
-        private ByteArrayInputStream byteInputStream;
-        private DataInputStream reader;
-
         Settings()
         {
-                byteOutputStream = new ByteArrayOutputStream();
-                writer = new DataOutputStream(byteOutputStream);
-        	try {
-			rs = RecordStore.openRecordStore("Settings", true);
-			re = rs.enumerateRecords(null, null, false);
-		}
-		catch( RecordStoreException e ){}
-        	if(getRecord(NUMBER_OF_WORDS) == null ||
-                   getRecord(LANGUAGE) == null ||
-                   getRecord(LAST_TIMING) == null ||
-                   getRecord(NUMBER_OF_TIMING) == null)
+                recordStoreInit("Settings", null, null);
+
+        	if(getRecord(NUMBER_OF_WORDS, SINGLE_RECORD) == null ||
+                   getRecord(LANGUAGE, SINGLE_RECORD) == null ||
+                   getRecord(LAST_TIMING, SINGLE_RECORD) == null ||
+                   getRecord(NUMBER_OF_TIMING, SINGLE_RECORD) == null)
                 {
                     addRecord("1");
                     addRecord("null");
                     addRecord(Long.toString(new Date().getTime()));
                     addRecord("0");
                 }
-        	if(getRecord(LOGIN) == null ||
-                   getRecord(PASSWORD) == null ||
-                   getRecord(URL) == null)
+        	if(getRecord(LOGIN, SINGLE_RECORD) == null ||
+                   getRecord(PASSWORD, SINGLE_RECORD) == null ||
+                   getRecord(URL, SINGLE_RECORD) == null)
                 {
                     addRecord("null");
                     addRecord("null");
                     addRecord("localhost:8080");
                 }
-        	if(getRecord(TEXT) == null)
+        	if(getRecord(TEXT, SINGLE_RECORD) == null)
                 {
                     addRecord("null");
                 }
@@ -59,7 +46,7 @@ public class Settings
         }
         public int getNumberOfWords()
         {
-            String record = getRecord(NUMBER_OF_WORDS);
+            String record = getRecord(NUMBER_OF_WORDS, SINGLE_RECORD);
             if(record!= null)
                 return Integer.parseInt(record);
             return 1;
@@ -70,7 +57,7 @@ public class Settings
         }
         public String getLanguage()
         {
-            String record = getRecord(LANGUAGE);
+            String record = getRecord(LANGUAGE, SINGLE_RECORD);
             if(record != null)
                 return record;
             return "1";
@@ -81,7 +68,7 @@ public class Settings
         }
         public long getLastTiming()
         {
-            String record = getRecord(LAST_TIMING);
+            String record = getRecord(LAST_TIMING, SINGLE_RECORD);
             if(record != null)
                 return Long.parseLong(record);
             return new Date().getTime();
@@ -92,7 +79,7 @@ public class Settings
         }
         public int getNumberOfTiming()
         {
-            String record = getRecord(NUMBER_OF_TIMING);
+            String record = getRecord(NUMBER_OF_TIMING, SINGLE_RECORD);
             if(record != null)
                 return Integer.parseInt(record);
             return 0;
@@ -103,7 +90,7 @@ public class Settings
         }
         public String getLogin()
         {
-            String record = getRecord(LOGIN);
+            String record = getRecord(LOGIN, SINGLE_RECORD);
             if(!record.equals("null"))
                 return record;
             return null;
@@ -114,7 +101,7 @@ public class Settings
         }
         public String getPassword()
         {
-            String record = getRecord(PASSWORD);
+            String record = getRecord(PASSWORD, SINGLE_RECORD);
             if(!record.equals("null"))
                 return record;
             return null;
@@ -125,7 +112,7 @@ public class Settings
         }
         public String getURL()
         {
-            String record = getRecord(URL);
+            String record = getRecord(URL, SINGLE_RECORD);
             if(!record.equals("null"))
                 return record;
             return null;
@@ -136,7 +123,7 @@ public class Settings
         }
         public String getText()
         {
-            String record = getRecord(TEXT);
+            String record = getRecord(TEXT, SINGLE_RECORD);
             if(!record.equals("null"))
                 return record;
             return null;
@@ -168,33 +155,5 @@ public class Settings
 		catch( RecordStoreException e ){}
 		catch(IOException ioe){}
 		re.rebuild();
-        }
-        private String getRecord(int id)
-	{
-            try
-            {
-                byte[] data = new byte[rs.getRecordSize(id)];
-                data = rs.getRecord(id);
-                byteInputStream = new ByteArrayInputStream(data);
-                reader = new DataInputStream(byteInputStream);
-                return reader.readUTF();
-            }
-            catch( RecordStoreException e ){}
-            catch(IOException ioe){}
-            return null;
-        }
-        public void destroy()
-        {
-		try
-		{
-			rs.closeRecordStore();
-                        re.destroy();
-		}
-		catch (RecordStoreException e) { }
-                try {
-                        writer.close();
-                        byteOutputStream.close();
-                }
-                catch(IOException ioe){}    
         }
 }

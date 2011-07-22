@@ -113,7 +113,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		}
                 if(c == Save)
 		{
-                        dictionary.addRecord(tfRus.getString(), tfEng.getString(), mycg.getSelectedIndex()*2);
+                        dictionary.newRecord(tfRus.getString(), tfEng.getString(), mycg.getSelectedIndex()*2);
 			Display.getDisplay(this).setCurrent(mainList);
 		}
 		if (c == choice)
@@ -301,7 +301,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 }
                 else
                 {
-                    dictionaryList = new List(text.DICTIONARY, Choice.IMPLICIT, dictionary.getRecords(), null);
+                    dictionaryList = new List(text.DICTIONARY, Choice.IMPLICIT, dictionary.getFullRecords(), null);
                     dictionaryList.addCommand(delete);
                     dictionaryList.addCommand(ordering1);
                     dictionaryList.addCommand(ordering2);     
