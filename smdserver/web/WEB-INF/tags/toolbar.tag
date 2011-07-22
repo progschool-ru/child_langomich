@@ -1,6 +1,7 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="smd" %>
-<div class="menu">
-	<h3>Toolbar</h3>
+<div class="toolbar-menu">
+	<h3>Add Words</h3>
+	<div class="b-addWords"></div>
 	<ul>
 		<li><smd:ahref text="Add Word" url="../../addWords.jsp"/></li>
 		<li><smd:ahref text="Get Words JSON" url="smd://action/getWords"/></li>

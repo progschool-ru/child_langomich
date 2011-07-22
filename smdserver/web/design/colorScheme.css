@@ -4,21 +4,10 @@ a:link { color: #008; }
 a:visited { color: #308; }
 
 /*** Header ***/
-.header
-{
-	background-color: silver;
-}
-
-.header .menu .current
-{
-	background-color: white;
-}
-
+.header { background-color: silver; }
+.header .menu .current { background-color: white; }
 /*  end of Header */
 
 /******** Side Panel *********/
-.toolbar
-{
-	background-color: silver;
-}
+.toolbar-menu {	background-color: silver; }
 /******** end of Side Panel **********/

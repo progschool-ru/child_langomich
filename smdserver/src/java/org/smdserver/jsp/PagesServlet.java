@@ -30,6 +30,7 @@ public class PagesServlet extends HttpServlet
 	private static final String TEXT_KEY = ".text";
 	private static final String CURRENT_LINK_KEY = "currentLink";
 	private static final String WEB_CHARSET_KEY = "web.charset";
+	private static final String HANDLER_KEY = "handler";
 
 	private String configResource;
 	
@@ -82,7 +83,9 @@ public class PagesServlet extends HttpServlet
 					  currentUrl);
 		request.setAttribute(MENU_KEY, links);
 
-		String url = "/main.jsp";
+		String pageKey = pagePrefix + HANDLER_KEY;
+		String url = rb.containsKey(pageKey) ? rb.getString(pageKey) : "/main.jsp";
+		
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
 
