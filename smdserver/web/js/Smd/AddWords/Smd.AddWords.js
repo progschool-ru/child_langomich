@@ -31,6 +31,8 @@ Smd.AddWords = {
 		var scope = this;
 
 		var less = this.$("<button type='button'/>");
+		less.addClass(this.LESS_BUTTON_CLASS);
+		less.addClass(this.ICON_BUTTON_CLASS);
 		less.append("Less");
 		less.click(function()
 		{
@@ -47,6 +49,8 @@ Smd.AddWords = {
 		buttonsContainer.append(less);
 
 		var more = this.$("<button type='button'/>");
+		more.addClass(this.MORE_BUTTON_CLASS);
+		more.addClass(this.ICON_BUTTON_CLASS);
 		more.append("More");
 		more.click(function()
 		{
@@ -89,6 +93,7 @@ Smd.AddWords = {
 	createSubmitButton : function()
 	{
 		var submit = this.$("<input type='submit'/>");
+		submit.addClass(this.SUBMIT_BUTTON_CLASS);
 		submit.attr("value","Add");
 		return submit;
 	},
@@ -204,7 +209,10 @@ Smd.AddWords = {
 
 	ANIMATION_SPEED : "hide",
 
-	ADD_PAIR_BUTTON_CLASS   : "b-addWords_add-pair-button",
+	ICON_BUTTON_CLASS   : "b-addWords_icon-button",
+	SUBMIT_BUTTON_CLASS : "b-addWords_submit-button",
+	LESS_BUTTON_CLASS   : "b-addWords_less-button",
+	MORE_BUTTON_CLASS   : "b-addWords_more-button",
 	INPUT_ORIGINAL_CLASS    : "b-addWords_text-input-original",
 	INPUT_TRANSLATION_CLASS : "b-addWords_text-input-translation",
 	PAIR_DIV_CLASS          : "b-addWords_pair-div",
