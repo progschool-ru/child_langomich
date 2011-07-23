@@ -32,6 +32,11 @@ Smd.Core = {
 		getModule : function(name)
 		{
 			return Smd.Core.getModule(name);
+		},
+
+		encodeToJavaString : function(value)
+		{
+			return Smd.Unicode2Java.uni2java(value);
 		}
 	},
 	

@@ -16,13 +16,26 @@ Smd.AddWords = {
 		this.$ = api.$;
 		this.serverModule = api.getModule(serverModuleName);
 
+		this.pairsCounter = 0;
+
 		var element = this.$(container);
 		var form = this.createForm();
-
-		form.append(this.createPair().div);
-		form.append(this.createSubmitButton());
-
 		element.append(form);
+
+		var x = 2;
+		var scope = this;
+
+		var appendSubmit = function()
+		{
+			form.append(scope.createSubmitButton());
+		}
+		var appendPairs = function(){
+			x--;
+			var cb = (x > 0) ? appendPairs : appendSubmit;
+			scope.appendPair(form, cb);
+		}
+
+		appendPairs();
 	},
 
 	createForm : function()
@@ -48,6 +61,15 @@ Smd.AddWords = {
 		var submit = this.$("<input type='submit'/>");
 		submit.append("Add");
 		return submit;
+	},
+
+	appendPair : function(container, callback)
+	{
+		var div = this.createPair().div;
+		div.css("display", "none");
+		container.append(div);
+		div.show("fast", callback);
+		this.pairCounter ++;
 	},
 
 	createPair : function() {
@@ -84,21 +106,35 @@ Smd.AddWords = {
 //			l = form.language.value;
 //		else
 //			l = form.newLen.value;
-//		if(form.original.value == "" || form.translation.value == "" ||
-//			(form.newLen.value=="" && form.language.value=="")) {
-//			alert("This form was completed incorrectly");
-//			return false;
-//		}
-		if(form.original.value == "" || form.translation.value == "")
+
+		var words = [];
+
+		for(var i=0; i < form.original.length && i < form.translation.length; i++)
+		{
+			if(form.original[i].value != "" && form.translation[i].value != "")
+			{
+				words.push({
+					original:form.original[i].value,
+					translation:form.translation[i].value,
+					rating: r,
+					modified: date
+				});
+			}
+		}
+
+		if(words.length == 0)
 		{
 			alert("This form was completed incorrectly");
 			return false;
 		}
-		var data = "{languages:[{name:"+t+l+t;
-		data = data+",words:[{original:"+t+form.original.value+t;
-		data = data+",translation:"+t+form.translation.value+t+",rating:";
-		data = data+r+",modified:"+t+date+t+"}]}]}";
-		form.data.value = Smd.Unicode2Java.uni2java(data);
+		
+		var data = {
+			languages:[{
+					name:l,
+					words:words
+				}]
+		};
+		form.data.value = this.api.encodeToJavaString(JSON.stringify(data));
 		return true;
 	},
 
