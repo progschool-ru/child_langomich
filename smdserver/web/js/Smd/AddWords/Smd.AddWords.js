@@ -34,29 +34,27 @@ Smd.AddWords = {
 		less.append("Less");
 		less.click(function()
 		{
-			var remFun = function(){scope.removePair(pairsContainer);}
 			if(scope._pairsCounter <= 2)
 			{
-				less.hide(scope.ANIMATION_SPEED, remFun);
+				less.hide();
 			}
-			else
-			{
-				remFun();
-			}
+			scope.removePair(pairsContainer);
 		});
+		if(scope._pairsCounter <= 1)
+		{
+			less.hide();
+		}
 		buttonsContainer.append(less);
 
 		var more = this.$("<button type='button'/>");
 		more.append("More");
 		more.click(function()
 		{
-			scope.appendPair(pairsContainer, function()
-				{
-					if(scope._pairsCounter > 1)
-					{
-						less.show(scope.ANIMATION_SPEED);
-					}
-				});
+			if(scope._pairsCounter >= 1)
+			{
+				less.show();
+			}
+			scope.appendPair(pairsContainer);
 		});
 		buttonsContainer.append(more);
 	},
@@ -97,22 +95,38 @@ Smd.AddWords = {
 
 	appendPair : function(container, callback)
 	{
+		if(this._lock)
+			return;
+
+		this._lock = true;
 		var div = this.createPair().div;
-		div.css("display", "none");
+		div.hide();
 		this._pairsCounter ++;
 		container.append(div);
-		div.show(this.ANIMATION_SPEED, callback);
+		var scope = this;
+		scope.callOfSpeed(div, div.show, this.ANIMATION_SPEED, function()
+			{
+				if(callback)
+					callback();
+				scope._lock = false;
+			});
 	},
 
 	removePair : function(container, callback)
 	{
+		if(this._lock)
+			return;
+
+		this._lock = true;
 		this._pairsCounter --;
 		var div = container.children(":last-child");
-		div.hide(this.ANIMATION_SPEED, function()
+		var scope = this;
+		scope.callOfSpeed(div, div.hide, this.ANIMATION_SPEED, function()
 			{
 				div.remove();
 				if(callback)
 					callback();
+				scope._lock = false;
 			});
 	},
 
@@ -181,7 +195,14 @@ Smd.AddWords = {
 		return true;
 	},
 
-	ANIMATION_SPEED : "fast",
+	callOfSpeed : function(element, func, speed, callback)
+	{
+		func.call(element, speed, callback);
+		if(!speed && callback)
+			callback();
+	},
+
+	ANIMATION_SPEED : "hide",
 
 	ADD_PAIR_BUTTON_CLASS   : "b-addWords_add-pair-button",
 	INPUT_ORIGINAL_CLASS    : "b-addWords_text-input-original",
