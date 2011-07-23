@@ -12,30 +12,53 @@ Smd.AddWords = {
 
 	App : function(api, serverModuleName, container)
 	{
+		var scope = this;
+
 		this.api = api;
 		this.$ = api.$;
 		this.serverModule = api.getModule(serverModuleName);
 
-		this.pairsCounter = 0;
+		this._pairsCounter = 0;
+		this._formObject = this.createForm();
 
 		var element = this.$(container);
-		var form = this.createForm();
-		element.append(form);
+		element.append(this._formObject.form);
+		scope.appendPair(scope._formObject.wordsFieldset);
+	},
 
-		var x = 2;
+	appendMoreLessButton : function(buttonsContainer, pairsContainer)
+	{
 		var scope = this;
 
-		var appendSubmit = function()
+		var less = this.$("<button type='button'/>");
+		less.append("Less");
+		less.click(function()
 		{
-			form.append(scope.createSubmitButton());
-		}
-		var appendPairs = function(){
-			x--;
-			var cb = (x > 0) ? appendPairs : appendSubmit;
-			scope.appendPair(form, cb);
-		}
+			var remFun = function(){scope.removePair(pairsContainer);}
+			if(scope._pairsCounter <= 2)
+			{
+				less.hide(scope.ANIMATION_SPEED, remFun);
+			}
+			else
+			{
+				remFun();
+			}
+		});
+		buttonsContainer.append(less);
 
-		appendPairs();
+		var more = this.$("<button type='button'/>");
+		more.append("More");
+		more.click(function()
+		{
+			scope.appendPair(pairsContainer, function()
+				{
+					if(scope._pairsCounter > 1)
+					{
+						less.show(scope.ANIMATION_SPEED);
+					}
+				});
+		});
+		buttonsContainer.append(more);
 	},
 
 	createForm : function()
@@ -53,13 +76,22 @@ Smd.AddWords = {
 		input.attr("name", "data");
 		form.append(input);
 
-		return form;
+		var wordsFieldset = this.$("<fieldset/>");
+		form.append(wordsFieldset);
+
+		scope.appendMoreLessButton(form, wordsFieldset);
+		form.append(scope.createSubmitButton());
+
+		return {
+			form:form,
+			wordsFieldset: wordsFieldset
+		};
 	},
 
 	createSubmitButton : function()
 	{
 		var submit = this.$("<input type='submit'/>");
-		submit.append("Add");
+		submit.attr("value","Add");
 		return submit;
 	},
 
@@ -67,9 +99,21 @@ Smd.AddWords = {
 	{
 		var div = this.createPair().div;
 		div.css("display", "none");
+		this._pairsCounter ++;
 		container.append(div);
-		div.show("fast", callback);
-		this.pairCounter ++;
+		div.show(this.ANIMATION_SPEED, callback);
+	},
+
+	removePair : function(container, callback)
+	{
+		this._pairsCounter --;
+		var div = container.children(":last-child");
+		div.hide(this.ANIMATION_SPEED, function()
+			{
+				div.remove();
+				if(callback)
+					callback();
+			});
 	},
 
 	createPair : function() {
@@ -94,7 +138,6 @@ Smd.AddWords = {
 	handleSubmit : function (form)
 	{
 		var date = new Date().getTime();
-		var t =  '"';
 		var r = 0;
 //		for(var i=0; i < form.rating.length; i++){
 //			if (form.rating[i].checked == true){
@@ -138,9 +181,12 @@ Smd.AddWords = {
 		return true;
 	},
 
-	PAIR_INPUT_CLASS        : "b-addWords_pair-text-input",
+	ANIMATION_SPEED : "fast",
+
+	ADD_PAIR_BUTTON_CLASS   : "b-addWords_add-pair-button",
 	INPUT_ORIGINAL_CLASS    : "b-addWords_text-input-original",
 	INPUT_TRANSLATION_CLASS : "b-addWords_text-input-translation",
 	PAIR_DIV_CLASS          : "b-addWords_pair-div",
+	PAIR_INPUT_CLASS        : "b-addWords_pair-text-input",
 	somevar : null
 }
