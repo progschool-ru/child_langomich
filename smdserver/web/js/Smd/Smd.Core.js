@@ -1,9 +1,9 @@
 Smd = {}
 
 Smd.Core = {
-	addModule : function(name, module)
+	addModule : function(name, module, params)
 	{
-		this._modules[name] = new module(this.API);
+		this._modules[name] = new module(this.API, params);
 	},
 
 	getModule : function(name)
@@ -11,11 +11,11 @@ Smd.Core = {
 		return this._modules[name];
 	},
 
-	createApp : function(name, arguments)
+	createApp : function(name, params)
 	{
 		if(this._modules[name] && this._modules[name].App)
 		{
-			this._apps.push(new this._modules[name].App(arguments));
+			this._apps.push(new this._modules[name].App(params));
 			return true;
 		}
 		return false;
@@ -24,6 +24,11 @@ Smd.Core = {
 	API : {
 		$ : $,
 
+		getCurrentLocation : function()
+		{
+			return document.location;
+		},
+		
 		getModule : function(name)
 		{
 			return Smd.Core.getModule(name);

@@ -54,7 +54,7 @@ public class MainServlet extends SmdServlet
 
 	protected IActionsFactory createActionsFactory ()
 	{
-		configResource = getServletConfig().getInitParameter(CONFIG_PARAM);
+		configResource = getServletContext().getInitParameter(CONFIG_PARAM);
 		SmdUrl.initRB(ResourceBundle.getBundle(configResource));
 
 		String usersPath = ResourceBundle.getBundle(configResource).getString(USERS_STORAGE_PATH_KEY);

@@ -38,7 +38,7 @@ public class PagesServlet extends HttpServlet
 	public void init() throws ServletException
 	{
 		super.init();
-		configResource = getServletConfig().getInitParameter(CONFIG_PARAM);
+		configResource = getServletContext().getInitParameter(CONFIG_PARAM);
 		SmdUrl.initRB(ResourceBundle.getBundle(configResource));
 	}
 

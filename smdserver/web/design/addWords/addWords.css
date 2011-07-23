@@ -1,7 +1,28 @@
 .b-addWords
 { 
-    border: solid 1px;
-	padding: 1em;
-	margin: 1em;
 }
 
+.b-addWords_pair-div
+{
+	margin-left: 20px;
+	margin-bottom: 3px;
+}
+
+.b-addWords_pair-text-input
+{
+	width: 50%;
+	margin: 0;
+	border: inset 2px #f0f0f0;
+	padding: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-rarius: 2px;
+}
+.b-addWords_text-input-original
+{
+	margin: 0 4px 0 -20px;
+}
+.b-addWords_text-input-translation
+{
+
+}
