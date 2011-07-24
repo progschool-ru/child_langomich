@@ -2,6 +2,7 @@
 <jsp:include page="/js/Smd/Smd.Core.js"/>
 <jsp:include page="/js/Smd/Server/Smd.Server.js"/>
 <jsp:include page="/js/Smd/AddWords/Smd.AddWords.js"/>
+<jsp:include page="/js/Smd/AddWords/Smd.AddWords.Words.js"/>
 <jsp:include page="/js/Smd/Smd.Unicode2Java.js"/>
 <%
 	String configPath = getServletContext().getInitParameter("config");
