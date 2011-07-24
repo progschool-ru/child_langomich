@@ -4,7 +4,7 @@
 
 .b-addWords_pair-div
 {
-	margin: 0 16px 3px 18px;
+	margin: 0 20px 3px 20px;
 }
 
 .b-addWords_pair-div:last-child
@@ -20,7 +20,7 @@
 	padding: 2px;
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
-	border-rarius: 2px;
+	border-radius: 2px;
 }
 .b-addWords_text-input-original
 {
@@ -50,14 +50,9 @@
 .b-addWords_more-button
 {
 	background-color: rgba(0,0,0,0);
-	border:none;
-	cursor: pointer;
-	border-bottom: dashed 1px #008;
-	padding: 0;
 	font-size: x-small;
 	text-transform: lowercase;
 
-	display: inline-block;
 	margin: 0 22px 5px auto;
 }
 
@@ -79,4 +74,32 @@
 .b-addWords_button-container
 {
 	text-align:right;
+}
+
+.b-addWords_language-button
+{
+	font-size: x-small;
+	text-transform: lowercase;
+	margin-left: 6px;
+}
+
+select.b-addWords_language-input
+{
+	padding: 2px;
+}
+
+input.b-addWords_language-input[type="text"]
+{
+	width: 6em;
+	margin: 0;
+	border: inset 2px #f0f0f0;
+	padding: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+}
+
+.b-addWords_language-container
+{
+	margin-bottom: 3px;
 }

@@ -14,6 +14,11 @@ Smd.Server = {
 		return this._basePath + this._servletPaths[servlet] + action;
 	},
 
+	getLanguages : function()
+	{
+		return ["en", "es"];
+	},
+
 	SMD_PROTOCOL_PREFIX_LENGTH : "smd://".length
 }
 Smd.Server.Module.prototype = Smd.Server;

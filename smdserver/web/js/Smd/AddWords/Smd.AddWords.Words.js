@@ -1,7 +1,10 @@
-Smd.AddWords.Words = function(api, element, createButtonContainerFunction)
+Smd.AddWords.Words = function(api, element, createButtonContainerFunction,
+								inputNameOriginal, inputNameTranslation)
 {
 	this.$ = api.$;
 	this._pairsCounter = 0;
+	this._original = inputNameOriginal;
+	this._translation = inputNameTranslation;
 	
 	var wordsFieldset = this.$("<fieldset/>");
 	element.append(wordsFieldset);
@@ -82,8 +85,8 @@ Smd.AddWords.Words.prototype = {
 		pair.inputOriginal.addClass(this.PAIR_INPUT_CLASS);
 		pair.inputTranslation.addClass(this.PAIR_INPUT_CLASS);
 
-		pair.inputOriginal.attr("name", "original");
-		pair.inputTranslation.attr("name", "translation");
+		pair.inputOriginal.attr("name", this._original);
+		pair.inputTranslation.attr("name", this._translation);
 		return pair;
 	},
 
@@ -111,21 +114,16 @@ Smd.AddWords.Words.prototype = {
 		});
 	},
 
-	callOfSpeed : function(element, func, speed, callback)
-	{
-		func.call(element, speed, callback);
-		if(!speed && callback)
-			callback();
-	},
+	callOfSpeed : Smd.AddWords.callOfSpeed,
 
-	ANIMATION_SPEED         : "hide",
-	ALINK_CLASS             : "alink",
+	ANIMATION_SPEED         : "fast",
+	ALINK_CLASS             : Smd.AddWords.ALINK_CLASS,
 	BUTTON_CONTAINER_CLASS  : Smd.AddWords.BUTTON_CONTAINER_CLASS,
 	ICON_BUTTON_CLASS       : "b-addWords_icon-button",
 	INPUT_ORIGINAL_CLASS    : "b-addWords_text-input-original",
 	INPUT_TRANSLATION_CLASS : "b-addWords_text-input-translation",
 	LESS_BUTTON_CLASS       : "b-addWords_less-button",
-	LESS_BUTTON_LABEL   : "Less",
+	LESS_BUTTON_LABEL       : "Less",
 	MORE_BUTTON_CLASS       : "b-addWords_more-button",
 	MORE_BUTTON_LABEL       : "More",
 	PAIR_DIV_CLASS          : "b-addWords_pair-div",
