@@ -12,55 +12,25 @@ Smd.AddWords = {
 
 	App : function(api, serverModuleName, container)
 	{
-		var scope = this;
-
 		this.api = api;
 		this.$ = api.$;
 		this.serverModule = api.getModule(serverModuleName);
 
 		this._pairsCounter = 0;
-		this._formObject = this.createForm();
 
-		var element = this.$(container);
-		element.append(this._formObject.form);
-		scope.appendPair(scope._formObject.wordsFieldset);
+		var formObject = this.createForm();
+		this.$(container).append(formObject.form);
+		this.appendPair(formObject.wordsFieldset);
 	},
 
-	appendMoreLessButton : function(buttonsContainer, pairsContainer)
+	createMoreButton : function(clickHandler)
 	{
-		var scope = this;
-
-		var less = this.$("<button type='button'/>");
-		less.addClass(this.LESS_BUTTON_CLASS);
-		less.addClass(this.ICON_BUTTON_CLASS);
-		less.append("Less");
-		less.click(function()
-		{
-			if(scope._pairsCounter <= 2)
-			{
-				less.hide();
-			}
-			scope.removePair(pairsContainer);
-		});
-		if(scope._pairsCounter <= 1)
-		{
-			less.hide();
-		}
-		buttonsContainer.append(less);
-
 		var more = this.$("<button type='button'/>");
 		more.addClass(this.MORE_BUTTON_CLASS);
 		more.addClass(this.ICON_BUTTON_CLASS);
-		more.append("More");
-		more.click(function()
-		{
-			if(scope._pairsCounter >= 1)
-			{
-				less.show();
-			}
-			scope.appendPair(pairsContainer);
-		});
-		buttonsContainer.append(more);
+		more.append(this.MORE_BUTTON_LABEL);
+		more.click(clickHandler);
+		return more;
 	},
 
 	createForm : function()
@@ -81,8 +51,11 @@ Smd.AddWords = {
 		var wordsFieldset = this.$("<fieldset/>");
 		form.append(wordsFieldset);
 
-		scope.appendMoreLessButton(form, wordsFieldset);
-		form.append(scope.createSubmitButton());
+		form.append(this.createMoreButton(function()
+				{
+					scope.appendPair(wordsFieldset);
+				}));
+		form.append(this.createSubmitButton());
 
 		return {
 			form:form,
@@ -94,7 +67,7 @@ Smd.AddWords = {
 	{
 		var submit = this.$("<input type='submit'/>");
 		submit.addClass(this.SUBMIT_BUTTON_CLASS);
-		submit.attr("value","Add");
+		submit.attr("value",this.SUBMIT_BUTTON_LABEL);
 		return submit;
 	},
 
@@ -117,14 +90,13 @@ Smd.AddWords = {
 			});
 	},
 
-	removePair : function(container, callback)
+	removePair : function(div, callback)
 	{
 		if(this._lock)
 			return;
 
 		this._lock = true;
 		this._pairsCounter --;
-		var div = container.children(":last-child");
 		var scope = this;
 		scope.callOfSpeed(div, div.hide, this.ANIMATION_SPEED, function()
 			{
@@ -135,12 +107,14 @@ Smd.AddWords = {
 			});
 	},
 
-	createPair : function() {
+	createPair : function()
+	{
 		var pair = {
 			div : this.$("<div/>"),
 			inputOriginal    : this.$("<input type='text'/>"),
 			inputTranslation : this.$("<input type='text'/>")
 		};
+		this.appendLessButton(pair);
 		pair.div.append(pair.inputOriginal);
 		pair.div.append(pair.inputTranslation);
 		pair.div.addClass(this.PAIR_DIV_CLASS);
@@ -152,6 +126,30 @@ Smd.AddWords = {
 		pair.inputOriginal.attr("name", "original");
 		pair.inputTranslation.attr("name", "translation");
 		return pair;
+	},
+
+	appendLessButton : function(pair)
+	{
+		var less = this.$("<button type='button'/>");
+		pair.div.append(less);
+		pair.lessButton = less
+
+		less.addClass(this.LESS_BUTTON_CLASS);
+		less.addClass(this.ICON_BUTTON_CLASS);
+		less.append(this.LESS_BUTTON_LABEL);
+		var scope = this;
+		less.click(function()
+		{
+			if(scope._pairsCounter > 1)
+			{
+				scope.removePair(pair.div);
+			}
+			else
+			{
+				pair.inputOriginal.attr("value", "");
+				pair.inputTranslation.attr("value", "");
+			}
+		});
 	},
 
 	handleSubmit : function (form)
@@ -170,18 +168,26 @@ Smd.AddWords = {
 //			l = form.newLen.value;
 
 		var words = [];
-
-		for(var i=0; i < form.original.length && i < form.translation.length; i++)
+		var addWordFunc = function(original, translation)
 		{
-			if(form.original[i].value != "" && form.translation[i].value != "")
+			if(original != "" && translation != "")
 			{
 				words.push({
-					original:form.original[i].value,
-					translation:form.translation[i].value,
+					original: original,
+					translation: translation,
 					rating: r,
 					modified: date
 				});
 			}
+		}
+
+		if(!form.original.length)
+		{
+			addWordFunc(form.original.value, form.translation.value);
+		}
+		else for(var i=0; i < form.original.length && i < form.translation.length; i++)
+		{
+			addWordFunc(form.original[i].value, form.translation[i].value);
 		}
 
 		if(words.length == 0)
@@ -206,6 +212,10 @@ Smd.AddWords = {
 		if(!speed && callback)
 			callback();
 	},
+
+	SUBMIT_BUTTON_LABEL : "Submit",
+	LESS_BUTTON_LABEL   : "Less",
+	MORE_BUTTON_LABEL   : "More",
 
 	ANIMATION_SPEED : "hide",
 

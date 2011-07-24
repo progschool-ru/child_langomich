@@ -35,6 +35,14 @@
 	border:none;
 	cursor: pointer;
 }
+.b-addWords_icon-button
+{
+	opacity: .5;
+}
+.b-addWords_icon-button:hover
+{
+	opacity: 1;
+}
 .b-addWords_more-button
 {
 	background-image: url("plus.png");
@@ -46,10 +54,9 @@
 .b-addWords_less-button
 {
 	background-image: url("minus.png");
-	float: left;
-	position: relative;
-	top: -22px;
-	left: 2px;
+	position: absolute;
+	left: -36px;
+	top: 4px;
 }
 
 .b-addWords_submit-button
