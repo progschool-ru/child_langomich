@@ -37,6 +37,11 @@ Smd.Core = {
 		encodeToJavaString : function(value)
 		{
 			return Smd.Unicode2Java.uni2java(value);
+		},
+
+		ajax : function(url, settings)
+		{
+			return jQuery.ajax(url, settings);
 		}
 	},
 	
