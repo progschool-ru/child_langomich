@@ -25,9 +25,9 @@ Smd.AddWords = {
 
 	createMoreButton : function(clickHandler)
 	{
-		var more = this.$("<button type='button'/>");
+		var more = this.$("<div/>");
 		more.addClass(this.MORE_BUTTON_CLASS);
-		more.addClass(this.ICON_BUTTON_CLASS);
+		more.addClass(this.ALINK_CLASS);
 		more.append(this.MORE_BUTTON_LABEL);
 		more.click(clickHandler);
 		return more;
@@ -51,11 +51,19 @@ Smd.AddWords = {
 		var wordsFieldset = this.$("<fieldset/>");
 		form.append(wordsFieldset);
 
-		form.append(this.createMoreButton(function()
+		form.append(
+			this.$("<div/>").addClass(this.BUTTON_CONTAINER_CLASS).append(//It's for Google-Chrome
+				this.createMoreButton(function()
 				{
 					scope.appendPair(wordsFieldset);
-				}));
-		form.append(this.createSubmitButton());
+				})
+			)
+		);
+		form.append(
+			this.$("<div/>").addClass(this.BUTTON_CONTAINER_CLASS).append(//It's for Google-Chrome
+				this.createSubmitButton()
+			)
+		);
 
 		return {
 			form:form,
@@ -130,7 +138,7 @@ Smd.AddWords = {
 
 	appendLessButton : function(pair)
 	{
-		var less = this.$("<button type='button'/>");
+		var less = this.$("<div/>");
 		pair.div.append(less);
 		pair.lessButton = less
 
@@ -219,6 +227,9 @@ Smd.AddWords = {
 
 	ANIMATION_SPEED : "hide",
 
+	ALINK_CLASS     : "alink",
+	
+	BUTTON_CONTAINER_CLASS : "b-addWords_button-container",
 	ICON_BUTTON_CLASS   : "b-addWords_icon-button",
 	SUBMIT_BUTTON_CLASS : "b-addWords_submit-button",
 	LESS_BUTTON_CLASS   : "b-addWords_less-button",

@@ -1,12 +1,15 @@
 .b-addWords
 {
-	padding-bottom: 24px;
 }
 
 .b-addWords_pair-div
 {
-	margin-left: 40px;
-	margin-bottom: 3px;
+	margin: 0 16px 3px 18px;
+}
+
+.b-addWords_pair-div:last-child
+{
+	margin-bottom: 0px;
 }
 
 .b-addWords_pair-text-input
@@ -43,25 +46,37 @@
 {
 	opacity: 1;
 }
+
 .b-addWords_more-button
 {
-	background-image: url("plus.png");
-	position:absolute;
-	bottom: 10px;
-	left: 20px;
+	background-color: rgba(0,0,0,0);
+	border:none;
+	cursor: pointer;
+	border-bottom: dashed 1px #008;
+	padding: 0;
+	font-size: x-small;
+	text-transform: lowercase;
+
+	display: inline-block;
+	margin: 0 22px 5px auto;
 }
 
 .b-addWords_less-button
 {
 	background-image: url("minus.png");
 	position: absolute;
-	left: -36px;
 	top: 4px;
+	right: -18px;
 }
 
 .b-addWords_submit-button
 {
-	float: right;
+	display: inline-block;
 	cursor: pointer;
+	margin: 0 16px 0 auto;
 }
 
+.b-addWords_button-container
+{
+	text-align:right;
+}
