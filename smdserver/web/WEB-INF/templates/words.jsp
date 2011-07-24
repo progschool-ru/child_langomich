@@ -5,7 +5,6 @@
 <div class="toolbar">
 	<smd:toolbar/>
 	<ul class="appendix">
-		<li><smd:ahref text="Add Word" url="../../addWords.jsp"/></li>
 		<li><smd:ahref text="Get Words JSON" url="smd://action/getWords"/></li>
 		<li><smd:ahref text="Refresh" url="javascript:location.reload(true)"/></li>
 	</ul>
