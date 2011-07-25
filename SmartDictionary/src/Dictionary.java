@@ -1,6 +1,5 @@
-import javax.microedition.rms.*;
-import java.io.*;
-import java.util.*;
+import java.util.Date;
+import java.util.Random;
 
 public class Dictionary extends Records
 {
@@ -93,20 +92,13 @@ public class Dictionary extends Records
         }
         public void addRecord(String original, String translation, int rating, long lastModified)
 	{
-		try{
-			writer.writeUTF(original);
-			writer.writeUTF(translation);
-			writer.writeUTF(Integer.toString(rating));
-                        writer.writeUTF(language);
-                        writer.writeUTF(Long.toString(lastModified));
-			byte[] data = byteOutputStream.toByteArray();
-			rs.addRecord( data, 0, data.length );
-			writer.flush();
-			byteOutputStream.reset();
-		}
-		catch( RecordStoreException e ){}
-		catch(IOException ioe){}
-		re.rebuild();
+            String [] str = new String[5];
+            str[0] = original;
+            str[1] = translation;
+            str[2] = Integer.toString(rating);
+            str[3] = language;
+            str[4] = Long.toString(lastModified);
+            addRecord(str);
         }
         private void setRecord(String original, String translation, int rating, int id)
 	{
@@ -115,29 +107,17 @@ public class Dictionary extends Records
         }
         private void setRecord(String original, String translation, int rating, int id, long lastModified)
 	{
-		try{
-			writer.writeUTF(original);
-			writer.writeUTF(translation);
-			writer.writeUTF(Integer.toString(rating));
-                        writer.writeUTF(language);
-                        writer.writeUTF(Long.toString(lastModified));
-			byte[] data = byteOutputStream.toByteArray();
-			rs.setRecord(id, data, 0, data.length );
-			writer.flush();
-			byteOutputStream.reset();
-		}
-		catch( RecordStoreException e ){}
-		catch(IOException ioe){}
-		re.rebuild();
+            String [] str = new String[5];
+            str[0] = original;
+            str[1] = translation;
+            str[2] = Integer.toString(rating);
+            str[3] = language;
+            str[4] = Long.toString(lastModified);
+            setRecord(str, id);
         }
-        public void deleteRecord(int n)
+        public void deleteRecord(int row)
 	{
-		int id = getId(n);
-		try {
-			rs.deleteRecord(id);
-		}
-		catch( RecordStoreException e ){}
-		re.rebuild();
+		super.deleteRecord(getId(row));
         }
         public boolean answer(int row, String answer)
 	{
@@ -152,7 +132,6 @@ public class Dictionary extends Records
                     else
                         rating += pl;
                     setRecord(getCell(row, ORIGINAL), getCell(row, TRANSLATION), rating, id);
-                    re.rebuild();
                     return true;
                 }
                 else
@@ -162,7 +141,6 @@ public class Dictionary extends Records
                     else
                         rating -= mi;
                     setRecord(getCell(row, ORIGINAL), getCell(row, TRANSLATION), rating, id);
-                    re.rebuild();
                     return false;
                 }
         }
@@ -182,33 +160,10 @@ public class Dictionary extends Records
         }
         private long getLastModified(int id)
         {
-            long lastModified = 0;
-            if (getNumRecords() != 0)
-            {
-                String record = "0";
-                try {
-
-                        byte[] data = new byte[rs.getRecordSize(id)];
-                        data = rs.getRecord(id);
-                        byteInputStream = new ByteArrayInputStream(data);
-                        reader = new DataInputStream(byteInputStream);
-                        for(int j = 0; j < LAST_TIMING; j++)
-                            record = reader.readUTF();
-                }
-                catch(RecordStoreException e){}
-                catch(IOException ioe){}
-                lastModified = Long.parseLong(record);
-            }
-            return lastModified;
-        }
-        public void newOrdering(int column)
-        {
-            if(column != 1 && column != 2) {
-                return;
-            }
-            try {
-                re = rs.enumerateRecords(null, new Ordering(column), false);
-            }
-            catch( RecordStoreException e ) {} 
+            String record = getRecord(id, LAST_TIMING);
+            if(record!=null)
+                return Long.parseLong(record);
+            else
+                return 0;
         }
 }
