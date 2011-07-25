@@ -9,7 +9,7 @@ import java.util.Map;
 public class WordsStorage implements IWordsStorage
 {
 	private Map<String, List<Language> > usersWords;
-        protected SimpleDateFormat s;
+	protected SimpleDateFormat s;
 
 	public WordsStorage ()
 	{
@@ -17,53 +17,67 @@ public class WordsStorage implements IWordsStorage
 	}
 	public void addUserWords (String userId, List<Language> languages)
 	{
-                checkUpdated(userId);
-            	if(!usersWords.containsKey(userId))
+		checkUpdated(userId);
+		if(!usersWords.containsKey(userId))
+		{
+			usersWords.put(userId, new ArrayList<Language>());
+		}
+		for(int j = 0; j < languages.size(); j++)
+		{
+			boolean newLen = true;
+			List<Language> storedLanguages = usersWords.get(userId);
+			Language commingLanguage = languages.get(j);
+			for(int i = 0; i < storedLanguages.size(); i++)
+			{
+				Language storedLanguage = storedLanguages.get(i);
+				if(storedLanguage.getName().equals(commingLanguage.getName()))
 				{
-					usersWords.put(userId, new ArrayList<Language>());
-				}
-                for(int j = 0; j < languages.size(); j++) {
-                    boolean newLen = true;
-                    for(int i =0; i < usersWords.get(userId).size(); i++)
-                        if(usersWords.get(userId).get(i).getName().equals(languages.get(j).getName()))
-                        {
-                            newLen = false;
-                            for(int l = 0; l < languages.get(j).getWords().size(); l++)
-							{
-								boolean flag = true;
-								for(int q = 0; q < usersWords.get(userId).get(i).getWords().size(); q++)
+					newLen = false;
+					List<Word> commingWords = commingLanguage.getWords();
+					List<Word> storedWords = storedLanguage.getWords();
+					for(int l = 0; l < commingWords.size(); l++)
+					{
+						boolean flag = true;
+						Word commingWord = commingWords.get(l);
+						for(int q = 0; q < storedWords.size(); q++)
+						{
+							Word storedWord = storedWords.get(q);
+							if(commingWord.getOriginal().equals(storedWord.getOriginal()))
+								if(commingWord.getModified() > storedWord.getModified())
 								{
-									if(languages.get(j).getWords().get(l).getOriginal().equals(usersWords.get(userId).get(i).getWords().get(q).getOriginal()))
-										if(languages.get(j).getWords().get(l).getModified() > usersWords.get(userId).get(i).getWords().get(q).getModified())
-											usersWords.get(userId).get(i).getWords().set(q, languages.get(j).getWords().get(l));
+									storedWords.set(q, commingWord);
+									flag = false;
+									break;
 								}
-								if(flag)
-									usersWords.get(userId).get(i).getWords().add(languages.get(j).getWords().get(l));
-							}
-                            break;
-                        }
-                    if(newLen)
-                        usersWords.get(userId).add(languages.get(j));
-                }
+						}
+						if(flag)
+							storedWords.add(commingWord);
+					}
+					break;
+				}
+			}
+			if(newLen)
+				storedLanguages.add(commingLanguage);
+		}
 	}
 	public void setUserWords (String userId, List<Language> languages)
 	{
 		usersWords.put(userId, languages);
 	}
-        protected void checkUpdated(String userId)
+	protected void checkUpdated(String userId)
 	{
 	}
-        protected List<Language> getLanguages(String userId)
+	protected List<Language> getLanguages(String userId)
 	{
-            if(!usersWords.containsKey(userId))
-            {
-		usersWords.put(userId, new ArrayList<Language>());
-            }
-            return usersWords.get(userId);
+		if(!usersWords.containsKey(userId))
+		{
+			usersWords.put(userId, new ArrayList<Language>());
+		}
+		return usersWords.get(userId);
 	}
 	public List<Language> getUserWords (String userId)
 	{
-                checkUpdated(userId);
+		checkUpdated(userId);
 		if(!usersWords.containsKey(userId))
 		{
 			usersWords.put(userId, new ArrayList<Language>());
@@ -72,36 +86,42 @@ public class WordsStorage implements IWordsStorage
 	}
 	public List<Language> getCopyUserWords (String userId)
 	{
-                checkUpdated(userId);
+		checkUpdated(userId);
 		if(!usersWords.containsKey(userId))
 		{
 			usersWords.put(userId, new ArrayList<Language>());
 		}
 		List<Language> languages =  new ArrayList<Language>();
-        for(int j = 0; j < usersWords.get(userId).size(); j++)
+		List<Language> storedLanguages = usersWords.get(userId);
+        for(int j = 0; j < storedLanguages.size(); j++)
 		{
-			languages.add(new Language(usersWords.get(userId).get(j).getName()));
-			for(int i = 0; i < usersWords.get(userId).get(j).getWords().size(); i++)
-				languages.get(j).getWords().add(usersWords.get(userId).get(j).getWords().get(i));
+			Language storedLanguage = storedLanguages.get(j);
+			List<Word> storedWords = storedLanguage.getWords();
+			languages.add(new Language(storedLanguage.getName()));
+			for(int i = 0; i < storedWords.size(); i++)
+				languages.get(j).getWords().add(storedWords.get(i));
         }
 		return languages;
 	}
 	public List<Language> getCopyUserWords (String userId, long lastModified)
 	{
-                checkUpdated(userId);
+		checkUpdated(userId);
 		if(!usersWords.containsKey(userId))
 		{
 			usersWords.put(userId, new ArrayList<Language>());
 		}
         List<Language> languages =  new ArrayList<Language>();
-        for(int j = 0; j < usersWords.get(userId).size(); j++)
+		List<Language> storedLanguages = usersWords.get(userId);
+        for(int j = 0; j < storedLanguages.size(); j++)
 		{
-			languages.add(new Language(usersWords.get(userId).get(j).getName()));
-			for(int i = 0; i < usersWords.get(userId).get(j).getWords().size(); i++)
-				if(usersWords.get(userId).get(j).getWords().get(i).getModified() > lastModified)
-                {
-					languages.get(j).getWords().add(usersWords.get(userId).get(j).getWords().get(i));
-                }
+			Language storedLanguage = storedLanguages.get(j);
+			languages.add(new Language(storedLanguage.getName()));
+			for(int i = 0; i < storedLanguage.getWords().size(); i++)
+			{
+				Word storedWord = storedLanguage.getWords().get(i);
+				if(storedWord.getModified() > lastModified)
+					languages.get(j).getWords().add(storedWord);
+			}
         }
 		return languages;
 	}
