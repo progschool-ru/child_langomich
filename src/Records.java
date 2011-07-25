@@ -1,17 +1,23 @@
-import javax.microedition.rms.*;
-import java.io.*;
+import javax.microedition.rms.RecordStore;
+import javax.microedition.rms.RecordEnumeration;
+import javax.microedition.rms.RecordStoreException;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
 
 public abstract class Records
 {
         public final int SINGLE_RECORD = 1;
 
-        protected ByteArrayOutputStream byteOutputStream;
-        protected DataOutputStream writer;
-        protected ByteArrayInputStream byteInputStream;
-        protected DataInputStream reader;
+        private ByteArrayOutputStream byteOutputStream;
+        private DataOutputStream writer;
+        private ByteArrayInputStream byteInputStream;
+        private DataInputStream reader;
 
-        protected RecordStore rs = null;
-        protected RecordEnumeration re;
+        private RecordStore rs = null;
+        private RecordEnumeration re;
 
         protected void recordStoreInit(String name, Filter filter, Ordering ordering){
                 byteOutputStream = new ByteArrayOutputStream();
@@ -21,6 +27,18 @@ public abstract class Records
 			re = rs.enumerateRecords(filter, ordering, false);
 		}
 		catch( RecordStoreException e ) {}
+        }
+        protected void addRecord(String record)
+        {
+            String [] str = new String[1];
+            str[0] = record;
+            addRecord(str);
+        }
+        protected void setRecord(String record, int id)
+	{
+            String [] str = new String[1];
+            str[0] = record;
+            setRecord(str, id);
         }
         public String getRecord(int id, int column)
 	{
@@ -40,6 +58,44 @@ public abstract class Records
                 catch(IOException ioe){}
             }
             return record;
+        }
+        protected void addRecord(String[] record)
+        {
+ 		try
+                {
+                    for(int i = 0; i < record.length; i++)
+			writer.writeUTF(record[i]);
+                    byte[] data = byteOutputStream.toByteArray();
+                    rs.addRecord(data, 0, data.length );
+                    writer.flush();
+                    byteOutputStream.reset();
+		}
+		catch( RecordStoreException e ){}
+		catch(IOException ioe){}
+		re.rebuild();
+        }
+        protected void setRecord(String[] record, int id)
+	{
+		try
+                {
+                    for(int i = 0; i < record.length; i++)
+			writer.writeUTF(record[i]);
+                    byte[] data = byteOutputStream.toByteArray();
+                    rs.setRecord(id, data, 0, data.length );
+                    writer.flush();
+                    byteOutputStream.reset();
+		}
+		catch( RecordStoreException e ){}
+		catch(IOException ioe){}
+		re.rebuild();
+        }
+        protected void deleteRecord(int id)
+        {
+            try {
+                    rs.deleteRecord(id);
+            }
+            catch( RecordStoreException e ){}
+            re.rebuild();
         }
         public String[] getColumn(int column)
 	{
@@ -78,6 +134,16 @@ public abstract class Records
         }
         public int getNumRecords() {
                 return re.numRecords();
+        }
+        public void newOrdering(int column)
+        {
+            if(column != 1 && column != 2) {
+                return;
+            }
+            try {
+                re = rs.enumerateRecords(null, new Ordering(column), false);
+            }
+            catch( RecordStoreException e ) {}
         }
         public void destroy()
         {

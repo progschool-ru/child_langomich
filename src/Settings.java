@@ -1,6 +1,4 @@
-import javax.microedition.rms.*;
-import java.io.*;
-import java.util.*;
+import java.util.Date;
 
 public class Settings extends Records
 {
@@ -127,33 +125,5 @@ public class Settings extends Records
             if(!record.equals("null"))
                 return record;
             return null;
-        }
-        private void addRecord(String record)
-        {
- 		try
-                {
-			writer.writeUTF(record);
-			byte[] data = byteOutputStream.toByteArray();
-			rs.addRecord(data, 0, data.length );
-			writer.flush();
-			byteOutputStream.reset();
-		}
-		catch( RecordStoreException e ){}
-		catch(IOException ioe){}
-		re.rebuild();
-        }
-        private void setRecord(String record, int id)
-	{
-		try
-                {
-			writer.writeUTF(record);
-			byte[] data = byteOutputStream.toByteArray();
-			rs.setRecord(id, data, 0, data.length );
-			writer.flush();
-			byteOutputStream.reset();
-		}
-		catch( RecordStoreException e ){}
-		catch(IOException ioe){}
-		re.rebuild();
         }
 }
