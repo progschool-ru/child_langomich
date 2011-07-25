@@ -15,9 +15,8 @@
         <jsp-property-group>
             <display-name>allPages</display-name>
             <url-pattern>/index.jsp</url-pattern>
-            <url-pattern>/addWords.jsp</url-pattern>
-			<url-pattern>/empty.jsp</url-pattern>
-            <url-pattern>/main.jsp</url-pattern>
+			<url-pattern>/WEB-INF/templates/empty.jsp</url-pattern>
+            <url-pattern>/WEB-INF/templates/main.jsp</url-pattern>
             <url-pattern>/WEB-INF/templates/login.jsp</url-pattern>
             <url-pattern>/WEB-INF/templates/profile.jsp</url-pattern>
             <url-pattern>/WEB-INF/templates/register.jsp</url-pattern>
