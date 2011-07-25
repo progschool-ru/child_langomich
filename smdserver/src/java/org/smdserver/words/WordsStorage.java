@@ -19,9 +19,9 @@ public class WordsStorage implements IWordsStorage
 	{
                 checkUpdated(userId);
             	if(!usersWords.containsKey(userId))
-		{
-			usersWords.put(userId, new ArrayList<Language>());
-		}
+				{
+					usersWords.put(userId, new ArrayList<Language>());
+				}
                 for(int j = 0; j < languages.size(); j++) {
                     boolean newLen = true;
                     for(int i =0; i < usersWords.get(userId).size(); i++)
@@ -29,10 +29,20 @@ public class WordsStorage implements IWordsStorage
                         {
                             newLen = false;
                             for(int l = 0; l < languages.get(j).getWords().size(); l++)
-                                usersWords.get(userId).get(i).getWords().add(languages.get(j).getWords().get(l));
+							{
+								boolean flag = true;
+								for(int q = 0; q < usersWords.get(userId).get(i).getWords().size(); q++)
+								{
+									if(languages.get(j).getWords().get(l).getOriginal().equals(usersWords.get(userId).get(i).getWords().get(q).getOriginal()))
+										if(languages.get(j).getWords().get(l).getModified() > usersWords.get(userId).get(i).getWords().get(q).getModified())
+											usersWords.get(userId).get(i).getWords().set(q, languages.get(j).getWords().get(l));
+								}
+								if(flag)
+									usersWords.get(userId).get(i).getWords().add(languages.get(j).getWords().get(l));
+							}
                             break;
                         }
-                    if(newLen == true)
+                    if(newLen)
                         usersWords.get(userId).add(languages.get(j));
                 }
 	}
