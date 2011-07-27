@@ -2,14 +2,14 @@ import java.util.Vector;
 import javax.microedition.lcdui.*;
 
 public class MultiLineText {
-    private int x,y,w,h,fsz,fst,fty;    //Р Р°Р·РјРµСЂ РѕРіСЂР°РЅРёС‡РёРІР°СЋС‰РµРіРѕ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРєР°;
-    private int hStr;       //Р’С‹СЃРѕС‚Р° СЃС‚СЂРѕРєРё
-    private int y0;         //РџРѕР»РѕР¶РµРЅРёРµ РІРµСЂС…РЅРµРіРѕ РєСЂР°СЏ С‚РµРєСЃС‚Р°
-    private int dy;         //РЁР°Рі РїСЂРё РїСЂРѕРєСЂСѓС‚РєРµ С‚РµРєСЃС‚Р°
-    private int textheight; //РћР±С‰Р°СЏ РІС‹СЃРѕС‚Р° С‚РµРєСЃС‚Р°
+    private int x,y,w,h,fsz,fst,fty;
+    private int hStr;
+    private int y0; 
+    private int dy;
+    private int textheight; 
     private Vector StringLines;
     private Graphics g;
-    private int gx,gy,gw,gh; //РСЃС…РѕРґРЅР°СЏ РѕР±Р»Р°СЃС‚СЊ
+    private int gx,gy,gw,gh; 
 
     private String str1;
     MultiLineText(

@@ -3,10 +3,10 @@ import java.io.IOException;
 
 public class SettingsForm extends Canvas implements CommandListener
 {
-    private Command change = new Command("Изменить", Command.SCREEN, 1);
-    private Settings settings = new Settings();
     private Text text = new Text();
-
+    private Command change = new Command(text.CHANGE, Command.SCREEN, 1);
+    private Settings settings = new Settings();
+    
     private int width;
     private int height;
     private int size;
@@ -84,13 +84,14 @@ public class SettingsForm extends Canvas implements CommandListener
         str[3] = text.URL+"  "+settings.getURL();
         try
         {
-            Image img = Image.createImage("word.png"); 
+            String way = "/images/settings";
+            Image img = Image.createImage(way+"/word.png");
             g.drawImage(getImage(img,size-4, size-4), 2, 2-shift, 0);
-            img = Image.createImage("lang.png");
+            img = Image.createImage(way+"/lang.png");
             g.drawImage(getImage(img,size-4, size-4), 2, size+2-shift, 0);
-            img = Image.createImage("login.png");
+            img = Image.createImage(way+"/login.png");
             g.drawImage(getImage(img,size-4, size-4), 2, size*2+2-shift, 0);
-            img = Image.createImage("url.png");
+            img = Image.createImage(way+"/url.png");
             g.drawImage(getImage(img,size-4, size-4), 2, size*3+2-shift, 0);
         }
         catch(IOException ioe){}
