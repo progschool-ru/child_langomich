@@ -144,8 +144,9 @@ public class SmartDictionary extends MIDlet implements CommandListener
 			}
                         if (i == 3)
 			{
-                                settingsFormReset();
-				Display.getDisplay(this).setCurrent(settingsForm);
+                            goToTheSettingsForm();
+//                                settingsFormReset();
+//				Display.getDisplay(this).setCurrent(settingsForm);
 			}
 		}
                 if (c == delete) 
@@ -309,6 +310,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 dictionaryList.addCommand(back);
                 dictionaryList.setCommandListener(this);
         }
+
         private void settingsFormInit()
         {
                 settingsFormReset();
@@ -347,6 +349,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
                    settings.setURL(urlField.getString());
                    dictionary = new Dictionary(settings.getLanguage());
         }
+
         private void newLenReset()
         {
                 nLen.delete(0, nLen.getString().length());
@@ -357,5 +360,11 @@ public class SmartDictionary extends MIDlet implements CommandListener
  		nLen.addCommand(cancel);
 		nLen.addCommand(saveNewLen);
 		nLen.setCommandListener(this);
+        }
+        private void goToTheSettingsForm()
+        {
+            SettingsForm sf = new SettingsForm(back);
+            sf.setCommandListener(this);
+            Display.getDisplay(this).setCurrent(sf);
         }
 }

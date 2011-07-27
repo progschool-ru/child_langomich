@@ -11,32 +11,28 @@ public class Settings extends Records
         public final int URL = 7;
         public final int TEXT = 8;
 
+        public final String NAME = "Settings";
+
         Settings()
         {
-                recordStoreInit("Settings", null, null);
+            recordStoreInit(NAME, null, null);
 
-        	if(getRecord(NUMBER_OF_WORDS, SINGLE_RECORD) == null ||
-                   getRecord(LANGUAGE, SINGLE_RECORD) == null ||
-                   getRecord(LAST_TIMING, SINGLE_RECORD) == null ||
-                   getRecord(NUMBER_OF_TIMING, SINGLE_RECORD) == null)
-                {
-                    addRecord("1");
-                    addRecord("null");
-                    addRecord(Long.toString(new Date().getTime()));
-                    addRecord("0");
-                }
-        	if(getRecord(LOGIN, SINGLE_RECORD) == null ||
-                   getRecord(PASSWORD, SINGLE_RECORD) == null ||
-                   getRecord(URL, SINGLE_RECORD) == null)
-                {
-                    addRecord("null");
-                    addRecord("null");
-                    addRecord("localhost:8080");
-                }
-        	if(getRecord(TEXT, SINGLE_RECORD) == null)
-                {
-                    addRecord("null");
-                }
+            if(getRecord(NUMBER_OF_WORDS, SINGLE_RECORD)==null)
+                addRecord("1");
+            if(getRecord(LANGUAGE, SINGLE_RECORD) == null)
+                addRecord("null");
+            if(getRecord(LAST_TIMING, SINGLE_RECORD) == null)
+                addRecord(Long.toString(new Date().getTime()));
+            if(getRecord(NUMBER_OF_TIMING, SINGLE_RECORD) == null)
+                addRecord("0");
+            if(getRecord(LOGIN, SINGLE_RECORD) == null)
+                addRecord("null");
+            if(getRecord(PASSWORD, SINGLE_RECORD) == null)
+                addRecord("null");
+            if(getRecord(URL, SINGLE_RECORD) == null)
+                addRecord("localhost:8080");
+            if(getRecord(TEXT, SINGLE_RECORD) == null)
+                addRecord("null");
         }
         public void setNumberOfWords(int numberOfWords)
         {
