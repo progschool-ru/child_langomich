@@ -1,6 +1,0 @@
-MIDlet-1: SmartDictionary, SmartDictionary.png, SmartDictionary
-MIDlet-Vendor: skripnikov.sergey@gmail.com
-MIDlet-Name: SmartDictionary
-MIDlet-Version: 1.0
-MicroEdition-Configuration: CLDC-1.1
-MicroEdition-Profile: MIDP-2.0
