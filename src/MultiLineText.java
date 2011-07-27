@@ -12,7 +12,86 @@ public class MultiLineText {
     private int gx,gy,gw,gh; //РСЃС…РѕРґРЅР°СЏ РѕР±Р»Р°СЃС‚СЊ
 
     private String str1;
+    MultiLineText(
+            int FontSize,
+            int FontStyle,
+            int FontType,
+            Graphics graph
+            )
+    {
+        this.fsz=FontSize;
+        this.fst=FontStyle;
+        this.fty=FontType;
+        this.g=graph;
+    }
+ public void setText(
+            int x,
+            int y,
+            int width,
+            int height,
+            String LongString
+            )
+    {
+        this.x=x;
+        this.y=y;
+        this.w=width;
+        this.h=height;
+        gx=g.getClipX();
+        gy=g.getClipY();
+        gw=g.getClipWidth();
+        gh=g.getClipHeight();
+        g.setFont(Font.getFont(fty, fst, fsz));
+        StringLines=null;
+        StringLines =new Vector(1);
+        int i0=0,i=0,in=0,j,jw=0;
+        int imax=LongString.length();
+        hStr=g.getFont().getHeight();
+        boolean isexit=true;
+        y0=0;
+        while (isexit)
+        {
+            i=LongString.indexOf(" ", i0+1);
+            if (i<=i0)
+            {
+                i=imax;
+                isexit=false;
+            }
+            j=g.getFont().stringWidth(LongString.substring(i0,i));
+            if (jw+j<w)
+            {
+                jw=jw+j;
+                i0=i;
+            } else
+            {
+                StringLines.addElement(LongString.substring(in,i0));
+                in=i0+1;
+                jw=j;
+                if (j>w)
+                {
+                    i=i0;
+                  while (jw>w)
+                  {
+                    j=0;
+                    while (j<w)
+                    {
+                        i=i+1;
+                        j=g.getFont().stringWidth(LongString.substring(in,i));
 
+                    }
+                    i=i-1;
+                    j=g.getFont().stringWidth(LongString.substring(in,i));
+                    StringLines.addElement(LongString.substring(in,i));
+                    jw=jw-j;
+                    i0=i;
+                    in=i;
+                  }
+                  jw=0;
+                }else{i0=i;}
+            }
+        }
+        StringLines.addElement(LongString.substring(in,imax));
+        textheight=StringLines.size()*hStr;
+    }
     public void  MoveDown()
     {
         if (textheight>h)
@@ -32,7 +111,7 @@ public class MultiLineText {
 
     }
 
-public void PageUp()
+    public void PageUp()
     {
         if (textheight>h)
         {
@@ -42,7 +121,7 @@ public void PageUp()
 
     }
 
-public void PageDown()
+    public void PageDown()
     {
         if (textheight>h)
         {

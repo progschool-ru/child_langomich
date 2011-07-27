@@ -9,21 +9,23 @@ public class Dictionary extends Records
         public final int LANGUAGE = 4;
         public final int LAST_TIMING = 5;
 
+        public final String NAME = "Dicionary";
+
         private String language;
 
         Dictionary()
         {
-                recordStoreInit("Dicionary", null, new Ordering(ORIGINAL));
+                recordStoreInit(NAME, null, new Ordering(ORIGINAL));
         }
         Dictionary(String language)
         {
                 this.language = language;
-                recordStoreInit("Dicionary", new Filter(language), new Ordering(ORIGINAL));
+                recordStoreInit(NAME, new Filter(language), new Ordering(ORIGINAL));
         }
         Dictionary(String language, long lastTiming)
         {
                 this.language = language;
-                recordStoreInit("Dicionary", new Filter(language, lastTiming), new Ordering(ORIGINAL));
+                recordStoreInit(NAME, new Filter(language, lastTiming), new Ordering(ORIGINAL));
         }
 	public String getCell(int row, int column)
 	{
@@ -58,9 +60,9 @@ public class Dictionary extends Records
             int r = Math.abs(random.nextInt())%AllPoint;
             for (int i = 0; i < getNumRecords(); i++)
 		{
-			r = r - Point[i];
-			if(r <= 0 )
-				return i+1;
+                    r = r - Point[i];
+                    if(r <= 0 )
+                        return i+1;
 		}
             return getNumRecords();
         }

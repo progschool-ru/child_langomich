@@ -1,8 +1,10 @@
 public class Languages extends Records
 {
+        public final String NAME = "Languages";
+
         Languages()
         {
-                recordStoreInit("Languages", null, null);
+                recordStoreInit(NAME, null, null);
         }
 	public String[] getLanguages()
 	{

@@ -32,7 +32,7 @@ public class Text {
     public final String NORMALLY = "Нормально";
     public final String GOOD = "Хорошо";
     public final String VERY_GOOD = "Отлично";
-    public final String NUMBER_OF_WORDS = "Количество слов";
+    public final String NUMBER_OF_WORDS = "Количество слов в игре:";
     public final String TIMING_COMPLETE = "Синхронизация завершена";
     public final String PLEASE_WAIT = "Подождите, идет";
 }

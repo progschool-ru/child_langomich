@@ -14,11 +14,12 @@ public class TimingForm extends Canvas implements Runnable{
         this.completeTiming = completeTiming;
         Thread thisThread = new Thread(this);
         thisThread.start();
-        MLT = new MultiLineText();
+        
 
     }
     public void paint(Graphics g)
     {
+        MLT = new MultiLineText(Font.SIZE_SMALL,Font.STYLE_BOLD,Font.FACE_PROPORTIONAL,g);
         int width = g.getClipWidth();
         int height = g.getClipHeight();
         g.setColor(255,255,255);
@@ -37,7 +38,7 @@ public class TimingForm extends Canvas implements Runnable{
         {
             g.setColor(0,0,0);
             g.drawString(text.TIMING_COMPLETE,10,10,0);
-            MLT.SetTextPar(30, 30, width-60,height-60,5,Font.SIZE_LARGE,Font.STYLE_BOLD,Font.FACE_PROPORTIONAL,g, new Settings().getText());
+            MLT.setText(30, 30, width-60,height-60, new Settings().getText());
             MLT.DrawMultStr();
         }
     }
