@@ -35,4 +35,5 @@ public class Text {
     public final String NUMBER_OF_WORDS = "Количество слов в игре:";
     public final String TIMING_COMPLETE = "Синхронизация завершена";
     public final String PLEASE_WAIT = "Подождите, идет";
+    public final String CHANGE = "Изменить";
 }
