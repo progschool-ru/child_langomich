@@ -3,7 +3,6 @@ package org.smdserver.auth;
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebRequest;
-import com.meterware.httpunit.WebResponse;
 import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,9 +48,7 @@ public class SetPasswordActionTest extends UsersTestBase
 		WebRequest req = new GetMethodWebRequest(getActionUrl() + WebActions.LOGIN);
 		req.setParameter(WebParams.LOGIN, LOGIN);
 		req.setParameter(WebParams.PASSWORD, PASSWORD);
-
-		WebResponse response = wc.getResponse(req);
-		JSONObject loginResponse = new JSONObject(response.getText());
+		JSONObject loginResponse = getJSONResource(wc, req);
 
 		String newPassword = "lalala";
 

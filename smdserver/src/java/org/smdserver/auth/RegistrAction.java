@@ -2,6 +2,7 @@ package org.smdserver.auth;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.core.SmdAction;
@@ -22,7 +23,8 @@ public class RegistrAction extends SmdAction
 		{
 			try
 			{
-				getServletContext().getUsersStorage().createUser( storage.getID(),login, password);
+				String uuid = UUID.randomUUID().toString();
+				getServletContext().getUsersStorage().createUser( uuid, login, password);
 				setAnswerParam(ActionParams.SUCCESS, success);
 
 				Map<String, Object> params = new HashMap<String, Object>();

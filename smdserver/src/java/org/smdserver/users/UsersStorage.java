@@ -9,7 +9,6 @@ import java.util.Map;
 public class UsersStorage implements IUsersStorage
 {
 	private Map<String, User> users = new HashMap<String, User>();
-        private String ID = "1";
 
 	public void setPassword (String login, String password) throws Exception
 	{
@@ -32,10 +31,7 @@ public class UsersStorage implements IUsersStorage
                 else
                     return false;
 	}
-	public String getID ()
-	{
-                return ID;
-	}
+
 	public User getUserByLogin (String login)
 	{
 		checkUpdated();
@@ -60,8 +56,6 @@ public class UsersStorage implements IUsersStorage
 	protected void addUser (String userId, String login, String psw)
 	{
 		users.put(login, new User(userId, login, psw));
-                if(Integer.valueOf(userId)>=Integer.valueOf(ID))
-                    ID = Integer.toString(Integer.valueOf(userId)+1);
 	}
 
 	protected void removeUserByLogin (String login)

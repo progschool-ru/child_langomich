@@ -11,7 +11,7 @@ public class SetPasswordAction extends CheckLoginAction
 		String password = request.getParameter(ActionParams.PASSWORD);
 
 		boolean success = (login != null && password != null && !password.isEmpty());
-		setAnswerParam(ActionParams.SUCCESS, success);
+		
 		if(success)
 		{
 			try
