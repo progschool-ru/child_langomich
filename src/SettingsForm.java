@@ -12,13 +12,14 @@ public class SettingsForm extends Canvas implements CommandListener
     private int size;
     private int mainIndent;
     private int sideIndent;
+    private int fontHeight;
 
     private int shift = 0;
 
     private int selectedRow = 1;
     private int number = 4;
 
-    private MultiLineText MLT;
+    private myMultiLineText MLT;
 
     SettingsForm(Command back)
     {
@@ -33,6 +34,7 @@ public class SettingsForm extends Canvas implements CommandListener
         size = width/5;
         mainIndent = width/4;
         sideIndent = size;
+        fontHeight = g.getFont().getHeight();
         g.setColor(255,255,255);
         g.fillRect(0, 0, width, height);
         drawMenu();
@@ -65,17 +67,10 @@ public class SettingsForm extends Canvas implements CommandListener
             selectedRow=1;
     }
     private void drawMenu()
-    {     
+    {
+        MLT = new myMultiLineText(Font.SIZE_SMALL,Font.STYLE_BOLD,Font.FACE_PROPORTIONAL,g);
         getShift();
-        g.setColor(0,0,0);
-        drawImage("/images/main/settings.png",mainIndent, mainIndent, 0, 0);
-        MLT = new MultiLineText(Font.SIZE_SMALL,Font.STYLE_BOLD,Font.FACE_PROPORTIONAL,g);
-        MLT.setText(mainIndent,0, width-mainIndent-sideIndent,mainIndent, "Настройки");
-        MLT.DrawMultStr();
-        if(selectedRow!=1)
-            g.drawLine(0, mainIndent, width, mainIndent);
         drawSelectedString((selectedRow-1)*size-shift+mainIndent);
-
         String paths[] = getPaths();
         String list[] = getList();
         for(int i = 0; i < number; i++)
@@ -84,15 +79,24 @@ public class SettingsForm extends Canvas implements CommandListener
                 g.drawLine(0, size*(i+1)+mainIndent, width, size*(i+1)+mainIndent);
             drawImage(paths[i],size-8, size-8, 4, size*i+6-shift+mainIndent);
             drawImage("/images/main/further.png",size/2, size/2, width-size/4*3, size*i+size/4-shift+mainIndent);
-            MLT = new MultiLineText(Font.SIZE_SMALL,Font.STYLE_BOLD,Font.FACE_PROPORTIONAL,g);
-
+            
             g.setColor(225, 225, 225);
-            MLT.setText(size+size/8-1, size*i+size/10-shift+mainIndent-1, width-size-size/10-sideIndent,size*(i+1)-size/10, list[i]);
-            MLT.DrawMultStr();
+            int numberOfLines = MLT.setText(list[i], width-size-size/10-sideIndent,size*(i+1)-size/10);
+            int linesHeight = numberOfLines*fontHeight;
+            MLT.drawMultStr(size+size/8-1, size*i+(size-linesHeight)/2-shift+mainIndent-1);
             g.setColor(0, 0, 0);
-            MLT.setText(size+size/8, size*i+size/10-shift+mainIndent, width-size-size/10-sideIndent,size*(i+1)-size/10, list[i]);
-            MLT.DrawMultStr();   
+            MLT.setText(list[i], width-size-size/10-sideIndent,size*(i+1)-size/10);
+            MLT.drawMultStr(size+size/8, size*i+(size-linesHeight)/2-shift+mainIndent);
         }
+        g.setColor(255,255,255);
+        g.fillRect(0, 0, width, mainIndent);
+        g.setColor(0,0,0);
+        drawImage("/images/main/settings.png",mainIndent, mainIndent, 0, 0);
+        int numberOfLines = MLT.setText(text.SETTINGS, width-mainIndent-sideIndent,mainIndent);
+        int linesHeight = numberOfLines*fontHeight;
+        MLT.drawMultStr(mainIndent,(mainIndent-linesHeight)/2);
+        if(selectedRow!=1)
+            g.drawLine(0, mainIndent, width, mainIndent);
     }
     private void drawSelectedString(int y)
     {
@@ -110,10 +114,8 @@ public class SettingsForm extends Canvas implements CommandListener
             g.setColor(230-step,230-step,230-step);
             g.drawLine(arcShift, y+size-i-1, width-arcShift, y+size-i-1);
         }
-
         g.setColor(0,0,0);
         g.drawRoundRect(0, y, width, size, arc, arc);
-
     }
     private boolean drawImage(String path, int newWidth, int newHeight, int x, int y)
     {     
