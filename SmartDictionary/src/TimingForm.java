@@ -4,7 +4,7 @@ public class TimingForm extends Canvas implements Runnable{
 
     private Command completeTiming;
     private Text text = new Text();
-    private MultiLineText MLT;
+    private myMultiLineText MLT;
     Thread t;
     int i = 0;
 
@@ -19,7 +19,7 @@ public class TimingForm extends Canvas implements Runnable{
     }
     public void paint(Graphics g)
     {
-        MLT = new MultiLineText(Font.SIZE_SMALL,Font.STYLE_BOLD,Font.FACE_PROPORTIONAL,g);
+        MLT = new myMultiLineText(Font.SIZE_SMALL,Font.STYLE_BOLD,Font.FACE_PROPORTIONAL,g);
         int width = g.getClipWidth();
         int height = g.getClipHeight();
         g.setColor(255,255,255);
@@ -38,8 +38,8 @@ public class TimingForm extends Canvas implements Runnable{
         {
             g.setColor(0,0,0);
             g.drawString(text.TIMING_COMPLETE,10,10,0);
-            MLT.setText(30, 30, width-60,height-60, new Settings().getText());
-            MLT.DrawMultStr();
+            MLT.setText(new Settings().getText(), width-60,height-60);
+            MLT.drawMultStr(30, 30);
         }
     }
     public void run()
