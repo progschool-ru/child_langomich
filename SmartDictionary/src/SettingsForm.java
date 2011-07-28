@@ -1,15 +1,17 @@
 import javax.microedition.lcdui.*;
-import java.io.IOException;
 
 public class SettingsForm extends Canvas implements CommandListener
 {
     private Text text = new Text();
     private Command change = new Command(text.CHANGE, Command.SCREEN, 1);
     private Settings settings = new Settings();
+    private Graphics g;
     
     private int width;
     private int height;
     private int size;
+    private int mainIndent;
+    private int sideIndent;
 
     private int shift = 0;
 
@@ -25,12 +27,15 @@ public class SettingsForm extends Canvas implements CommandListener
     }
     public void paint(Graphics g)
     {
+        this.g = g;
         width = g.getClipWidth();
         height = g.getClipHeight();
         size = width/5;
-        g.setColor(0,0,0);
+        mainIndent = width/4;
+        sideIndent = size;
+        g.setColor(255,255,255);
         g.fillRect(0, 0, width, height);
-        drawMenu(g);
+        drawMenu();
     }
     public void commandAction(Command c, Displayable s)
     {
@@ -59,97 +64,101 @@ public class SettingsForm extends Canvas implements CommandListener
         else
             selectedRow=1;
     }
-    private void drawMenu(Graphics g)
-    {
+    private void drawMenu()
+    {     
+        getShift();
+        g.setColor(0,0,0);
+        drawImage("/images/main/settings.png",mainIndent, mainIndent, 0, 0);
         MLT = new MultiLineText(Font.SIZE_SMALL,Font.STYLE_BOLD,Font.FACE_PROPORTIONAL,g);
-        if(selectedRow*size-shift>height)
-        {
-                shift = selectedRow*size-height;
-        }
-        else if((selectedRow-1)*size-shift<0)
-        {
-            shift = (selectedRow-1)*size;
-        }
-        for(int i = 1; i <= size; i++)
-        {
-            g.setColor(0,30+i,60+i*2);
-            g.drawLine(0, (selectedRow-1)*size+i-shift, width, (selectedRow-1)*size+i-shift);
-        }
-        g.setColor(14,14,14);
-        g.fillRect(size, 0, 3, number*size);
-        String str[] = new String[7];
-        str[0] = text.NUMBER_OF_WORDS+"  "+Integer.toString(settings.getNumberOfWords());
-        str[1] = text.LANGUAGE+"  "+settings.getLanguage();
-        str[2] = text.LOGIN+"  "+settings.getLanguage();
-        str[3] = text.URL+"  "+settings.getURL();
-        try
-        {
-            String way = "/images/settings";
-            Image img = Image.createImage(way+"/word.png");
-            g.drawImage(getImage(img,size-4, size-4), 2, 2-shift, 0);
-            img = Image.createImage(way+"/lang.png");
-            g.drawImage(getImage(img,size-4, size-4), 2, size+2-shift, 0);
-            img = Image.createImage(way+"/login.png");
-            g.drawImage(getImage(img,size-4, size-4), 2, size*2+2-shift, 0);
-            img = Image.createImage(way+"/url.png");
-            g.drawImage(getImage(img,size-4, size-4), 2, size*3+2-shift, 0);
-        }
-        catch(IOException ioe){}
+        MLT.setText(mainIndent,0, width-mainIndent-sideIndent,mainIndent, "Настройки");
+        MLT.DrawMultStr();
+        if(selectedRow!=1)
+            g.drawLine(0, mainIndent, width, mainIndent);
+        drawSelectedString((selectedRow-1)*size-shift+mainIndent);
 
-        for(int i = 1; i <= number; i++)
+        String paths[] = getPaths();
+        String list[] = getList();
+        for(int i = 0; i < number; i++)
         {
-            g.setColor(14,14,14);
-            g.fillRect(0, size*i-shift, width, 3);
+            if(selectedRow!=i+1 && selectedRow!=i+2)
+                g.drawLine(0, size*(i+1)+mainIndent, width, size*(i+1)+mainIndent);
+            drawImage(paths[i],size-8, size-8, 4, size*i+6-shift+mainIndent);
+            drawImage("/images/main/further.png",size/2, size/2, width-size/4*3, size*i+size/4-shift+mainIndent);
+            MLT = new MultiLineText(Font.SIZE_SMALL,Font.STYLE_BOLD,Font.FACE_PROPORTIONAL,g);
+
+            g.setColor(225, 225, 225);
+            MLT.setText(size+size/8-1, size*i+size/10-shift+mainIndent-1, width-size-size/10-sideIndent,size*(i+1)-size/10, list[i]);
+            MLT.DrawMultStr();
             g.setColor(0, 0, 0);
-            MLT.setText(size+size/10, size*(i-1)+size/10-shift, width-size-size/10,size*i-size/10, str[i-1]);
-            MLT.DrawMultStr();
-            g.setColor(120, 120, 120);
-            MLT.setText(size+size/10+2, size*(i-1)+size/10+2-shift, width-size-size/10+2,size*i-size/10+2, str[i-1]);
-            MLT.DrawMultStr();
+            MLT.setText(size+size/8, size*i+size/10-shift+mainIndent, width-size-size/10-sideIndent,size*(i+1)-size/10, list[i]);
+            MLT.DrawMultStr();   
         }
     }
-    private Image getImage(Image image, int thumbWidth, int thumbHeight)
+    private void drawSelectedString(int y)
     {
-        int x, y, pos, tmp, z = 0;
-        final int sourceWidth = image.getWidth();
-        final int sourceHeight = image.getHeight();
-        final int ratio = sourceWidth / thumbWidth;
-        final int[] in = new int[sourceWidth];
-        final int[] out = new int[thumbWidth*thumbHeight];
-        final int[] cols = new int[thumbWidth];
-        for (x = 0,pos = 0; x < thumbWidth; x++)
+        int arc = size/3;
+
+        for(int i = 0; i< size/2;i++)
         {
-            cols[x] = pos;
-            pos += ratio;
-            tmp = pos + (thumbWidth - x) * ratio;
-            if(tmp > sourceWidth)
-            {
-                pos--;
-            }
-            else if(tmp < sourceWidth - ratio)
-            {
-                pos++;
-            }
+            int step = i*15/(size/2);
+            int arcShift = 0;
+            if(i<arc/3)
+                arcShift = arc/3-i;
+            g.setColor(200+step,200+step,200+step);
+            
+            g.drawLine(arcShift, y+i, width-arcShift, y+i);
+            g.setColor(230-step,230-step,230-step);
+            g.drawLine(arcShift, y+size-i-1, width-arcShift, y+size-i-1);
         }
-        for (y = 0, pos = 0, z = 0; y < thumbHeight; y++)
+
+        g.setColor(0,0,0);
+        g.drawRoundRect(0, y, width, size, arc, arc);
+
+    }
+    private boolean drawImage(String path, int newWidth, int newHeight, int x, int y)
+    {     
+        try
         {
-            image.getRGB(in, 0, sourceWidth, 0, pos, sourceWidth, 1);
-            for (x = 0; x < thumbWidth; x++, z++)
-            {
-                out[z] = in[cols[x]];
-            }
-            pos += ratio;
-            tmp = pos + (thumbHeight - y) * ratio;
-            if(tmp > sourceHeight)
-            {
-                pos--;
-            }
-            else if(tmp < sourceHeight - ratio)
-            {
-                pos++;
-            }
+            myImage myImage  = new myImage();
+            Image img = Image.createImage(path);
+            img = myImage.getImage(img, newWidth, newHeight);
+            g.drawImage(img, x, y, 0);  
+            return true;
         }
-        return Image.createRGBImage(out, thumbWidth, thumbHeight, true);
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+    private String[] getList()
+    {
+        String list[] = new String[number];
+        list[0] = text.NUMBER_OF_WORDS+"  "+Integer.toString(settings.getNumberOfWords());
+        list[1] = text.LANGUAGE+"  "+settings.getLanguage();
+        list[2] = text.LOGIN+"  "+settings.getLanguage();
+        list[3] = text.URL+"  "+settings.getURL();
+        return list;
+    }
+    private String[] getPaths()
+    {
+        String paths[] = new String[number];
+        String path = "/images/settings";
+        paths[0] = path+"/word.png";
+        paths[1] = path+"/lang.png";
+        paths[2] = path+"/login.png";
+        paths[3] = path+"/url.png";
+        return paths;
+    }
+    private void getShift()
+    {
+        if(selectedRow*size-shift+mainIndent>height)
+        {
+                shift = selectedRow*size-height+mainIndent;
+        }
+        else if((selectedRow-1)*size-shift+mainIndent<0)
+        {
+            shift = (selectedRow-1)*size+mainIndent;
+        }
     }
 }
 
