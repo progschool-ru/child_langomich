@@ -1,47 +1,18 @@
 import javax.microedition.lcdui.Image;
 
 public class myImage {
-    public Image getImage(Image image, int thumbWidth, int thumbHeight)
+    public Image scale(Image image, int w, int h)
     {
-        int x, y, pos, tmp, z = 0;
-        final int sourceWidth = image.getWidth();
-        final int sourceHeight = image.getHeight();
-        final int ratio = sourceWidth / thumbWidth;
-        final int[] in = new int[sourceWidth];
-        final int[] out = new int[thumbWidth*thumbHeight];
-        final int[] cols = new int[thumbWidth];
-        for (x = 0,pos = 0; x < thumbWidth; x++)
-        {
-            cols[x] = pos;
-            pos += ratio;
-            tmp = pos + (thumbWidth - x) * ratio;
-            if(tmp > sourceWidth)
-            {
-                pos--;
-            }
-            else if(tmp < sourceWidth - ratio)
-            {
-                pos++;
+        int w0 = image.getWidth();
+        int h0 = image.getHeight();
+        int[] arrayOld = new int[w0*h0];
+        int[] arrayNew = new int[w*h];
+        image.getRGB(arrayOld, 0, w0, 0, 0, w0, h0);
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                 arrayNew[x+w*y] = arrayOld[x*w0/w+w0*(int)(y*h0/h)];
             }
         }
-        for (y = 0, pos = 0, z = 0; y < thumbHeight; y++)
-        {
-            image.getRGB(in, 0, sourceWidth, 0, pos, sourceWidth, 1);
-            for (x = 0; x < thumbWidth; x++, z++)
-            {
-                out[z] = in[cols[x]];
-            }
-            pos += ratio;
-            tmp = pos + (thumbHeight - y) * ratio;
-            if(tmp > sourceHeight)
-            {
-                pos--;
-            }
-            else if(tmp < sourceHeight - ratio)
-            {
-                pos++;
-            }
-        }
-        return Image.createRGBImage(out, thumbWidth, thumbHeight, true);
+        return Image.createRGBImage(arrayNew, w, h, true);
     }
 }

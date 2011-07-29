@@ -3,8 +3,13 @@ import javax.microedition.lcdui.*;
 public class SettingsForm extends Canvas implements CommandListener
 {
     private Text text = new Text();
+
     private Command choice = new Command(text.CHOICE, Command.SCREEN, 1);
     private Command back = new Command(text.BACK, Command.EXIT, 0);
+    private Command save = new Command(text.SAVE, Command.SCREEN, 1);
+    private Command cancel = new Command(text.CANCEL, Command.EXIT, 0);
+    private Command completeTiming = new Command(text.NEXT, Command.SCREEN, 1);
+
     private Settings settings = new Settings();
     private Graphics g;
     
@@ -18,7 +23,7 @@ public class SettingsForm extends Canvas implements CommandListener
     private int shift = 0;
 
     private int mainSelectedRow = 1;
-    private int mainNumber = 4;
+    private int mainNumber = 5;
     
     private int selectedRow = 0;
     private int number = 0;
@@ -31,6 +36,7 @@ public class SettingsForm extends Canvas implements CommandListener
 
     Display mainDisplay;
     List mainList;
+    TextBox newText;
 
     SettingsForm(Display mainDisplay, List mainList)
     {
@@ -62,6 +68,31 @@ public class SettingsForm extends Canvas implements CommandListener
             back();
         if(c == choice)
             forward();
+        if (c ==  cancel)
+            mainDisplay.setCurrent(this);
+        if (c ==  save)
+        {
+            if(mainSelectedRow == 2)
+            {
+                settings.setLanguage(newText.getString());
+                new Languages().newLanguage(settings.getLanguage());
+            }
+            else if(mainSelectedRow == 3)
+            {
+                if(selectedRow == 1)
+                    settings.setLogin(newText.getString());
+                else
+                    settings.setPassword(newText.getString());
+            }
+            else
+                settings.setURL(newText.getString());
+            mainDisplay.setCurrent(this);
+        }
+       if (c == completeTiming )
+       {
+            settings = new Settings();
+            mainDisplay.setCurrent(this);
+       }
     }
     public void keyPressed(int keyCode)
     {
@@ -213,7 +244,7 @@ public class SettingsForm extends Canvas implements CommandListener
         {
             myImage myImage  = new myImage();
             Image img = Image.createImage(path);
-            img = myImage.getImage(img, newWidth, newHeight);
+            img = myImage.scale(img, newWidth, newHeight);
             g.drawImage(img, x, y, 0);  
             return true;
         }
@@ -227,8 +258,9 @@ public class SettingsForm extends Canvas implements CommandListener
         String list[] = new String[mainNumber];
         list[0] = text.NUMBER_OF_WORDS+"  "+Integer.toString(settings.getNumberOfWords());
         list[1] = text.LANGUAGE+"  "+settings.getLanguage();
-        list[2] = text.LOGIN+"  "+settings.getLanguage();
+        list[2] = text.LOGIN+"  "+settings.getLogin();
         list[3] = text.URL+"  "+settings.getURL();
+        list[4] = text.TIMING;
         return list;
     }
     private String[] getPaths()
@@ -239,6 +271,7 @@ public class SettingsForm extends Canvas implements CommandListener
         paths[1] = path+"/lang.png";
         paths[2] = path+"/login.png";
         paths[3] = path+"/url.png";
+        paths[4] = path+"/timing.png";
         return paths;
     }
     private void getShift()
@@ -296,6 +329,12 @@ public class SettingsForm extends Canvas implements CommandListener
             smallMenuList[0]="Ввести логин";
             smallMenuList[1]="Ввести пароль";
         }
+        else if(mainSelectedRow == 5)
+        {
+            String str[]= new String[1];
+            str[0] = "Пуск";
+            smallMenuList = str;
+        }
         else
         {
             String str[]= new String[1];
@@ -313,20 +352,37 @@ public class SettingsForm extends Canvas implements CommandListener
         else if(mainSelectedRow == 2)
         {
             if(selectedRow == number)
-            {
-                
-            }
+                newText(text.NEW_LANGUAGE);
             else
                 settings.setLanguage(smallMenuList[selectedRow-1]);
         }
         else if(mainSelectedRow == 3)
         {
-
+            if(selectedRow == 1)
+                newText("Введите новый логин");
+            else
+                newText("Введите новый пароль");
+        }
+        else if(mainSelectedRow == 5)
+        {
+            try
+            {
+                 TimingForm timingForm = new TimingForm(new Timing(), completeTiming);
+                 timingForm.setCommandListener(this);
+                 mainDisplay.setCurrent(timingForm);
+            }
+            catch(Exception e){}
         }
         else
-        {
-
-        }
+            newText("Введите новый адрес");
+    }
+    private void newText(String title)
+    {
+        newText = new TextBox(title, "", 20, TextField.ANY);
+        newText.addCommand(cancel);
+        newText.addCommand(save);
+        newText.setCommandListener(this);
+        mainDisplay.setCurrent(newText);
     }
 }
 
