@@ -1,5 +1,6 @@
 import java.util.Vector;
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Font;
 
 public class myMultiLineText
 {
@@ -102,8 +103,9 @@ public class myMultiLineText
        g.setFont(Font.getFont(fty, fst, fsz));
        for (int i=0;i<StringLines.size();i++)
        {
+           int indent = (w - g.getFont().stringWidth(StringLines.elementAt(i).toString()))/2;
            if ((y1+hStr)>0){
-           g.drawString(StringLines.elementAt(i).toString(), x+1, y+y1, g.LEFT|g.TOP);
+           g.drawString(StringLines.elementAt(i).toString(), x+indent, y+y1, g.LEFT|g.TOP);
            }
            y1=y1+hStr;
            if (y1>h){break;}
