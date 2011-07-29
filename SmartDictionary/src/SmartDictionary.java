@@ -363,8 +363,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
         }
         private void goToTheSettingsForm()
         {
-            SettingsForm sf = new SettingsForm(back);
-            sf.setCommandListener(this);
+            SettingsForm sf = new SettingsForm(Display.getDisplay(this), mainList);
             Display.getDisplay(this).setCurrent(sf);
         }
 }
