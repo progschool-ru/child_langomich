@@ -115,7 +115,7 @@ div { position: relative; }
 
 .header-user-profile > .current:after
 {
-	opacity: 1;
+	opacity: .5;
 }
 
 .header-user-logout a
