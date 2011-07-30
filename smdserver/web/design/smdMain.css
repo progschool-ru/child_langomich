@@ -19,10 +19,9 @@ a { text-decoration: underline; }
 div { position: relative; }
 
 /******** Header *********/
-.header .menu,
-.header li
+.header-menu
 { float: left; }
-.header .user
+.header-user
 { float: right; }
 .header:after
 {
@@ -33,57 +32,99 @@ div { position: relative; }
 
 .header
 {
-	padding: .5em 0 0;
+	padding: 1px 0 0;
+}
+
+.header-logo
+{
+	display: block;
+	width: 60px;
+	height: 71px;
+	background-image:  url("mobileWithShadow.png");
+	background-repeat: no-repeat;
+	float:left;
+	margin: 5px 5px 5px 1em;
+	background-size: 60px 71px;
 }
 
 /*** menu ***/
 
-.header .menu li
+.header-menu
 {
-	font-size: xx-large;
+	padding-top: 37px;
 }
 
-.header .menu li *
+.header-menu li
 {
+	font-size: 24px;
+	float:left;
+}
+
+.header-menu li *
+{
+	-webkit-border-top-left-radius: .3em;
+	-webkit-border-top-right-radius: .3em;
+	-moz-border-radius-topleft: .3em;
+	-moz-border-radius-topright: .3em;
+	border-top-left-radius: .3em;
+	border-top-right-radius: .3em;
 	display: block;
-	padding: .4em 1.5em;
-}
-
-.header .menu li:first-child > *
-{
-	background-image: url("logo.png");
-	background-position: 0px -2px;
-	background-repeat: no-repeat;
-	padding-left: 90px;
+	height: 24px;
+	padding: 12px 1.5em 8px;
 }
 /*** end of menu ***/
 
 /*** user ***/
-.header .user li
+.header-user
 {
-	margin: 0px .5em;
+	padding: .7em .5em 0 0;
 }
-.header .user li > *
+
+.header-user li
+{
+	margin: 0 4px;
+	float: left;
+}
+
+.header-user li > *
 {
 	display: block;
+	padding-top: 6px;
 }
-.header .user .profile > *
+.header-user-profile > *:after
 {
-	background-image: url("gear.png");
+	content: "";
+	display: block;
+	float:right;
+	background-image: url("gears.png");
 	background-position: top right;
 	background-repeat: no-repeat;
-	padding: 6px 35px 0px 0px;
-	height: 28px;
+
+	height: 33px;
+	width: 33px;
+	margin-top:-6px;
+	padding-left: 4px;
+
+	opacity: .7;
 }
-.header .user .logout a
+.header-user-profile > *:hover:after
+{
+	opacity: 1;
+}
+.header-user-logout a
 {
 	overflow: hidden;
 	background-image: url("logout.png");
 	background-repeat: no-repeat;
-	width: 70px;
-	height: 32px;
+	width: 36px;
+	height: 38px;
+	margin-top: -5px;
 	color: rgba(0,0,0,0);
-	border: 1px white solid;
+	opacity: .7;
+}
+.header-user-logout a:hover
+{
+	opacity: 1;
 }
 /*** end of user ***/
 /******** end of Header *********/

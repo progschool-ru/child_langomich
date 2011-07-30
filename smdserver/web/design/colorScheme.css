@@ -10,7 +10,7 @@ a:visited { color: #308; }
 
 /*** Header ***/
 .header { background-color: silver; }
-.header .menu .current { background-color: white; }
+.header-menu .current { background-color: white; }
 /*  end of Header */
 
 /******** Side Panel *********/

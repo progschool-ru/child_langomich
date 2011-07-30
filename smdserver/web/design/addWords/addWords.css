@@ -40,7 +40,7 @@
 }
 .b-addWords_icon-button
 {
-	opacity: .5;
+	opacity: .7;
 }
 .b-addWords_icon-button:hover
 {
@@ -58,7 +58,7 @@
 
 .b-addWords_less-button
 {
-	background-image: url("minus.png");
+	background-image: url("delete.png");
 	position: absolute;
 	top: 4px;
 	right: -18px;

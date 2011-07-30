@@ -1,4 +1,5 @@
 <%@attribute name="title" rtexprvalue="true"%>
+<%@attribute name="menu" rtexprvalue="true" type="java.util.List"%>
 <%@tag trimDirectiveWhitespaces="true"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="smd"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -17,7 +18,14 @@
 		<script src="<smd:varurl url="smd://page/main.js"/>"></script>
 	</head>
 	<body>
-		<jsp:doBody/>
+		<div class="header">
+			<a href="smd://page/play" class="header-logo"></a>
+			<smd:menu links="${menu}" ulClass="header-menu"/>
+			<smd:userInfo ulClass="header-user"/>
+		</div>
+		<div class="main">
+			<jsp:doBody/>
+		</div>
 		<div class="footer">
 			<ul class="menu">
 				<li><smd:ahref text="Main"           url="smd://page/play"/></li>
