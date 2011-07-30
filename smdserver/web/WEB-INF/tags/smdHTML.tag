@@ -19,15 +19,26 @@
 	</head>
 	<body>
 		<div class="header">
-			<a href="smd://page/play" class="header-logo"></a>
+			<smd:ahref url="smd://page/play" text="" cssClass="header-logo"/>
 			<smd:menu links="${menu}" ulClass="header-menu"/>
 			<smd:userInfo ulClass="header-user"/>
 		</div>
 		<div class="main">
-			<jsp:doBody/>
+			<div class="content">
+				<jsp:doBody/>
+			</div>
+	<c:if test='${sessionScope["currentLogin"] != null}'>
+			<div class="toolbar">
+				<smd:toolbar/>
+				<ul class="appendix">
+					<li><smd:ahref text="Get Words JSON" url="smd://action/getWords"/></li>
+					<li><smd:ahref text="Refresh" url="javascript:location.reload(true)"/></li>
+				</ul>
+			</div>
+	</c:if>
 		</div>
 		<div class="footer">
-			<ul class="menu">
+			<ul class="footer-menu">
 				<li><smd:ahref text="Main"           url="smd://page/play"/></li>
 				<li><smd:ahref text="About"          url="http://code.google.com/p/s7smart-dictionary/"/></li>
 				<li><smd:ahref text="Ask a question" url="http://olymp.omich.net/q2a/ask"/></li>
@@ -39,7 +50,7 @@
 			<p>
 				E-Mail: <smd:ahref text="admin@omich.net" url="mailto: admin@omich.net?subject=for smd"/>
 			</p>
-			<p class="output-date">
+			<p class="footer-output-date">
 				ProgSchool &mdash; 2011
 			</p>
 		</div>
