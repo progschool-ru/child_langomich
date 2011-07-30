@@ -11,10 +11,10 @@
 <html>
 	<head>
 		<title>${titlePrefix}LangOmich</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=<%=request.getAttribute("web.charset")%>"/>
+		<meta charset="<%=request.getAttribute("web.charset")%>"/>
 		<link rel="stylesheet" href="<%= request.getContextPath() %>/design/smdMain.css"/>
-		<script src="<%= request.getContextPath() %>/js/jQuery/jquery-1.6.2.js" type="text/javascript"></script>
-		<script src="<smd:varurl url="smd://page/main.js"/>" type="text/javascript"></script>
+		<script src="<%= request.getContextPath() %>/js/lib/jquery-1.6.2.js"></script>
+		<script src="<smd:varurl url="smd://page/main.js"/>"></script>
 	</head>
 	<body>
 		<jsp:doBody/>

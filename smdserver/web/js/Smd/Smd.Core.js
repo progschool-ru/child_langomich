@@ -34,9 +34,14 @@ Smd.Core = {
 			return Smd.Core.getModule(name);
 		},
 
-		encodeToJavaString : function(value)
+		escapeToJavaString : function(value)
 		{
-			return Smd.Unicode2Java.uni2java(value);
+			return Smd.Unicode.escapeToUtf16(value);
+		},
+
+		unescapeFromJavaString : function(value)
+		{
+			return Smd.Unicode.unescapeFromUtf16(value);
 		},
 
 		ajax : function(url, settings)

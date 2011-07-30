@@ -1,10 +1,12 @@
 package org.smdserver.auth;
 
+import com.ccg.util.JavaString;
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 import java.io.IOException;
+import java.text.ParseException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
@@ -48,31 +50,30 @@ public class LoginActionTest extends UsersTestBase
 	}
 
 	@Test
-	public void testIncorrectPassword() throws IOException, JSONException
+	public void testIncorrectPassword() throws Exception
 	{
 		req.setParameter(WebParams.LOGIN, LOGIN);
 		req.setParameter(WebParams.PASSWORD, "incorrect" + PASSWORD);
-		WebResponse resp = wc.getResource(req);
-
-		String text = resp.getText();
-		JSONObject json = new JSONObject(text);
+//		WebResponse resp = wc.getResource(req);
+//
+//		String text = JavaString.decode(resp.getText());
+//		JSONObject json = new JSONObject(text);
+		JSONObject json = getJSONResource(wc, req);
 		assertFalse(json.getBoolean(WebParams.SUCCESS));
 	}
 
 	@Test
-	public void testCorrectPassword() throws IOException, JSONException
+	public void testCorrectPassword() throws Exception
 	{
 		req.setParameter(WebParams.LOGIN, LOGIN);
 		req.setParameter(WebParams.PASSWORD, PASSWORD);
-		WebResponse resp = wc.getResource(req);
 
-		String text = resp.getText();
-		JSONObject json = new JSONObject(text);
+		JSONObject json = getJSONResource(wc, req);
 		assertTrue(json.getBoolean(WebParams.SUCCESS));
 	}
 
 	@Test
-	public void testPasswordIsNull() throws IOException, JSONException, SAXException
+	public void testPasswordIsNull() throws Exception
 	{
 		req.setParameter(WebParams.LOGIN, LOGIN);
 		JSONObject json = getJSONResource(wc, req);
@@ -80,7 +81,7 @@ public class LoginActionTest extends UsersTestBase
 	}
 
 	@Test
-	public void testAllParamsAreNull() throws IOException, JSONException, SAXException
+	public void testAllParamsAreNull() throws Exception
 	{
 		JSONObject json = getJSONResource(wc, req);
 		assertFalse(json.getBoolean(WebParams.SUCCESS));

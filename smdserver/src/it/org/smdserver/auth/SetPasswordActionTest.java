@@ -43,7 +43,7 @@ public class SetPasswordActionTest extends UsersTestBase
 	}
 
 	@Test
-	public void testSuccessChange() throws IOException, JSONException, SAXException
+	public void testSuccessChange() throws Exception
 	{
 		WebRequest req = new GetMethodWebRequest(getActionUrl() + WebActions.LOGIN);
 		req.setParameter(WebParams.LOGIN, LOGIN);

@@ -28,7 +28,8 @@ Smd.Server = {
 			async : async,
 			context : this,
 			success : function(event, textStatus, response){
-				this._words = JSON.parse(response.responseText);
+				var preparing = this.api.unescapeFromJavaString(response.responseText.trim());
+				this._words = JSON.parse(preparing);
 				this._languages = [];
 				for(var i in this._words.languages)
 				{

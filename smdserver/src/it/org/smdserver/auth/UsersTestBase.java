@@ -1,10 +1,12 @@
 package org.smdserver.auth;
 
+import com.ccg.util.JavaString;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,7 +49,8 @@ public class UsersTestBase
 		return resource;
 	}
 
-	protected static JSONObject getJSONResource(WebConversation wc, WebRequest req) throws JSONException, IOException, SAXException
+	protected static JSONObject getJSONResource(WebConversation wc, WebRequest req) 
+			throws JSONException, IOException, SAXException, ParseException
 	{
 		WebResponse resp = wc.getResponse(req);
 
@@ -61,7 +64,7 @@ public class UsersTestBase
 			wc.putCookie(WebParams.JSESSIONID, sessionId);
 		}
 
-		String text = resp.getText();
+		String text = JavaString.decode(resp.getText());
 		return new JSONObject(text);
 	}
 }

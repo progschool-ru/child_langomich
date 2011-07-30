@@ -48,16 +48,7 @@ public abstract class Action implements IAction
 				JSONObject object = new JSONObject(map);
 
 				PrintWriter writer = response.getWriter();
-				try
-				{
-					if(map.get("mobile").toString().equals("true")){
-						writer.println(JavaString.encode(object.toString()));
-					}
-				}
-				catch(Exception e)
-				{
-					writer.println(object.toString());
-				}
+				writer.println(JavaString.encode(object.toString()));
 				writer.close();
 			}
 		}

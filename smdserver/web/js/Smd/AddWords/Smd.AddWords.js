@@ -175,7 +175,7 @@ Smd.AddWords = {
 					words:words
 				}]
 		};
-		form.data.value = this.api.encodeToJavaString(JSON.stringify(data));
+		form.data.value = this.api.escapeToJavaString(JSON.stringify(data));
 		return true;
 	},
 

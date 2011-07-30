@@ -3,7 +3,7 @@
 <jsp:include page="/js/Smd/Server/Smd.Server.js"/>
 <jsp:include page="/js/Smd/AddWords/Smd.AddWords.js"/>
 <jsp:include page="/js/Smd/AddWords/Smd.AddWords.Words.js"/>
-<jsp:include page="/js/Smd/Smd.Unicode2Java.js"/>
+<jsp:include page="/js/Smd/Smd.Unicode.js"/>
 <%
 	String configPath = getServletContext().getInitParameter("config");
 	java.util.ResourceBundle rb = java.util.ResourceBundle.getBundle(configPath);
