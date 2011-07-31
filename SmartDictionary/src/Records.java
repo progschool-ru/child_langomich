@@ -132,7 +132,8 @@ public abstract class Records
 		re.rebuild();
 		return id;
         }
-        public int getNumRecords() {
+        public int getNumRecords()
+        {
                 return re.numRecords();
         }
         public void newOrdering(int column)
