@@ -1,5 +1,4 @@
-html {background-color:silver;}
-body {background-color: white;}
+html {background-color:#aaaaaa;}
 a:link { color: #008; }
 a:visited { color: #308; }
 .alink
@@ -8,11 +7,8 @@ a:visited { color: #308; }
 	border-bottom-color: #008;
 }
 
-/*** Header ***/
-.header { background-color: silver; }
-.header-menu .current { background-color: white; }
-/*  end of Header */
 
-/******** Side Panel *********/
+.header-menu .current { background-color: white; }
+.main { background-color:white; }
 .toolbar-menu {	background-color: silver; }
-/******** end of Side Panel **********/
+.footer { background-color: white; }
