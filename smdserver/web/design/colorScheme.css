@@ -1,4 +1,4 @@
-html {background-color:#aaaaaa;}
+html { background-color:#aaa; }
 a:link { color: #008; }
 a:visited { color: #308; }
 .alink
@@ -10,5 +10,12 @@ a:visited { color: #308; }
 
 .header-menu .current { background-color: white; }
 .main { background-color:white; }
-.toolbar-menu {	background-color: silver; }
+.toolbar-menu
+{
+	background-color: silver;
+	background-image: -moz-linear-gradient( bottom,	#888, #ddd);
+	background-image: -o-linear-gradient( bottom, #888,	#ddd);
+	background-image: -webkit-gradient(linear, left bottom,	left top,
+	                                  color-stop(0, #888), color-stop(1, #ddd));
+}
 .footer { background-color: white; }
