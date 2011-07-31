@@ -48,7 +48,7 @@ public abstract class Action implements IAction
 				JSONObject object = new JSONObject(map);
 
 				PrintWriter writer = response.getWriter();
-				writer.println(JavaString.encode(object.toString()));
+				writer.print(JavaString.encode(object.toString()));
 				writer.close();
 			}
 		}

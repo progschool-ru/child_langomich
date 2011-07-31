@@ -11,11 +11,13 @@ import java.util.ArrayList;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.smdserver.core.ISmdLogger;
 
 public class WordsFileStorage extends WordsStorage
 {
 	private String realPath;
 	private long  lastModified;
+	private ISmdLogger logger;
 
 	public WordsFileStorage (String realPath)
 	{
@@ -23,26 +25,37 @@ public class WordsFileStorage extends WordsStorage
 		this.realPath = realPath;
 	}
 
-        @Override
-        public void setUserWords (String userId, List<Language> languages)
+	public void setLogger(ISmdLogger logger)
 	{
-                super.setUserWords(userId, languages);
-                try
+		this.logger = logger;
+	}
+
+	@Override
+	public void setUserWords (String userId, List<Language> languages)
+	{
+		super.setUserWords(userId, languages);
+		try
 		{
 			SaveLanguages(userId, languages);
 		}
-		catch(Exception e){}
+		catch(Exception e)
+		{
+			log("setUserWords: file isn't saved; " + e.getMessage());
+		}
 	}
 
         @Override
 	public void addUserWords (String userId, List<Language> languages)
 	{
-                super.addUserWords(userId, languages);
-                try
+		super.addUserWords(userId, languages);
+		try
 		{
 			SaveLanguages(userId, getLanguages(userId));
 		}
-		catch(Exception e){}
+		catch(Exception e)
+		{
+			log("addUserWords. File isn't saved; " + e.getMessage());
+		}
 	}
 
         @Override
@@ -56,18 +69,18 @@ public class WordsFileStorage extends WordsStorage
 	private void readFile(String userId)
 	{
 		try
-                {
-                        BufferedReader br = new BufferedReader(new FileReader(realPath+"/"+userId+".dat"));
-                        String str = br.readLine();
-                        JSONObject json = new JSONObject(str);
-                        List<Language> languages = parseJSON(json.getJSONArray("languages"));
-                        super.setUserWords(userId, languages);
-                        
+		{
+			BufferedReader br = new BufferedReader(new FileReader(realPath+"/"+userId+".dat"));
+			String str = br.readLine();
+			JSONObject json = new JSONObject(str);
+			List<Language> languages = parseJSON(json.getJSONArray("languages"));
+			super.setUserWords(userId, languages);
+
 			File file = new File(realPath+"/"+userId+".dat");
 			lastModified = file.lastModified();
 		}
 		catch(IOException ioe){}
-                catch(JSONException e){}
+		catch(JSONException e){}
 		catch(WordsException e){}
 
 	}
@@ -82,7 +95,10 @@ public class WordsFileStorage extends WordsStorage
                 
                     bw.write(object.toString());
                 }
-                catch (JSONException ex) {}
+                catch (JSONException ex)
+				{
+					log("saveLanguages: JSON error; " + ex.getMessage());
+				}
                 bw.close();
 	}
 	private List<Language> parseJSON (JSONArray json) throws WordsException
@@ -104,5 +120,13 @@ public class WordsFileStorage extends WordsStorage
 		}
 
 		return languages;
+	}
+
+	private void log(String message)
+	{
+		if(logger != null)
+		{
+			logger.log(message);
+		}
 	}
 }

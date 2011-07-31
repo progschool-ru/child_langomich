@@ -44,13 +44,13 @@ public class UsersTestBase
 		return getResource().getString("test.url") + getResource().getString("test.url.action");
 	}
 
-	private static ResourceBundle getResource()
+	protected static ResourceBundle getResource()
 	{
 		return resource;
 	}
 
-	protected static JSONObject getJSONResource(WebConversation wc, WebRequest req) 
-			throws JSONException, IOException, SAXException, ParseException
+	protected static String getTextResource(WebConversation wc, WebRequest req)
+			throws IOException, SAXException
 	{
 		WebResponse resp = wc.getResponse(req);
 
@@ -63,8 +63,13 @@ public class UsersTestBase
 			String sessionId = matcher.group(1);
 			wc.putCookie(WebParams.JSESSIONID, sessionId);
 		}
+		return resp.getText();
+	}
 
-		String text = JavaString.decode(resp.getText());
+	protected static JSONObject getJSONResource(WebConversation wc, WebRequest req)
+			throws IOException, ParseException, JSONException, SAXException
+	{
+		String text = JavaString.decode(getTextResource(wc, req));
 		return new JSONObject(text);
 	}
 }
