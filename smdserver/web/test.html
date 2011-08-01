@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Test JS</title>
+	<script src="js/lib/jsunit/app/jsUnitCore.js"></script>
+
+	<script>
+		 function suite() {
+            var suite = new JsUnitTestSuite();
+			var path = "../../Smd/Test/"
+			
+			suite.addTestPage(path + "Smd.Test.Unicode.html");
+			
+            return suite;
+        }
+	</script>
+  </head>
+  <body></body>
+</html>

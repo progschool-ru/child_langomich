@@ -1,0 +1,89 @@
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Smd.Unicode</title>
+	<script src="../../lib/jsunit/app/jsUnitCore.js"></script>
+	<script src="../Smd.Unicode.js"></script>
+
+	<script>
+		function testEscapeToUtf16_WithSimpleArgs()
+		{
+			var startTime = new Date().getTime();
+			var result = Smd.Unicode.escapeToUtf16("прffивет");
+			var endTime = new Date().getTime();
+			inform(endTime - startTime);
+			assertEquals("incorrect escaping",
+				         "\\u043f\\u0440ff\\u0438\\u0432\\u0435\\u0442",
+						 result.toLowerCase());
+		}
+
+		function testUnescapeFromUtf18_WithSimpleArgs()
+		{
+			var startTime = new Date().getTime();
+			var result1 = Smd.Unicode.unescapeFromUtf16("\\u043fff\\u0440\\u0438\\u0432\\u0435\\u0442");
+			var result2 = Smd.Unicode.unescapeFromUtf16("\\u043FFF\\u0440\\u0438\\u0432\\u0435\\u0442");
+			var endTime = new Date().getTime();
+
+			inform(endTime - startTime);
+			assertEquals("incorrect unescaping", "пffривет", result1);
+			assertEquals("incorrect unescaping", "пFFривет", result2);
+		}
+
+		function testEscapeToUtf16_WithBigArgs()
+		{
+			var textItem = "adjпмав\nаошущт\t авйшто ошовыфшозщцiofprnh2309_)(I)(опклущ ку/ошоршаувцйощшщзжрраошоршп?ПКУпошршуца";
+			var arr = [];
+			for(var i = 0; i < 10000; i++)
+			{
+				arr.push(textItem);
+			}
+			var longText = arr.join("");
+
+			var startTime = new Date().getTime();
+			var result = Smd.Unicode.escapeToUtf16(longText);
+			var endTime = new Date().getTime();
+			inform(endTime - startTime);
+
+			assertTrue("escaping is too long", (endTime - startTime) < 2000);
+		}
+
+		function testUnescapeFromUtf16_WithBigArgs()
+		{
+			var textItem = "eeiijwgrk\\\\\\\\b\\t\\u043fff\\u0440\\u0438\\t\\n\\u0432\\u0442\\u0442\\\\\\u0442\\u0442\\u0442fei42\\u0435\\u0442omdwe";
+			var arr = [];
+			for(var i = 0; i < 10000; i++)
+			{
+				arr.push(textItem);
+			}
+			var longText = arr.join("");
+
+			var startTime = new Date().getTime();
+			var result = Smd.Unicode.unescapeFromUtf16(longText);
+			var endTime = new Date().getTime();
+			inform(endTime - startTime);
+
+			assertTrue("Unescaping is too long", (endTime - startTime) < 1000);
+		}
+
+		function testQuickUnescapeFromUtf16_WithBigArgs()
+		{
+			var textItem = "eeiijwgrk\\\\\\\\b\\t\\u043fff\\u0440\\u0438\\t\\n\\u0432\\u0442\\u0442\\\\\\u0442\\u0442\\u0442fei42\\u0435\\u0442omdwe";
+			var arr = [];
+			for(var i = 0; i < 10000; i++)
+			{
+				arr.push(textItem);
+			}
+			var longText = arr.join("");
+
+			var startTime = new Date().getTime();
+			var result = Smd.Unicode.quickUnescapeFromUtf16(longText);
+			var endTime = new Date().getTime();
+			inform(endTime - startTime);
+			assertTrue("Quick unescaping is too long", (endTime - startTime) < 200);
+		}
+	</script>
+	<meta charset="utf-8"/>
+  </head>
+  <body></body>
+</html>

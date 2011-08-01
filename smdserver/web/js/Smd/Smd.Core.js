@@ -41,7 +41,7 @@ Smd.Core = {
 
 		unescapeFromJavaString : function(value)
 		{
-			return Smd.Unicode.unescapeFromUtf16(value);
+			return Smd.Unicode.quickUnescapeFromUtf16(value);
 		},
 
 		ajax : function(url, settings)

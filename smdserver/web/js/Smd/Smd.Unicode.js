@@ -26,6 +26,13 @@ Smd.Unicode = {
 		return converter.parse();
 	},
 
+	quickUnescapeFromUtf16 : function (value)
+	{
+		var prep = "[\"" + value + "\"]";
+		var jsonArr = JSON.parse(prep);
+		return jsonArr[0];
+	},
+
 	StringToUni16 : {
 		_symbs :    "0123456789ABCDEF",
 
@@ -55,7 +62,7 @@ Smd.Unicode = {
 		Converter : function(string, charSize)
 		{
 			this._currentIndex = -1;
-			this._resultArray = [];
+			this._result = "";
 			this._string = string;
 			this._charSize = charSize;
 		},
@@ -76,23 +83,19 @@ Smd.Unicode = {
 
 		getResult : function()
 		{
-			if(!this._result)
-			{
-				this._result = this._resultArray.join("");
-			}
 			return this._result;
 		},
 
 		_handleAny : function()
 		{
-			var next = this._readNextChar();
+			var next = this._readNextCharCode();
 			switch (next)
 			{
-				case "\\":return this._handleSlash;
-				case false: return this._handleFinish;
-				default :
+				case this._cases.slash : return this._handleSlash();
+				case false             : return this._handleFinish;
+				default                :
 				{
-					this._appendToResult(next);
+					this._appendToResult(String.fromCharCode(next));
 					return this._handleAny;
 				}
 			}
@@ -100,7 +103,7 @@ Smd.Unicode = {
 		
 		_handleSlash : function()
 		{
-			var next = this._readNextChar();
+			var next = this._readNextCharCode();
 			var sym = this._specialChars[next];
 
 			if(sym)
@@ -110,23 +113,26 @@ Smd.Unicode = {
 			}
 			switch (next)
 			{
-				case "u" : return this._handleUni;
-				default  : return this._handleError;
+				case    this._cases.u : return this._handleUni(); //117 == 'u';
+				default               : return this._handleError;
 			}
 		},
 		
 		_handleUni : function()
 		{
 			var hex = "";
-			var next;
+			var nextCharCode;
+			var cc = this._charCodes;
 			for(var i = 0; i < this._charSize; i++)
 			{
-				next = this._readNextChar();
-				if(!next || !next.match("^[0-9a-fA-F]"))
+				nextCharCode = this._readNextCharCode();
+				if(	(nextCharCode < cc.min1 || nextCharCode > cc.max1) &&
+					(nextCharCode < cc.min2 || nextCharCode > cc.max2) &&
+					(nextCharCode < cc.min3 || nextCharCode > cc.max3))
 				{
 					return this._handleError;
 				}
-				hex += next;
+				hex += String.fromCharCode(nextCharCode);
 			}
 
 			var code = parseInt(hex, 16);
@@ -147,27 +153,40 @@ Smd.Unicode = {
 			return this.getResult();
 		},
 
-
-		_readNextChar : function()
+		_readNextCharCode : function()
 		{
 			this._currentIndex ++;
 			return this._currentIndex < this._string.length
-				? this._string.charAt(this._currentIndex) : false;
+				? this._string.charCodeAt(this._currentIndex) : false;
 		},
 
 		_appendToResult : function(item)
 		{
-			this._resultArray.push(item);
+			this._result += item;
 		},
 
 		_specialChars : {
-			b: "\b",
-			f: "\f",
-			n: "\n",
-			r: "\r",
-			t: "\t",
-			"\\": "\\",
-			"\"": "\""
+			34 : "\"",
+			92 : "\\",
+			98 : "\b",
+			102: "\f",
+			110: "\n",
+			114: "\r",
+			116: "\t",
+		},
+
+		_charCodes : {
+			min1 : 48, //'0'.charCodeAt(0),
+			max1 : 57, //'9'.charCodeAt(0),
+			min2 : 97, //'a'.charCodeAt(0),
+			max2 : 102,//'f'.charCodeAt(0),
+			min3 : 65, //'A'.charCodeAt(0),
+			max3 : 70, //'F'.charCodeAt(0)
+		},
+
+		_cases : {
+			slash : 92, //"\\".charCodeAt(0),
+			u : 117,    // "u".charCodeAt(0)
 		}
 	}
 };

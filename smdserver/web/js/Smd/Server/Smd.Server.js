@@ -23,20 +23,21 @@ Smd.Server = {
 
 	_loadWords : function(async)
 	{
-		this.api.ajax(this.getUrl("smd://action/getWords"),{
-			url : this.getUrl("smd://action/getWords"),
-			async : async,
-			context : this,
-			success : function(event, textStatus, response){
-				var preparing = this.api.unescapeFromJavaString(response.responseText.trim());
-				this._words = JSON.parse(preparing);
-				this._languages = [];
-				for(var i in this._words.languages)
-				{
-					this._languages.push(this._words.languages[i].name);
+		var postfix =  "?_dc=" + new Date().getTime();
+		this.api.ajax(this.getUrl("smd://action/getWords") + postfix,
+			{
+				async : async,
+				context : this,
+				success : function(event, textStatus, response){
+					var preparing = this.api.unescapeFromJavaString(response.responseText.trim());
+					this._words = JSON.parse(preparing);
+					this._languages = [];
+					for(var i in this._words.languages)
+					{
+						this._languages.push(this._words.languages[i].name);
+					}
 				}
-			}
-		});
+			});
 	},
 
 	_words : null,
