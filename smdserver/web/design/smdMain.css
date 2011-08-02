@@ -49,7 +49,6 @@ div { position: relative; }
 
 .header
 {
-	padding: 1px 0 0;
 }
 
 .header-logo
@@ -150,6 +149,24 @@ div { position: relative; }
 /******** end of Header *********/
 
 /*********************** Main **************************/
+.main:before
+/* Эти пляски с бубном нам нужны, потому что IE не понимает свойства border-image,
+  а мы хотим отобразить правую и левую границы документа (серые градиенты) */
+{
+	display:block;
+	content:"";
+	position:absolute;
+	margin: 0 -.5em 0;
+	padding: 0 .5em 0;
+	z-index: -1;
+	width: 100%;
+	height: 100%;
+	background-image: url("borders.png");
+	background-size: 200% 100%;
+	background-position: 50% 0;
+	left:0;
+	top:0;
+}
 .main
 {
 	margin: 0 0 0 0;
@@ -157,6 +174,16 @@ div { position: relative; }
 	padding: 1em 1em 1em 1em;
 	background-image: url("things.png");
 	background-size: 300px 306px;
+
+/* А это то, как мы могли бы сделать в нормальных браузерах.
+
+	margin: 0 -.5em;
+	border-width: 0 .5em;
+	border-style: solid;
+	-webkit-border-image: url("borders.png") 0 10 0 10 stretch stretch;
+	-o-border-image: url("borders.png") 0 10 0 10 stretch stretch;
+	-moz-border-image: url("borders.png") 0 10 0 10 stretch stretch;
+	border-image: url("borders.png") 0 10 0 10 stretch stretch; */
 }
 .main:after
 {
@@ -218,7 +245,6 @@ table.words caption
 /******** Footer *********/
 .footer
 {
-	background-image: "";
 	clear:both;
 	margin: 0 0 1em;
 	padding: 0em 1em .5em;

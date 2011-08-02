@@ -1,4 +1,4 @@
-html { background-color:#aaa; }
+html { background-color:#a9a9a9; }
 a:link { color: #008; }
 a:visited { color: #308; }
 .alink
@@ -9,6 +9,9 @@ a:visited { color: #308; }
 
 
 .header-menu .current { background-color: white; }
+.header-menu a:link { color: #dadaff; }
+.header-menu a:visited { color: #f0e0ff; }
+
 .main { background-color:white; }
 .toolbar-menu
 {
