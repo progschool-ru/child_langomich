@@ -6,33 +6,37 @@
             <name>smdserver</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
-                <library>
+                <library dirs="200">
                     <file>${file.reference.douglascrockford-JSON-java-dced076.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
-                <library>
+                <library dirs="200">
                     <file>${file.reference.httpunit.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
-                <library>
+                <library dirs="200">
                     <file>${file.reference.js.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
-                <library>
+                <library dirs="200">
                     <file>${file.reference.jtidy-r8-20050104.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
-                <library>
+                <library dirs="200">
                     <file>${file.reference.jstl-api-1.2.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
-                <library>
+                <library dirs="200">
                     <file>${file.reference.jstl-impl-1.2.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${libs.MySQLDriver.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
             <web-module-additional-libraries>
-                <library>
+                <library dirs="200">
                     <file>${file.reference.douglascrockford-JSON-java-dced076.jar}</file>
                     <path-in-war>/</path-in-war>
                 </library>
