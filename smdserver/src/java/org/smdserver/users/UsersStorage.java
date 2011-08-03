@@ -24,12 +24,9 @@ public class UsersStorage implements IUsersStorage
 		checkUpdated();
 		return users.containsKey(login) && users.get(login).getPsw().equals(getPsw(login, password));
 	}
-	public boolean checkLogin (String login)
+	public boolean doesLoginExist (String login)
 	{
-                if(users.get(login) == null)
-                    return true;
-                else
-                    return false;
+        return users.containsKey(login);
 	}
 
 	public User getUserByLogin (String login)
@@ -42,15 +39,24 @@ public class UsersStorage implements IUsersStorage
 		return users.get(login);
 	}
 
-	String getPsw (String login, String password)
+	public String getPsw (String login, String password)
+	{
+		return getPswStatic(login, password);
+	}
+
+	static String getPswStatic(String login, String password)
 	{
 		return getMD5Sum(login + password);
 	}
 
-	public void createUser (String userId, String login, String password)
+	public boolean createUser (String userId, String login, String password)
 	{
 		checkUpdated();
+		if(users.containsKey(login))
+			return false;
+
 		addUser(userId, login, getPsw(login, password));
+		return true;
 	}
 
 	protected void addUser (String userId, String login, String psw)
@@ -92,7 +98,7 @@ public class UsersStorage implements IUsersStorage
 	{
 	}
 
-	private String getMD5Sum (String password)
+	private static String getMD5Sum (String password)
 	{
 		try
 		{

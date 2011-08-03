@@ -17,7 +17,7 @@ public class RegistrAction extends SmdAction
 		String password = request.getParameter(ActionParams.PASSWORD);
 		IUsersStorage storage = getServletContext().getUsersStorage();
 
-		boolean success = (login != null && password != null && !password.isEmpty() && storage.checkLogin(login));
+		boolean success = (login != null && password != null && !password.isEmpty() && !storage.doesLoginExist(login));
 
 		if(success)
 		{

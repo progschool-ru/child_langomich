@@ -1,6 +1,18 @@
-CREATE TABLE test1
+CREATE TABLE smd_test1
 (
 	test_id VARCHAR(38) UNIQUE NOT NULL,
 	name VARCHAR(254),
 	PRIMARY KEY (test_id)
 ) ENGINE = InnoDB;  
+
+CREATE TABLE smd_users
+(
+	user_id VARCHAR (38) UNIQUE NOT NULL,
+	login VARCHAR (80) UNIQUE NOT NULL,
+	psw VARCHAR (32) NOT NULL,
+	is_blocked BOOLEAN NOT NULL DEFAULT '1',
+	email VARCHAR (80) NOT NULL,
+	time_created DATETIME NOT NULL,
+	time_modified DATETIME NOT NULL,
+	PRIMARY KEY (user_id)
+) ENGINE = InnoDB;

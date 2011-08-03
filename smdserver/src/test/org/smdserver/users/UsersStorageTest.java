@@ -34,8 +34,6 @@ public class UsersStorageTest
 	@Test
 	public void testSetPassword () throws Exception
 	{
-		System.out.println("setPassword");
-
 		String login = FIRST_LOGIN;
 		String password = FIRST_PASSWORD;
 		
@@ -60,8 +58,6 @@ public class UsersStorageTest
 	@Test
 	public void testAddUser ()
 	{
-		System.out.println("addUser");
-
 		String login = "second";
 		String psw = "secondPsw";
 		String id = "2";
@@ -81,8 +77,6 @@ public class UsersStorageTest
 	@Test
 	public void testCheckPassword ()
 	{
-		System.out.println("checkPassword");
-
 		String login = FIRST_LOGIN;
 		String password = FIRST_PASSWORD;
 		String password2 = "secondPassword";
@@ -97,8 +91,6 @@ public class UsersStorageTest
 	@Test
 	public void testGetUserByLogin ()
 	{
-		System.out.println("getUserByLogin");
-
 		String login = FIRST_LOGIN;
 		String password = FIRST_PASSWORD;
 		String id = FIRST_ID;
@@ -116,8 +108,6 @@ public class UsersStorageTest
 	@Test
 	public void testIterate () throws Exception
 	{
-		System.out.println("iterate");
-
 		class iterator implements IUsersCallback
 		{
 			Map<String, String> map = new HashMap<String, String>();
@@ -158,5 +148,4 @@ public class UsersStorageTest
 		assertEquals("psw", psw, instance.getPswByLogin(login));
 		assertEquals("psw", psw, instance.getUserByLogin(login).getPsw());
 	}
-
 }

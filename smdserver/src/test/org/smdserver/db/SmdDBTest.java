@@ -18,7 +18,9 @@ import static org.junit.Assert.*;
 public class SmdDBTest
 {
 	private static final String TEST_TABLE = "test1";
+
 	private Connection connection;
+	private String testTable;
 
 	@Before
     public void setUp () throws SQLException
@@ -31,6 +33,7 @@ public class SmdDBTest
 		String user = rb.getString("db.user");
 		String password = rb.getString("db.password");
 		connection = DriverManager.getConnection(url, user, password);
+		testTable = rb.getString("db.tablesPrefix") + TEST_TABLE;
     }
 
 	@After
@@ -68,21 +71,22 @@ public class SmdDBTest
 	{
 		ISmdDB db = new SmdDB(connection);
 
-		int numRows = getNumRows(TEST_TABLE);
+		int numRows = getNumRows();
 
-		String query = String.format("INSERT INTO %1$s (test_id, name) VALUE (\"1\", \"petya\");", TEST_TABLE);
+		String query = String.format("INSERT INTO %1$s (test_id, name) VALUE (\"1\", \"petya\");", testTable);
 		boolean success = db.updateSingle(query);
 
-		int numRowsAfterCreation = getNumRows(TEST_TABLE);
+		int numRowsAfterCreation = getNumRows();
 
-		String selectQuery = String.format("SELECT * FROM %1$s WHERE test_id=\"1\";", TEST_TABLE);
+		String selectQuery = String.format("SELECT * FROM %1$s WHERE test_id=\"1\";", testTable);
 		TestParser parser = new TestParser();
 		db.selectSingle(selectQuery, parser);
 
-		String clearQuery = String.format("DELETE FROM %1$s WHERE test_id=\"1\";", TEST_TABLE);
+		String clearQuery = String.format("DELETE FROM %1$s WHERE test_id=\"1\";", testTable);
 		Statement st = connection.createStatement();
 		st.executeUpdate(clearQuery);
-		int numRowsAfterClearing = getNumRows(TEST_TABLE);
+		st.close();
+		int numRowsAfterClearing = getNumRows();
 
 		assertEquals(numRows, numRowsAfterClearing);
 		assertTrue(success);
@@ -93,21 +97,73 @@ public class SmdDBTest
 
 	}
 
-	private int getNumRows(String dbTable) throws Exception
+	@Test
+	public void testNullParser() throws Exception
 	{
-		String getCountQuery = String.format("SELECT COUNT(*) FROM %1$s", dbTable);
+		ISmdDB db = new SmdDB(connection);
+		Statement st = connection.createStatement();
+
+		String query = String.format("INSERT INTO %1$s (test_id, name) VALUE (\"1\", \"petya\");", testTable);
+		st.executeUpdate(query);
+
+		boolean caught = false;
+		boolean success = true;
+		try
+		{
+			String selectQuery = String.format("SELECT * FROM %1$s WHERE test_id=\"1\";", testTable);
+			success = db.selectSingle(selectQuery, null);
+		}
+		catch(NullPointerException e)
+		{
+			caught = true;
+		}
+
+		String clearQuery = String.format("DELETE FROM %1$s WHERE test_id=\"1\";", testTable);
+		st.executeUpdate(clearQuery);
+		st.close();
+
+		assertFalse(caught);
+		assertFalse(success);
+	}
+
+	@Test
+	public void testIncorrectQuery() throws Exception
+	{
+		ISmdDB db = new SmdDB(connection);
+
+		int numRows = getNumRows();
+
+		String query = String.format("INSERT INT %1$s (test_id, name) VALUE (\"1\", \"petya\");", testTable);
+		boolean success = db.updateSingle(query);
+
+		int numRows2 = getNumRows();
+
+		assertFalse(success);
+		assertEquals(numRows, numRows2);
+	}
+
+	@Test
+	public void testEscapeString()
+	{
+		String dirtyString = "myName\\\"; DELETE FROM smd_users WHERE user_id=\"me\"; " +
+									"DROP TABLE smd_users;";
+		String dbString = "myName\\\\\\\"; DELETE FROM smd_users WHERE user_id=\\\"me\\\"; " +
+									"DROP TABLE smd_users;";
+		String result = new SmdDB(connection).escapeString(dirtyString);
+
+		assertEquals(dbString, result);
+	}
+
+	private int getNumRows() throws Exception
+	{
+		String getCountQuery = String.format("SELECT COUNT(*) FROM %1$s", testTable);
 		Statement st = connection.createStatement();
 		ResultSet set = st.executeQuery(getCountQuery);
 		set.next();
-		return set.getInt(1);
+		int numRows = set.getInt(1);
+		st.close();
+		return numRows;
 	}
-
-//	private void clearTable(String dbTable) throws Exception
-//	{
-//		String clearQuery = String.format("REMOVE FROM %1$s", dbTable);
-//		Statement st = connection.createStatement();
-//		st.executeUpdate(clearQuery);
-//	}
 
 	private class TestParser implements IResultParser
 	{

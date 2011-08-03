@@ -38,9 +38,12 @@ public class UsersFileStorage extends UsersStorage
 	}
 
 	@Override
-	public void createUser (String userId, String login, String password)
+	public boolean createUser (String userId, String login, String password)
 	{
-		super.createUser(userId, login, password);
+		boolean result = super.createUser(userId, login, password);
+
+		if(!result)
+			return false;
 		
 		try
 		{
@@ -49,7 +52,9 @@ public class UsersFileStorage extends UsersStorage
 		catch(Exception e)
 		{
 			removeUserByLogin(login);
+			return false;
 		}
+		return true;
 	}
 
 	@Override

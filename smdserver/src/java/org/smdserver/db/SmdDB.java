@@ -21,23 +21,28 @@ public class SmdDB implements ISmdDB
 
 	public synchronized boolean updateSingle(String dbQuery)
 	{
+		int countRows = 0;
 		try
 		{
 			checkConnection();
 			Statement statement = connection.createStatement();
-			statement.executeUpdate(dbQuery);
+			countRows = statement.executeUpdate(dbQuery);
 			statement.close();
 		}
 		catch(SQLException e)
 		{
 			//TODO (3.low) log error
+			System.out.println(e.getMessage());
 			return false;
 		}
-		return true;
+		return countRows == 1;
 	}
 	
 	public boolean selectSingle(String dbQuery, IResultParser parser)
 	{
+		if(parser == null)
+			return false;
+		
 		boolean success = false;
 		try
 		{
@@ -59,7 +64,7 @@ public class SmdDB implements ISmdDB
 	}
 	public String escapeString(String dirtyValue)
 	{
-		return dirtyValue.replaceAll("([\\\"])", "\\1");
+		return dirtyValue.replaceAll("([\\\\\"])", "\\\\$1");
 	}
 
 	private void checkConnection()
