@@ -1,5 +1,8 @@
 package org.smdserver;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import org.smdserver.core.NullAction;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,11 +17,13 @@ import org.smdserver.auth.LogoutAction;
 import org.smdserver.auth.SetPasswordAction;
 import org.smdserver.auth.RegistrAction;
 import org.smdserver.core.SmdActionsFactory;
+import org.smdserver.db.ISmdDB;
+import org.smdserver.db.SmdDB;
 import org.smdserver.jsp.SmdUrl;
 import org.smdserver.users.IUsersStorage;
+import org.smdserver.users.UsersDBStorage;
 import org.smdserver.users.UsersFileStorage;
 import org.smdserver.words.GetWordsAction;
-import org.smdserver.words.IWordsStorage;
 import org.smdserver.words.WordsFileStorage;
 import org.smdserver.words.AddWordsAction;
 
@@ -56,15 +61,40 @@ public class MainServlet extends SmdServlet
 	{
 		configResource = getServletContext().getInitParameter(CONFIG_PARAM);
 		SmdUrl.initRB(ResourceBundle.getBundle(configResource));
+		ResourceBundle rb = ResourceBundle.getBundle(configResource);
 
-		String usersPath = ResourceBundle.getBundle(configResource).getString(USERS_STORAGE_PATH_KEY);
-		String wordsPath = ResourceBundle.getBundle(configResource).getString(WORDS_STORAGE_PATH_KEY);
+		String wordsPath = rb.getString(WORDS_STORAGE_PATH_KEY);
+
+		String usersPath = rb.getString(USERS_STORAGE_PATH_KEY);
 		IUsersStorage usersStorage =  new UsersFileStorage(getServletContext().getRealPath(usersPath));
+//		IUsersStorage usersStorage = createUsersStorage(rb);
+
 		WordsFileStorage wordsStorage = new WordsFileStorage(getServletContext().getRealPath(wordsPath));
 		ISmdServletContext context = new SmdServletContext(usersStorage, wordsStorage, getServletContext());
 
 		wordsStorage.setLogger(context);
 
 		return new SmdActionsFactory(context);
+	}
+
+	private IUsersStorage createUsersStorage(ResourceBundle res)
+	{
+		String serverConfig = res.getString("server.properties.file");
+		ResourceBundle rb = ResourceBundle.getBundle(serverConfig);
+
+		String url = rb.getString("db.url");
+		String user = rb.getString("db.user");
+		String password = rb.getString("db.password");
+		try
+		{
+			Connection connection = DriverManager.getConnection(url, user, password);
+			ISmdDB db = new SmdDB(connection);
+			return new UsersDBStorage(db);
+		}
+		catch(SQLException e)
+		{
+			System.out.println(e.getMessage());
+			return null;
+		}
 	}
 }

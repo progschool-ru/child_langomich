@@ -15,6 +15,7 @@ public class UsersDBStorage implements IUsersStorage
 	private static final String GET_USER_BY_LOGIN_QUERY = "SELECT user_id, login, psw FROM " + USERS_DB + " WHERE login = \"%1$s\";";
 	private static final String SET_PASSWORD_BY_LOGIN_QUERY = "UPDATE " + USERS_DB + " SET psw=\"%2$s\" WHERE login = \"%1$s\";";
 	private static final String GET_PSW_BY_ID_QUERY = "SELECT psw FROM " + USERS_DB + " WHERE user_id = \"%1$s\";";
+	private static final String DELETE_USER_BY_ID_QUERY = "DELETE FROM " + USERS_DB + " WHERE user_id = \"%1$s\";";
 
 	private ISmdDB db;
 
@@ -74,6 +75,11 @@ public class UsersDBStorage implements IUsersStorage
 		FirstArgParser parser = new FirstArgParser();
 		db.selectSingle(String.format(GET_PSW_BY_ID_QUERY, dbUserId), parser);
 		return (String)parser.value;
+	}
+
+	public boolean removeUserById (String dbUserId)
+	{
+		return db.updateSingle(String.format(DELETE_USER_BY_ID_QUERY, dbUserId));
 	}
 
 	private String escapeString(String dirtyValue)
