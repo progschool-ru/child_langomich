@@ -20,7 +20,9 @@ public class UsersDBStorageTest
 
 	private static final String DELETE_QUERY = "DELETE FROM smd_users;";
 
-	Connection connection;
+//	Connection connection;
+	ISmdDB db;
+	ResourceBundle rb;
 	private UsersDBStorage instance;
 
     @Before
@@ -28,13 +30,9 @@ public class UsersDBStorageTest
 	{
 		String testConfig = ResourceBundle.getBundle("org.smdserver.config")
 				                      .getString("server.test.properties.file");
-		ResourceBundle rb = ResourceBundle.getBundle(testConfig);
+		rb = ResourceBundle.getBundle(testConfig);
 
-		String url = rb.getString("db.url");
-		String user = rb.getString("db.user");
-		String password = rb.getString("db.password");
-		connection = DriverManager.getConnection(url, user, password);
-		ISmdDB db = new SmdDB(connection);
+		db = new SmdDB(rb);
 
 
 		instance = new UsersDBStorage(db);
@@ -45,8 +43,14 @@ public class UsersDBStorageTest
     @After
     public void tearDown () throws Exception
 	{
+//		connection.close();
+		db.close();
+
+		String url = rb.getString("db.url");
+		String user = rb.getString("db.user");
+		String password = rb.getString("db.password");
+		Connection connection = DriverManager.getConnection(url, user, password);
 		connection.createStatement().executeUpdate(DELETE_QUERY);
-		connection.close();
 		instance = null;
     }
 

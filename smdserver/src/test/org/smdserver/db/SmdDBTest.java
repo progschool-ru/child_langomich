@@ -20,6 +20,7 @@ public class SmdDBTest
 	private static final String TEST_TABLE = "test1";
 
 	private Connection connection;
+	private ISmdDB db;
 	private String testTable;
 
 	@Before
@@ -33,6 +34,7 @@ public class SmdDBTest
 		String user = rb.getString("db.user");
 		String password = rb.getString("db.password");
 		connection = DriverManager.getConnection(url, user, password);
+		db = new SmdDB(rb);
 		testTable = rb.getString("db.tablesPrefix") + TEST_TABLE;
     }
 
@@ -44,6 +46,8 @@ public class SmdDBTest
 			connection.close();
 		}
 		connection = null;
+		db.close();
+		db = null;
 	}
 
 	@Test
@@ -69,7 +73,7 @@ public class SmdDBTest
 	@Test
 	public void testUpdateSelectSingle() throws Exception
 	{
-		ISmdDB db = new SmdDB(connection);
+//		ISmdDB db = new SmdDB(connection);
 
 		int numRows = getNumRows();
 
@@ -100,7 +104,7 @@ public class SmdDBTest
 	@Test
 	public void testNullParser() throws Exception
 	{
-		ISmdDB db = new SmdDB(connection);
+//		ISmdDB db = new SmdDB(connection);
 		Statement st = connection.createStatement();
 
 		String query = String.format("INSERT INTO %1$s (test_id, name) VALUE (\"1\", \"petya\");", testTable);
@@ -129,7 +133,7 @@ public class SmdDBTest
 	@Test
 	public void testIncorrectQuery() throws Exception
 	{
-		ISmdDB db = new SmdDB(connection);
+	//	ISmdDB db = new SmdDB(connection);
 
 		int numRows = getNumRows();
 
@@ -149,7 +153,7 @@ public class SmdDBTest
 									"DROP TABLE smd_users;";
 		String dbString = "myName\\\\\\\"; DELETE FROM smd_users WHERE user_id=\\\"me\\\"; " +
 									"DROP TABLE smd_users;";
-		String result = new SmdDB(connection).escapeString(dirtyString);
+		String result = db.escapeString(dirtyString);
 
 		assertEquals(dbString, result);
 	}

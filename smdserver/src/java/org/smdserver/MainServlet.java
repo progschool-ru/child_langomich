@@ -1,8 +1,5 @@
 package org.smdserver;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import org.smdserver.core.NullAction;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +32,16 @@ public class MainServlet extends SmdServlet
 	private static final String DEFAULT_ACTION = "default";
 
 	private String configResource;
+	private ISmdDB db;
+
+	@Override
+	public void destroy()
+	{
+		if(db != null)
+		{
+			db.close();
+		}
+	}
 
 	protected String getDefaultActionName ()
 	{
@@ -65,9 +72,9 @@ public class MainServlet extends SmdServlet
 
 		String wordsPath = rb.getString(WORDS_STORAGE_PATH_KEY);
 
-		String usersPath = rb.getString(USERS_STORAGE_PATH_KEY);
-		IUsersStorage usersStorage =  new UsersFileStorage(getServletContext().getRealPath(usersPath));
-//		IUsersStorage usersStorage = createUsersStorage(rb);
+//		String usersPath = rb.getString(USERS_STORAGE_PATH_KEY);
+//		IUsersStorage usersStorage =  new UsersFileStorage(getServletContext().getRealPath(usersPath));
+		IUsersStorage usersStorage = createUsersStorage(rb);
 
 		WordsFileStorage wordsStorage = new WordsFileStorage(getServletContext().getRealPath(wordsPath));
 		ISmdServletContext context = new SmdServletContext(usersStorage, wordsStorage, getServletContext());
@@ -81,20 +88,7 @@ public class MainServlet extends SmdServlet
 	{
 		String serverConfig = res.getString("server.properties.file");
 		ResourceBundle rb = ResourceBundle.getBundle(serverConfig);
-
-		String url = rb.getString("db.url");
-		String user = rb.getString("db.user");
-		String password = rb.getString("db.password");
-		try
-		{
-			Connection connection = DriverManager.getConnection(url, user, password);
-			ISmdDB db = new SmdDB(connection);
-			return new UsersDBStorage(db);
-		}
-		catch(SQLException e)
-		{
-			System.out.println(e.getMessage());
-			return null;
-		}
+		db = new SmdDB(rb);
+		return new UsersDBStorage(db);
 	}
 }

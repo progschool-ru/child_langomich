@@ -1,23 +1,62 @@
 package org.smdserver.db;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ResourceBundle;
 
 public class SmdDB implements ISmdDB
 {
 	private Connection connection;
 
-	public SmdDB(Connection connection)
+	public SmdDB(ResourceBundle rb)
 	{
-		this.connection = connection;
+		String url = rb.getString("db.url");
+		String user = rb.getString("db.user");
+		String password = rb.getString("db.password");
+		try
+		{
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			connection = DriverManager.getConnection(url, user, password);
+		}
+		catch(SQLException e)
+		{
+			//TODO: (2.medium) use logger
+			System.out.println("SmdDB can't create connection: " + e.getMessage());
+		}
+		catch(Exception e)
+		{
+			System.out.println("SmdDB class not found: " + e.getMessage());
+		}
 	}
 
-//	public void close() throws SQLException
-//	{
-//		this.connection.close();
-//	}
+	public boolean isActive()
+	{
+		return connection == null;
+	}
+
+	public boolean close()
+	{
+		System.out.println("close connection");
+		boolean success = true;
+		try
+		{
+			if(connection != null && !connection.isClosed())
+			{
+				connection.close();
+			}
+		}
+		catch(SQLException e)
+		{
+			//TODO: (2.medium) use logger
+			System.out.println("SmdDB can't close connection: " + e.getMessage());
+			success = false;
+		}
+		connection = null;
+		return success;
+	}
 
 	public synchronized boolean updateSingle(String dbQuery)
 	{
