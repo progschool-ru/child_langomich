@@ -39,12 +39,7 @@ public class UsersStorage implements IUsersStorage
 		return users.get(login);
 	}
 
-	public String getPsw (String login, String password)
-	{
-		return getPswStatic(login, password);
-	}
-
-	static String getPswStatic(String login, String password)
+	static String getPsw (String login, String password)
 	{
 		return getMD5Sum(login + password);
 	}

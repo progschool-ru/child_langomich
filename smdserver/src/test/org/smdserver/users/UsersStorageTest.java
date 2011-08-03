@@ -138,8 +138,6 @@ public class UsersStorageTest
 	@Test
 	public void testSetPswByLogin ()
 	{
-		System.out.println("setPswByLogin");
-
 		String login = FIRST_LOGIN;
 		String psw = "somePsw";
 

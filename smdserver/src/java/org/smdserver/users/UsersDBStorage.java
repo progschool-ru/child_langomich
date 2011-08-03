@@ -27,9 +27,6 @@ public class UsersDBStorage implements IUsersStorage
 	{
 		String dbLogin = escapeString(dirtyLogin);
 
-		if(doesDBLoginExist(dbLogin))
-			return false;
-
 		String psw = getPsw(dbLogin, dirtyPassword);
 
 		return db.updateSingle(String.format(CREATE_USER_QUERY,
@@ -40,9 +37,10 @@ public class UsersDBStorage implements IUsersStorage
 	{
 		String dbLogin = escapeString(dirtyLogin);
 		String psw = getPsw(dbLogin, dirtyPassword);
-		db.selectSingle(String.format(CHECK_PASSWORD_QUERY, dbLogin, psw), null);
+		FirstArgParser parser = new FirstArgParser();
+		db.selectSingle(String.format(CHECK_PASSWORD_QUERY, dbLogin, psw), parser);
 
-		return true;
+		return parser.value != null;
 	}
 
 	public boolean doesLoginExist (String dirtyLogin)
@@ -53,10 +51,9 @@ public class UsersDBStorage implements IUsersStorage
 	public User getUserByLogin (String dirtyLogin)
 	{
 		String dbLogin = escapeString(dirtyLogin);
-		db.selectSingle(String.format(GET_USER_BY_LOGIN_QUERY, dbLogin), null);
-		//User dbUser = new User((String)result.get("user_id"), (String)result.get("login"), (String)result.get("psw"));
-		//return dbUser;
-		return null;
+		UserParser parser = new UserParser();
+		db.selectSingle(String.format(GET_USER_BY_LOGIN_QUERY, dbLogin), parser);
+		return parser.user;
 	}
 	
 	public void setPassword (String dirtyLogin, String password)
@@ -69,7 +66,7 @@ public class UsersDBStorage implements IUsersStorage
 
 	static String getPsw (String dbLogin, String dirtyPassword)
 	{
-		return UsersStorage.getPswStatic(dbLogin, dirtyPassword);
+		return UsersStorage.getPsw(dbLogin, dirtyPassword);
 	}
 
 	String getPswById (String dbUserId)
@@ -86,8 +83,9 @@ public class UsersDBStorage implements IUsersStorage
 
 	private boolean doesDBLoginExist (String dbLogin)
 	{
-		//return db.selectSingle(String.format(GET_USER_BY_LOGIN_QUERY, dbLogin)) != null;
-		return false;
+		FirstArgParser parser = new FirstArgParser();
+		db.selectSingle(String.format(GET_USER_BY_LOGIN_QUERY, dbLogin),parser);
+		return parser.value != null;
 	}
 
 	private class FirstArgParser implements IResultParser
@@ -97,6 +95,20 @@ public class UsersDBStorage implements IUsersStorage
 		public boolean parse(ResultSet set) throws SQLException
 		{
 			value = set.getObject(1);
+			return true;
+		}
+	}
+
+	private class UserParser implements IResultParser
+	{
+		User user;
+
+		public boolean parse(ResultSet set) throws SQLException
+		{
+			String id = set.getString("user_id");
+			String login = set.getString("login");
+			String psw = set.getString("psw");
+			user = new User(id, login, psw);
 			return true;
 		}
 	}

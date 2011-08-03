@@ -18,7 +18,7 @@ public class UsersDBStorageTest
 	private static final String FIRST_ID = "1";
 	private static final String FIRST_PASSWORD = "firstPassword";
 
-	private static final String DELETE_QUERY = "DELETE FROM smd_users WHERE user_id = \"" + FIRST_ID + "\";";
+	private static final String DELETE_QUERY = "DELETE FROM smd_users;";
 
 	Connection connection;
 	private UsersDBStorage instance;
@@ -38,7 +38,7 @@ public class UsersDBStorageTest
 
 
 		instance = new UsersDBStorage(db);
-		boolean result = instance.createUser(FIRST_ID, FIRST_LOGIN, instance.getPsw(FIRST_LOGIN, FIRST_PASSWORD));
+		boolean result = instance.createUser(FIRST_ID, FIRST_LOGIN, FIRST_PASSWORD);
 		assertTrue(result);
     }
 
@@ -78,100 +78,77 @@ public class UsersDBStorageTest
 		assertNull("second user doesn't exist", instance.getPswById(id2));
 	}
 
-//	/**
-//	 * Test of addUser method, of class UsersStorage.
-//	 */
-//	@Test
-//	public void testAddUser ()
-//	{
-//		String login = "second";
-//		String psw = "secondPsw";
-//		String id = "2";
-//
-//		instance.addUser(id, login, psw);
-//
-//		User user = instance.getUserByLogin(login);
-//
-//		assertEquals("login", login, user.getLogin());
-//		assertEquals("userId", id, user.getUserId());
-//		assertEquals("pws", psw, user.getPsw());
-//	}
-//
-//	/**
-//	 * Test of checkPassword method, of class UsersStorage.
-//	 */
-//	@Test
-//	public void testCheckPassword ()
-//	{
-//		String login = FIRST_LOGIN;
-//		String password = FIRST_PASSWORD;
-//		String password2 = "secondPassword";
-//
-//		assertTrue("correct password", instance.checkPassword(login, password));
-//		assertFalse("incorrect password", instance.checkPassword(login, password2));
-//	}
-//
-//	/**
-//	 * Test of getUserByLogin method, of class UsersStorage.
-//	 */
-//	@Test
-//	public void testGetUserByLogin ()
-//	{
-//		String login = FIRST_LOGIN;
-//		String password = FIRST_PASSWORD;
-//		String id = FIRST_ID;
-//
-//		User user = instance.getUserByLogin(login);
-//
-//		assertEquals("login", login, user.getLogin());
-//		assertEquals("userId", id, user.getUserId());
-//		assertEquals("pws", instance.getPsw(login, password), user.getPsw());
-//	}
-//
-//	/**
-//	 * Test of iterate method, of class UsersStorage.
-//	 */
-//	@Test
-//	public void testIterate () throws Exception
-//	{
-//		class iterator implements IUsersCallback
-//		{
-//			Map<String, String> map = new HashMap<String, String>();
-//			public void process(User user)
-//			{
-//				map.put(user.getUserId(), user.getLogin());
-//			}
-//		}
-//
-//		iterator iter = new iterator();
-//
-//		String login = "second";
-//		String password = "secondPassword";
-//		String id = "2";
-//
-//		instance.addUser(id, login, password);
-//
-//		instance.iterate(iter);
-//
-//		assertEquals("elems count in map", 2, iter.map.size());
-//		assertEquals("first login", FIRST_LOGIN, iter.map.get(FIRST_ID));
-//		assertEquals("second login", login, iter.map.get(id));
-//	}
-//
-//	/**
-//	 * Test of setPswByLogin method, of class UsersStorage.
-//	 */
-//	@Test
-//	public void testSetPswByLogin ()
-//	{
-//		System.out.println("setPswByLogin");
-//
-//		String login = FIRST_LOGIN;
-//		String psw = "somePsw";
-//
-//		instance.setPswByLogin(login, psw);
-//
-//		assertEquals("psw", psw, instance.getPswByLogin(login));
-//		assertEquals("psw", psw, instance.getUserByLogin(login).getPsw());
-//	}
+	/**
+	 * Test of addUser method, of class UsersDBStorage.
+	 */
+	@Test
+	public void testCreate ()
+	{
+		String login = "second";
+		String password = "secondPassword";
+		String id = "2";
+		String psw = instance.getPsw(login, password);
+
+		boolean success = instance.createUser(id, login, password);
+		boolean success2 = instance.createUser(FIRST_ID, login, password);
+		boolean success3 = instance.createUser("someOtherId", login, password);
+
+		User user = instance.getUserByLogin(login);
+
+		assertTrue(success);
+		assertFalse(success2);
+		assertFalse(success3);
+		assertEquals("login", login, user.getLogin());
+		assertEquals("userId", id, user.getUserId());
+		assertEquals("pws", psw, user.getPsw());
+	}
+
+	/**
+	 * Test of checkPassword method, of class UsersDBStorage.
+	 */
+	@Test
+	public void testCheckPassword ()
+	{
+		String login = FIRST_LOGIN;
+		String password = FIRST_PASSWORD;
+		String password2 = "secondPassword";
+
+		assertTrue("correct password", instance.checkPassword(login, password));
+		assertFalse("incorrect password", instance.checkPassword(login, password2));
+	}
+
+	/**
+	 * Test of getUserByLogin method, of class UsersStorage.
+	 */
+	@Test
+	public void testGetUserByLogin ()
+	{
+		String login = FIRST_LOGIN;
+		String password = FIRST_PASSWORD;
+		String id = FIRST_ID;
+
+		User user = instance.getUserByLogin(login);
+		User user2 = instance.getUserByLogin("someLogin");
+
+		assertEquals("login", login, user.getLogin());
+		assertEquals("userId", id, user.getUserId());
+		assertEquals("pws", instance.getPsw(login, password), user.getPsw());
+		assertNull(user2);
+	}
+
+	/**
+	 * Test of checkPassword method, of class UsersDBStorage.
+	 */
+	@Test
+	public void testDoesUserExists ()
+	{
+		String login = FIRST_LOGIN;
+		String login2 = "someLogin";
+
+		boolean exists = instance.doesLoginExist(login);
+		boolean exists2 = instance.doesLoginExist(login2);
+
+		assertTrue("login exists", exists);
+		assertFalse("login doesn't exist", exists2);
+	}
 }
