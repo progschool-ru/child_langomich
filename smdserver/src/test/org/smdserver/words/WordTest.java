@@ -27,7 +27,7 @@ public class WordTest
 //		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z");
 //		Word.setDateFormat(format);
 
-		String json = "{original:\"первый\",translation:\"first\",rating:4,modified:1309263860924}";
+		String json = "{id:\"someUUID\",original:\"первый\",translation:\"first\",rating:4,modified:1309263860924}";
 		Word word = new Word(new JSONObject(json));
 
 		assertEquals("original", "первый", word.getOriginal());

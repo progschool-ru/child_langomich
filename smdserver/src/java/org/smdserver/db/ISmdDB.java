@@ -1,11 +1,13 @@
 package org.smdserver.db;
 
+import java.util.List;
+
 public interface ISmdDB
 {
-	public boolean updateSingle(String query)
-										throws DbException;
-	public boolean selectSingle(String query, IResultParser parser)
-										throws DbException;
+	public int updateGroup (List<String> queries) throws DbException;
+	public boolean updateSingle(String query) throws DbException;
+	public int select(String dbQuery, IMultipleResultParser parser) throws DbException;
+	public boolean selectSingle(String query, IResultParser parser)	throws DbException;
 	public String escapeString(String dirtyValue);
 
 	public boolean isActive();

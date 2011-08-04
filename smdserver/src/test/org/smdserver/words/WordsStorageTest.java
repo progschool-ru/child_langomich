@@ -18,12 +18,12 @@ public class WordsStorageTest
 		storage = new WordsStorage();
 		List<Language> list = new ArrayList<Language>();
 
-		list.add(new Language("en"));
-		list.add(new Language("fr"));
+		list.add(new Language("enId", "en"));
+		list.add(new Language("frId", "fr"));
 		storage.setUserWords("1", list);
 
 		list = new ArrayList<Language>();
-		list.add(new Language("es"));
+		list.add(new Language("esId", "es"));
 		storage.setUserWords("2", list);
     }
 
@@ -42,7 +42,7 @@ public class WordsStorageTest
 		System.out.println("setUserWords");
 
 		List<Language> languages = new ArrayList<Language>();
-		languages.add(new Language("fr"));
+		languages.add(new Language("frId", "fr"));
 
 		storage.setUserWords("3", languages);
 

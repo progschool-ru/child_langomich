@@ -14,10 +14,10 @@ public class LanguageTest
 //		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z");
 //		Word.setDateFormat(format);
 
-		String json = "{name:\"en\",words:[" +
-				"{original:\"первый\",translation:\"first\",rating:4," +
+		String json = "{id: \"enId\", name:\"en\",words:[" +
+				"{id:\"firstId\",original:\"первый\",translation:\"first\",rating:4," +
 				"modified:1309263860924}," +
-				"{original:\"второй\",translation:\"second\",rating:0," +
+				"{id:\"secondId\",original:\"второй\",translation:\"second\",rating:0," +
 				"modified:1309263860924}" +
 				"]}";
 

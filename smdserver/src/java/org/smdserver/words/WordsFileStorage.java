@@ -45,9 +45,9 @@ public class WordsFileStorage extends WordsStorage
 	}
 
         @Override
-	public void addUserWords (String userId, List<Language> languages)
+	public boolean addUserWords (String userId, List<Language> languages)
 	{
-		super.addUserWords(userId, languages);
+		boolean result = super.addUserWords(userId, languages);
 		try
 		{
 			SaveLanguages(userId, getLanguages(userId));
@@ -56,6 +56,7 @@ public class WordsFileStorage extends WordsStorage
 		{
 			log("addUserWords. File isn't saved; " + e.getMessage());
 		}
+		return result;
 	}
 
         @Override

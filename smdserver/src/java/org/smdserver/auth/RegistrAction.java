@@ -32,6 +32,7 @@ public class RegistrAction extends SmdAction
 		{
 			try
 			{
+				//TODO: (3.low) create and use universal ID generator
 				String uuid = UUID.randomUUID().toString();
 				getServletContext().getUsersStorage().createUser( uuid, login, password);
 				setAnswerParam(ActionParams.SUCCESS, success);

@@ -5,12 +5,14 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class SmdDB implements ISmdDB
 {
 	private ResourceBundle rb;
 	private Connection connection;
+	private final Object sync = new Object();
 
 	public SmdDB(ResourceBundle rb) throws DbException
 	{
@@ -26,33 +28,60 @@ public class SmdDB implements ISmdDB
 
 	public boolean close()
 	{
-		boolean success = true;
-		try
+		synchronized(sync)
 		{
-			if(connection != null && !connection.isClosed())
-			{
-				connection.close();
-			}
+			return closeWithoutSync();
 		}
-		catch(SQLException e)
-		{
-			//TODO: (2.medium) use logger
-			System.out.println("SmdDB can't close connection: " + e.getMessage());
-			success = false;
-		}
-		connection = null;
-		return success;
 	}
 
-	public synchronized boolean updateSingle(String dbQuery) throws DbException
+	public int updateGroup (List<String> queries) throws DbException
+	{
+		int count = 0;
+		synchronized (sync)
+		{
+			checkConnection();
+			if(!setAutoCommit(false))
+			{
+				return -1;
+			}
+
+			try
+			{
+				Statement statement = connection.createStatement();
+				for(String query : queries)
+				{
+					count += statement.executeUpdate(query);
+				}
+				statement.close();
+				connection.commit();
+			}
+			catch(SQLException e)
+			{
+				//TODO: (2.medium) use logger
+				System.out.println(e.getMessage());
+				count = -1;
+			}
+
+			if(!setAutoCommit(true))
+			{
+				closeWithoutSync();
+			}
+		}
+		return count;
+	}
+
+	public boolean updateSingle(String dbQuery) throws DbException
 	{
 		int countRows = 0;
 		try
 		{
-			checkConnection();
-			Statement statement = connection.createStatement();
-			countRows = statement.executeUpdate(dbQuery);
-			statement.close();
+			synchronized(sync)
+			{
+				checkConnection();
+				Statement statement = connection.createStatement();
+				countRows = statement.executeUpdate(dbQuery);
+				statement.close();
+			}
 		}
 		catch(SQLException e)
 		{
@@ -62,32 +91,42 @@ public class SmdDB implements ISmdDB
 		}
 		return countRows == 1;
 	}
-	
+
+	public int select(String dbQuery, IMultipleResultParser parser) throws DbException
+	{
+		if(parser == null)
+			return -1;
+
+		int count = 0;
+		try
+		{
+			synchronized(sync)
+			{
+				checkConnection();
+				Statement statement = connection.createStatement();
+				ResultSet result = statement.executeQuery(dbQuery);
+				count = parser.parse(result);
+				statement.close();
+			}
+		}
+		catch(SQLException e)
+		{
+			//TODO (3.low) log error
+			count = -1;
+		}
+		return count;
+	}
+
 	public boolean selectSingle(String dbQuery, IResultParser parser)
 							throws DbException
 	{
 		if(parser == null)
 			return false;
 		
-		boolean success = false;
-		try
-		{
-			checkConnection();
-			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(dbQuery);
-			if(result.next())
-			{
-				success = parser.parse(result);
-			}
-			statement.close();
-		}
-		catch(SQLException e)
-		{
-			//TODO (3.low) log error
-			success = false;
-		}
-		return false;
+		SingleToMultipleParserConverter p = new SingleToMultipleParserConverter(parser);
+		return select(dbQuery, p) == 1;
 	}
+	
 	public String escapeString(String dirtyValue)
 	{
 		return dirtyValue.replaceAll("([\\\\\"])", "\\\\$1");
@@ -104,7 +143,7 @@ public class SmdDB implements ISmdDB
 		{
 			//TODO: (3.low) log
 			System.out.println(e.getMessage());
-			close();
+			closeWithoutSync();
 		}
 
 		String url = rb.getString("db.url");
@@ -123,5 +162,40 @@ public class SmdDB implements ISmdDB
 			dbE.setReason(e);
 			throw dbE;
 		}
+	}
+
+	private boolean setAutoCommit(boolean value)
+	{
+		try
+		{
+			connection.setAutoCommit(value);
+			return true;
+		}
+		catch(SQLException e)
+		{
+			//TODO: (3.low) log
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+
+	private boolean closeWithoutSync()
+	{
+		boolean success = true;
+		try
+		{
+			if(connection != null && !connection.isClosed())
+			{
+				connection.close();
+			}
+		}
+		catch(SQLException e)
+		{
+			//TODO: (2.medium) use logger
+			System.out.println("SmdDB can't close connection: " + e.getMessage());
+			success = false;
+		}
+		connection = null;
+		return success;
 	}
 }

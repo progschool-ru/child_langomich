@@ -8,17 +8,20 @@ import org.json.JSONObject;
 
 public class Language
 {
+	private String id;
 	private String name;
 	private List<Word> words = new ArrayList<Word>();
 
-	public Language (String name)
+	public Language (String id, String name)
 	{
-            this.name = name;
+		this.id = id;
+		this.name = name;
 	}
-	public Language (String name, Word word)
+	public Language (String id, String name, Word word)
 	{
-                this.name = name;
-                words.add(word);
+		this.id = id;
+		this.name = name;
+		words.add(word);
 	}
         public Language ()
 	{
@@ -46,6 +49,11 @@ public class Language
 	public String getName ()
 	{
 		return name;
+	}
+
+	public String getId()
+	{
+		return id;
 	}
 
 	public List<Word> getWords ()

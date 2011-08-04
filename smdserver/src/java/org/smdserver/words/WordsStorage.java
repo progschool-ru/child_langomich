@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class WordsStorage implements IWordsStorage
 {
@@ -15,7 +16,7 @@ public class WordsStorage implements IWordsStorage
 	{
 		usersWords = new HashMap<String, List<Language> > ();
 	}
-	public void addUserWords (String userId, List<Language> languages)
+	public boolean addUserWords (String userId, List<Language> languages)
 	{
 		checkUpdated(userId);
 		if(!usersWords.containsKey(userId))
@@ -59,6 +60,7 @@ public class WordsStorage implements IWordsStorage
 			if(newLen)
 				storedLanguages.add(commingLanguage);
 		}
+		return true;
 	}
 	public void setUserWords (String userId, List<Language> languages)
 	{
@@ -97,7 +99,9 @@ public class WordsStorage implements IWordsStorage
 		{
 			Language storedLanguage = storedLanguages.get(j);
 			List<Word> storedWords = storedLanguage.getWords();
-			languages.add(new Language(storedLanguage.getName()));
+			//TODO: (3.low) create and use universal ID generator
+			String uuid = UUID.randomUUID().toString();
+			languages.add(new Language(uuid, storedLanguage.getName()));
 			for(int i = 0; i < storedWords.size(); i++)
 				languages.get(j).getWords().add(storedWords.get(i));
         }
@@ -115,7 +119,7 @@ public class WordsStorage implements IWordsStorage
         for(int j = 0; j < storedLanguages.size(); j++)
 		{
 			Language storedLanguage = storedLanguages.get(j);
-			languages.add(new Language(storedLanguage.getName()));
+			languages.add(new Language(storedLanguage.getId(), storedLanguage.getName()));
 			for(int i = 0; i < storedLanguage.getWords().size(); i++)
 			{
 				Word storedWord = storedLanguage.getWords().get(i);
