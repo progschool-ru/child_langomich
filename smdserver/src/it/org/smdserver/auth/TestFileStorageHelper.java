@@ -16,7 +16,6 @@ class TestFileStorageHelper implements ITestStorageHelper
 		usersStorage = new UsersFileStorage(file.getAbsolutePath());
 		boolean success = usersStorage.createUser(userId, login, password);
 		this.login = login;
-		System.out.println(success ? "created" : "create failure");
 	}
 
 	public void closeUsersStorage()

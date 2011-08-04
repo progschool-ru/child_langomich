@@ -1,10 +1,12 @@
 package org.smdserver.users;
 
+import org.smdserver.core.SmdException;
+
 public interface IUsersStorage
 {
 	public boolean createUser (String dbUserId, String dbLogin, String dirtyPassword);
 	public boolean checkPassword (String dbLogin, String dirtyPassword);
-	public boolean doesLoginExist (String dbLogin);
+	public boolean doesLoginExist (String dbLogin) throws SmdException;
 	public User getUserByLogin (String dbLogin);
-	public void setPassword (String dbLogin, String dirtyPassword) throws Exception;
+	public boolean setPassword (String dbLogin, String dirtyPassword);
 }

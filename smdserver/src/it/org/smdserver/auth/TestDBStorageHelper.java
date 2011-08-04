@@ -22,13 +22,11 @@ class TestDBStorageHelper implements ITestStorageHelper
 		usersStorage = new UsersDBStorage(db);
 		boolean success = usersStorage.createUser(userId, login, password);
 		this.userId = userId;
-		System.out.println(success ? "created" : "create failure");
 	}
 	
 	public void closeUsersStorage()
 	{
 		boolean success = usersStorage.removeUserById(userId);
 		db.close();
-		System.out.println(success ? "removed" : "remove failure");
 	}
 }

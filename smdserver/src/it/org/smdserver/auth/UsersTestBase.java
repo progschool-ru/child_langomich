@@ -5,19 +5,12 @@ import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.text.ParseException;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.smdserver.db.ISmdDB;
-import org.smdserver.db.SmdDB;
-import org.smdserver.users.IUsersStorage;
-import org.smdserver.users.UsersDBStorage;
-import org.smdserver.users.UsersFileStorage;
 import org.xml.sax.SAXException;
 
 public class UsersTestBase

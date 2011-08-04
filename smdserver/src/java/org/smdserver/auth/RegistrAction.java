@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.core.SmdAction;
+import org.smdserver.core.SmdException;
 import org.smdserver.jsp.SmdUrl;
 import org.smdserver.users.IUsersStorage;
 
@@ -17,7 +18,15 @@ public class RegistrAction extends SmdAction
 		String password = request.getParameter(ActionParams.PASSWORD);
 		IUsersStorage storage = getServletContext().getUsersStorage();
 
-		boolean success = (login != null && password != null && !password.isEmpty() && !storage.doesLoginExist(login));
+		boolean success;
+		try
+		{
+			success = (login != null && password != null && !password.isEmpty() && !storage.doesLoginExist(login));
+		}
+		catch(SmdException e)
+		{
+			success = false;
+		}
 
 		if(success)
 		{

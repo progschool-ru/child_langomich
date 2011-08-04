@@ -24,7 +24,7 @@ public class SmdDBTest
 	private String testTable;
 
 	@Before
-    public void setUp () throws SQLException
+    public void setUp () throws DbException, SQLException
 	{
 		String testConfig = ResourceBundle.getBundle("org.smdserver.config")
 				                      .getString("server.test.properties.file");
@@ -158,6 +158,31 @@ public class SmdDBTest
 		assertEquals(dbString, result);
 	}
 
+	@Test
+	public void testCheckConnection () throws Exception
+	{
+		boolean first = db.isActive();
+
+		SimpleParser parser = new SimpleParser();
+		db.selectSingle("SELECT 1", parser);
+
+		int number1 = parser.number;
+		parser.number = 0;
+
+		db.close();
+		boolean second = db.isActive();
+
+		db.selectSingle("SELECT 1", parser);
+		int number2 = parser.number;
+		boolean third = db.isActive();
+
+		assertTrue(first);
+		assertFalse(second);
+		assertTrue(third);
+		assertEquals(1, number1);
+		assertEquals(1, number2);
+	}
+
 	private int getNumRows() throws Exception
 	{
 		String getCountQuery = String.format("SELECT COUNT(*) FROM %1$s", testTable);
@@ -167,6 +192,16 @@ public class SmdDBTest
 		int numRows = set.getInt(1);
 		st.close();
 		return numRows;
+	}
+
+	private class SimpleParser implements IResultParser
+	{
+		int number;
+		public boolean parse(ResultSet result) throws SQLException
+		{
+			number = result.getInt(1);
+			return true;
+		}
 	}
 
 	private class TestParser implements IResultParser

@@ -14,6 +14,7 @@ import org.smdserver.auth.LogoutAction;
 import org.smdserver.auth.SetPasswordAction;
 import org.smdserver.auth.RegistrAction;
 import org.smdserver.core.SmdActionsFactory;
+import org.smdserver.db.DbException;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
 import org.smdserver.jsp.SmdUrl;
@@ -88,7 +89,14 @@ public class MainServlet extends SmdServlet
 	{
 		String serverConfig = res.getString("server.properties.file");
 		ResourceBundle rb = ResourceBundle.getBundle(serverConfig);
-		db = new SmdDB(rb);
-		return new UsersDBStorage(db);
+		try
+		{
+			db = new SmdDB(rb);
+			return new UsersDBStorage(db);
+		}
+		catch (DbException e)
+		{
+			return null;
+		}
 	}
 }

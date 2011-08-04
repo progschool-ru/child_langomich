@@ -2,6 +2,7 @@ package org.smdserver.users;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.smdserver.db.DbException;
 import org.smdserver.db.IResultParser;
 import org.smdserver.db.ISmdDB;
 
@@ -30,8 +31,15 @@ public class UsersDBStorage implements IUsersStorage
 
 		String psw = getPsw(dbLogin, dirtyPassword);
 
-		return db.updateSingle(String.format(CREATE_USER_QUERY,
+		try
+		{
+			return db.updateSingle(String.format(CREATE_USER_QUERY,
 			                  dbUserId, dbLogin, psw));
+		}
+		catch(DbException e)
+		{
+			return false;
+		}
 	}
 
 	public boolean checkPassword (String dirtyLogin, String dirtyPassword)
@@ -39,12 +47,20 @@ public class UsersDBStorage implements IUsersStorage
 		String dbLogin = escapeString(dirtyLogin);
 		String psw = getPsw(dbLogin, dirtyPassword);
 		FirstArgParser parser = new FirstArgParser();
-		db.selectSingle(String.format(CHECK_PASSWORD_QUERY, dbLogin, psw), parser);
+
+		try
+		{
+			db.selectSingle(String.format(CHECK_PASSWORD_QUERY, dbLogin, psw), parser);
+		}
+		catch(DbException e)
+		{
+			return false;
+		}
 
 		return parser.value != null;
 	}
 
-	public boolean doesLoginExist (String dirtyLogin)
+	public boolean doesLoginExist (String dirtyLogin) throws DbException
 	{
 		return doesDBLoginExist(escapeString(dirtyLogin));
 	}
@@ -53,16 +69,30 @@ public class UsersDBStorage implements IUsersStorage
 	{
 		String dbLogin = escapeString(dirtyLogin);
 		UserParser parser = new UserParser();
-		db.selectSingle(String.format(GET_USER_BY_LOGIN_QUERY, dbLogin), parser);
+		try
+		{
+			db.selectSingle(String.format(GET_USER_BY_LOGIN_QUERY, dbLogin), parser);
+		}
+		catch(DbException e)
+		{
+			return null;
+		}
 		return parser.user;
 	}
 	
-	public void setPassword (String dirtyLogin, String password)
+	public boolean setPassword (String dirtyLogin, String password)
 	{
 		String dbLogin = escapeString(dirtyLogin);
 		String psw = getPsw(dbLogin, password);
 		String query = String.format(SET_PASSWORD_BY_LOGIN_QUERY, dbLogin, psw);
-		db.updateSingle(query);
+		try
+		{
+			return db.updateSingle(query);
+		}
+		catch(DbException e)
+		{
+			return false;
+		}
 	}
 
 	static String getPsw (String dbLogin, String dirtyPassword)
@@ -73,13 +103,27 @@ public class UsersDBStorage implements IUsersStorage
 	String getPswById (String dbUserId)
 	{
 		FirstArgParser parser = new FirstArgParser();
-		db.selectSingle(String.format(GET_PSW_BY_ID_QUERY, dbUserId), parser);
+		try
+		{
+			db.selectSingle(String.format(GET_PSW_BY_ID_QUERY, dbUserId), parser);
+		}
+		catch(DbException e)
+		{
+			return null;
+		}
 		return (String)parser.value;
 	}
 
 	public boolean removeUserById (String dbUserId)
 	{
-		return db.updateSingle(String.format(DELETE_USER_BY_ID_QUERY, dbUserId));
+		try
+		{
+			return db.updateSingle(String.format(DELETE_USER_BY_ID_QUERY, dbUserId));
+		}
+		catch (DbException e)
+		{
+			return false;
+		}
 	}
 
 	private String escapeString(String dirtyValue)
@@ -87,7 +131,7 @@ public class UsersDBStorage implements IUsersStorage
 		return db.escapeString(dirtyValue);
 	}
 
-	private boolean doesDBLoginExist (String dbLogin)
+	private boolean doesDBLoginExist (String dbLogin) throws DbException
 	{
 		FirstArgParser parser = new FirstArgParser();
 		db.selectSingle(String.format(GET_USER_BY_LOGIN_QUERY, dbLogin),parser);

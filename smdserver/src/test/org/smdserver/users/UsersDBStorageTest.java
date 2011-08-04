@@ -2,12 +2,11 @@ package org.smdserver.users;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.smdserver.db.DbException;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
 import static org.junit.Assert.*;
@@ -144,7 +143,7 @@ public class UsersDBStorageTest
 	 * Test of checkPassword method, of class UsersDBStorage.
 	 */
 	@Test
-	public void testDoesUserExists ()
+	public void testDoesUserExists () throws DbException
 	{
 		String login = FIRST_LOGIN;
 		String login2 = "someLogin";

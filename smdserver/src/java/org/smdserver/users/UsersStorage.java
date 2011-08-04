@@ -10,14 +10,15 @@ public class UsersStorage implements IUsersStorage
 {
 	private Map<String, User> users = new HashMap<String, User>();
 
-	public void setPassword (String login, String password) throws Exception
+	public boolean setPassword (String login, String password)
 	{
 		checkUpdated();
 
 		if(!users.containsKey(login))
-			return;
+			return false;
 
 		users.get(login).setPsw(getPsw(login, password));
+		return true;
 	}
 	public boolean checkPassword (String login, String password)
 	{

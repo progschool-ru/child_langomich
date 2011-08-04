@@ -9,37 +9,23 @@ import java.util.ResourceBundle;
 
 public class SmdDB implements ISmdDB
 {
+	private ResourceBundle rb;
 	private Connection connection;
 
-	public SmdDB(ResourceBundle rb)
+	public SmdDB(ResourceBundle rb) throws DbException
 	{
-		String url = rb.getString("db.url");
-		String user = rb.getString("db.user");
-		String password = rb.getString("db.password");
-		try
-		{
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			connection = DriverManager.getConnection(url, user, password);
-		}
-		catch(SQLException e)
-		{
-			//TODO: (2.medium) use logger
-			System.out.println("SmdDB can't create connection: " + e.getMessage());
-		}
-		catch(Exception e)
-		{
-			System.out.println("SmdDB class not found: " + e.getMessage());
-		}
+		this.rb = rb;
+
+		checkConnection();
 	}
 
 	public boolean isActive()
 	{
-		return connection == null;
+		return connection != null;
 	}
 
 	public boolean close()
 	{
-		System.out.println("close connection");
 		boolean success = true;
 		try
 		{
@@ -58,7 +44,7 @@ public class SmdDB implements ISmdDB
 		return success;
 	}
 
-	public synchronized boolean updateSingle(String dbQuery)
+	public synchronized boolean updateSingle(String dbQuery) throws DbException
 	{
 		int countRows = 0;
 		try
@@ -78,6 +64,7 @@ public class SmdDB implements ISmdDB
 	}
 	
 	public boolean selectSingle(String dbQuery, IResultParser parser)
+							throws DbException
 	{
 		if(parser == null)
 			return false;
@@ -106,8 +93,35 @@ public class SmdDB implements ISmdDB
 		return dirtyValue.replaceAll("([\\\\\"])", "\\\\$1");
 	}
 
-	private void checkConnection()
+	private void checkConnection() throws DbException
 	{
-		
+		try
+		{
+			if(connection != null && !connection.isClosed() && connection.isValid(0))
+				return;
+		}
+		catch(SQLException e)
+		{
+			//TODO: (3.low) log
+			System.out.println(e.getMessage());
+			close();
+		}
+
+		String url = rb.getString("db.url");
+		String user = rb.getString("db.user");
+		String password = rb.getString("db.password");
+		try
+		{
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			connection = DriverManager.getConnection(url, user, password);
+		}
+		catch(Exception e)
+		{
+			//TODO: (3.low) log
+			System.out.println(e.getMessage());
+			DbException dbE = new DbException(DbException.CANT_CONNECT_TO_DATABASE);
+			dbE.setReason(e);
+			throw dbE;
+		}
 	}
 }

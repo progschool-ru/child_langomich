@@ -3,15 +3,12 @@ package org.smdserver.auth;
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebRequest;
-import java.io.IOException;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 import static org.junit.Assert.*;
 
 public class SetPasswordActionTest extends UsersTestBase
