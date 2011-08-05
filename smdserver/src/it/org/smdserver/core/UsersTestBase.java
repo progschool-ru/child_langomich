@@ -21,7 +21,8 @@ public class UsersTestBase
 	public static final String COOKIE_HEADER = "SET-COOKIE";
 
 	private static ResourceBundle resource;
-//	private static ITestStorageHelper storageHelper = new TestFileStorageHelper();
+	
+	private static ITestStorageHelper fileStorageHelper = new TestFileStorageHelper();
 	private static ITestStorageHelper storageHelper = new TestDBStorageHelper();
 
 	protected static void setUpClass() throws Exception
@@ -33,6 +34,11 @@ public class UsersTestBase
 	protected static void tearDownClass() throws Exception
 	{
 		storageHelper.closeUsersStorage();
+	}
+
+	protected static ITestStorageHelper getTestStorageHelper()
+	{
+		return fileStorageHelper;
 	}
 
 	protected static String getActionUrl()

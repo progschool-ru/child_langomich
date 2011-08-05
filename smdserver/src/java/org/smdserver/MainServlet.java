@@ -76,7 +76,7 @@ public class MainServlet extends SmdServlet
 		SmdUrl.initRB(ResourceBundle.getBundle(configResource));
 		ResourceBundle rb = ResourceBundle.getBundle(configResource);	
 
-		ISmdLogger logger = new ComplexSmdLogger(getServletContext(), null);
+		ISmdLogger logger = new ComplexSmdLogger(getServletContext(), System.out);
 
 		IWordsStorage wordsStorage = createWordsFileStorage(rb, logger);
 //		IWordsStorage wordsStorage = createWordsStorage(rb, logger);
@@ -139,7 +139,7 @@ public class MainServlet extends SmdServlet
 		{	
 			try
 			{
-				db = new SmdDB(rb);
+				db = new SmdDB(rb, logger);
 			}
 			catch (DbException e)
 			{

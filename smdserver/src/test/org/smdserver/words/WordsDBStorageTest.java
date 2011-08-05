@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.smdserver.core.ConsoleSmdLogger;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
 import org.smdserver.users.IUsersStorage;
@@ -29,7 +30,7 @@ public class WordsDBStorageTest
 				                      .getString("server.test.properties.file");
 		rb = ResourceBundle.getBundle(testConfig);
 
-		db = new SmdDB(rb);
+		db = new SmdDB(rb, new ConsoleSmdLogger(System.out));
 		String prefix = rb.getString("db.tablesPrefix");
 
 		IUsersStorage us = new UsersDBStorage(db);

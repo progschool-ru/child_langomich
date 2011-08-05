@@ -56,6 +56,11 @@ public class Language
 		return id;
 	}
 
+	public void setId(String value)
+	{
+		id = value;
+	}
+
 	public List<Word> getWords ()
 	{
 		return words;

@@ -60,8 +60,16 @@ public class WordsFileStorage extends WordsStorage
 	protected void checkUpdated(String userId)
 	{
 		File file = new File(realPath+"/"+userId+".dat");
-		if(lastModified < file.lastModified())
+
+		if(!file.exists())
+		{
+			List<Language> languages = new ArrayList<Language>();
+			super.setUserWords(userId, languages);
+		}
+		else if(lastModified < file.lastModified())
+		{
 			readFile(userId);
+		}
 	}
 
 	private void readFile(String userId)
@@ -80,7 +88,6 @@ public class WordsFileStorage extends WordsStorage
 		catch(IOException ioe){}
 		catch(JSONException e){}
 		catch(WordsException e){}
-
 	}
 
 	private void SaveLanguages(String userId, List<Language> languages)  throws IOException

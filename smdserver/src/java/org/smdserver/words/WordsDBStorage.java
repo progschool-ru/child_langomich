@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.smdserver.db.DbException;
 import org.smdserver.db.IMultipleResultParser;
 import org.smdserver.db.ISmdDB;
@@ -35,7 +36,48 @@ public class WordsDBStorage implements IWordsStorage
 
 	public boolean addUserWords(String userId, List<Language> languages)
 	{
-		return setWords(userId, languages, ADD_WORD_QUERY, ADD_LANGUAGE_QUERY);
+		List<String> queries = new ArrayList<String>();
+
+		for(Language language : languages)
+		{
+			//TODO: (2.medium) It's durty a bit. Fix it better.
+			if(language.getId() == null)
+			{
+				String languageId = UUID.randomUUID().toString();//TODO: (3.low) use common util for creation Ids.
+				String languageQuery = String.format(ADD_LANGUAGE_QUERY, languagesTable,
+											languageId, language.getName(),
+											userId);
+				queries.add(languageQuery);
+				language.setId(languageId);
+			}
+
+			List<Word> words = language.getWords();
+			for(Word word : words)
+			{
+				//TODO: (2.medium) It's durty. Fix it better.
+				if(word.getId() == null)
+				{
+					word.setId(UUID.randomUUID().toString());
+				}
+				String wordQuery = String.format(ADD_WORD_QUERY, wordsTable,
+											word.getId(), language.getId(),
+											word.getOriginal(),
+											word.getTranslation(),
+											word.getRating(),
+											word.getModified());
+				queries.add(wordQuery);
+			}
+		}
+
+		try
+		{
+			int count = db.updateGroup(queries);
+			return count >= 0;
+		}
+		catch(DbException e)
+		{
+			return false;
+		}
 	}
 
 	public List<Language> getCopyUserWords(String userId)
@@ -107,46 +149,6 @@ public class WordsDBStorage implements IWordsStorage
 			return null;
 		}
 		return parser.languages;
-	}
-
-	public boolean setWords(String userId, List<Language> languages,
-							String wQuery, String lQuery)
-	{
-		List<String> queries = new ArrayList<String>();
-		
-		for(Language language : languages)
-		{
-			if(lQuery != null)
-			{
-				String languageQuery = String.format(lQuery, languagesTable,
-											language.getId(), language.getName(),
-											userId);
-				queries.add(languageQuery);
-			}
-
-			if(wQuery != null)
-			{
-				List<Word> words = language.getWords();
-				for(Word word : words)
-				{
-					String wordQuery = String.format(wQuery, wordsTable,
-												word.getId(), word.getOriginal(),
-												word.getTranslation(),
-												word.getRating());
-					queries.add(wordQuery);
-				}
-			}
-		}
-
-		try
-		{
-			int count = db.updateGroup(queries);
-			return count >= 0;
-		}
-		catch(DbException e)
-		{
-			return false;
-		}
 	}
 
 	private class LanguagesCreatorParser implements IMultipleResultParser

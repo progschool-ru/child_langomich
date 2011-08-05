@@ -39,6 +39,11 @@ public class Word
 		return id;
 	}
 	
+	public void setId(String value)
+	{
+		id = value;
+	}
+
 	public long getModified ()
 	{
 		return modified;

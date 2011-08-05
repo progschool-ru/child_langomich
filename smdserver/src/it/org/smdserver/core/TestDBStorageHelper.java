@@ -18,7 +18,7 @@ class TestDBStorageHelper implements ITestStorageHelper
 		String serverConfig = resource.getString("server.properties.file");
 		ResourceBundle rb = ResourceBundle.getBundle(serverConfig);
 
-		db = new SmdDB(rb);
+		db = new SmdDB(rb, new ConsoleSmdLogger(System.out));
 		usersStorage = new UsersDBStorage(db);
 		boolean success = usersStorage.createUser(userId, login, password);
 		this.userId = userId;
@@ -29,4 +29,9 @@ class TestDBStorageHelper implements ITestStorageHelper
 		boolean success = usersStorage.removeUserById(userId);
 		db.close();
 	}
+
+	public void openWordsStorage(ResourceBundle resource, String userId)
+	{}
+	public void closeWordsStorage(ResourceBundle resource, String userId)
+	{}
 }

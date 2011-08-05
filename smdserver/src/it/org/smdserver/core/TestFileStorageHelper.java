@@ -22,4 +22,19 @@ class TestFileStorageHelper implements ITestStorageHelper
 	{
 		usersStorage.removeUserByLogin(login);
 	}
+
+	public void openWordsStorage(ResourceBundle resource, String userId)
+	{
+		File file = new File(resource.getString("test.server.path") +
+				             resource.getString("path.words.storageDir") +
+							 userId + ".dat");
+	}
+
+	public void closeWordsStorage(ResourceBundle resource, String userId)
+	{
+		File file = new File(resource.getString("test.server.path") +
+				             resource.getString("path.words.storageDir") +
+							 userId + ".dat");
+		file.delete();
+	}
 }

@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.smdserver.core.ConsoleSmdLogger;
 import static org.junit.Assert.*;
 
 /**
@@ -34,7 +35,7 @@ public class SmdDBTest
 		String user = rb.getString("db.user");
 		String password = rb.getString("db.password");
 		connection = DriverManager.getConnection(url, user, password);
-		db = new SmdDB(rb);
+		db = new SmdDB(rb, new ConsoleSmdLogger(System.out));
 		testTable = rb.getString("db.tablesPrefix") + TEST_TABLE;
     }
 

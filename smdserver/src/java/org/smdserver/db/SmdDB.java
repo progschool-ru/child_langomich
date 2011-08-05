@@ -7,16 +7,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.ResourceBundle;
+import org.smdserver.core.ISmdLogger;
 
 public class SmdDB implements ISmdDB
 {
 	private ResourceBundle rb;
 	private Connection connection;
+	private ISmdLogger logger;
 	private final Object sync = new Object();
 
-	public SmdDB(ResourceBundle rb) throws DbException
+	public SmdDB(ResourceBundle rb, ISmdLogger logger) throws DbException
 	{
 		this.rb = rb;
+		this.logger = logger;
 
 		checkConnection();
 	}
@@ -36,7 +39,7 @@ public class SmdDB implements ISmdDB
 
 	public int updateGroup (List<String> queries) throws DbException
 	{
-		int count = 0;
+		int updatedRows = 0;
 		synchronized (sync)
 		{
 			checkConnection();
@@ -45,21 +48,24 @@ public class SmdDB implements ISmdDB
 				return -1;
 			}
 
+			int count = 0;
+
 			try
 			{
 				Statement statement = connection.createStatement();
 				for(String query : queries)
 				{
-					count += statement.executeUpdate(query);
+					updatedRows += statement.executeUpdate(query);
+					count ++;
 				}
 				statement.close();
 				connection.commit();
 			}
 			catch(SQLException e)
 			{
-				//TODO: (2.medium) use logger
-				System.out.println(e.getMessage());
-				count = -1;
+				log("SmdDB.updateGroup: " +e.getMessage());
+				log(queries.get(count));
+				updatedRows = -1;
 			}
 
 			if(!setAutoCommit(true))
@@ -67,7 +73,7 @@ public class SmdDB implements ISmdDB
 				closeWithoutSync();
 			}
 		}
-		return count;
+		return updatedRows;
 	}
 
 	public boolean updateSingle(String dbQuery) throws DbException
@@ -85,8 +91,8 @@ public class SmdDB implements ISmdDB
 		}
 		catch(SQLException e)
 		{
-			//TODO (3.low) log error
-			System.out.println(e.getMessage());
+			log("SmdDB.updateSingle: " +e.getMessage());
+			log(dbQuery);
 			return false;
 		}
 		return countRows == 1;
@@ -111,7 +117,8 @@ public class SmdDB implements ISmdDB
 		}
 		catch(SQLException e)
 		{
-			//TODO (3.low) log error
+			log("select: " +e.getMessage());
+			log(dbQuery);
 			count = -1;
 		}
 		return count;
@@ -141,8 +148,7 @@ public class SmdDB implements ISmdDB
 		}
 		catch(SQLException e)
 		{
-			//TODO: (3.low) log
-			System.out.println(e.getMessage());
+			log("SmdDB.checkConnection: " +e.getMessage());
 			closeWithoutSync();
 		}
 
@@ -156,8 +162,7 @@ public class SmdDB implements ISmdDB
 		}
 		catch(Exception e)
 		{
-			//TODO: (3.low) log
-			System.out.println(e.getMessage());
+			log("SmdDB.checkConnection: " +e.getMessage());
 			DbException dbE = new DbException(DbException.CANT_CONNECT_TO_DATABASE);
 			dbE.setReason(e);
 			throw dbE;
@@ -173,8 +178,7 @@ public class SmdDB implements ISmdDB
 		}
 		catch(SQLException e)
 		{
-			//TODO: (3.low) log
-			System.out.println(e.getMessage());
+			log("SmdDB.setAutoCommit: " +e.getMessage());
 			return false;
 		}
 	}
@@ -191,11 +195,18 @@ public class SmdDB implements ISmdDB
 		}
 		catch(SQLException e)
 		{
-			//TODO: (2.medium) use logger
-			System.out.println("SmdDB can't close connection: " + e.getMessage());
+			log("SmdDB can't close connection: " + e.getMessage());
 			success = false;
 		}
 		connection = null;
 		return success;
+	}
+
+	private void log(String message)
+	{
+		if(logger != null)
+		{
+			logger.log(message);
+		}
 	}
 }

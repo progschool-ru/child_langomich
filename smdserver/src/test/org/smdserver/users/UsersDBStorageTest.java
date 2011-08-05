@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.smdserver.core.ConsoleSmdLogger;
 import org.smdserver.db.DbException;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
@@ -30,7 +31,7 @@ public class UsersDBStorageTest
 				                      .getString("server.test.properties.file");
 		rb = ResourceBundle.getBundle(testConfig);
 
-		db = new SmdDB(rb);
+		db = new SmdDB(rb, new ConsoleSmdLogger(System.out));
 
 
 		instance = new UsersDBStorage(db);

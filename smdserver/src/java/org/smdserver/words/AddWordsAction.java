@@ -17,7 +17,7 @@ public class AddWordsAction extends CheckLoginAction
 	protected String doAction (HttpServletRequest request)
 	{
 		String dataString = request.getParameter(ActionParams.DATA);
-                
+
 		try
 		{ 
 			JSONObject json = new JSONObject(JavaString.decode(dataString));

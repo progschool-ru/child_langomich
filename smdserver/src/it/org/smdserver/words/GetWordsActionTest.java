@@ -1,4 +1,5 @@
 package org.smdserver.words;
+
 import org.smdserver.core.UsersTestBase;
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebConversation;
@@ -16,9 +17,7 @@ import org.junit.Test;
 import org.smdserver.core.WebActions;
 import org.smdserver.core.WebParams;
 import org.smdserver.core.ConsoleSmdLogger;
-import org.smdserver.words.Language;
-import org.smdserver.words.Word;
-import org.smdserver.words.WordsFileStorage;
+
 import static org.junit.Assert.*;
 
 public class GetWordsActionTest extends UsersTestBase
