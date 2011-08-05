@@ -1,10 +1,13 @@
 package org.smdserver.core;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ResourceBundle;
 import org.smdserver.users.UsersFileStorage;
+import org.smdserver.words.IWordsStorage;
+import org.smdserver.words.WordsFileStorage;
 
-class TestFileStorageHelper implements ITestStorageHelper
+public class TestFileStorageHelper implements ITestStorageHelper
 {
 	private UsersFileStorage usersStorage;
 	private String login;
@@ -14,7 +17,7 @@ class TestFileStorageHelper implements ITestStorageHelper
 	{
 		File file = new File(resource.getString("test.server.path") + resource.getString("path.users.storage"));
 		usersStorage = new UsersFileStorage(file.getAbsolutePath());
-		boolean success = usersStorage.createUser(userId, login, password);
+		usersStorage.createUser(userId, login, password);
 		this.login = login;
 	}
 
@@ -23,11 +26,16 @@ class TestFileStorageHelper implements ITestStorageHelper
 		usersStorage.removeUserByLogin(login);
 	}
 
-	public void openWordsStorage(ResourceBundle resource, String userId)
+	public IWordsStorage openWordsStorage(ResourceBundle resource, String userId) throws IOException
 	{
 		File file = new File(resource.getString("test.server.path") +
 				             resource.getString("path.words.storageDir") +
-							 userId + ".dat");
+							  userId + ".dat");
+
+		file.createNewFile();
+		file.setWritable(true, false);
+		
+		return new WordsFileStorage(file.getParentFile().getAbsolutePath(), new ConsoleSmdLogger(System.out));
 	}
 
 	public void closeWordsStorage(ResourceBundle resource, String userId)

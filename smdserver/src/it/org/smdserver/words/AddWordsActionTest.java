@@ -5,10 +5,8 @@ import org.smdserver.core.UsersTestBase;
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebRequest;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -17,37 +15,38 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.smdserver.core.WebActions;
 import org.smdserver.core.WebParams;
-import org.smdserver.core.ConsoleSmdLogger;
 
 import static org.junit.Assert.*;
 
 public class AddWordsActionTest extends UsersTestBase
 {
-	private static final String LANGUAGE_ID = "someOtherUUID";
+	private static final String LANGUAGE_ID = "enId";
 	private static final String LANGUAGE_NAME = "en";
-	private static final String WORD_ID = "someUUID";
+//	private static final String LANGUAGE_ID2 = "frId";
+	private static final String LANGUAGE_NAME2 = "fr";
+	private static final String WORD_ID = "firstUUID";
 	private static final String WORD_ORIG = "первый";
 	private static final String WORD_TRAN = "first";
 	private static final int    WORD_RATING = 1;
 	private static final long   WORD_MODIFIED = 3000;
+	private static final String WORD_ID2 = "secondUUID";
+	private static final String WORD_ORIG2 = "второй";
+	private static final String WORD_TRAN2 = "second";
+	private static final int    WORD_RATING2 = 2;
+	private static final long   WORD_MODIFIED2 = 4000;
 
 	private static final String KEY_LANGUAGES = "languages";
 	private static final String KEY_NAME      = "name";
 	private static final String KEY_WORDS     = "words";
 
+	IWordsStorage wordsStorage;
 	private WebConversation wc;
+	private boolean flag = true;
 
 	@BeforeClass
 	public static void setUpClass() throws Exception
 	{
 		UsersTestBase.setUpClass();
-
-//		Word word = new Word(WORD_ID, WORD_ORIG, WORD_TRAN, WORD_RATING, WORD_MODIFIED);
-//		Language language = new Language(LANGUAGE_ID, LANGUAGE_NAME, word);
-//		List<Language> languages = new ArrayList<Language>();
-//		languages.add(language);
-//
-//		wordsStorage.addUserWords(USER_ID, languages);
 	}
 
 	@AfterClass
@@ -59,7 +58,14 @@ public class AddWordsActionTest extends UsersTestBase
     @Before
     public void setUp() throws Exception
 	{
-		getTestStorageHelper().openWordsStorage(getResource(), USER_ID);
+		wordsStorage = getTestStorageHelper().openWordsStorage(getResource(), USER_ID);
+
+		Word word = new Word(WORD_ID, WORD_ORIG, WORD_TRAN, WORD_RATING, WORD_MODIFIED);
+		Language language = new Language(LANGUAGE_ID, LANGUAGE_NAME, word);
+		List<Language> languages = new ArrayList<Language>();
+		languages.add(language);
+		wordsStorage.addUserWords(USER_ID, languages);
+
 		wc = new WebConversation();
 
 		WebRequest req = new GetMethodWebRequest(getActionUrl() + WebActions.LOGIN);
@@ -67,12 +73,16 @@ public class AddWordsActionTest extends UsersTestBase
 		req.setParameter(WebParams.PASSWORD, PASSWORD);
 		JSONObject loginResponse = getJSONResource(wc, req);
 		assertTrue(loginResponse.getBoolean(WebParams.SUCCESS));
+		flag = true;
 	}
 
 	@After
 	public void tearDown()
 	{
-		getTestStorageHelper().closeWordsStorage(getResource(), USER_ID);
+		if(flag)
+		{
+			getTestStorageHelper().closeWordsStorage(getResource(), USER_ID);
+		}
 		wc = null;
 	}
 
@@ -80,7 +90,7 @@ public class AddWordsActionTest extends UsersTestBase
 	public void testAddNewWordNewLanguage() throws Exception
 	{
 		WebRequest addReq = new GetMethodWebRequest(getActionUrl() + WebActions.ADD_WORDS);
-		String param = "{\"languages\":[{\"name\":\"en\",\"words\":" +
+		String param = "{\"languages\":[{\"name\":\"" + LANGUAGE_NAME2 + "\",\"words\":" +
 				"[{\"original\":\"" + WORD_ORIG +
 				"\",\"translation\":\"" + WORD_TRAN +
 				"\",\"rating\":" + WORD_RATING +
@@ -89,47 +99,56 @@ public class AddWordsActionTest extends UsersTestBase
 
 		JSONObject addJSON = getJSONResource(wc, addReq);
 
-		WebRequest getReq = new GetMethodWebRequest(getActionUrl() + WebActions.GET_WORDS);
-		JSONObject getJSON = getJSONResource(wc, getReq);
-
 		assertTrue(addJSON.getBoolean(WebParams.SUCCESS));
 
-		JSONArray languages = getJSON.getJSONArray(KEY_LANGUAGES);
-		Language language = new Language(languages.getJSONObject(0));
-		Word word = language.getWords().get(0);
+		List<Language> languages = wordsStorage.getUserWords(USER_ID);
+		assertEquals(2, languages.size());
 
-		assertTrue(getJSON.getBoolean(WebParams.SUCCESS));
-		assertEquals(1, languages.length());
+		Language language;
+		if(languages.get(0).getName().equals(LANGUAGE_NAME2))
+		{
+			language = languages.get(0);
+		}
+		else
+		{
+			language = languages.get(1);
+		}
+		Word word = language.getWords().get(0);
 		assertEquals(1, language.getWords().size());
 		assertEquals(WORD_ORIG, word.getOriginal());
 		assertEquals(WORD_TRAN, word.getTranslation());
 		assertEquals(WORD_RATING, word.getRating());
 		assertEquals(WORD_MODIFIED, word.getModified());
 	}
-//
-//	@Test
-//	public void testEncoded() throws Exception
-//	{
-//		WebRequest req = new GetMethodWebRequest(getActionUrl() + WebActions.GET_WORDS);
-//		String response = getTextResource(wc, req);
-//		assertTrue(response.toLowerCase().contains("\\u043f\\u0435\\u0440\\u0432\\u044b\\u0439"));
-//	}
-//
-//	@Test
-//	public void testGetWords() throws Exception
-//	{
-//		WebRequest req = new GetMethodWebRequest(getActionUrl() + WebActions.GET_WORDS);
-//		JSONObject jsonObject = getJSONResource(wc, req);
-//		JSONArray languages = jsonObject.getJSONArray(KEY_LANGUAGES);
-//		Language language = new Language(languages.getJSONObject(0));
-//		Word word = language.getWords().get(0);
-//
-//		assertTrue(jsonObject.getBoolean(WebParams.SUCCESS));
-//		assertEquals(1, languages.length());
-//		assertEquals(1, language.getWords().size());
-//		assertEquals(WORD_ORIG, word.getOriginal());
-//		assertEquals(WORD_TRAN, word.getTranslation());
-//		assertEquals(WORD_RATING, word.getRating());
-//		assertEquals(WORD_MODIFIED, word.getModified());
-//	}
+
+	@Test
+	public void testAddNewWordExistedLanguage() throws Exception
+	{
+		System.out.println("test2");
+		WebRequest addReq = new GetMethodWebRequest(getActionUrl() + WebActions.ADD_WORDS);
+		String param = "{\"languages\":[{\"id\":\"" + LANGUAGE_ID +
+				"\",\"name\":\"" + LANGUAGE_NAME + "\",\"words\":" +
+				"[{\"original\":\"" + WORD_ORIG2 +
+				"\",\"translation\":\"" + WORD_TRAN2 +
+				"\",\"rating\":" + WORD_RATING2 +
+				",\"modified\":" + WORD_MODIFIED2 + "}]}]}";
+		addReq.setParameter(WebParams.DATA, JavaString.encode(param));
+		JSONObject addJSON = getJSONResource(wc, addReq);
+		assertTrue(addJSON.getBoolean(WebParams.SUCCESS));
+
+		System.out.println("check2");
+
+		List<Language> languages = wordsStorage.getUserWords(USER_ID);
+		assertEquals(1, languages.size());
+
+		Language language = languages.get(0);
+		Word word = language.getWords().get(0).getOriginal().equals(WORD_ORIG2)
+					? language.getWords().get(0)
+					: language.getWords().get(1);
+		assertEquals(2, language.getWords().size());
+		assertEquals(WORD_ORIG2, word.getOriginal());
+		assertEquals(WORD_TRAN2, word.getTranslation());
+		assertEquals(WORD_RATING2, word.getRating());
+		assertEquals(WORD_MODIFIED2, word.getModified());
+	}
 }

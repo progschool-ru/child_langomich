@@ -41,7 +41,7 @@ public class WordsFileStorage extends WordsStorage
 		return success;
 	}
 
-        @Override
+	@Override
 	public boolean addUserWords (String userId, List<Language> languages)
 	{
 		boolean result = super.addUserWords(userId, languages);
@@ -61,15 +61,15 @@ public class WordsFileStorage extends WordsStorage
 	{
 		File file = new File(realPath+"/"+userId+".dat");
 
-		if(!file.exists())
-		{
-			List<Language> languages = new ArrayList<Language>();
-			super.setUserWords(userId, languages);
-		}
-		else if(lastModified < file.lastModified())
-		{
+//		if(!file.exists())
+//		{
+//			List<Language> languages = new ArrayList<Language>();
+//			super.setUserWords(userId, languages);
+//		}
+//		else if(lastModified < file.lastModified())
+//		{
 			readFile(userId);
-		}
+//		}
 	}
 
 	private void readFile(String userId)
@@ -85,26 +85,29 @@ public class WordsFileStorage extends WordsStorage
 			File file = new File(realPath+"/"+userId+".dat");
 			lastModified = file.lastModified();
 		}
-		catch(IOException ioe){}
-		catch(JSONException e){}
-		catch(WordsException e){}
+		catch(Exception e)
+		{
+			log("WordsFileStorage.readFile problems: " + e.getMessage());
+			List<Language> languages = new ArrayList<Language>();
+			super.setUserWords(userId, languages);
+		}
 	}
 
 	private void SaveLanguages(String userId, List<Language> languages)  throws IOException
 	{
 		BufferedWriter bw = new BufferedWriter(new FileWriter(realPath+"/"+userId+".dat"));
-                try
-                {
-                    JSONObject object = new JSONObject();
-                    object.put("languages", languages);
-                
-                    bw.write(object.toString());
-                }
-                catch (JSONException ex)
-				{
-					log("saveLanguages: JSON error; " + ex.getMessage());
-				}
-                bw.close();
+		try
+		{
+			JSONObject object = new JSONObject();
+			object.put("languages", languages);
+
+			bw.write(object.toString());
+		}
+		catch (JSONException ex)
+		{
+			log("saveLanguages: JSON error; " + ex.getMessage());
+		}
+		bw.close();
 	}
 	private List<Language> parseJSON (JSONArray json) throws WordsException
 	{

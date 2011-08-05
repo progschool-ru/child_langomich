@@ -4,6 +4,7 @@ import java.util.ResourceBundle;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
 import org.smdserver.users.UsersDBStorage;
+import org.smdserver.words.IWordsStorage;
 
 class TestDBStorageHelper implements ITestStorageHelper
 {
@@ -30,8 +31,8 @@ class TestDBStorageHelper implements ITestStorageHelper
 		db.close();
 	}
 
-	public void openWordsStorage(ResourceBundle resource, String userId)
-	{}
+	public IWordsStorage openWordsStorage(ResourceBundle resource, String userId)
+	{return null;}
 	public void closeWordsStorage(ResourceBundle resource, String userId)
 	{}
 }
