@@ -15,11 +15,12 @@ public class WordsDBStorage implements IWordsStorage
 	private static final String LANGUAGES_TABLE = "languages";
 	private static final String WORDS_TABLE = "words";
 
-	private static String ADD_LANGUAGE_QUERY = "INSERT INTO %1$s (language_id, name, user_id, time_created, time_modified) VALUE (\"%2$s\", \"%3$s\", \"%4$s\", NOW(), NOW());";
-	private static String ADD_WORD_QUERY = "INSERT INTO %1$s (word_id, language_id, original, translation, rating, modified, time_created, time_modified) VALUE (\"%2$s\", \"%3$s\", \"%4$s\", \"%5$s\", %6$d, %7$d, NOW(), NOW());";
-	private static String UPDATE_WORD_QUERY = "UPDATE %1$s SET original=\"%3$s\", translation=\"%4$s\", rating=%5$d, modified=%5$d, time_modified=NOW() WHERE word_id=\"%2$s\";";
-	private static String GET_ALL_WORDS = "SELECT * FROM %1$s as l, %2$s as w, WHERE l.language_id = w.language_id AND l.user_id=\"%3$s\";";
-	private static String GET_LATEST_WORDS = "SELECT * FROM %1$s as l, %2$s as w, WHERE l.language_id = w.language_id AND l.user_id=\"%3$s\" AND w.modified > %4$d;";
+	private static final String ADD_LANGUAGE_QUERY = "INSERT INTO %1$s (language_id, name, user_id, time_created, time_modified) VALUE (\"%2$s\", \"%3$s\", \"%4$s\", NOW(), NOW());";
+	private static final String ADD_WORD_QUERY = "INSERT INTO %1$s (word_id, language_id, original, translation, rating, modified, time_created, time_modified) VALUE (\"%2$s\", \"%3$s\", \"%4$s\", \"%5$s\", %6$d, %7$d, NOW(), NOW());";
+	private static final String UPDATE_WORD_QUERY = "UPDATE %1$s SET original=\"%3$s\", translation=\"%4$s\", rating=%5$d, modified=%5$d, time_modified=NOW() WHERE word_id=\"%2$s\";";
+	private static final String GET_ALL_WORDS = "SELECT * FROM %1$s as w, %2$s as l WHERE l.language_id = w.language_id AND l.user_id=\"%3$s\";";
+	private static final String GET_LATEST_WORDS = "SELECT * FROM %1$s as w, %2$s as l WHERE l.language_id = w.language_id AND l.user_id=\"%3$s\" AND w.modified > %4$d;";
+	private static final String CLEAR_LANGUAGES = "DELETE FROM %1$s WHERE user_id = \"%2$s\";";
 
 	private ISmdDB db;
 	private String languagesTable;
@@ -54,9 +55,44 @@ public class WordsDBStorage implements IWordsStorage
 		return getWords(query);
 	}
 
-	public void setUserWords(String userId, List<Language> languages)
+	public boolean setUserWords(String userId, List<Language> languages)
 	{
-		setWords(userId, languages, UPDATE_WORD_QUERY, null);
+		List<String> queries = new ArrayList<String>();
+
+		String clearLanguage = String.format(CLEAR_LANGUAGES, languagesTable,
+											userId);
+		queries.add(clearLanguage);
+
+		for(Language language : languages)
+		{
+			
+			String languageQuery = String.format(ADD_LANGUAGE_QUERY, languagesTable,
+											language.getId(), language.getName(),
+											userId);
+			queries.add(languageQuery);
+
+			List<Word> words = language.getWords();
+			for(Word word : words)
+			{
+				String wordQuery = String.format(ADD_WORD_QUERY, wordsTable,
+											word.getId(), language.getId(),
+											word.getOriginal(),
+											word.getTranslation(),
+											word.getRating(),
+											word.getModified());
+				queries.add(wordQuery);
+			}
+		}
+
+		try
+		{
+			int count = db.updateGroup(queries);
+			return count >= 0;
+		}
+		catch(DbException e)
+		{
+			return false;
+		}
 	}
 
 	private List<Language> getWords(String query)
@@ -120,6 +156,8 @@ public class WordsDBStorage implements IWordsStorage
 		public int parse(ResultSet set) throws SQLException
 		{
 			Map<String, Language> langs = new HashMap<String, Language>();
+			languages = new ArrayList<Language>();
+			
 			int count = 0;
 			while(set.next())
 			{
@@ -143,6 +181,7 @@ public class WordsDBStorage implements IWordsStorage
 			{
 				Language language = new Language(languageId, set.getString("l.name"));
 				langs.put(languageId, language);
+				languages.add(language);
 				return language;
 			}
 		}

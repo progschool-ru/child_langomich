@@ -19,7 +19,6 @@ public class UsersDBStorageTest
 
 	private static final String DELETE_QUERY = "DELETE FROM smd_users;";
 
-//	Connection connection;
 	ISmdDB db;
 	ResourceBundle rb;
 	private UsersDBStorage instance;
@@ -42,7 +41,6 @@ public class UsersDBStorageTest
     @After
     public void tearDown () throws Exception
 	{
-//		connection.close();
 		db.close();
 
 		String url = rb.getString("db.url");

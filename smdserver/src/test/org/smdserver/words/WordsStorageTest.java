@@ -39,8 +39,6 @@ public class WordsStorageTest
 	@Test
 	public void testSetUserWords ()
 	{
-		System.out.println("setUserWords");
-
 		List<Language> languages = new ArrayList<Language>();
 		languages.add(new Language("frId", "fr"));
 
@@ -62,8 +60,6 @@ public class WordsStorageTest
 	@Test
 	public void testGetUserWords ()
 	{
-		System.out.println("getUserWords");
-
 		List<Language> first = storage.getUserWords("1");
 		List<Language> second = storage.getUserWords("2");
 		assertEquals("Languages in '1's list", 2, first.size());

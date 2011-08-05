@@ -1,6 +1,6 @@
 CREATE TABLE smd_users
 (
-	user_id VARCHAR (36) UNIQUE NOT NULL,
+	user_id VARCHAR (36) NOT NULL,
 	login VARCHAR (80) UNIQUE NOT NULL,
 	psw VARCHAR (32) NOT NULL,
 	is_blocked BOOLEAN NOT NULL DEFAULT '1',
@@ -12,7 +12,7 @@ CREATE TABLE smd_users
 
 CREATE TABLE smd_languages
 (
-	language_id VARCHAR (36) UNIQUE NOT NULL,
+	language_id VARCHAR (36) NOT NULL,
 	name VARCHAR (80) NOT NULL,
 	user_id VARCHAR(36) NOT NULL,
 	time_created DATETIME NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE smd_languages
 
 CREATE TABLE smd_words
 (
-	word_id VARCHAR (36) UNIQUE NOT NULL,
+	word_id VARCHAR (36) NOT NULL,
 	language_id VARCHAR (36) NOT NULL,
 	original VARCHAR (80) NOT NULL,
 	translation VARCHAR(80) NOT NULL,

@@ -62,9 +62,10 @@ public class WordsStorage implements IWordsStorage
 		}
 		return true;
 	}
-	public void setUserWords (String userId, List<Language> languages)
+	public boolean setUserWords (String userId, List<Language> languages)
 	{
 		usersWords.put(userId, languages);
+		return true;
 	}
 	protected void checkUpdated(String userId)
 	{

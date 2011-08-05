@@ -34,8 +34,8 @@ public class SmdActionsFactoryTest
 	 * Test of registerMap method, of class SmdActionsFactory.
 	 */
 	@Test
-	public void testRegisterMap() {
-		System.out.println("registerMap");
+	public void testRegisterMap()
+	{
 		Map<String, Class> map = new HashMap<String, Class>();
 		map.put("first", OtherAction.class);
 		map.put("second", AnotherAction.class);
