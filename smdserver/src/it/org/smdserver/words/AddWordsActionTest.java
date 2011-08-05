@@ -124,7 +124,6 @@ public class AddWordsActionTest extends UsersTestBase
 	@Test
 	public void testAddNewWordExistedLanguage() throws Exception
 	{
-		System.out.println("test2");
 		WebRequest addReq = new GetMethodWebRequest(getActionUrl() + WebActions.ADD_WORDS);
 		String param = "{\"languages\":[{\"id\":\"" + LANGUAGE_ID +
 				"\",\"name\":\"" + LANGUAGE_NAME + "\",\"words\":" +
@@ -135,8 +134,6 @@ public class AddWordsActionTest extends UsersTestBase
 		addReq.setParameter(WebParams.DATA, JavaString.encode(param));
 		JSONObject addJSON = getJSONResource(wc, addReq);
 		assertTrue(addJSON.getBoolean(WebParams.SUCCESS));
-
-		System.out.println("check2");
 
 		List<Language> languages = wordsStorage.getUserWords(USER_ID);
 		assertEquals(1, languages.size());
@@ -150,5 +147,72 @@ public class AddWordsActionTest extends UsersTestBase
 		assertEquals(WORD_TRAN2, word.getTranslation());
 		assertEquals(WORD_RATING2, word.getRating());
 		assertEquals(WORD_MODIFIED2, word.getModified());
+	}
+
+	@Test
+	public void testModifyWord() throws Exception
+	{
+		WebRequest addReq = new GetMethodWebRequest(getActionUrl() + WebActions.ADD_WORDS);
+		String param = "{\"languages\":[{\"id\":\"" + LANGUAGE_ID +
+				"\",\"name\":\"" + LANGUAGE_NAME + "\",\"words\":" +
+				"[{\"original\":\"" + WORD_ORIG +
+				"\",\"translation\":\"" + WORD_TRAN2 +
+				"\",\"rating\":" + WORD_RATING2 +
+				",\"modified\":" + WORD_MODIFIED2 + "}]}]}";
+		addReq.setParameter(WebParams.DATA, JavaString.encode(param));
+		JSONObject addJSON = getJSONResource(wc, addReq);
+		assertTrue(addJSON.getBoolean(WebParams.SUCCESS));
+
+		List<Language> languages = wordsStorage.getUserWords(USER_ID);
+		assertEquals(1, languages.size());
+
+		Language language = languages.get(0);
+		Word word = language.getWords().get(0);
+		assertEquals(1, language.getWords().size());
+		assertEquals(WORD_ORIG, word.getOriginal());
+		assertEquals(WORD_TRAN2, word.getTranslation());
+		assertEquals(WORD_RATING2, word.getRating());
+		assertEquals(WORD_MODIFIED2, word.getModified());
+	}
+
+	@Test
+	public void testModifyAndAdd() throws Exception
+	{
+		WebRequest addReq = new GetMethodWebRequest(getActionUrl() + WebActions.ADD_WORDS);
+		String param = "{\"languages\":[{\"id\":\"" + LANGUAGE_ID +
+				"\",\"name\":\"" + LANGUAGE_NAME + "\",\"words\":" +
+				"[{\"original\":\"" + WORD_ORIG2 +
+				"\",\"translation\":\"" + WORD_TRAN2 +
+				"\",\"rating\":" + WORD_RATING2 +
+				",\"modified\":" + WORD_MODIFIED2 + "}," +
+				"{\"original\":\"" + WORD_ORIG +
+				"\",\"translation\":\"" + WORD_TRAN2 +
+				"\",\"rating\":" + WORD_RATING +
+				",\"modified\":" + WORD_MODIFIED2 + "}]}]}";
+		addReq.setParameter(WebParams.DATA, JavaString.encode(param));
+		JSONObject addJSON = getJSONResource(wc, addReq);
+		assertTrue(addJSON.getBoolean(WebParams.SUCCESS));
+
+		List<Language> languages = wordsStorage.getUserWords(USER_ID);
+		assertEquals(1, languages.size());
+
+		Language language = languages.get(0);
+		Word wordModified = language.getWords().get(0).getOriginal().equals(WORD_ORIG)
+					? language.getWords().get(0)
+					: language.getWords().get(1);
+		assertEquals(2, language.getWords().size());
+		assertEquals(WORD_ORIG, wordModified.getOriginal());
+		assertEquals(WORD_TRAN2, wordModified.getTranslation());
+		assertEquals(WORD_RATING, wordModified.getRating());
+		assertEquals(WORD_MODIFIED2, wordModified.getModified());
+
+		Word wordAdded = language.getWords().get(0).getOriginal().equals(WORD_ORIG2)
+					? language.getWords().get(0)
+					: language.getWords().get(1);
+		assertEquals(2, language.getWords().size());
+		assertEquals(WORD_ORIG2, wordAdded.getOriginal());
+		assertEquals(WORD_TRAN2, wordAdded.getTranslation());
+		assertEquals(WORD_RATING2, wordAdded.getRating());
+		assertEquals(WORD_MODIFIED2, wordAdded.getModified());
 	}
 }

@@ -7,7 +7,7 @@ import org.smdserver.users.UsersFileStorage;
 import org.smdserver.words.IWordsStorage;
 import org.smdserver.words.WordsFileStorage;
 
-public class TestFileStorageHelper implements ITestStorageHelper
+class TestFileStorageHelper implements ITestStorageHelper
 {
 	private UsersFileStorage usersStorage;
 	private String login;
