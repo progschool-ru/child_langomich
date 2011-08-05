@@ -1,4 +1,4 @@
-package org.smdserver.auth;
+package org.smdserver.core;
 
 import java.util.ResourceBundle;
 

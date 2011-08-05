@@ -1,4 +1,4 @@
-package org.smdserver.auth;
+package org.smdserver.core;
 
 import com.ccg.util.JavaString;
 import com.meterware.httpunit.WebConversation;

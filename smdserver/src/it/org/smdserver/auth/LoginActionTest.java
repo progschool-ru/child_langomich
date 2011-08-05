@@ -1,5 +1,8 @@
 package org.smdserver.auth;
 
+import org.smdserver.core.WebParams;
+import org.smdserver.core.WebActions;
+import org.smdserver.core.UsersTestBase;
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebRequest;

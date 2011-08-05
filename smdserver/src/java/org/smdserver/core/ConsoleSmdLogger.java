@@ -1,9 +1,21 @@
 package org.smdserver.core;
 
+import java.io.PrintStream;
+
 public class ConsoleSmdLogger implements ISmdLogger
 {
+	private PrintStream stream;
+
+	public ConsoleSmdLogger(PrintStream stream)
+	{
+		this.stream = stream;
+	}
+	
 	public void log (String message)
 	{
-		System.out.println(message);
+		if(stream != null)
+		{
+			stream.println(message);
+		}
 	}
 }

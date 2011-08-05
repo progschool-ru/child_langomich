@@ -1,4 +1,5 @@
-package org.smdserver.auth;
+package org.smdserver.words;
+import org.smdserver.core.UsersTestBase;
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebRequest;
@@ -12,6 +13,8 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.smdserver.core.WebActions;
+import org.smdserver.core.WebParams;
 import org.smdserver.core.ConsoleSmdLogger;
 import org.smdserver.words.Language;
 import org.smdserver.words.Word;
@@ -43,8 +46,8 @@ public class GetWordsActionTest extends UsersTestBase
 		file = new File(getResource().getString("test.server.path") + 
 				             getResource().getString("path.words.storageDir") +
 							 USER_ID + ".dat");
-		wordsStorage = new WordsFileStorage(file.getParentFile().getAbsolutePath());
-		wordsStorage.setLogger(new ConsoleSmdLogger());
+		wordsStorage = new WordsFileStorage(file.getParentFile().getAbsolutePath(),
+											new ConsoleSmdLogger(System.out));
 
 		Word word = new Word(WORD_ID, WORD_ORIG, WORD_TRAN, WORD_RATING, WORD_MODIFIED);
 		Language language = new Language(LANGUAGE_ID, LANGUAGE_NAME, word);

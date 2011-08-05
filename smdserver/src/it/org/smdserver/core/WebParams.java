@@ -1,4 +1,4 @@
-package org.smdserver.auth;
+package org.smdserver.core;
 
 public class WebParams
 {

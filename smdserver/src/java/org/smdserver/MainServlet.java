@@ -13,6 +13,8 @@ import org.smdserver.auth.MobileLoginAction;
 import org.smdserver.auth.LogoutAction;
 import org.smdserver.auth.SetPasswordAction;
 import org.smdserver.auth.RegistrAction;
+import org.smdserver.core.ComplexSmdLogger;
+import org.smdserver.core.ISmdLogger;
 import org.smdserver.core.SmdActionsFactory;
 import org.smdserver.db.DbException;
 import org.smdserver.db.ISmdDB;
@@ -24,12 +26,15 @@ import org.smdserver.users.UsersFileStorage;
 import org.smdserver.words.GetWordsAction;
 import org.smdserver.words.WordsFileStorage;
 import org.smdserver.words.AddWordsAction;
+import org.smdserver.words.IWordsStorage;
+import org.smdserver.words.WordsDBStorage;
 
 public class MainServlet extends SmdServlet
 {
 	private static final String CONFIG_PARAM = "config";
 	private static final String USERS_STORAGE_PATH_KEY = "path.users.storage";
 	private static final String WORDS_STORAGE_PATH_KEY = "path.words.storageDir";
+	private static final String SERVER_PROPERTIES_FILE_KEY = "server.properties.file";
 	private static final String DEFAULT_ACTION = "default";
 
 	private String configResource;
@@ -69,34 +74,79 @@ public class MainServlet extends SmdServlet
 	{
 		configResource = getServletContext().getInitParameter(CONFIG_PARAM);
 		SmdUrl.initRB(ResourceBundle.getBundle(configResource));
-		ResourceBundle rb = ResourceBundle.getBundle(configResource);
+		ResourceBundle rb = ResourceBundle.getBundle(configResource);	
 
-		String wordsPath = rb.getString(WORDS_STORAGE_PATH_KEY);
+		ISmdLogger logger = new ComplexSmdLogger(getServletContext(), null);
 
-//		String usersPath = rb.getString(USERS_STORAGE_PATH_KEY);
-//		IUsersStorage usersStorage =  new UsersFileStorage(getServletContext().getRealPath(usersPath));
-		IUsersStorage usersStorage = createUsersStorage(rb);
+		IWordsStorage wordsStorage = createWordsFileStorage(rb, logger);
+//		IWordsStorage wordsStorage = createWordsStorage(rb, logger);
 
-		WordsFileStorage wordsStorage = new WordsFileStorage(getServletContext().getRealPath(wordsPath));
-		ISmdServletContext context = new SmdServletContext(usersStorage, wordsStorage, getServletContext());
-
-		wordsStorage.setLogger(context);
+//		IUsersStorage usersStorage =  createUsersFileStorage(rb, logger);
+		IUsersStorage usersStorage = createUsersStorage(rb, logger);
+		
+		ISmdServletContext context = new SmdServletContext(usersStorage, wordsStorage, logger);
 
 		return new SmdActionsFactory(context);
 	}
 
-	private IUsersStorage createUsersStorage(ResourceBundle res)
+	private IWordsStorage createWordsFileStorage(ResourceBundle res, ISmdLogger logger)
 	{
-		String serverConfig = res.getString("server.properties.file");
-		ResourceBundle rb = ResourceBundle.getBundle(serverConfig);
-		try
+		String wordsPath = res.getString(WORDS_STORAGE_PATH_KEY);
+		return new WordsFileStorage(getServletContext().getRealPath(wordsPath), logger);
+	}
+
+	private IWordsStorage createWordsStorage(ResourceBundle res, ISmdLogger logger)
+	{
+		String prefix = initDBAndGetPrefix(res, logger);
+
+		if(db != null)
 		{
-			db = new SmdDB(rb);
-			return new UsersDBStorage(db);
+			return new WordsDBStorage(db, prefix);
 		}
-		catch (DbException e)
+		else
 		{
 			return null;
 		}
+	}
+
+	private IUsersStorage createUsersFileStorage(ResourceBundle res, ISmdLogger logger)
+	{
+		String usersPath = res.getString(USERS_STORAGE_PATH_KEY);
+		return  new UsersFileStorage(getServletContext().getRealPath(usersPath));
+	}
+
+	private IUsersStorage createUsersStorage(ResourceBundle res, ISmdLogger logger)
+	{
+		initDBAndGetPrefix(res, logger);
+
+		if(db != null)
+		{
+			return new UsersDBStorage(db);
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	private String initDBAndGetPrefix(ResourceBundle res, ISmdLogger logger)
+	{
+		String serverConfig = res.getString(SERVER_PROPERTIES_FILE_KEY);
+		ResourceBundle rb = ResourceBundle.getBundle(serverConfig);
+		String prefix = rb.getString("db.tablesPrefix");
+
+		if(db == null)
+		{	
+			try
+			{
+				db = new SmdDB(rb);
+			}
+			catch (DbException e)
+			{
+				logger.log(e.getMessage());
+			}
+		}
+
+		return prefix;
 	}
 }

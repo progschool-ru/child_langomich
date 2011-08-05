@@ -19,14 +19,10 @@ public class WordsFileStorage extends WordsStorage
 	private long  lastModified;
 	private ISmdLogger logger;
 
-	public WordsFileStorage (String realPath)
+	public WordsFileStorage (String realPath, ISmdLogger logger)
 	{
 		super();
 		this.realPath = realPath;
-	}
-
-	public void setLogger(ISmdLogger logger)
-	{
 		this.logger = logger;
 	}
 

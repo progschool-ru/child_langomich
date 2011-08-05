@@ -1,6 +1,5 @@
 package org.smdserver.core;
 
-import javax.servlet.ServletContext;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.words.IWordsStorage;
 
@@ -8,15 +7,15 @@ public class SmdServletContext implements ISmdServletContext
 {
 	private IUsersStorage usersStorage;
 	private IWordsStorage wordsStorage;
-	private ServletContext servletContext;
+	private ISmdLogger logger;
 
 	public SmdServletContext (IUsersStorage usersStorage, 
 								IWordsStorage wordsStorage,
-								ServletContext servletContext)
+								ISmdLogger logger)
 	{
 		this.usersStorage = usersStorage;
 		this.wordsStorage = wordsStorage;
-		this.servletContext = servletContext;
+		this.logger = logger;
 	}
 
 	public IUsersStorage getUsersStorage ()
@@ -29,8 +28,16 @@ public class SmdServletContext implements ISmdServletContext
 		return wordsStorage;
 	}
 
+	public ISmdLogger getLogger()
+	{
+		return logger;
+	}
+
 	public void log (String message)
 	{
-		servletContext.log(message);
+		if(logger != null)
+		{
+			logger.log(message);
+		}
 	}
 }
