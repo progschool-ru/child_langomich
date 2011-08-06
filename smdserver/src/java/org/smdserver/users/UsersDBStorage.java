@@ -3,6 +3,7 @@ package org.smdserver.users;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.smdserver.db.DbException;
+import org.smdserver.db.FirstArgParser;
 import org.smdserver.db.IResultParser;
 import org.smdserver.db.ISmdDB;
 
@@ -57,7 +58,7 @@ public class UsersDBStorage implements IUsersStorage
 			return false;
 		}
 
-		return parser.value != null;
+		return parser.getValue() != null;
 	}
 
 	public boolean doesLoginExist (String dirtyLogin) throws DbException
@@ -111,7 +112,7 @@ public class UsersDBStorage implements IUsersStorage
 		{
 			return null;
 		}
-		return (String)parser.value;
+		return (String)parser.getValue();
 	}
 
 	public boolean removeUserById (String dbUserId)
@@ -135,18 +136,7 @@ public class UsersDBStorage implements IUsersStorage
 	{
 		FirstArgParser parser = new FirstArgParser();
 		db.selectSingle(String.format(GET_USER_BY_LOGIN_QUERY, dbLogin),parser);
-		return parser.value != null;
-	}
-
-	private class FirstArgParser implements IResultParser
-	{
-		Object value;
-
-		public boolean parse(ResultSet set) throws SQLException
-		{
-			value = set.getObject(1);
-			return true;
-		}
+		return parser.getValue() != null;
 	}
 
 	private class UserParser implements IResultParser

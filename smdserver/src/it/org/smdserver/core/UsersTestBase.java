@@ -22,7 +22,7 @@ public class UsersTestBase
 
 	private static ResourceBundle resource;
 	
-	private static ITestStorageHelper fileStorageHelper = new TestFileStorageHelper();
+//	private static ITestStorageHelper fileStorageHelper = new TestFileStorageHelper();
 	private static ITestStorageHelper storageHelper = new TestDBStorageHelper();
 
 	protected static void setUpClass() throws Exception
@@ -38,7 +38,7 @@ public class UsersTestBase
 
 	protected static ITestStorageHelper getTestStorageHelper()
 	{
-		return fileStorageHelper;
+		return storageHelper;
 	}
 
 	protected static String getActionUrl()

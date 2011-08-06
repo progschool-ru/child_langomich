@@ -18,12 +18,12 @@ CREATE TABLE smd_languages
 	time_created DATETIME NOT NULL,
 	time_modified DATETIME NOT NULL,
 	PRIMARY KEY (language_id),
-	FOREIGN KEY (user_id) REFERENCES smd_users(user_id) ON DELETE CASCADE
+	FOREIGN KEY (user_id) REFERENCES smd_users(user_id) ON DELETE CASCADE,
+	UNIQUE (name, user_id)
 )  ENGINE = InnoDB CHARACTER SET = utf8;
 
 CREATE TABLE smd_words
 (
-	word_id VARCHAR (36) NOT NULL,
 	language_id VARCHAR (36) NOT NULL,
 	original VARCHAR (80) NOT NULL,
 	translation VARCHAR(80) NOT NULL,
@@ -31,7 +31,6 @@ CREATE TABLE smd_words
 	modified BIGINT NOT NULL,
 	time_created DATETIME NOT NULL,
 	time_modified DATETIME NOT NULL,
-	PRIMARY KEY (word_id),
-	FOREIGN KEY (language_id) REFERENCES smd_languages(language_id) ON DELETE CASCADE,
-	UNIQUE (language_id, original)
+	PRIMARY KEY (language_id, original),
+	FOREIGN KEY (language_id) REFERENCES smd_languages(language_id) ON DELETE CASCADE
 )  ENGINE = InnoDB CHARACTER SET = utf8;

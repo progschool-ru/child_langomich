@@ -31,11 +31,7 @@ Smd.Server = {
 				success : function(event, textStatus, response){
 					var preparing = this.api.unescapeFromJavaString(response.responseText.trim());
 					this._words = JSON.parse(preparing);
-					this._languages = [];
-					for(var i in this._words.languages)
-					{
-						this._languages.push(this._words.languages[i].name);
-					}
+					this._languages = this._words.languages;
 				}
 			});
 	},

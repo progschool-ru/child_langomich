@@ -24,12 +24,10 @@ public class AddWordsActionTest extends UsersTestBase
 	private static final String LANGUAGE_NAME = "en";
 //	private static final String LANGUAGE_ID2 = "frId";
 	private static final String LANGUAGE_NAME2 = "fr";
-	private static final String WORD_ID = "firstUUID";
 	private static final String WORD_ORIG = "первый";
 	private static final String WORD_TRAN = "first";
 	private static final int    WORD_RATING = 1;
 	private static final long   WORD_MODIFIED = 3000;
-	private static final String WORD_ID2 = "secondUUID";
 	private static final String WORD_ORIG2 = "второй";
 	private static final String WORD_TRAN2 = "second";
 	private static final int    WORD_RATING2 = 2;
@@ -60,11 +58,11 @@ public class AddWordsActionTest extends UsersTestBase
 	{
 		wordsStorage = getTestStorageHelper().openWordsStorage(getResource(), USER_ID);
 
-		Word word = new Word(WORD_ID, WORD_ORIG, WORD_TRAN, WORD_RATING, WORD_MODIFIED);
+		Word word = new Word(WORD_ORIG, WORD_TRAN, WORD_RATING, WORD_MODIFIED);
 		Language language = new Language(LANGUAGE_ID, LANGUAGE_NAME, word);
 		List<Language> languages = new ArrayList<Language>();
 		languages.add(language);
-		wordsStorage.addUserWords(USER_ID, languages);
+		wordsStorage.setUserWords(USER_ID, languages);
 
 		wc = new WebConversation();
 

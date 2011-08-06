@@ -41,12 +41,12 @@ public class WordsDBStorageTest
 		storage = new WordsDBStorage(db, prefix);
 		List<Language> list = new ArrayList<Language>();
 
-		list.add(new Language("enId1", "en", new Word("enId1_1", "first", "первый", 1, 1)));
-		list.add(new Language("frId1", "fr", new Word("frId1_1", "first", "первый", 1, 1)));
+		list.add(new Language("enId1", "en", new Word("first", "первый", 1, 1)));
+		list.add(new Language("frId1", "fr", new Word("first", "первый", 1, 1)));
 		assertTrue(storage.setUserWords("1", list));
 
 		list = new ArrayList<Language>();
-		list.add(new Language("esId", "es", new Word("esId2_1", "first", "первый", 1, 1)));
+		list.add(new Language("esId", "es", new Word("first", "первый", 1, 1)));
 		storage.setUserWords("2", list);
 	}
 
@@ -71,7 +71,7 @@ public class WordsDBStorageTest
 	public void testSetUserWords ()
 	{
 		List<Language> languages = new ArrayList<Language>();
-		languages.add(new Language("frId3", "fr", new Word("frId3_1", "first", "первый", 1, 1)));
+		languages.add(new Language("frId3", "fr", new Word("first", "первый", 1, 1)));
 
 		storage.setUserWords("3", languages);
 

@@ -24,7 +24,6 @@ public class GetWordsActionTest extends UsersTestBase
 {
 	private static final String LANGUAGE_ID = "someOtherUUID";
 	private static final String LANGUAGE_NAME = "en";
-	private static final String WORD_ID = "someUUID";
 	private static final String WORD_ORIG = "первый";
 	private static final String WORD_TRAN = "first";
 	private static final int    WORD_RATING = 1;
@@ -35,20 +34,16 @@ public class GetWordsActionTest extends UsersTestBase
 	private static final String KEY_WORDS     = "words";
 
 	private WebConversation wc;
-	private static WordsFileStorage wordsStorage;
-	private static File file;
+	private static IWordsStorage wordsStorage;
 
 	@BeforeClass
 	public static void setUpClass() throws Exception
 	{
 		UsersTestBase.setUpClass();
-		file = new File(getResource().getString("test.server.path") + 
-				             getResource().getString("path.words.storageDir") +
-							 USER_ID + ".dat");
-		wordsStorage = new WordsFileStorage(file.getParentFile().getAbsolutePath(),
-											new ConsoleSmdLogger(System.out));
 
-		Word word = new Word(WORD_ID, WORD_ORIG, WORD_TRAN, WORD_RATING, WORD_MODIFIED);
+		wordsStorage = getTestStorageHelper().openWordsStorage(getResource(), USER_ID);
+
+		Word word = new Word(WORD_ORIG, WORD_TRAN, WORD_RATING, WORD_MODIFIED);
 		Language language = new Language(LANGUAGE_ID, LANGUAGE_NAME, word);
 		List<Language> languages = new ArrayList<Language>();
 		languages.add(language);
@@ -59,8 +54,8 @@ public class GetWordsActionTest extends UsersTestBase
 	@AfterClass
 	public static void tearDownClass() throws Exception
 	{
+		getTestStorageHelper().closeWordsStorage(getResource(), USER_ID);
 		UsersTestBase.tearDownClass();
-		file.delete();
 		wordsStorage = null;
 	}
 

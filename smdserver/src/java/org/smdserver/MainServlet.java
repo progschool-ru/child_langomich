@@ -78,8 +78,8 @@ public class MainServlet extends SmdServlet
 
 		ISmdLogger logger = new ComplexSmdLogger(getServletContext(), System.out);
 
-		IWordsStorage wordsStorage = createWordsFileStorage(rb, logger);
-//		IWordsStorage wordsStorage = createWordsStorage(rb, logger);
+//		IWordsStorage wordsStorage = createWordsFileStorage(rb, logger);
+		IWordsStorage wordsStorage = createWordsStorage(rb, logger);
 
 //		IUsersStorage usersStorage =  createUsersFileStorage(rb, logger);
 		IUsersStorage usersStorage = createUsersStorage(rb, logger);

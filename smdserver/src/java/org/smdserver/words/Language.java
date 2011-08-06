@@ -30,6 +30,7 @@ public class Language
 	{
 		try
 		{
+			id = json.has("id") ? json.getString("id") : null;
 			name = json.getString("name");
 
 			JSONArray wordJSONS = json.getJSONArray("words");

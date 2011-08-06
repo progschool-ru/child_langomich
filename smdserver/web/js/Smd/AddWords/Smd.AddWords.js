@@ -64,12 +64,16 @@ Smd.AddWords = {
 		select.addClass(this.LANGUAGE_INPUT_CLASS);
 		var languages = this.serverModule.getLanguages();
 
+		this._languages = {};
 		for(var i in languages)
 		{
+			var name = languages[i].name;
+			var id = languages[i].id;
 			var option = this.$("<option/>");
-			option.attr("value", languages[i]);
-			option.append(languages[i]);
+			option.attr("value", id);
+			option.append(name);
 			select.append(option);
+			this._languages[id] = name;
 		}
 		comboboxS.append(select);
 
@@ -125,14 +129,16 @@ Smd.AddWords = {
 		var date = new Date().getTime();
 		var r = 0;
 
-		var l;
+		var languageName;
+		var languageId = null;
 		if(form.newLanguage.value!= "")
 		{
-			l = form.newLanguage.value;
+			languageName = form.newLanguage.value;
 		}
 		else
 		{
-			l = form.language.value;
+			languageId = form.language.value;
+			languageName = this._languages[languageId];
 		}
 
 		var words = [];
@@ -171,7 +177,8 @@ Smd.AddWords = {
 		
 		var data = {
 			languages:[{
-					name:l,
+					id: languageId,
+					name:languageName,
 					words:words
 				}]
 		};
