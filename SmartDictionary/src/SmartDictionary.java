@@ -1,6 +1,8 @@
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.*;
 
+//TODO: (2.medium) Стоит перенести все классы в пакет.
+// например в org.smdmobile или в org.smdme (от слова javame).
 public class SmartDictionary extends MIDlet implements CommandListener
 {
         private Text text = new Text();
@@ -36,7 +38,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 	public void startApp() 
 	{
              if(settings.getLanguage().equals("null"))
-                dictionary = new Dictionary();
+                dictionary = new Dictionary();//TODO: (2. Medium) Зачем это присваивание?
             dictionary = new Dictionary(settings.getLanguage());
 
             workFormInit();

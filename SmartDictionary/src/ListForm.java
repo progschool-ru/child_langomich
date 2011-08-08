@@ -9,7 +9,7 @@ public class ListForm extends myForm implements CommandListener
     private Command choice = new Command(text.CHOICE, Command.SCREEN, 1);
     private Command back = new Command(text.BACK, Command.EXIT, 0);
 
-    Dictionary dictionary = new Dictionary();
+    Dictionary dictionary;
 
     Canvas mainForm;
 
@@ -20,6 +20,7 @@ public class ListForm extends myForm implements CommandListener
         this.addCommand(back);
         this.addCommand(choice);
         this.setCommandListener(this);
+		this.dictionary = new Dictionary(new Settings().getLanguage());
     }
     public void commandAction(Command c, Displayable s)
     {
