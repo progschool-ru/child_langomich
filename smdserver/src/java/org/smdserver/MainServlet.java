@@ -20,6 +20,10 @@ import org.smdserver.db.DbException;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
 import org.smdserver.jsp.SmdUrl;
+import org.smdserver.maintenance.CreateDBAction;
+import org.smdserver.maintenance.DeployDBTablesAction;
+import org.smdserver.maintenance.DropDBAction;
+import org.smdserver.maintenance.DropDBTablesAction;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.users.UsersDBStorage;
 import org.smdserver.users.UsersFileStorage;
@@ -59,13 +63,19 @@ public class MainServlet extends SmdServlet
 		Map<String, Class> map = new HashMap<String, Class>();
 
 		map.put(DEFAULT_ACTION, NullAction.class);
-		map.put("setPassword", SetPasswordAction.class);
-		map.put("login", LoginAction.class);
-		map.put("mobileLogin", MobileLoginAction.class);
-		map.put("logout", LogoutAction.class);
-		map.put("getWords", GetWordsAction.class);
+
 		map.put("addWords", AddWordsAction.class);
+		map.put("getWords", GetWordsAction.class);
+		map.put("login", LoginAction.class);
+		map.put("logout", LogoutAction.class);
+		map.put("mobileLogin", MobileLoginAction.class);
 		map.put("registr", RegistrAction.class);
+		map.put("setPassword", SetPasswordAction.class);
+		
+		map.put("maintenanceCreateDB", CreateDBAction.class);
+		map.put("maintenanceDeployDBTables", DeployDBTablesAction.class);
+		map.put("maintenanceDropDB", DropDBAction.class);
+		map.put("maintenanceDropDBTables", DropDBTablesAction.class);
 
 		return map;
 	}
@@ -84,7 +94,10 @@ public class MainServlet extends SmdServlet
 //		IUsersStorage usersStorage =  createUsersFileStorage(rb, logger);
 		IUsersStorage usersStorage = createUsersStorage(rb, logger);
 		
-		ISmdServletContext context = new SmdServletContext(usersStorage, wordsStorage, logger);
+		ISmdServletContext context = new SmdServletContext(usersStorage, 
+				                                           wordsStorage, 
+				                                           configResource,
+				                                           logger);
 
 		return new SmdActionsFactory(context);
 	}

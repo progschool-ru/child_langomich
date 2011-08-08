@@ -8,5 +8,6 @@ public interface ISmdServletContext extends ISmdLogger
 	public IUsersStorage getUsersStorage ();
 	public IWordsStorage getWordsStorage ();
 	public ISmdLogger getLogger();
+	public String getConfigResourceName();
 	public void log (String message);
 }

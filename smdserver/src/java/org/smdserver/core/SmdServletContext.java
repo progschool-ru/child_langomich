@@ -8,14 +8,22 @@ public class SmdServletContext implements ISmdServletContext
 	private IUsersStorage usersStorage;
 	private IWordsStorage wordsStorage;
 	private ISmdLogger logger;
+	private String configResourceName;
 
 	public SmdServletContext (IUsersStorage usersStorage, 
 								IWordsStorage wordsStorage,
+								String configResourceName,
 								ISmdLogger logger)
 	{
 		this.usersStorage = usersStorage;
 		this.wordsStorage = wordsStorage;
+		this.configResourceName = configResourceName;
 		this.logger = logger;
+	}
+	
+	public String getConfigResourceName()
+	{
+		return configResourceName;
 	}
 
 	public IUsersStorage getUsersStorage ()
