@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public abstract class Records
 {
-        public final int SINGLE_RECORD = 1;
+        public static final int SINGLE_RECORD = 1;
 
         private ByteArrayOutputStream byteOutputStream;
         private DataOutputStream writer;
@@ -40,6 +40,28 @@ public abstract class Records
             str[0] = record;
             setRecord(str, id);
         }
+		
+	public String[] getFullRecord(int id, int columnsNumber)
+	{
+		String[] record = null;
+		if (getNumRecords() != 0)
+		{
+			record = new String[columnsNumber];
+			try
+			{
+				byte[] data = new byte[rs.getRecordSize(id)];
+				data = rs.getRecord(id);
+				byteInputStream = new ByteArrayInputStream(data);
+				reader = new DataInputStream(byteInputStream);
+				for(int j = 0; j < columnsNumber; j++)
+					record[j] = reader.readUTF();
+			}
+			catch(RecordStoreException e ){record = null;}
+			catch(IOException ioe){record = null;}
+		}
+		return record;
+	}
+
         public String getRecord(int id, int column)
 	{
             String record = null;
@@ -54,8 +76,8 @@ public abstract class Records
                     for(int j = 0; j < column; j++)
                         record = reader.readUTF();
                 }
-                catch(RecordStoreException e ){}
-                catch(IOException ioe){}
+                catch(RecordStoreException e ){ record = null;}
+                catch(IOException ioe){ record = null;}
             }
             return record;
         }
@@ -113,14 +135,17 @@ public abstract class Records
                         for(int j = 0; j < column; j++)
                             records[k] = reader.readUTF();
                     }
-                    catch(RecordStoreException e ){}
-                    catch(IOException ioe){}
+                    catch(RecordStoreException e ){records[k] = null;}
+                    catch(IOException ioe){records[k] = null;}
                 }
                 re.rebuild();
             }
             return records;
         }
-        public int getId(int row)
+        public int getId(int row)//TODO: (2.medium) Разобраться с индексами
+				//Массив getColumn выдаёт индексы от 0 до n-1, 
+				//а этот метод оперирует индесками от 1 до n. 
+				//Надо бы привести к единому знаменателю.
 	{
 		int id = 0;
 		for(int i = 0;i < row; i++ ) {
