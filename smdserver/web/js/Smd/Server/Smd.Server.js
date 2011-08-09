@@ -1,11 +1,13 @@
+Smd = window.Smd || {};
 Smd.Server = {
-	Module : function(api, params)
+	Module : function(api, params, dontLoadWords)
 	{
 		this.api = api;
 		this._servletPaths = params.servletPaths;
 		this._basePath = params.basePath;
 
-		this._loadWords(false);
+		if(!dontLoadWords)
+			this._loadWords(false);
 	},
 
 	getUrl : function(internalUrl)

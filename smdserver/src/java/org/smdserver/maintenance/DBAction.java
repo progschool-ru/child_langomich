@@ -18,7 +18,6 @@ public abstract class DBAction extends MaintenanceAction
 		boolean anyHost = "true".equals(request.getParameter(ActionParams.ANY_HOST));
 		String rootDBUser = request.getParameter(ActionParams.DB_USER);
 		String rootDBPassword = request.getParameter(ActionParams.DB_PASSWORD);
-		System.out.println("hi");
 				
 		String dbUrl = getServerRB().getString("db.url");
 		String user = getServerRB().getString("db.user");
