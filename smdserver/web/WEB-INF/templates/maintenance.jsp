@@ -1,9 +1,9 @@
 <%@page import="java.util.ResourceBundle"%>
 <%@page contentType="text/html"%>
 <%
-String configPath = getServletContext().getInitParameter("config");//TODO: (3.low) move "config" to some var or const;
+String configPath = getServletContext().getInitParameter("config");//TODO: (3.low)[#25721] move "config" to some var or const;
 ResourceBundle rb = ResourceBundle.getBundle(configPath);
-String serverConfigPath = rb.getString("server.properties.file");//TODO: (3.low) move "server.properties.file" to some var or const
+String serverConfigPath = rb.getString("server.properties.file");//TODO: (3.low)[#25721] move "server.properties.file" to some var or const
 ResourceBundle serverRB = ResourceBundle.getBundle(serverConfigPath);
 boolean isMaintenanceAllowed = "true".equals(serverRB.getString("maintenance.allowed"));
 

@@ -59,7 +59,7 @@ public class WordsDBStorage implements IWordsStorage
 				{
 					if(languageId == null)
 					{
-						languageId = UUID.randomUUID().toString();//TODO: (3.low) use common util for creation Ids.
+						languageId = UUID.randomUUID().toString();//TODO: (3.low)[#26069] use common util for creation Ids.
 					}
 					String languageQuery = String.format(ADD_LANGUAGE_QUERY, languagesTable,
 												languageId, language.getName(),

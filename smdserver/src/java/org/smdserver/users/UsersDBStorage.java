@@ -9,7 +9,7 @@ import org.smdserver.db.ISmdDB;
 
 public class UsersDBStorage implements IUsersStorage
 {
-	//TODO: (1. high) get this value from configs
+	//TODO: (1. high) [#26066] get this value from configs
 	public static final String USERS_DB = "smd_users";
 
 	private static final String CREATE_USER_QUERY = "INSERT INTO " + USERS_DB + " (user_id, login, psw, email, time_created, time_modified) VALUE (\"%1$s\", \"%2$s\", \"%3$s\", \"\", NOW(), NOW());";

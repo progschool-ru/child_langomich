@@ -52,7 +52,7 @@ class TestDBStorageHelper implements ITestStorageHelper
 
 		if(db == null)
 		{
-		//TODO: (2.medium) use test properties here:
+		//TODO: (2.medium)[#26068] use test properties here:
 			db = new SmdDB(rb, new ConsoleSmdLogger(System.out));
 		}
 		return prefix;

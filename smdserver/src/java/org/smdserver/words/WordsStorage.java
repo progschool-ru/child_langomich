@@ -100,7 +100,7 @@ public class WordsStorage implements IWordsStorage
 		{
 			Language storedLanguage = storedLanguages.get(j);
 			List<Word> storedWords = storedLanguage.getWords();
-			//TODO: (3.low) create and use universal ID generator
+			//TODO: (3.low)[#26069] create and use universal ID generator
 			String uuid = UUID.randomUUID().toString();
 			languages.add(new Language(uuid, storedLanguage.getName()));
 			for(int i = 0; i < storedWords.size(); i++)

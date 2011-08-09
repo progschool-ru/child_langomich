@@ -211,7 +211,7 @@ public class SmdUrl implements IUrl
 			}
 			catch(UnsupportedEncodingException e)
 			{
-				//TODO: (3.low) Надо бы сюда внедрить нормальный логгер,
+				//TODO: (3.low) [#26067] Надо бы сюда внедрить нормальный логгер,
 				// вместо вывода в System.out.
 				System.out.println("As we use correct encoding, this message: " + e.getMessage());
 				value = entry.getValue().toString();
