@@ -1,52 +1,26 @@
 package org.smdserver.db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.smdserver.core.ConsoleSmdLogger;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author serdgo
- */
-public class SmdDBTest
+public class SmdDBTest extends DBTestBase
 {
-	private static final String TEST_TABLE = "test1";
-
-	private Connection connection;
 	private ISmdDB db;
-	private String testTable;
 
-	@Before
-    public void setUp () throws DbException, SQLException
+	@Override
+	protected void setUpChild(ResourceBundle rb) throws Exception
 	{
-		String testConfig = ResourceBundle.getBundle("org.smdserver.config")
-				                      .getString("server.test.properties.file");
-		ResourceBundle rb = ResourceBundle.getBundle(testConfig);
-
-		String url = rb.getString("db.url");
-		String user = rb.getString("db.user");
-		String password = rb.getString("db.password");
-		connection = DriverManager.getConnection(url, user, password);
 		db = new SmdDB(rb, new ConsoleSmdLogger(System.out));
-		testTable = rb.getString("db.tablesPrefix") + TEST_TABLE;
-    }
-
-	@After
-	public void tearDown() throws SQLException
+	}
+	
+	@Override
+	protected void tearDownChild() throws Exception
 	{
-		if(!connection.isClosed())
-		{
-			connection.close();
-		}
-		connection = null;
 		db.close();
 		db = null;
 	}
@@ -54,16 +28,16 @@ public class SmdDBTest
 	@Test
 	public void testItSelf () throws Exception
 	{
-		boolean first = connection.isClosed();
+		boolean first = getConnection().isClosed();
 
-		Statement st = connection.createStatement();
+		Statement st = getConnection().createStatement();
 		ResultSet set = st.executeQuery("SELECT 1");
 		set.next();
 		int i = set.getInt(1);
 		boolean isAnythingElse = set.next();
 
-		connection.close();
-		boolean second = connection.isClosed();
+		getConnection().close();
+		boolean second = getConnection().isClosed();
 		
 		assertFalse(first);
 		assertEquals(1, i);
@@ -74,21 +48,19 @@ public class SmdDBTest
 	@Test
 	public void testUpdateSelectSingle() throws Exception
 	{
-//		ISmdDB db = new SmdDB(connection);
-
 		int numRows = getNumRows();
 
-		String query = String.format("INSERT INTO %1$s (test_id, name) VALUE (\"1\", \"petya\");", testTable);
+		String query = String.format("INSERT INTO %1$s (test_id, name) VALUE (\"1\", \"petya\");", getTestTable());
 		boolean success = db.updateSingle(query);
 
 		int numRowsAfterCreation = getNumRows();
 
-		String selectQuery = String.format("SELECT * FROM %1$s WHERE test_id=\"1\";", testTable);
+		String selectQuery = String.format("SELECT * FROM %1$s WHERE test_id=\"1\";", getTestTable());
 		TestParser parser = new TestParser();
 		db.selectSingle(selectQuery, parser);
 
-		String clearQuery = String.format("DELETE FROM %1$s WHERE test_id=\"1\";", testTable);
-		Statement st = connection.createStatement();
+		String clearQuery = String.format("DELETE FROM %1$s WHERE test_id=\"1\";", getTestTable());
+		Statement st = getConnection().createStatement();
 		st.executeUpdate(clearQuery);
 		st.close();
 		int numRowsAfterClearing = getNumRows();
@@ -99,23 +71,62 @@ public class SmdDBTest
 		assertEquals("1", parser.id);
 		assertEquals("petya", parser.name);
 		assertEquals(1, parser.counter);
-
 	}
 
 	@Test
+	public void testPreparedUpdate() throws Exception
+	{
+		int numRows = getNumRows();
+		SmdStatement st = new SmdStatement();
+
+		String query1 = String.format("INSERT INTO %1$s (test_id, name) VALUE (?, ?);", getTestTable());
+		int queryIndex1 = st.addQuery(query1);
+		st.startSet(queryIndex1);
+		st.addString("1");
+		st.addString("petya");
+		st.startSet(queryIndex1);
+		st.addString("2");
+		st.addString("vasua");
+		st.closeStatements();
+		
+		String query2 = String.format("UPDATE %1$s SET name=? WHERE test_id = ?;", getTestTable());
+		int queryIndex2 = st.addQuery(query2);
+		st.startSet(queryIndex2);
+		st.addString("kolya");
+		st.addString("2");
+		st.startSet(queryIndex1);
+		st.addString("3");
+		st.addString("misha");
+		
+		int updatedNumber = st.processQueries(getConnection());
+
+		int numRowsAfterProcessing = getNumRows();
+
+		String selectQuery = String.format("SELECT * FROM %1$s WHERE test_id=\"2\";", getTestTable());
+		
+		TestParser parser = new TestParser();
+		db.selectSingle(selectQuery, parser);
+
+		assertEquals(4, updatedNumber);
+		assertEquals(numRows + 3, numRowsAfterProcessing);
+		assertEquals("2", parser.id);
+		assertEquals("kolya", parser.name);
+		assertEquals(1, parser.counter);
+	}
+	
+	@Test
 	public void testNullParser() throws Exception
 	{
-//		ISmdDB db = new SmdDB(connection);
-		Statement st = connection.createStatement();
+		Statement st = getConnection().createStatement();
 
-		String query = String.format("INSERT INTO %1$s (test_id, name) VALUE (\"1\", \"petya\");", testTable);
+		String query = String.format("INSERT INTO %1$s (test_id, name) VALUE (\"1\", \"petya\");", getTestTable());
 		st.executeUpdate(query);
 
 		boolean caught = false;
 		boolean success = true;
 		try
 		{
-			String selectQuery = String.format("SELECT * FROM %1$s WHERE test_id=\"1\";", testTable);
+			String selectQuery = String.format("SELECT * FROM %1$s WHERE test_id=\"1\";", getTestTable());
 			success = db.selectSingle(selectQuery, null);
 		}
 		catch(NullPointerException e)
@@ -123,7 +134,7 @@ public class SmdDBTest
 			caught = true;
 		}
 
-		String clearQuery = String.format("DELETE FROM %1$s WHERE test_id=\"1\";", testTable);
+		String clearQuery = String.format("DELETE FROM %1$s WHERE test_id=\"1\";", getTestTable());
 		st.executeUpdate(clearQuery);
 		st.close();
 
@@ -134,11 +145,9 @@ public class SmdDBTest
 	@Test
 	public void testIncorrectQuery() throws Exception
 	{
-	//	ISmdDB db = new SmdDB(connection);
-
 		int numRows = getNumRows();
 
-		String query = String.format("INSERT INT %1$s (test_id, name) VALUE (\"1\", \"petya\");", testTable);
+		String query = String.format("INSERT INT %1$s (test_id, name) VALUE (\"1\", \"petya\");", getTestTable());
 		boolean success = db.updateSingle(query);
 
 		int numRows2 = getNumRows();
@@ -184,38 +193,12 @@ public class SmdDBTest
 		assertEquals(1, number2);
 	}
 
-	private int getNumRows() throws Exception
-	{
-		String getCountQuery = String.format("SELECT COUNT(*) FROM %1$s", testTable);
-		Statement st = connection.createStatement();
-		ResultSet set = st.executeQuery(getCountQuery);
-		set.next();
-		int numRows = set.getInt(1);
-		st.close();
-		return numRows;
-	}
-
 	private class SimpleParser implements IResultParser
 	{
 		int number;
 		public boolean parse(ResultSet result) throws SQLException
 		{
 			number = result.getInt(1);
-			return true;
-		}
-	}
-
-	private class TestParser implements IResultParser
-	{
-		String id;
-		String name;
-		int counter = 0;
-
-		public boolean parse(ResultSet result) throws SQLException
-		{
-			id = result.getString(1);
-			name = result.getString("name");
-			counter ++;
 			return true;
 		}
 	}

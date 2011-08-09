@@ -36,7 +36,45 @@ public class SmdDB implements ISmdDB
 			return closeWithoutSync();
 		}
 	}
-
+	
+	public int processSmdStatement(ISmdStatment statement) throws DbException
+	{
+		int updatedRows = 0;
+		synchronized (sync)
+		{
+			checkConnection();
+			if(!setAutoCommit(false))
+			{
+				return -1;
+			}
+			try
+			{
+				updatedRows = statement.processQueries(connection);
+				connection.commit();
+			}
+			catch(SQLException e)
+			{
+				log("SmdDB.updateGroup: " +e.getMessage());
+				updatedRows = -1;
+				try
+				{
+					connection.rollback();
+				}
+				catch(SQLException ex)
+				{
+					log("SmdDB.processSmdStatement: rollbackError" +ex.getMessage());
+					throw new DbException(DbException.ROLLBACK_ERROR, ex);
+				}
+			}
+			
+			if(!setAutoCommit(true))
+			{
+				closeWithoutSync();
+			}
+		}
+		return updatedRows;
+	}
+	
 	public int updateGroup (List<String> queries) throws DbException
 	{
 		int updatedRows = 0;
@@ -66,6 +104,15 @@ public class SmdDB implements ISmdDB
 				log("SmdDB.updateGroup: " +e.getMessage());
 				log(queries.get(count));
 				updatedRows = -1;
+				try
+				{
+					connection.rollback();
+				}
+				catch(SQLException ex)
+				{
+					log("SmdDB.updateGroup: rollbackError" +ex.getMessage());
+					throw new DbException(DbException.ROLLBACK_ERROR, ex);
+				}
 			}
 
 			if(!setAutoCommit(true))
@@ -163,9 +210,7 @@ public class SmdDB implements ISmdDB
 		catch(Exception e)
 		{
 			log("SmdDB.checkConnection: " +e.getMessage());
-			DbException dbE = new DbException(DbException.CANT_CONNECT_TO_DATABASE);
-			dbE.setReason(e);
-			throw dbE;
+			throw new DbException(DbException.CANT_CONNECT_TO_DATABASE, e);
 		}
 	}
 

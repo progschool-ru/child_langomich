@@ -8,8 +8,8 @@ public class SmdException extends Exception
 	{
 		super(message);
 	}
-
-	public void setReason(Exception e)
+	
+	protected void setReason(Exception e)
 	{
 		reason = e;
 	}
