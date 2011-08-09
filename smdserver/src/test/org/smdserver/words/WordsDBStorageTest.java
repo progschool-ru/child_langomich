@@ -33,7 +33,7 @@ public class WordsDBStorageTest
 		db = new SmdDB(rb, new ConsoleSmdLogger(System.out));
 		String prefix = rb.getString("db.tablesPrefix");
 
-		IUsersStorage us = new UsersDBStorage(db);
+		IUsersStorage us = new UsersDBStorage(db, prefix);
 		assertTrue(us.createUser("1", "lo1", "pa1"));
 		assertTrue(us.createUser("2", "lo2", "pa2"));
 		assertTrue(us.createUser("3", "lo3", "pa3"));

@@ -32,9 +32,10 @@ public class UsersDBStorageTest
 		rb = ResourceBundle.getBundle(testConfig);
 
 		db = new SmdDB(rb, new ConsoleSmdLogger(System.out));
+		
+		String prefix = rb.getString("db.tablesPrefix");
 
-
-		instance = new UsersDBStorage(db);
+		instance = new UsersDBStorage(db, prefix);
 		boolean result = instance.createUser(FIRST_ID, FIRST_LOGIN, FIRST_PASSWORD);
 		assertTrue(result);
     }

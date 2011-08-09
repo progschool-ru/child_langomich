@@ -20,8 +20,8 @@ class TestDBStorageHelper implements ITestStorageHelper
 	public void openUsersStorage(ResourceBundle resource,
 							String userId, String login, String password) throws Exception
 	{
-		initDBAndGetPrefix(resource);
-		usersStorage = new UsersDBStorage(db);
+		String prefix = initDBAndGetPrefix(resource);
+		usersStorage = new UsersDBStorage(db, prefix);
 		usersStorage.createUser(userId, login, password);
 		this.userId = userId;
 	}

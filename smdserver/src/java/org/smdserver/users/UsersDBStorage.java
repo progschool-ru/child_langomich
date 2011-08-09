@@ -9,21 +9,22 @@ import org.smdserver.db.ISmdDB;
 
 public class UsersDBStorage implements IUsersStorage
 {
-	//TODO: (1. high) [#26066] get this value from configs
-	public static final String USERS_DB = "smd_users";
+	public static final String USERS_TABLE = "users";
 
-	private static final String CREATE_USER_QUERY = "INSERT INTO " + USERS_DB + " (user_id, login, psw, email, time_created, time_modified) VALUE (\"%1$s\", \"%2$s\", \"%3$s\", \"\", NOW(), NOW());";
-	private static final String CHECK_PASSWORD_QUERY = "SELECT login FROM " + USERS_DB + " WHERE login = \"%1$s\" AND psw = \"%2$s\";";
-	private static final String GET_USER_BY_LOGIN_QUERY = "SELECT user_id, login, psw FROM " + USERS_DB + " WHERE login = \"%1$s\";";
-	private static final String SET_PASSWORD_BY_LOGIN_QUERY = "UPDATE " + USERS_DB + " SET psw=\"%2$s\" WHERE login = \"%1$s\";";
-	private static final String GET_PSW_BY_ID_QUERY = "SELECT psw FROM " + USERS_DB + " WHERE user_id = \"%1$s\";";
-	private static final String DELETE_USER_BY_ID_QUERY = "DELETE FROM " + USERS_DB + " WHERE user_id = \"%1$s\";";
+	private static final String CREATE_USER_QUERY = "INSERT INTO %1$s (user_id, login, psw, email, time_created, time_modified) VALUE (\"%2$s\", \"%3$s\", \"%4$s\", \"\", NOW(), NOW());";
+	private static final String CHECK_PASSWORD_QUERY = "SELECT login FROM %1$s WHERE login = \"%2$s\" AND psw = \"%3$s\";";
+	private static final String GET_USER_BY_LOGIN_QUERY = "SELECT user_id, login, psw FROM %1$s WHERE login = \"%2$s\";";
+	private static final String SET_PASSWORD_BY_LOGIN_QUERY = "UPDATE %1$s SET psw=\"%3$s\" WHERE login = \"%2$s\";";
+	private static final String GET_PSW_BY_ID_QUERY = "SELECT psw FROM %1$s WHERE user_id = \"%2$s\";";
+	private static final String DELETE_USER_BY_ID_QUERY = "DELETE FROM %1$s WHERE user_id = \"%2$s\";";
 
 	private ISmdDB db;
+	private String usersTable;
 
-	public UsersDBStorage(ISmdDB db)
+	public UsersDBStorage(ISmdDB db, String prefix)
 	{
 		this.db = db;
+		this.usersTable = prefix + USERS_TABLE;
 	}
 
 	public boolean createUser (String dbUserId, String dirtyLogin, String dirtyPassword)
@@ -34,7 +35,7 @@ public class UsersDBStorage implements IUsersStorage
 
 		try
 		{
-			return db.updateSingle(String.format(CREATE_USER_QUERY,
+			return db.updateSingle(String.format(CREATE_USER_QUERY, usersTable,
 			                  dbUserId, dbLogin, psw));
 		}
 		catch(DbException e)
@@ -51,7 +52,7 @@ public class UsersDBStorage implements IUsersStorage
 
 		try
 		{
-			db.selectSingle(String.format(CHECK_PASSWORD_QUERY, dbLogin, psw), parser);
+			db.selectSingle(String.format(CHECK_PASSWORD_QUERY, usersTable, dbLogin, psw), parser);
 		}
 		catch(DbException e)
 		{
@@ -72,7 +73,7 @@ public class UsersDBStorage implements IUsersStorage
 		UserParser parser = new UserParser();
 		try
 		{
-			db.selectSingle(String.format(GET_USER_BY_LOGIN_QUERY, dbLogin), parser);
+			db.selectSingle(String.format(GET_USER_BY_LOGIN_QUERY, usersTable, dbLogin), parser);
 		}
 		catch(DbException e)
 		{
@@ -85,7 +86,7 @@ public class UsersDBStorage implements IUsersStorage
 	{
 		String dbLogin = escapeString(dirtyLogin);
 		String psw = getPsw(dbLogin, password);
-		String query = String.format(SET_PASSWORD_BY_LOGIN_QUERY, dbLogin, psw);
+		String query = String.format(SET_PASSWORD_BY_LOGIN_QUERY, usersTable, dbLogin, psw);
 		try
 		{
 			return db.updateSingle(query);
@@ -106,7 +107,7 @@ public class UsersDBStorage implements IUsersStorage
 		FirstArgParser parser = new FirstArgParser();
 		try
 		{
-			db.selectSingle(String.format(GET_PSW_BY_ID_QUERY, dbUserId), parser);
+			db.selectSingle(String.format(GET_PSW_BY_ID_QUERY, usersTable, dbUserId), parser);
 		}
 		catch(DbException e)
 		{
@@ -119,7 +120,7 @@ public class UsersDBStorage implements IUsersStorage
 	{
 		try
 		{
-			return db.updateSingle(String.format(DELETE_USER_BY_ID_QUERY, dbUserId));
+			return db.updateSingle(String.format(DELETE_USER_BY_ID_QUERY, usersTable, dbUserId));
 		}
 		catch (DbException e)
 		{
@@ -135,7 +136,7 @@ public class UsersDBStorage implements IUsersStorage
 	private boolean doesDBLoginExist (String dbLogin) throws DbException
 	{
 		FirstArgParser parser = new FirstArgParser();
-		db.selectSingle(String.format(GET_USER_BY_LOGIN_QUERY, dbLogin),parser);
+		db.selectSingle(String.format(GET_USER_BY_LOGIN_QUERY, usersTable, dbLogin),parser);
 		return parser.getValue() != null;
 	}
 

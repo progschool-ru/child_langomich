@@ -130,11 +130,11 @@ public class MainServlet extends SmdServlet
 
 	private IUsersStorage createUsersStorage(ResourceBundle res, ISmdLogger logger)
 	{
-		initDBAndGetPrefix(res, logger);
+		String prefix = initDBAndGetPrefix(res, logger);
 
 		if(db != null)
 		{
-			return new UsersDBStorage(db);
+			return new UsersDBStorage(db, prefix);
 		}
 		else
 		{
