@@ -94,6 +94,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		workForm.addCommand(OK);
 		workForm.addCommand(back);
 		workForm.setCommandListener(this);
+		dictionary = new Dictionary(settings.getLanguage());
 		workFormReset();
 	}
 
@@ -152,6 +153,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		addWordForm.addCommand(back);
 		addWordForm.addCommand(Save);
 		addWordForm.setCommandListener(this);
+		dictionary = new Dictionary(settings.getLanguage());
 		addWordFormReset();
 	}
 
