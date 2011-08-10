@@ -25,7 +25,7 @@ public class WordsDBStorage implements IWordsStorage
 	private static final String UPDATE_WORD_QUERY = "UPDATE %1$s SET translation=?, rating=?, modified=?, time_modified=NOW() WHERE language_id=? AND original=?;";
 	private static final String GET_ALL_WORDS    = "SELECT * FROM %1$s as w, %2$s as l WHERE l.language_id = w.language_id AND l.user_id=?;";
 	private static final String GET_LATEST_WORDS = "SELECT * FROM %1$s as w, %2$s as l WHERE l.language_id = w.language_id AND l.user_id=? AND w.modified > ?;";
-	private static final String GET_WORDS_IN     = "SELECT original FROM %1$s WHERE language_id = \"%2$s\" AND original IN (%3$s);";
+	private static final String GET_WORDS_IN     = "SELECT original FROM %1$s WHERE language_id = ? AND original IN (%2$s);";
 	private static final String CLEAR_LANGUAGES = "DELETE FROM %1$s WHERE user_id = ?;";
 	private static final String GET_LANGUAGES_IN = "SELECT language_id FROM %1s WHERE language_id in (%2$s);";
 
@@ -39,16 +39,16 @@ public class WordsDBStorage implements IWordsStorage
 		languagesTable = prefix + LANGUAGES_TABLE;
 		wordsTable = prefix + WORDS_TABLE;
 	}
-
+	
 	public boolean addUserWords(String userId, List<Language> languages)
 	{
 		try
 		{
-			String inLangList = getInString(languages, new LanguageInVisitor());
-			String getLangsQuery = String.format(GET_LANGUAGES_IN, wordsTable, inLangList);
-			SetParser langParser = new SetParser();
-			db.select(getLangsQuery, langParser);
-			Set<String> existedLanguagess = langParser.set;
+			Set<String> existedLanguages = getExistedObjects(
+					languages, 
+					GET_LANGUAGES_IN,
+					new LanguageInVisitor(),
+					null);
 
 			ISmdStatement st = new SmdStatement();
 			int addLanguageIndex = st.addQuery(String.format(ADD_LANGUAGE_QUERY, languagesTable));
@@ -60,7 +60,7 @@ public class WordsDBStorage implements IWordsStorage
 				Set<String> existedWords;
 				String languageId = language.getId();
 
-				if(languageId == null || !existedLanguagess.contains(languageId))
+				if(languageId == null || !existedLanguages.contains(languageId))
 				{
 					if(languageId == null)
 					{
@@ -77,13 +77,10 @@ public class WordsDBStorage implements IWordsStorage
 				}
 				else
 				{
-					IInVisitor v = new WordInVisitor();
-					String inList = getInString(language.getWords(), v);
-					String getWordsQuery = String.format(GET_WORDS_IN, wordsTable,
-												languageId, inList);
-					SetParser parser = new SetParser();
-					db.select(getWordsQuery, parser);
-					existedWords = parser.set;
+					existedWords = getExistedObjects(language.getWords(),
+							GET_WORDS_IN,
+							new WordInVisitor(),
+							languageId);
 				}
 
 				List<Word> words = language.getWords();
@@ -183,24 +180,45 @@ public class WordsDBStorage implements IWordsStorage
 		return parser.languages;		
 	}
 	
-	private String getInString(List list, IInVisitor visitor)
+	private String getInTemplate(int size)
 	{
 		StringBuilder sb = new StringBuilder();
 		boolean isNotAFirst = false;
-		for(Object value : list)
+		for(int i = 0; i < size; i++)
 		{
 			if(isNotAFirst)
 			{
 				sb.append(',');
 			}
+			else
 			{
 				isNotAFirst = true;
 			}
-			sb.append('\"');
-			sb.append(visitor.getInString(value));
-			sb.append('\"');
+			sb.append('?');
 		}
 		return sb.toString();
+	}
+	
+	private Set<String> getExistedObjects(List list, String template, 
+			                              IInVisitor vis, String additionalParam)
+			                      throws DbException
+	{
+		String inList = getInTemplate(list.size());
+		String query = String.format(template, wordsTable, inList);
+		ISmdStatement st = new SmdStatement();
+		st.addQuery(query);
+		st.startSet(0);
+		if(additionalParam != null)
+		{
+			st.addString(additionalParam);
+		}
+		for(Object object : list)
+		{
+			st.addString(vis.getInString(object));
+		}
+		SetParser parser = new SetParser();
+		db.select(st, parser);
+		return parser.set;	
 	}
 
 	private interface IInVisitor
