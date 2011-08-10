@@ -27,7 +27,7 @@ public class WordsDBStorage implements IWordsStorage
 	private static final String GET_LATEST_WORDS = "SELECT * FROM %1$s as w, %2$s as l WHERE l.language_id = w.language_id AND l.user_id=? AND w.modified > ?;";
 	private static final String GET_WORDS_IN     = "SELECT original FROM %1$s WHERE language_id = ? AND original IN (%2$s);";
 	private static final String CLEAR_LANGUAGES = "DELETE FROM %1$s WHERE user_id = ?;";
-	private static final String GET_LANGUAGES_IN = "SELECT language_id FROM %1s WHERE language_id in (%2$s);";
+	private static final String GET_LANGUAGES_IN = "SELECT language_id FROM %1s WHERE language_id IN (%2$s);";
 
 	private ISmdDB db;
 	private String languagesTable;
@@ -203,6 +203,11 @@ public class WordsDBStorage implements IWordsStorage
 			                              IInVisitor vis, String additionalParam)
 			                      throws DbException
 	{
+		if(list.isEmpty())
+		{
+			return new HashSet<String>();
+		}
+		
 		String inList = getInTemplate(list.size());
 		String query = String.format(template, wordsTable, inList);
 		ISmdStatement st = new SmdStatement();
