@@ -60,7 +60,7 @@ public class UsersDBStorageTest
 	@Test
 	public void testSetPassword () throws Exception
 	{
-		testSetPassword(FIRST_LOGIN);
+		helpTestSetPassword(FIRST_LOGIN);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class UsersDBStorageTest
 	@Test
 	public void testSetPasswordCaseInsensitive () throws Exception
 	{
-		testSetPassword(FIRST_LOGIN2);
+		helpTestSetPassword(FIRST_LOGIN2);
 	}
 	
 	/**
@@ -116,7 +116,7 @@ public class UsersDBStorageTest
 		String id2 = "3";
 		String login3 = "_mama_12";
 		String id3 = "4";
-		String login4 = "M4";
+		String login4 = "M4-_";
 		String id4 = "5";
 		String login5 = "a";
 		String id5 = "6";
@@ -209,7 +209,26 @@ public class UsersDBStorageTest
 		assertFalse("login doesn't exist", exists2);
 	}
 	
-	private void testSetPassword (String login) throws Exception
+	@Test
+	public void testDashIsEqualsUnderscore()
+	{
+		String password = "1";
+		String login = "mamin-sibiryak";
+		String id = "mm";
+		String login2 = "mamin_sibiryak";
+		String id2 = "ms";
+		
+		boolean success = instance.createUser(id, login, password);
+		boolean success2 = instance.createUser(id2, login2, password);
+		
+		User user = instance.getUserByLogin(login2);
+		
+		assertTrue(success);
+		assertFalse(success2);
+		assertEquals(login, user.getLogin());
+	}
+	
+	private void helpTestSetPassword (String login) throws Exception
 	{
 		String password = FIRST_PASSWORD;
 		String id = FIRST_ID;

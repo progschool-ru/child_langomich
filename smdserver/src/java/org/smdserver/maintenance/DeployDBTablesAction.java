@@ -13,7 +13,8 @@ public class DeployDBTablesAction extends DBAction
 			"CREATE TABLE %1$susers" +
 				"(" +
 					"user_id VARCHAR (36) NOT NULL," +
-					"login VARCHAR (80) UNIQUE NOT NULL," +
+					"login_key VARCHAR (80) UNIQUE NOT NULL," +
+					"login VARCHAR (80) NOT NULL," +
 					"psw VARCHAR (32) NOT NULL," +
 					"is_blocked BOOLEAN NOT NULL DEFAULT '1'," +
 					"email VARCHAR (80) NOT NULL," +

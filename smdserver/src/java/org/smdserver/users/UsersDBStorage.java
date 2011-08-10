@@ -14,11 +14,11 @@ public class UsersDBStorage implements IUsersStorage
 {
 	public static final String USERS_TABLE = "users";
 
-	private static final String LOGIN_REGEX = "^[a-zA-Z]\\w+";
-	private static final String CREATE_USER_QUERY = "INSERT INTO %1$s (user_id, login, psw, email, time_created, time_modified) VALUE (?, ?, ?, \"\", NOW(), NOW());";
-	private static final String CHECK_PASSWORD_QUERY = "SELECT login FROM %1$s WHERE login = ? AND psw = ?;";
-	private static final String GET_USER_BY_LOGIN_QUERY = "SELECT user_id, login, psw FROM %1$s WHERE login = ?;";
-	private static final String SET_PASSWORD_BY_LOGIN_QUERY = "UPDATE %1$s SET psw=? WHERE login = ?;";
+	private static final String LOGIN_REGEX = "^[a-zA-Z][\\w-]+";
+	private static final String CREATE_USER_QUERY = "INSERT INTO %1$s (user_id, login_key, login, psw, email, time_created, time_modified) VALUE (?, ?, ?, ?, \"\", NOW(), NOW());";
+	private static final String CHECK_PASSWORD_QUERY = "SELECT login FROM %1$s WHERE login_key = ? AND psw = ?;";
+	private static final String GET_USER_BY_LOGIN_QUERY = "SELECT user_id, login, psw FROM %1$s WHERE login_key = ?;";
+	private static final String SET_PASSWORD_BY_LOGIN_QUERY = "UPDATE %1$s SET psw=? WHERE login_key = ?;";
 	private static final String GET_PSW_BY_ID_QUERY = "SELECT psw FROM %1$s WHERE user_id = ?;";
 	private static final String DELETE_USER_BY_ID_QUERY = "DELETE FROM %1$s WHERE user_id = ?;";
 
@@ -44,6 +44,7 @@ public class UsersDBStorage implements IUsersStorage
 		{
 			ISmdStatement st = createSmdStatement(CREATE_USER_QUERY);
 			st.addString(userId);
+			st.addString(getLoginKey(dirtyLogin));
 			st.addString(dirtyLogin);
 			st.addString(psw);
 			return 1 == db.processSmdStatement(st);
@@ -56,13 +57,18 @@ public class UsersDBStorage implements IUsersStorage
 
 	public boolean checkPassword (String dirtyLogin, String dirtyPassword)
 	{
+		if(!validateLogin(dirtyLogin))
+		{
+			return false;//Can do it without DB request.
+		}
+		
 		String psw = getPsw(dirtyLogin, dirtyPassword);
 		FirstArgParser parser = new FirstArgParser();
 
 		try
 		{
 			ISmdStatement st = createSmdStatement(CHECK_PASSWORD_QUERY);
-			st.addString(dirtyLogin);
+			st.addString(getLoginKey(dirtyLogin));
 			st.addString(psw);
 			db.selectSingle(st, parser);
 		}
@@ -76,20 +82,30 @@ public class UsersDBStorage implements IUsersStorage
 
 	public boolean doesLoginExist (String dirtyLogin) throws DbException
 	{
+		if(!validateLogin(dirtyLogin))
+		{
+			return false;//Can do it without DB request.
+		}
+		
 		FirstArgParser parser = new FirstArgParser();
 		ISmdStatement st = createSmdStatement(GET_USER_BY_LOGIN_QUERY);
-		st.addString(dirtyLogin);
+		st.addString(getLoginKey(dirtyLogin));
 		db.selectSingle(st, parser);
 		return parser.getValue() != null;
 	}
 
 	public User getUserByLogin (String dirtyLogin)
 	{
+		if(!validateLogin(dirtyLogin))
+		{
+			return null;//Can do it without DB request.
+		}
+		
 		UserParser parser = new UserParser();
 		try
 		{
 			ISmdStatement st = createSmdStatement(GET_USER_BY_LOGIN_QUERY);
-			st.addString(dirtyLogin);
+			st.addString(getLoginKey(dirtyLogin));
 			db.selectSingle(st, parser);
 		}
 		catch(DbException e)
@@ -101,12 +117,17 @@ public class UsersDBStorage implements IUsersStorage
 	
 	public boolean setPassword (String dirtyLogin, String password)
 	{
+		if(!validateLogin(dirtyLogin))
+		{
+			return false;//Can do it without DB request.
+		}
+		
 		String psw = getPsw(dirtyLogin, password);
 		try
 		{
 			ISmdStatement st = createSmdStatement(SET_PASSWORD_BY_LOGIN_QUERY);
 			st.addString(psw);
-			st.addString(dirtyLogin);
+			st.addString(getLoginKey(dirtyLogin));
 			return 1 == db.processSmdStatement(st);
 		}
 		catch(DbException e)
@@ -117,7 +138,7 @@ public class UsersDBStorage implements IUsersStorage
 
 	static String getPsw (String login, String password)
 	{
-		return getMD5Sum(login.toLowerCase() + password);
+		return getMD5Sum(getLoginKey(login) + password);
 	}
 
 	String getPswById (String dbUserId)
@@ -197,5 +218,10 @@ public class UsersDBStorage implements IUsersStorage
 	private boolean validateLogin(String dirtyLogin)
 	{
 		return dirtyLogin.matches(LOGIN_REGEX);
+	}
+	
+	private static String getLoginKey(String login)
+	{
+		return login.toLowerCase().replaceAll("-", "_");
 	}
 }
