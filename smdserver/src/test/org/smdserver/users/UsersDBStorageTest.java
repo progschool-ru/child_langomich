@@ -73,7 +73,7 @@ public class UsersDBStorageTest
 	}
 	
 	/**
-	 * Test of addUser method, of class UsersDBStorage.
+	 * Test of createUser method, of class UsersDBStorage.
 	 */
 	@Test
 	public void testCreate ()
@@ -103,6 +103,51 @@ public class UsersDBStorageTest
 		assertEquals("userId case insencitive", id, user2.getUserId());
 		assertEquals("pws case insencitive", psw, user2.getPsw());
 	}
+	
+	/**
+	 * Test of createUser method, of class UsersDBStorage.
+	 */
+	@Test
+	public void testCreateWithIncorrectSymbols ()
+	{
+		String login = "петя";
+		String id = "2";
+		String login2 = "*4(";
+		String id2 = "3";
+		String login3 = "_mama_12";
+		String id3 = "4";
+		String login4 = "M4";
+		String id4 = "5";
+		String login5 = "a";
+		String id5 = "6";
+		String password = "secondPassword";
+		String psw = instance.getPsw(login4, password);
+
+		boolean success = instance.createUser(id, login, password);
+		boolean success2 = instance.createUser(id2, login2, password);
+		boolean success3 = instance.createUser(id3, login3, password);
+		boolean success4 = instance.createUser(id4, login4, password);
+		boolean success5 = instance.createUser(id5, login5, password);
+
+		User user = instance.getUserByLogin(login);
+		User user2 = instance.getUserByLogin(login2);
+		User user3 = instance.getUserByLogin(login3);
+		User user4 = instance.getUserByLogin(login4);
+		User user5 = instance.getUserByLogin(login5);
+
+		assertFalse(success);
+		assertFalse(success2);
+		assertFalse(success3);
+		assertTrue(success4);
+		assertFalse(success5);
+		assertNull(user);
+		assertNull(user2);
+		assertNull(user3);
+		assertNull(user5);
+		assertEquals("login", login4, user4.getLogin());
+		assertEquals("userId", id4, user4.getUserId());
+		assertEquals("pws", psw, user4.getPsw());
+	}	
 
 	/**
 	 * Test of checkPassword method, of class UsersDBStorage.

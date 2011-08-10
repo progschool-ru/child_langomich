@@ -14,6 +14,7 @@ public class UsersDBStorage implements IUsersStorage
 {
 	public static final String USERS_TABLE = "users";
 
+	private static final String LOGIN_REGEX = "^[a-zA-Z]\\w+";
 	private static final String CREATE_USER_QUERY = "INSERT INTO %1$s (user_id, login, psw, email, time_created, time_modified) VALUE (?, ?, ?, \"\", NOW(), NOW());";
 	private static final String CHECK_PASSWORD_QUERY = "SELECT login FROM %1$s WHERE login = ? AND psw = ?;";
 	private static final String GET_USER_BY_LOGIN_QUERY = "SELECT user_id, login, psw FROM %1$s WHERE login = ?;";
@@ -32,6 +33,11 @@ public class UsersDBStorage implements IUsersStorage
 
 	public boolean createUser (String userId, String dirtyLogin, String dirtyPassword)
 	{
+		if(!validateLogin(dirtyLogin))
+		{
+			return false;
+		}
+		
 		String psw = getPsw(dirtyLogin, dirtyPassword);
 
 		try
@@ -186,5 +192,10 @@ public class UsersDBStorage implements IUsersStorage
 			System.out.println(e.getMessage()); //TODO (3.low) use logger
 			return password;
 		}
-	}	
+	}
+	
+	private boolean validateLogin(String dirtyLogin)
+	{
+		return dirtyLogin.matches(LOGIN_REGEX);
+	}
 }
