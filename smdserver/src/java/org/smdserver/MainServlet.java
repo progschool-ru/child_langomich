@@ -26,9 +26,7 @@ import org.smdserver.maintenance.DropDBAction;
 import org.smdserver.maintenance.DropDBTablesAction;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.users.UsersDBStorage;
-import org.smdserver.users.UsersFileStorage;
 import org.smdserver.words.GetWordsAction;
-import org.smdserver.words.WordsFileStorage;
 import org.smdserver.words.AddWordsAction;
 import org.smdserver.words.IWordsStorage;
 import org.smdserver.words.WordsDBStorage;
@@ -88,10 +86,7 @@ public class MainServlet extends SmdServlet
 
 		ISmdLogger logger = new ComplexSmdLogger(getServletContext(), System.out);
 
-//		IWordsStorage wordsStorage = createWordsFileStorage(rb, logger);
 		IWordsStorage wordsStorage = createWordsStorage(rb, logger);
-
-//		IUsersStorage usersStorage =  createUsersFileStorage(rb, logger);
 		IUsersStorage usersStorage = createUsersStorage(rb, logger);
 		
 		ISmdServletContext context = new SmdServletContext(usersStorage, 
@@ -100,12 +95,6 @@ public class MainServlet extends SmdServlet
 				                                           logger);
 
 		return new SmdActionsFactory(context);
-	}
-
-	private IWordsStorage createWordsFileStorage(ResourceBundle res, ISmdLogger logger)
-	{
-		String wordsPath = res.getString(WORDS_STORAGE_PATH_KEY);
-		return new WordsFileStorage(getServletContext().getRealPath(wordsPath), logger);
 	}
 
 	private IWordsStorage createWordsStorage(ResourceBundle res, ISmdLogger logger)
@@ -120,12 +109,6 @@ public class MainServlet extends SmdServlet
 		{
 			return null;
 		}
-	}
-
-	private IUsersStorage createUsersFileStorage(ResourceBundle res, ISmdLogger logger)
-	{
-		String usersPath = res.getString(USERS_STORAGE_PATH_KEY);
-		return  new UsersFileStorage(getServletContext().getRealPath(usersPath));
 	}
 
 	private IUsersStorage createUsersStorage(ResourceBundle res, ISmdLogger logger)

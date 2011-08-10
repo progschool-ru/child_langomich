@@ -1,5 +1,6 @@
 package org.smdserver.users;
 
+import java.security.MessageDigest;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.smdserver.db.DbException;
@@ -108,9 +109,9 @@ public class UsersDBStorage implements IUsersStorage
 		}
 	}
 
-	static String getPsw (String dbLogin, String dirtyPassword)
+	static String getPsw (String login, String password)
 	{
-		return UsersStorage.getPsw(dbLogin, dirtyPassword);
+		return getMD5Sum(login + password);
 	}
 
 	String getPswById (String dbUserId)
@@ -164,4 +165,26 @@ public class UsersDBStorage implements IUsersStorage
 		st.startSet(0);
 		return st;
 	}
+	
+
+	private static String getMD5Sum (String password)
+	{
+		try
+		{
+			byte[] bytesOfMessage = password.getBytes("UTF-8");
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] thedigest = md.digest(bytesOfMessage);
+			StringBuilder sb = new StringBuilder();
+			for(byte b : thedigest)
+			{
+				sb.append(String.format("%02x", b));
+			}
+			return sb.toString();
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.getMessage()); //TODO (3.low) use logger
+			return password;
+		}
+	}	
 }
