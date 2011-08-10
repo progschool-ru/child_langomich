@@ -10,10 +10,10 @@ public class Word
 	private int rating;
 	private long modified;
 
-	public Word (String original, String translation, int rating, long modified)
+	public Word (String dirtyOriginal, String dirtyTranslation, int rating, long modified)
 	{
-		this.original = original;
-		this.translation = translation;
+		this.original = cleanWord(dirtyOriginal);
+		this.translation = cleanWord(dirtyTranslation);
 		this.rating = rating;
 		this.modified = modified;
 	}
@@ -21,8 +21,8 @@ public class Word
 	{
 		try
 		{
-			this.original = json.getString("original");
-			this.translation = json.getString("translation");
+			this.original = cleanWord(json.getString("original"));
+			this.translation = cleanWord(json.getString("translation"));
 			this.rating = json.getInt("rating");
 			this.modified = json.getLong("modified");
 		}
@@ -47,5 +47,10 @@ public class Word
 	public String getTranslation ()
 	{
 		return translation;
+	}
+	
+	public static String cleanWord(String dirtyValue)
+	{
+		return dirtyValue.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	}
 }

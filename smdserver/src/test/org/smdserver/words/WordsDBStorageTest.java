@@ -101,4 +101,41 @@ public class WordsDBStorageTest
 		assertEquals("second language of '1' user", "fr", first.get(1).getName());
 		assertEquals("first language of '2' user", "es", second.get(0).getName());
 	}
+	
+	@Test
+	public void testAddDirtyWords()
+	{
+		List<Language> languages = new ArrayList<Language>();
+		languages.add(new Language("frId3", "fr</table>", new Word("first</table>", "first", 1, 1)));
+		languages.add(new Language("frId4", "f&lt;/table&gt;", new Word("first&lt;/table&GT;", "second<>", 1, 1)));
+
+		storage.setUserWords("3", languages);
+
+		List<Language> third = storage.getUserWords("3");
+		
+		Language firstLanguage = third.get(0);
+		Language secondLanguage;
+		
+		if(firstLanguage.getName().equals("fr&lt;/table&gt;"))
+		{
+			secondLanguage = third.get(1);
+		}
+		else
+		{
+			secondLanguage = firstLanguage;
+			firstLanguage = third.get(1);
+		}
+		
+		Word firstWord = firstLanguage.getWords().get(0);
+		Word secondWord = secondLanguage.getWords().get(0);
+
+		assertNotNull(third);
+		assertEquals("Languaes in '3's list", 2, third.size());
+		assertEquals("First '3's language", "fr&lt;/table&gt;", firstLanguage.getName());		
+		assertEquals("First '3's language", "f&lt;/table&gt;", secondLanguage.getName());		
+		assertEquals("first&lt;/table&gt;", firstWord.getOriginal());		
+		assertEquals("first&lt;/table&GT;", secondWord.getOriginal());	
+		assertEquals("second&lt;&gt;", secondWord.getTranslation());	
+		
+	}
 }

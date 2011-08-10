@@ -12,15 +12,15 @@ public class Language
 	private String name;
 	private List<Word> words = new ArrayList<Word>();
 
-	public Language (String id, String name)
+	public Language (String id, String dirtyName)
 	{
 		this.id = id;
-		this.name = name;
+		this.name = cleanWord(dirtyName);
 	}
-	public Language (String id, String name, Word word)
+	public Language (String id, String dirtyName, Word word)
 	{
 		this.id = id;
-		this.name = name;
+		this.name = cleanWord(dirtyName);
 		words.add(word);
 	}
         public Language ()
@@ -31,7 +31,7 @@ public class Language
 		try
 		{
 			id = json.has("id") ? json.getString("id") : null;
-			name = json.getString("name");
+			name = cleanWord(json.getString("name"));
 
 			JSONArray wordJSONS = json.getJSONArray("words");
 			int length = wordJSONS.length();
@@ -65,5 +65,10 @@ public class Language
 	public List<Word> getWords ()
 	{
 		return words;
+	}
+	
+	private static String cleanWord(String dirtyValue)
+	{
+		return Word.cleanWord(dirtyValue);
 	}
 }
