@@ -34,8 +34,6 @@ import org.smdserver.words.WordsDBStorage;
 public class MainServlet extends SmdServlet
 {
 	private static final String CONFIG_PARAM = "config";
-	private static final String USERS_STORAGE_PATH_KEY = "path.users.storage";
-	private static final String WORDS_STORAGE_PATH_KEY = "path.words.storageDir";
 	private static final String SERVER_PROPERTIES_FILE_KEY = "server.properties.file";
 	private static final String DEFAULT_ACTION = "default";
 

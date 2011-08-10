@@ -9,6 +9,7 @@ import org.smdserver.words.Language;
 import org.smdserver.words.IWordsStorage;
 import java.util.List;
 import java.util.ArrayList;
+import org.smdserver.users.User;
 
 public class LoginAction extends SmdAction
 {
@@ -24,11 +25,12 @@ public class LoginAction extends SmdAction
 
 		if(success)
 		{
-			setAnswerParam(ActionParams.USER, storage.getUserByLogin(login));
-			request.getSession().setAttribute(SessionKeys.CURRENT_LOGIN, login);
+			User user = storage.getUserByLogin(login);
+			setAnswerParam(ActionParams.USER, user);
+			request.getSession().setAttribute(SessionKeys.CURRENT_LOGIN, user.getLogin());
 
 			IWordsStorage WStorage = getServletContext().getWordsStorage();
-			List<Language> languages = WStorage.getUserWords(storage.getUserByLogin(login).getUserId());
+			List<Language> languages = WStorage.getUserWords(user.getUserId());
 			ArrayList al = new ArrayList();
 			for(int i = 0; i < languages.size();i++)
 				al.add(languages.get(i));

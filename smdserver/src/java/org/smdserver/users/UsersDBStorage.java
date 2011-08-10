@@ -111,7 +111,7 @@ public class UsersDBStorage implements IUsersStorage
 
 	static String getPsw (String login, String password)
 	{
-		return getMD5Sum(login + password);
+		return getMD5Sum(login.toLowerCase() + password);
 	}
 
 	String getPswById (String dbUserId)
