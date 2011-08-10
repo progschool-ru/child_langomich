@@ -11,6 +11,7 @@ public interface ISmdStatement
 	public void startSet(int queryNumber);
 	public void addString(String param);
 	public void addInteger(Integer param);
+	public void addLong(Long param);
 	public void addDouble(Double param);
 	
 	public int processQueries(Connection connection) throws SQLException;

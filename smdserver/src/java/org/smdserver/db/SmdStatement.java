@@ -12,6 +12,7 @@ public class SmdStatement implements ISmdStatement
 	private static final int STRING = 0;
 	private static final int DOUBLE = 1;
 	private static final int INTEGER = 2;
+	private static final int LONG = 3;
 	
 	private static final int UPDATE = 0;
 	private static final int SELECT = 1;
@@ -61,6 +62,12 @@ public class SmdStatement implements ISmdStatement
 	{
 		lastParams.add(param);
 		lastTypes.add(INTEGER);
+	}
+
+	public void addLong(Long param)
+	{
+		lastParams.add(param);
+		lastTypes.add(LONG);
 	}
 	
 	public void addDouble(Double param)
@@ -186,6 +193,10 @@ public class SmdStatement implements ISmdStatement
 			{
 				statement.setDouble(index, (Double)param);
 				break;
+			}
+			case LONG:
+			{
+				statement.setLong(index, (Long)param);
 			}
 		}
 		
