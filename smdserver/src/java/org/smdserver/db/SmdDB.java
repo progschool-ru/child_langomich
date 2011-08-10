@@ -37,7 +37,7 @@ public class SmdDB implements ISmdDB
 		}
 	}
 	
-	public int processSmdStatement(ISmdStatment statement) throws DbException
+	public int processSmdStatement(ISmdStatement statement) throws DbException
 	{
 		int updatedRows = 0;
 		synchronized (sync)
@@ -50,6 +50,7 @@ public class SmdDB implements ISmdDB
 			try
 			{
 				updatedRows = statement.processQueries(connection);
+				statement.closeStatements();
 				connection.commit();
 			}
 			catch(SQLException e)
@@ -145,6 +146,38 @@ public class SmdDB implements ISmdDB
 		return countRows == 1;
 	}
 
+	public int select(ISmdStatement st, IMultipleResultParser parser) throws DbException
+	{
+		if(parser == null)
+			return -1;		
+		
+		int count = 0;
+		try
+		{
+			synchronized(sync)
+			{	
+				checkConnection();
+				List<ResultSet> list = st.select(connection);
+				if(list.size() > 0)
+				{
+					ResultSet result = list.get(0);
+					count = parser.parse(result);
+				}
+				else
+				{
+					count = -1;
+				}
+				st.closeStatements();
+			}
+		}
+		catch(SQLException e)
+		{
+			log("select: " +e.getMessage());
+			count = -1;
+		}
+		return count;
+	}
+	
 	public int select(String dbQuery, IMultipleResultParser parser) throws DbException
 	{
 		if(parser == null)
@@ -171,6 +204,15 @@ public class SmdDB implements ISmdDB
 		return count;
 	}
 
+	public boolean selectSingle(ISmdStatement st, IResultParser parser)
+							throws DbException
+	{
+		if(parser == null)
+			return false;
+		SingleToMultipleParserConverter p = new SingleToMultipleParserConverter(parser);
+		return select(st, p) == 1;
+	}
+	
 	public boolean selectSingle(String dbQuery, IResultParser parser)
 							throws DbException
 	{

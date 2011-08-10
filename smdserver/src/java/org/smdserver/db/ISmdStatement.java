@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface ISmdStatment
+public interface ISmdStatement
 {
 	public int addQuery(String query);
 	public void startSet(int queryNumber);

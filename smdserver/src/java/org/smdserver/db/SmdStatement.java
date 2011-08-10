@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SmdStatement implements ISmdStatment
+public class SmdStatement implements ISmdStatement
 {
 	private static final int STRING = 0;
 	private static final int DOUBLE = 1;
