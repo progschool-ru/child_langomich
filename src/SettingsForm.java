@@ -13,11 +13,11 @@ public class SettingsForm extends myForm implements CommandListener
 
     TextBox newText;
 
-	List mainList;//(trunk) Canvas mainForm;
+	Canvas mainForm;
 
-    SettingsForm(Display mainDisplay, List mainList)
+    SettingsForm(Display mainDisplay, Canvas mainForm)
     {
-        this.mainList = mainList;
+        this.mainForm = mainForm;
         this.mainDisplay = mainDisplay;
         this.addCommand(back);
         this.addCommand(choice);
@@ -111,7 +111,7 @@ public class SettingsForm extends myForm implements CommandListener
         if(mainButtonIsPressed)
             mainButtonIsPressed = false;
         else
-            mainDisplay.setCurrent(mainList);
+            mainDisplay.setCurrent(mainForm);
         repaint();
     }
 	

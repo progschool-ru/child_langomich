@@ -108,7 +108,7 @@ public class MainForm extends myForm implements CommandListener
         }
         else if(mainSelectedRow == 4)
         {
-            SettingsForm sf = new SettingsForm(mainDisplay, sd.mainList);
+            SettingsForm sf = new SettingsForm(mainDisplay, this);
             mainDisplay.setCurrent(sf);
         }
     }

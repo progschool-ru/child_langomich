@@ -114,8 +114,8 @@ public class SmartDictionary extends MIDlet implements CommandListener
 				dictionaryListInit();
 				Display.getDisplay(this).setCurrent(dictionaryList);
 			}
-                        if (i == 3)
-                            goToTheSettingsForm();
+//                        if (i == 3)
+//                            goToTheSettingsForm();
 		}
                 if (c == delete) 
 		{
@@ -236,11 +236,11 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 dictionaryList.addCommand(back);
                 dictionaryList.setCommandListener(this);
         }
-        private void goToTheSettingsForm()
-        {
-            SettingsForm sf = new SettingsForm(Display.getDisplay(this), mainList);
-            Display.getDisplay(this).setCurrent(sf);
-        }
+//        private void goToTheSettingsForm()
+//        {
+//            SettingsForm sf = new SettingsForm(Display.getDisplay(this), mainList);
+//            Display.getDisplay(this).setCurrent(sf);
+//        }
 
 		private void goToTheMainForm()
         {
