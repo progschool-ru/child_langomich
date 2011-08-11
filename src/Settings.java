@@ -30,7 +30,7 @@ public class Settings extends Records
             if(getRecord(PASSWORD, SINGLE_RECORD) == null)
                 addRecord("null");
             if(getRecord(URL, SINGLE_RECORD) == null)
-                addRecord("localhost:8080");
+                addRecord("lang.omich.net");// TODO: (3.low) хорошо бы вынести эту настройку в какой-нибудь config.properties файл.
             if(getRecord(TEXT, SINGLE_RECORD) == null)
                 addRecord("null");
         }
