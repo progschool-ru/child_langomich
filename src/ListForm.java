@@ -86,11 +86,11 @@ public class ListForm extends myForm implements CommandListener
             mainDisplay.setCurrent(mainForm);
         repaint();
     }
-    public void mainNumber()
+    protected void mainNumber()
     {
         mainNumber = dictionary.getNumRecords();
     }
-    public void drawSomething()
+    protected void drawSomething()
     {
         drawList();
         if(mainButtonIsPressed)

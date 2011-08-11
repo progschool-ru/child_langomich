@@ -15,7 +15,7 @@ public abstract class myForm extends Canvas // (trunk) implements IMyForm
     private int mainIndent;
     private int sideIndent;
     protected int fontHeight;
-	//(trunk) private int lowerIndent;
+	private int lowerIndent;
 
 	protected int shift = 0; //(trunk) = -mainIndent;
 
@@ -27,8 +27,8 @@ public abstract class myForm extends Canvas // (trunk) implements IMyForm
     protected int indent = 0;
     protected String[] smallMenuList;
 
-	//(trunk) private int selectedRowTopY = 0;
-	//(trunk) private int selectedRowHeight = 0;
+	private int selectedRowTopY = 0;
+	private int selectedRowHeight = 0;
 
 	protected boolean mainButtonIsPressed = false;
 
@@ -37,20 +37,20 @@ public abstract class myForm extends Canvas // (trunk) implements IMyForm
 	Display mainDisplay;
 
     public void paint(Graphics g)
-    {
+    {	
+        mainNumber();
         this.g = g;
         MLT = new myMultiLineText(Font.SIZE_SMALL,Font.STYLE_BOLD,Font.FACE_PROPORTIONAL,g);
         width = g.getClipWidth();
         height = g.getClipHeight();
+        lowerIndent = width/6;
         size = width/5;
         mainIndent = width/4;
         sideIndent = size;
         fontHeight = g.getFont().getHeight();
         g.setColor(255,255,255);
         g.fillRect(0, 0, width, height);
-        drawMenu();
-        if(mainButtonIsPressed)
-            drawSmallMenu();
+        drawSomething();		
     }
 
 	public void keyPressed(int keyCode) // (trunk) moved to parent
@@ -74,61 +74,67 @@ public abstract class myForm extends Canvas // (trunk) implements IMyForm
 	abstract protected void forward();
 	abstract protected String getMainPath();
 	abstract protected String getMainName();
+	abstract protected void mainNumber();//TODO: (2.medium) Переименовить в  initMainNumber (либо в resetMainNumber/setDefaultMainNumber - если метод вызывается неоднократно, а не только при инициализации)
+	abstract protected void drawSomething();
 	
     protected void drawMenu()
     {      
         getShift();
-        drawSelectedString(0, (mainSelectedRow-1)*size-shift+mainIndent, width, size);
-        String paths[] = getPaths();
         String list[] = getList();
+        String paths[] = getPaths();
+        int topY = -shift;
+
         for(int i = 0; i < mainNumber; i++)
         {
-            if(mainSelectedRow!=i+1 && mainSelectedRow!=i+2)
-                g.drawLine(0, size*(i+1)+mainIndent-shift, width, size*(i+1)+mainIndent-shift);
-            drawImage(paths[i],size-8, size-8, 4, size*i+6-shift+mainIndent);
+            if(mainSelectedRow == i+1)
+            {
+                drawSelectedString(0, topY, width, size);
+                indent = topY+size*3/4;
+            }
+            g.setColor(0,0,0);
+            if(mainSelectedRow!=i && mainSelectedRow!=i+1)
+                g.drawLine(0, topY, width, topY);
+            drawImage(paths[i],size-8, size-8, 4, topY+4);
             String path = "/images/main/further.png";
-            drawImage(path,size/2, size/2, width-size/4*3, size*i+size/4-shift+mainIndent);
-            
-            g.setColor(225, 225, 225);
-            int numberOfLines = MLT.setText(list[i], width-size-size/10-sideIndent,size*(i+1)-size/10);
+            drawImage(path,size/2, size/2, width-size/4*3, topY+size/4);
+            int numberOfLines = MLT.setText(list[i], width, size);
             int linesHeight = numberOfLines*fontHeight;
-            MLT.drawMultStr(size+size/8-1, size*i+(size-linesHeight)/2-shift+mainIndent-1);
-            g.setColor(0, 0, 0);
-            MLT.setText(list[i], width-size-size/10-sideIndent,size*(i+1)-size/10);
-            MLT.drawMultStr(size+size/8, size*i+(size-linesHeight)/2-shift+mainIndent);
+            MLT.drawMultStr(0, topY+(size-linesHeight)/2);
+            topY = topY+size;
         }
-        g.setColor(255,255,255);
-        g.fillRect(0, 0, width, mainIndent);
+        drawSign();
         g.setColor(0,0,0);
-        drawImage("/images/main/settings.png",mainIndent, mainIndent, 0, 0);
-        int numberOfLines = MLT.setText(text.SETTINGS, width-mainIndent-sideIndent,mainIndent);
-        int linesHeight = numberOfLines*fontHeight;
-        MLT.drawMultStr(mainIndent,(mainIndent-linesHeight)/2);
-        if(mainSelectedRow!=1)
-            g.drawLine(0, mainIndent, width, mainIndent);
+        if(mainSelectedRow!=mainNumber)
+            g.drawLine(0, topY, width, topY);
+        drawButtons();
     }
 
 	protected void drawSmallMenu()
     {
-        g.setColor(255, 255, 255);
-        g.fillRect(width/6, mainIndent+indent-shift, width*5/6, size*number);
-        g.setColor(0, 0, 0);
-        g.drawRect(width/6, mainIndent+indent-shift, width*5/6, size*number);
-        drawSelectedString(width/6, (selectedRow-1)*size+mainIndent+indent-shift, width*5/6, size);
-
-        for(int i = 0; i < number; i++)
+		if(mainNumber!=0)
         {
-            g.setColor(0,0,0);
-            if(selectedRow!=i+1 && selectedRow!=i+2)
-                g.drawLine(width/6, size*(i+1)+mainIndent+indent-shift, width, size*(i+1)+mainIndent+indent-shift);
-            g.setColor(225, 225, 225);
-            int numberOfLines = MLT.setText(smallMenuList[i], width*5/6-size/10,size*(i+1)-size/10);
-            int linesHeight = numberOfLines*fontHeight;
-            MLT.drawMultStr(width/6+size/8-1, size*i+(size-linesHeight)/2-shift+mainIndent+indent-1);
-
+            int topY = indent;
+            int smallMenuHeight = 0;
+            for(int i = 0; i < number; i++)
+            {
+                int numberOfLines = MLT.setText(smallMenuList[i], width*5/6,size);
+                int allHeigh = numberOfLines*fontHeight+fontHeight;
+                smallMenuHeight = smallMenuHeight+allHeigh;
+            }
+            g.setColor(255, 255, 255);
+            g.fillRoundRect(width/6, topY, width*5/6, smallMenuHeight,size/3,size/3);
             g.setColor(0, 0, 0);
-            MLT.setText(smallMenuList[i], width*5/6-size/10,size*(i+1)-size/10);
-            MLT.drawMultStr(width/6+size/8, size*i+(size-linesHeight)/2-shift+mainIndent+indent);
+            g.drawRoundRect(width/6, topY, width*5/6, smallMenuHeight,size/3,size/3);
+            for(int i = 0; i < number; i++)
+            {
+                int numberOfLines = MLT.setText(smallMenuList[i], width*5/6,size);
+                int allHeigh = numberOfLines*fontHeight+fontHeight;
+                g.setColor(50, 50, 50);
+                if(selectedRow == i+1)
+                    drawSelectedString(width/6, topY, width*5/6, allHeigh);
+                MLT.drawMultStr(width/6, topY+fontHeight/2);
+                topY = topY+allHeigh;
+            }
         }
     }
 	
@@ -212,36 +218,56 @@ public abstract class myForm extends Canvas // (trunk) implements IMyForm
         MLT.drawMultStr(mainIndent,(mainIndent-linesHeight)/2);
     }
 	
-	// (trunk) private void drawButtons(){} // That's strange
+	private void drawButtons()
+	{
+		// TODO: (3. low) Что за пустой приватный метод?
+	} 
 	
     private void getShift()
     {
         if(mainButtonIsPressed)
         {
-            if(selectedRow*size-shift+mainIndent+indent>height)
-            {
-                    shift = selectedRow*size-height+mainIndent+indent;
-            }
-            else if((selectedRow-1)*size-shift+mainIndent+indent<0)
-            {
-                shift = (selectedRow-1)*size+mainIndent+indent;
-            }  
+            selectedRowTopY = getSelectedRowTopY();
+            selectedRowHeight = getSelectedRowHeight();
         }
         else
         {
-            if(mainSelectedRow*size-shift>height)
-            {
-                    shift = mainSelectedRow*size-height;
-            }
-            else if((mainSelectedRow-1)*size-shift<0)
-            {
-                shift = (mainSelectedRow-1)*size;
-            }
+            selectedRowTopY = getMainSelectedRowTopY();
+            selectedRowHeight = getMainSelectedRowHeight();
         }
-    }	
+        if(selectedRowTopY+selectedRowHeight+lowerIndent>height)
+        {
+                shift = shift+selectedRowTopY+selectedRowHeight+lowerIndent-height;
+        }
+        else if(selectedRowTopY<mainIndent)
+        {
+            shift = shift+selectedRowTopY-mainIndent;
+        }
+	}	
 	
-	// (trunk) public int getMainSelectedRowTopY();
-	// (trunk) public int getMainSelectedRowHeight();
-	// (trunk) public int getSelectedRowTopY();
-	// (trunk) public int getSelectedRowHeight();
+    public int getMainSelectedRowTopY()
+    {
+        return (mainSelectedRow-1)*size-shift;
+    }
+    public int getMainSelectedRowHeight()
+    {
+        return  size;
+    }
+    public int getSelectedRowTopY()
+    {
+        int topY = getMainSelectedRowTopY()+ getMainSelectedRowHeight() - fontHeight;
+        for(int i = 0; i < selectedRow-1;i++)
+        {
+            int numberOfLines = MLT.setText(smallMenuList[i], width*5/6, size);
+            int allHeight = numberOfLines*fontHeight+fontHeight;
+            topY = topY+allHeight;
+        }
+        return topY;
+    }
+    public int getSelectedRowHeight()
+    {
+        int numberOfLines = MLT.setText(smallMenuList[selectedRow-1], width*5/6, size);
+        int allHeight = numberOfLines*fontHeight+fontHeight;
+        return allHeight;
+    }
 }

@@ -115,8 +115,17 @@ public class SettingsForm extends myForm implements CommandListener
         repaint();
     }
 	
-	// (trunk) public void mainNumber(){mainNumber = 5;}
-	// (trunk) public void drawSomething();
+	protected void mainNumber()
+	{
+		mainNumber = 5;
+	}
+	
+	protected void drawSomething()
+	{
+		drawMenu();
+		if(mainButtonIsPressed)
+			drawSmallMenu();
+	}
 	
     protected String[] getList() // (trunk) public
     {

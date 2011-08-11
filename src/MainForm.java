@@ -28,7 +28,7 @@ public class MainForm extends myForm implements CommandListener
             sd.notifyDestroyed();
         }
     }
-    public void drawSomething()
+    protected void drawSomething()
     {
         drawMenu();
     }
@@ -57,7 +57,7 @@ public class MainForm extends myForm implements CommandListener
     {
 
     }
-    public void mainNumber() //TODO: (2.medium) Переименовать в resetMainNumber или setDefaultMainNumber, если оно где-то может измениться. Если же это число не может измениться, то этот метод должен быть приватным или защищённым и называться initMainNumber.
+    protected void mainNumber() 
     {
         mainNumber = 4;
     }
