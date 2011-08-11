@@ -30,7 +30,7 @@ public class Settings extends Records
             if(getRecord(PASSWORD, SINGLE_RECORD) == null)
                 addRecord("null");
             if(getRecord(URL, SINGLE_RECORD) == null)
-                addRecord("lang.omich.net");
+                addRecord("localhost:8080");
             if(getRecord(TEXT, SINGLE_RECORD) == null)
                 addRecord("null");
         }
