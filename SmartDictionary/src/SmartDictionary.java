@@ -1,6 +1,8 @@
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.*;
 
+// TODO: (1.high) Просмотреть публичные методы и переменные, что где используется и написать тудушки с предложениями и замечаниями
+
 //TODO: (2.medium) Стоит перенести все классы в пакет.
 // например в org.smdmobile или в org.smdme (от слова javame).
 public class SmartDictionary extends MIDlet implements CommandListener

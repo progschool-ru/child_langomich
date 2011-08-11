@@ -6,6 +6,7 @@ import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.TextField;
 
+// TODO: (3. low) Убрать отсюда все надписи на русском.
 public class SettingsForm extends myForm implements CommandListener
 {
     private Command choice = new Command(text.CHOICE, Command.SCREEN, 1);
@@ -29,6 +30,7 @@ public class SettingsForm extends myForm implements CommandListener
         this.addCommand(choice);
         this.setCommandListener(this);
     }
+
     public void commandAction(Command c, Displayable s)
     {
         if(c == back)
@@ -62,7 +64,7 @@ public class SettingsForm extends myForm implements CommandListener
        }
     }
 
-    public void up()
+    protected void up()
     {
         if(mainButtonIsPressed)
         {
@@ -80,7 +82,7 @@ public class SettingsForm extends myForm implements CommandListener
         }
         repaint();
     }
-    public void down()
+    protected void down()
     {
         if(mainButtonIsPressed)
         {
@@ -98,7 +100,7 @@ public class SettingsForm extends myForm implements CommandListener
         }
         repaint();
     }
-    public void forward()
+    protected void forward()
     {
         if(mainButtonIsPressed)
         {
@@ -112,7 +114,7 @@ public class SettingsForm extends myForm implements CommandListener
         }
         repaint();
     }
-    public void back()
+    protected void back()
     {
         if(mainButtonIsPressed)
             mainButtonIsPressed = false;
@@ -120,17 +122,20 @@ public class SettingsForm extends myForm implements CommandListener
             mainDisplay.setCurrent(mainForm);
         repaint();
     }
-    public void mainNumber()
+	
+    protected void mainNumber()
     {
         mainNumber = 5;
     }
-    public void drawSomething()
+	
+    protected void drawSomething()
     {
         drawMenu();
         if(mainButtonIsPressed)
             drawSmallMenu();
     }
-    public String[] getList()
+
+    protected String[] getList()
     {
         String list[] = new String[mainNumber];
         list[0] = text.NUMBER_OF_WORDS+"  "+Integer.toString(settings.getNumberOfWords());
@@ -141,7 +146,8 @@ public class SettingsForm extends myForm implements CommandListener
         list[4] = text.TIMING;
         return list;
     }
-    public String[] getPaths()
+	
+    protected String[] getPaths()
     {
         String paths[] = new String[mainNumber];
         String path = "/images/settings";
@@ -152,14 +158,17 @@ public class SettingsForm extends myForm implements CommandListener
         paths[4] = path+"/timing.png";
         return paths;
     }
-    public String getMainPath()
+	
+    protected String getMainPath()
     {
         return "/images/main/settings.png";
     }
-    public String getMainName()
+	
+    protected String getMainName()
     {
         return text.SETTINGS;
     }
+ 
     private void smallMenuInit()
     {
         selectedRow = 1;
@@ -205,7 +214,7 @@ public class SettingsForm extends myForm implements CommandListener
         }
         number = smallMenuList.length; 
     }
-    public void dieIsCast()
+    private void dieIsCast()
     {
         if(mainSelectedRow == 1)
         {
@@ -235,7 +244,7 @@ public class SettingsForm extends myForm implements CommandListener
             }
             catch(Exception e){}
         }
-        else
+		else //TODO: (3.low) плохо, что все пункты идут по порядку, а четвёртый затесался в конце.
             newText("Введите новый адрес");
     }
     private void newText(String title)

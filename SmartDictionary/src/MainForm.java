@@ -28,11 +28,11 @@ public class MainForm extends myForm implements CommandListener
             sd.notifyDestroyed();
         }
     }
-    public void drawSomething()
+    protected void drawSomething()
     {
         drawMenu();
     }
-    public void up()
+    protected void up()
     {
         if(mainSelectedRow!=1)
             mainSelectedRow--;
@@ -40,7 +40,7 @@ public class MainForm extends myForm implements CommandListener
             mainSelectedRow = mainNumber;
         repaint();
     }
-    public void down()
+    protected void down()
     {
         if(mainSelectedRow != mainNumber)
             mainSelectedRow++;
@@ -48,16 +48,16 @@ public class MainForm extends myForm implements CommandListener
             mainSelectedRow=1;
         repaint();
     }
-    public void forward()
+    protected void forward()
     {
         dieIsCast();
         repaint();
     }
-    public void back()
+    protected void back()
     {
 
     }
-    public void mainNumber()
+    protected void mainNumber()
     {
         mainNumber = 4;
     }
@@ -69,7 +69,7 @@ public class MainForm extends myForm implements CommandListener
     {
         return "Главное меню";
     }
-    public String[] getList()
+    protected String[] getList()
     {
         String list[] = new String[mainNumber];
         list[0] = text.START;
@@ -78,7 +78,7 @@ public class MainForm extends myForm implements CommandListener
         list[3] = text.SETTINGS;
         return list;
     }
-    public String[] getPaths()
+    protected String[] getPaths()
     {
         String paths[] = new String[mainNumber];
         String path = "/images/main";

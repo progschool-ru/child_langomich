@@ -29,7 +29,7 @@ public class ListForm extends myForm implements CommandListener
         if(c == choice)
             forward();
     }
-    public void up()
+    protected void up()
     {
         if(mainButtonIsPressed )
         {
@@ -47,7 +47,7 @@ public class ListForm extends myForm implements CommandListener
         }
         repaint();
     }
-    public void down()
+    protected void down()
     {
         if(mainButtonIsPressed)
         {
@@ -65,7 +65,7 @@ public class ListForm extends myForm implements CommandListener
         }
         repaint();
     }
-    public void forward()
+    protected void forward()
     {
         if(mainButtonIsPressed )
         {
@@ -79,7 +79,7 @@ public class ListForm extends myForm implements CommandListener
         }
         repaint();
     }
-    public void back()
+    protected void back()
     {
         if(mainButtonIsPressed)
             mainButtonIsPressed = false;
@@ -87,31 +87,31 @@ public class ListForm extends myForm implements CommandListener
             mainDisplay.setCurrent(mainForm);
         repaint();
     }
-    public void mainNumber()
+    protected void mainNumber()
     {
         mainNumber = dictionary.getNumRecords();
     }
-    public void drawSomething()
+    protected void drawSomething()
     {
         drawList();
         if(mainButtonIsPressed)
             drawSmallMenu();
     }
-    public String[] getList()
+    protected String[] getList()
     {
         String list[] = dictionary.getFullRecords();
         return list;
     }
-    public String[] getPaths()
+    protected String[] getPaths()
     {
         String paths[] = new String[mainNumber];
         return paths;
     }
-    public String getMainPath()
+    protected String getMainPath()
     {
         return "/images/main/dictionary.png";
     }
-    public String getMainName()
+    protected String getMainName()
     {
         return text.DICTIONARY;
     }
