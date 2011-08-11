@@ -103,8 +103,8 @@ public class MainForm extends myForm implements CommandListener
         }
         else if(mainSelectedRow == 3)
         {
-//            ListForm lf = new ListForm(mainDisplay, this);
-//            mainDisplay.setCurrent(lf);
+            ListForm lf = new ListForm(mainDisplay, this);
+            mainDisplay.setCurrent(lf);
         }
         else if(mainSelectedRow == 4)
         {

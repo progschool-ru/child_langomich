@@ -9,15 +9,15 @@ public abstract class myForm extends Canvas // (trunk) implements IMyForm
     protected Text text = new Text();
 	protected Graphics g;
 
-    private int width;
+    protected int width;
     private int height;
     protected int size;
     private int mainIndent;
     private int sideIndent;
-    private int fontHeight;
+    protected int fontHeight;
 	//(trunk) private int lowerIndent;
 
-	private int shift = 0; //(trunk) = -mainIndent;
+	protected int shift = 0; //(trunk) = -mainIndent;
 
 	protected int mainSelectedRow = 1;
     protected int mainNumber = 5; //(trunk) mainNumber;
@@ -65,19 +65,20 @@ public abstract class myForm extends Canvas // (trunk) implements IMyForm
         else if(act == Canvas.LEFT)
             back();
     }
-
-
+	
 	abstract protected String[] getPaths(); // (trunk) there are no these methods in trunk.
 	abstract protected String[] getList();
 	abstract protected void up();
 	abstract protected void down();
 	abstract protected void back();
 	abstract protected void forward();
+	abstract protected String getMainPath();
+	abstract protected String getMainName();
 	
     protected void drawMenu()
     {      
         getShift();
-        drawSelectedString(0, (mainSelectedRow-1)*size-shift+mainIndent, width);
+        drawSelectedString(0, (mainSelectedRow-1)*size-shift+mainIndent, width, size);
         String paths[] = getPaths();
         String list[] = getList();
         for(int i = 0; i < mainNumber; i++)
@@ -107,13 +108,13 @@ public abstract class myForm extends Canvas // (trunk) implements IMyForm
             g.drawLine(0, mainIndent, width, mainIndent);
     }
 
-	private void drawSmallMenu()
+	protected void drawSmallMenu()
     {
         g.setColor(255, 255, 255);
         g.fillRect(width/6, mainIndent+indent-shift, width*5/6, size*number);
         g.setColor(0, 0, 0);
         g.drawRect(width/6, mainIndent+indent-shift, width*5/6, size*number);
-        drawSelectedString(width/6, (selectedRow-1)*size+mainIndent+indent-shift, width*5/6);
+        drawSelectedString(width/6, (selectedRow-1)*size+mainIndent+indent-shift, width*5/6, size);
 
         for(int i = 0; i < number; i++)
         {
@@ -131,15 +132,46 @@ public abstract class myForm extends Canvas // (trunk) implements IMyForm
         }
     }
 	
-	// (trunk) protected void drawList();
-
-    private void drawSelectedString(int x, int y, int width)
+	protected void drawList()
     {
-        int arc = size/3;
-
-        for(int i = 0; i< size/2;i++)
+        getShift();
+        String list[] = getList();
+        int topY = - shift;
+        g.setColor(0,0,0);
+        if(mainNumber == 0)
         {
-            int step = i*15/(size/2);
+            g.drawLine(0, topY, width, topY);
+            MLT.setText("Словарь пуст", width, size);
+            MLT.drawMultStr(0, topY+fontHeight/2);
+        }
+        else
+        {
+            for(int i = 0; i < mainNumber; i++)
+            {
+                g.setColor(0,0,0);
+                if(mainSelectedRow!=i+1 && mainSelectedRow!=i+2)
+                    g.drawLine(0, topY, width, topY);
+                int numberOfLines = MLT.setText(list[i], width, size);
+                int allHeigh = numberOfLines*fontHeight+fontHeight;
+                if(mainSelectedRow == i+1)
+                {
+                    drawSelectedString(0, topY, width, allHeigh);
+                    indent = topY+allHeigh-fontHeight/2;
+                }
+                MLT.drawMultStr(0, topY+fontHeight/2);
+                topY = topY+allHeigh;
+            }
+        }
+        drawSign();
+    }
+
+    private void drawSelectedString(int x, int y, int width, int height)
+    {
+        int arc = height/3;
+
+        for(int i = 0; i< height/2;i++)
+        {
+            int step = i*15/(height/2);
             int arcShift = 0;
             if(i<arc/3)
                 arcShift = arc/3-i;
@@ -147,10 +179,10 @@ public abstract class myForm extends Canvas // (trunk) implements IMyForm
             
             g.drawLine(x+arcShift, y+i, x+width-arcShift, y+i);
             g.setColor(230-step,230-step,230-step);
-            g.drawLine(x+arcShift, y+size-i-1, x+width-arcShift, y+size-i-1);
+            g.drawLine(x+arcShift, y+height-i-1, x+width-arcShift, y+height-i-1);
         }
         g.setColor(0,0,0);
-        g.drawRoundRect(x, y, width, size, arc, arc);
+        g.drawRoundRect(x, y, width, height, arc, arc);
     }
 
     private boolean drawImage(String path, int newWidth, int newHeight, int x, int y)
@@ -169,7 +201,16 @@ public abstract class myForm extends Canvas // (trunk) implements IMyForm
         }
     }
 	
-	// (trunk) protected void drawSign();
+    protected void drawSign()
+    {
+        g.setColor(255,255,255);
+        g.fillRect(0, 0, width, mainIndent);
+        g.setColor(0,0,0);
+        drawImage(getMainPath(),mainIndent, mainIndent, 0, 0);
+        int numberOfLines = MLT.setText(getMainName(), width-mainIndent-sideIndent,mainIndent);
+        int linesHeight = numberOfLines*fontHeight;
+        MLT.drawMultStr(mainIndent,(mainIndent-linesHeight)/2);
+    }
 	
 	// (trunk) private void drawButtons(){} // That's strange
 	

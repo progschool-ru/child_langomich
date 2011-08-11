@@ -141,8 +141,15 @@ public class SettingsForm extends myForm implements CommandListener
         return paths;
     }
 	
-	// (trunk) public String getMainPath();
-	// (trunk) public String getMainName();
+    protected String getMainPath()
+    {
+        return "/images/main/settings.png";
+    }
+	
+    protected String getMainName()
+    {
+        return text.SETTINGS;
+    }
  
     private void smallMenuInit()
     {
