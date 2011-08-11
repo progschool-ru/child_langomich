@@ -19,7 +19,8 @@ public abstract class Records
         private RecordStore rs = null;
         private RecordEnumeration re;
 
-        protected void recordStoreInit(String name, Filter filter, Ordering ordering){
+        protected void recordStoreInit(String name, Filter filter, Ordering ordering)// TODO (2.medium) исправить warning.
+		{
                 byteOutputStream = new ByteArrayOutputStream();
                 writer = new DataOutputStream(byteOutputStream);
         	try {

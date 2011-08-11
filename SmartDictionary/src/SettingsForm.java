@@ -43,8 +43,10 @@ public class SettingsForm extends myForm implements CommandListener
         {
             if(mainSelectedRow == 2)
             {
-				String languageId = new Languages().newLanguage(newText.getString());
+				Languages languages = new Languages();
+				String languageId = languages.newLanguage(newText.getString());
 				settings.setLanguage(languageId);
+				languages.destroy();
             }
             else if(mainSelectedRow == 3)
             {
@@ -139,7 +141,11 @@ public class SettingsForm extends myForm implements CommandListener
     {
         String list[] = new String[mainNumber];
         list[0] = text.NUMBER_OF_WORDS+"  "+Integer.toString(settings.getNumberOfWords());
-		Language language = new Languages().getLanguageById(settings.getLanguage());
+		
+		Languages languages = new Languages();
+		Language language = languages.getLanguageById(settings.getLanguage());
+		languages.destroy();
+		
 		list[1] = text.LANGUAGE + "  " + (language == null ? null : language.getName());
         list[2] = text.LOGIN+"  "+settings.getLogin();
         list[3] = text.URL+"  "+settings.getURL();
@@ -182,7 +188,9 @@ public class SettingsForm extends myForm implements CommandListener
         {
             int i = 0;
 
-			smallMenuLanguages = new Languages().getLanguages();
+			Languages languages = new Languages();
+			smallMenuLanguages = languages.getLanguages();
+			languages.destroy();
 
 			if(smallMenuLanguages != null)
 			{

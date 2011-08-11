@@ -39,15 +39,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 
 	public void startApp() 
 	{
-		if(settings.getLanguage().equals("null"))
-		{
-			dictionary = new Dictionary();
-		}
-		else
-		{
-			dictionary = new Dictionary(settings.getLanguage());
-		}
-
+			recreateDictionary();
             workFormInit();
             addWordFormInit();
 
@@ -96,7 +88,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		workForm.addCommand(OK);
 		workForm.addCommand(back);
 		workForm.setCommandListener(this);
-		dictionary = new Dictionary(settings.getLanguage());
+		recreateDictionary();
 		workFormReset();
 	}
 
@@ -155,7 +147,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		addWordForm.addCommand(back);
 		addWordForm.addCommand(Save);
 		addWordForm.setCommandListener(this);
-		dictionary = new Dictionary(settings.getLanguage());
+		recreateDictionary();
 		addWordFormReset();
 	}
 
@@ -174,4 +166,22 @@ public class SmartDictionary extends MIDlet implements CommandListener
             mf = new MainForm(this);
             Display.getDisplay(this).setCurrent(mf);
         }
+
+	private void recreateDictionary() // TODO: (2.medium) Я точно не знаю, но мне кажется, что это не лучший способ поддерживать актуальность языка в текущем словаре. Если это так, то исправить на что-то более подходящее.
+	{
+		if(dictionary != null)
+		{
+			dictionary.destroy();
+			dictionary = null;
+		}
+		
+		if(settings.getLanguage().equals("null"))
+		{
+			dictionary = new Dictionary();
+		}
+		else
+		{
+			dictionary = new Dictionary(settings.getLanguage());
+		}
+	}
 }
