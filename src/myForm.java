@@ -4,7 +4,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Image;
 
-public abstract class myForm extends Canvas // (trunk) implements IMyForm
+public abstract class myForm extends Canvas
 {
     protected Text text = new Text();
     protected Graphics g;
