@@ -1,6 +1,7 @@
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.*;
 
+// TODO: (1.high) Просмотреть публичные методы и переменные, что где используется и написать тудушки с предложениями и замечаниями
 public class SmartDictionary extends MIDlet implements CommandListener
 {
         private Text text = new Text();

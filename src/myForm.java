@@ -4,20 +4,20 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Image;
 
-abstract class myForm extends Canvas implements IMyForm
+public abstract class myForm extends Canvas // (trunk) implements IMyForm
 {
     protected Text text = new Text();
     protected Graphics g;
 
     protected int width;
-    protected int height;
+    private int height;
     protected int size;
-    protected int mainIndent;
-    protected int sideIndent;
+    private int mainIndent;
+    private int sideIndent;
     protected int fontHeight;
-    protected int lowerIndent;
+    private int lowerIndent;
 
-    protected int shift = - mainIndent;
+    protected int shift = - mainIndent; // TODO: (2.medium) Бессмысленное присваивание. mainIndent здесь равен нулю, значит и shift будет равен нулю. Кроме того, такие сложности лучше прописывать в конструкторе, тогда не будет никаких сюрпризов, зависящих от порядка инициализации переменных.
 
     protected int mainSelectedRow = 1;
     protected int mainNumber;
@@ -52,6 +52,7 @@ abstract class myForm extends Canvas implements IMyForm
         g.fillRect(0, 0, width, height);
         drawSomething();
     }
+
     public void keyPressed(int keyCode)
     {
         int act = getGameAction(keyCode);
@@ -64,6 +65,18 @@ abstract class myForm extends Canvas implements IMyForm
         else if(act == Canvas.LEFT)
             back();
     }
+	
+	abstract protected String[] getPaths();
+	abstract protected String[] getList();
+	abstract protected void up();
+	abstract protected void down();
+	abstract protected void back();
+	abstract protected void forward();
+	abstract protected String getMainPath();
+	abstract protected String getMainName();
+	abstract protected void mainNumber();//TODO: (2.medium) Переименовить в  initMainNumber (либо в resetMainNumber/setDefaultMainNumber - если метод вызывается неоднократно, а не только при инициализации)
+	abstract protected void drawSomething();
+	
     protected void drawMenu()
     {
         getShift();
@@ -95,6 +108,7 @@ abstract class myForm extends Canvas implements IMyForm
             g.drawLine(0, topY, width, topY);
         drawButtons();
     }
+
     protected void drawSmallMenu()
     {
         if(mainNumber!=0)
@@ -123,6 +137,7 @@ abstract class myForm extends Canvas implements IMyForm
             }
         }
     }
+	
     protected void drawList()
     {
         getShift();
@@ -155,7 +170,8 @@ abstract class myForm extends Canvas implements IMyForm
         }
         drawSign();
     }
-    protected void drawSelectedString(int x, int y, int width, int height)
+
+    private void drawSelectedString(int x, int y, int width, int height)
     {
 
         int arc = height/3;
@@ -175,6 +191,7 @@ abstract class myForm extends Canvas implements IMyForm
         g.setColor(0,0,0);
         g.drawRoundRect(x, y, width, height, arc, arc);
     }
+
     private boolean drawImage(String path, int newWidth, int newHeight, int x, int y)
     {
         try
@@ -190,6 +207,7 @@ abstract class myForm extends Canvas implements IMyForm
             return false;
         }
     }
+	
     protected void drawSign()
     {
         g.setColor(255,255,255);
@@ -200,12 +218,13 @@ abstract class myForm extends Canvas implements IMyForm
         int linesHeight = numberOfLines*fontHeight;
         MLT.drawMultStr(mainIndent,(mainIndent-linesHeight)/2);
     }
+	
     private void drawButtons()
     {
-
+		// TODO: (3. low) Что за пустой приватный метод?
     }
-
-    protected void getShift()
+	
+    private void getShift()
     {
         if(mainButtonIsPressed)
         {
@@ -226,6 +245,7 @@ abstract class myForm extends Canvas implements IMyForm
             shift = shift+selectedRowTopY-mainIndent;
         }
     }
+	
     public int getMainSelectedRowTopY()
     {
         return (mainSelectedRow-1)*size-shift;
