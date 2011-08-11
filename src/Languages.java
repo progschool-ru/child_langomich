@@ -1,29 +1,93 @@
 public class Languages extends Records
 {
+	private final char ID_PREFIX = '_';
+	private final int LANGUAGE_NAME = SINGLE_RECORD;
+	private final int LANGUAGE_ID   = LANGUAGE_NAME + 1;
+	private final int THE_LAST_COLUMN = LANGUAGE_ID;
+	
         public final String NAME = "Languages";
 
         Languages()
         {
                 recordStoreInit(NAME, null, null);
         }
-	public String[] getLanguages()
+		
+	public Language[] getLanguages()
 	{
-            return getColumn(SINGLE_RECORD);
+		int numRecords = getNumRecords();
+		Language [] languages = new Language[numRecords];
+		
+		for(int i = 0; i < numRecords; i++)
+		{
+			languages[i] = new Language(getFullRecord(getId(i+1), THE_LAST_COLUMN));
+		}
+		
+		return languages;
 	}
-	public String getLanguage(int row)
+	
+	public boolean isInternalId(String languageId)
 	{
-            return getRecord(getId(row), SINGLE_RECORD);
+		return languageId.charAt(0) == ID_PREFIX;
 	}
-        public void newLanguage(String language)
+	
+	public Language getLanguage(int row)
 	{
-                String languages[] = getLanguages();
-                for(int i = 0; i < getNumRecords(); i++)
-                    if(language.equals(languages[i]))
-                        return;
-		addRecord(language);
-        }
+		int rowId = getId(row);
+		String langName = getRecord(rowId, LANGUAGE_NAME);
+		String langId = getRecord(rowId, LANGUAGE_ID);
+		return new Language(langName, langId);
+	}
+	
+	public Language getLanguageById(String languageId)
+	{
+		Language[] languages = getLanguages();
+		
+		for(int i = 0; i < languages.length; i++)
+		{
+			if(languages[i].getId().equals(languageId))
+				return languages[i];
+		}
+		
+		return null;
+	}
+	
+	public String newLanguage(String languageName)
+	{
+		Language[] languages = getLanguages();
+		String languageId = ID_PREFIX + Integer.toString(languages.length);
+		
+		for(int i = 0; i < languages.length; i++)
+		{
+			if(languageName.equals(languages[i].getName()))
+			{
+				return null;
+			}
+		}
+		
+		String [] languageRecord = {languageName, languageId};
+		addRecord(languageRecord);
+		return languageId;
+	}
+	
+	public void addLanguage(String languageName, String languageId)
+	{
+		String[] languageRecord = {languageName, languageId};
+		Language[] languages = getLanguages();
+
+		for(int i = 0; i < languages.length; i++)
+		{
+			if(languageId.equals(languages[i].getId()) 
+					|| isInternalId(languages[i].getId()) && languageName.equals(languages[i].getName()))
+			{
+				setRecord(languageRecord, getId(i+1));
+				return;
+			}
+		}
+		addRecord(languageRecord);		
+	}
+
         public void deleteLanguage(int row)
 	{
             super.deleteRecord(getId(row));
-        }
+        }	
 }

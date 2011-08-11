@@ -16,6 +16,7 @@ public class SettingsForm extends myForm implements CommandListener
     private Command completeTiming = new Command(text.NEXT, Command.SCREEN, 1);
 
     private Settings settings = new Settings();
+	private Language[] smallMenuLanguages;
 
     TextBox newText;
 
@@ -42,8 +43,8 @@ public class SettingsForm extends myForm implements CommandListener
         {
             if(mainSelectedRow == 2)
             {
-                settings.setLanguage(newText.getString());
-                new Languages().newLanguage(settings.getLanguage());
+				String languageId = new Languages().newLanguage(newText.getString());
+				settings.setLanguage(languageId);
             }
             else if(mainSelectedRow == 3)
             {
@@ -138,7 +139,8 @@ public class SettingsForm extends myForm implements CommandListener
     {
         String list[] = new String[mainNumber];
         list[0] = text.NUMBER_OF_WORDS+"  "+Integer.toString(settings.getNumberOfWords());
-        list[1] = text.LANGUAGE+"  "+settings.getLanguage();
+		Language language = new Languages().getLanguageById(settings.getLanguage());
+		list[1] = text.LANGUAGE + "  " + (language == null ? null : language.getName());
         list[2] = text.LOGIN+"  "+settings.getLogin();
         list[3] = text.URL+"  "+settings.getURL();
         list[4] = text.TIMING;
@@ -180,13 +182,14 @@ public class SettingsForm extends myForm implements CommandListener
         {
             int i = 0;
 
-            String str[] = new Languages().getLanguages();
-            if(str != null)
-            {
-                smallMenuList = new String[str.length+1];
-                for(i = 0; i < str.length; i++)
-                    smallMenuList[i] = str[i];
-            }
+			smallMenuLanguages = new Languages().getLanguages();
+
+			if(smallMenuLanguages != null)
+			{
+				smallMenuList = new String[smallMenuLanguages.length+1];
+				for(i = 0; i < smallMenuLanguages.length; i++)
+					smallMenuList[i] = smallMenuLanguages[i].getName();
+			}
             else
                 smallMenuList = new String[1];
             smallMenuList[i]= "Новый язык";
@@ -222,7 +225,7 @@ public class SettingsForm extends myForm implements CommandListener
             if(selectedRow == number)
                 newText(text.NEW_LANGUAGE);
             else
-                settings.setLanguage(smallMenuList[selectedRow-1]);
+                settings.setLanguage(smallMenuLanguages[selectedRow-1].getId());
         }
         else if(mainSelectedRow == 3)
         {

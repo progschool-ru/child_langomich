@@ -2,6 +2,9 @@ import javax.microedition.lcdui.*;
 import javax.microedition.midlet.*;
 
 // TODO: (1.high) Просмотреть публичные методы и переменные, что где используется и написать тудушки с предложениями и замечаниями
+
+//TODO: (2.medium) Стоит перенести все классы в пакет.
+// например в org.smdmobile или в org.smdme (от слова javame).
 public class SmartDictionary extends MIDlet implements CommandListener
 {
         private Text text = new Text();
@@ -36,9 +39,14 @@ public class SmartDictionary extends MIDlet implements CommandListener
 
 	public void startApp() 
 	{
-             if(settings.getLanguage().equals("null"))
-                dictionary = new Dictionary();
-            dictionary = new Dictionary(settings.getLanguage());
+		if(settings.getLanguage().equals("null"))
+		{
+			dictionary = new Dictionary();
+		}
+		else
+		{
+			dictionary = new Dictionary(settings.getLanguage());
+		}
 
             workFormInit();
             addWordFormInit();
@@ -82,12 +90,16 @@ public class SmartDictionary extends MIDlet implements CommandListener
 			Display.getDisplay(this).setCurrent(mf);
 		}
 	}
-        public void workFormInit()
+
+	public void workFormInit()
 	{
 		workForm.addCommand(OK);
 		workForm.addCommand(back);
 		workForm.setCommandListener(this);
+		dictionary = new Dictionary(settings.getLanguage());
+		workFormReset();
 	}
+
  	public void workFormReset()
 	{
             workForm.removeCommand(OK);
@@ -137,12 +149,16 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 workForm.append(siAnswer[i]);
             }
         }
+
 	public void addWordFormInit()
-        {
-                addWordForm.addCommand(back);
-                addWordForm.addCommand(Save);
+	{
+		addWordForm.addCommand(back);
+		addWordForm.addCommand(Save);
 		addWordForm.setCommandListener(this);
+		dictionary = new Dictionary(settings.getLanguage());
+		addWordFormReset();
 	}
+
 	public void addWordFormReset()
 	{
 		mycg = new ChoiceGroup(text.KNOWLEDGE, ChoiceGroup.POPUP, cgName, null);
