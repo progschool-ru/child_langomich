@@ -17,12 +17,12 @@ public abstract class myForm extends Canvas // (trunk) implements IMyForm
     protected int fontHeight;
 	private int lowerIndent;
 
-	protected int shift = 0; //(trunk) = -mainIndent;
+	protected int shift = -mainIndent; // TODO: (2.medium) Бессмысленное присваивание. mainIndent здесь равен нулю, значит и shift будет равен нулю. Кроме того, такие сложности лучше прописывать в конструкторе, тогда не будет никаких сюрпризов, зависящих от порядка инициализации переменных.
 
 	protected int mainSelectedRow = 1;
-    protected int mainNumber = 5; //(trunk) mainNumber;
+    protected int mainNumber;
 
-	protected int selectedRow = 0; //(trunk) = 1;
+	protected int selectedRow = 1;
     protected int number = 0;
     protected int indent = 0;
     protected String[] smallMenuList;
@@ -53,7 +53,7 @@ public abstract class myForm extends Canvas // (trunk) implements IMyForm
         drawSomething();		
     }
 
-	public void keyPressed(int keyCode) // (trunk) moved to parent
+	public void keyPressed(int keyCode)
     {
         int act = getGameAction(keyCode);
         if(act==Canvas.UP)
@@ -66,7 +66,7 @@ public abstract class myForm extends Canvas // (trunk) implements IMyForm
             back();
     }
 	
-	abstract protected String[] getPaths(); // (trunk) there are no these methods in trunk.
+	abstract protected String[] getPaths();
 	abstract protected String[] getList();
 	abstract protected void up();
 	abstract protected void down();
