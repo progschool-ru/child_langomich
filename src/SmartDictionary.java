@@ -17,9 +17,9 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private Command ordering1 = new Command(text.ORDERING_1, Command.SCREEN, 1);
         private Command ordering2 = new Command(text.ORDERING_2, Command.SCREEN, 1);
 
-	private List mainList;
-        private Form workForm = new Form(text.START);
-        private Form addWordForm = new Form(text.ADD_WORD);
+		List mainList;   // TODO: (1.high) make private or public
+        Form workForm = new Form(text.START);  // TODO: (1.high) make private or public
+        Form addWordForm = new Form(text.ADD_WORD);  // TODO: (1.high) make private or public
 	private List dictionaryList;
 
         private String[] cgName = {text.DONT_KNOW, text.BAD, text.NORMALLY, text.GOOD, text.VERY_GOOD};
@@ -47,11 +47,9 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 dictionary = new Dictionary(settings.getLanguage());
                 languages = new Languages();
 
-		mainListInit();
                     workFormInit();
                     addWordFormInit();
-
-                Display.getDisplay(this).setCurrent(mainList);
+		goToTheMainForm();
 	}
 	public void pauseApp() {}
 
@@ -149,7 +147,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		mainList.addCommand(exitMIDlet);
 		mainList.setCommandListener(this);
 	}
-        private void workFormInit()
+    void workFormInit()// TODO: (1.high) make private or public
 	{
 		workForm.addCommand(OK);
 		workForm.addCommand(back);
@@ -204,7 +202,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
                 workForm.append(siAnswer[i]);
             }
         }
-	private void addWordFormInit()
+	void addWordFormInit()//TODO: (1.high) make private or public
         {
                 addWordForm.addCommand(back);
                 addWordForm.addCommand(Save);
@@ -242,5 +240,11 @@ public class SmartDictionary extends MIDlet implements CommandListener
         {
             SettingsForm sf = new SettingsForm(Display.getDisplay(this), mainList);
             Display.getDisplay(this).setCurrent(sf);
+        }
+
+		private void goToTheMainForm()
+        {
+			MainForm mf = new MainForm(this);
+			Display.getDisplay(this).setCurrent(mf);
         }
 }
