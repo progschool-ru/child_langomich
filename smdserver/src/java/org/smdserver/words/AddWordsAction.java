@@ -10,7 +10,6 @@ import org.json.JSONArray;
 import org.smdserver.actionssystem.ActionParams;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Date;
 import org.smdserver.auth.CheckLoginAction;
 
 public class AddWordsAction extends CheckLoginAction
@@ -22,16 +21,11 @@ public class AddWordsAction extends CheckLoginAction
 		try
 		{ 
 			JSONObject json = new JSONObject(JavaString.decode(dataString));
-			long lastModified = 0;
-			int numberOfTiming = 0;
-			long currentDeviceTime = 0;
-			try
-			{
-				lastModified = json.getLong("lastModified");
-				currentDeviceTime = json.getLong("currentDeviceTime");
-				numberOfTiming = json.getInt("numberOfTiming");
-			}
-			catch(JSONException e){}
+			
+			long lastModified = json.has("lastModified") ? json.getLong("lastModified") : 0;
+			int numberOfTiming = json.has("numberOfTiming") ? json.getInt("numberOfTiming") : 0;
+			long currentDeviceTime = json.has("currentDeviceTime") ? json.getLong("currentDeviceTime") : 0;
+
 			IWordsStorage storage = getServletContext().getWordsStorage();
 			if(lastModified != 0)
 			{

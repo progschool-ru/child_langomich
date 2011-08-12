@@ -176,6 +176,7 @@ Smd.AddWords = {
 		}
 		
 		var data = {
+			currentDeviceTime: date,
 			languages:[{
 					id: languageId,
 					name:languageName,
@@ -224,5 +225,5 @@ Smd.AddWords = {
 	LANGUAGE_INPUT_TEXT    : "langName",
 	LANGUAGE_CONTAINER_CLASS : "b-addWords_language-container",
 	NEW_LANGUAGE_BUTTON_LABEL : "New Language",
-	EXISTING_LANGUAGE_BUTTON_LABEL : "Existing Language",
+	EXISTING_LANGUAGE_BUTTON_LABEL : "Existing Language"
 }
