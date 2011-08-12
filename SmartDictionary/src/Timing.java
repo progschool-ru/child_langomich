@@ -28,6 +28,7 @@ public class Timing extends Thread
     }
     public void run()
     {
+			long currentTime = new Date().getTime();
             settings = new Settings(); // TODO: (2.medium) Вопрос. Не нужно ли этим объектам вызывать destroy() в конце метода?
             dictionary = new Dictionary();
             languages = new Languages();
@@ -44,13 +45,14 @@ public class Timing extends Thread
                 os.close();
 
                 String c = hc.getHeaderField("Set-Cookie");
+				hc.close();
 
                 hc = (HttpConnection)Connector.open("http://"+settings.getURL() + ACTION_PATH + "/addWords");
                 hc.setRequestMethod(HttpConnection.POST);
                 hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
                 hc.setRequestProperty("Cookie", c);
 
-                query = "data="+getData();
+                query = "data="+getData(currentTime);
 
                 os = hc.openOutputStream();
                 os.write(query.getBytes());
@@ -61,10 +63,11 @@ public class Timing extends Thread
                 byte[] buff = new byte[length];
                 is.read(buff);
                 is.close();
+				hc.close();
 
                 text = "success - " + setData(JavaString.decode(new String(buff)));
                 settings.setNumberOfTiming(settings.getNumberOfTiming()+1);
-                settings.setLastTiming(new Date().getTime());
+                settings.setLastTiming(currentTime);
                 settings.setText(text);
             }
             catch(IOException ioe)
@@ -78,7 +81,7 @@ public class Timing extends Thread
         return text;
     }
 	
-	private String getData()
+	private String getData(long currentTime)
 	{
         JSONObject main = new JSONObject();
         try
@@ -139,12 +142,14 @@ public class Timing extends Thread
 					JSONLanguage.put("id", language.getId());
 				}			
 				JSONLanguage.put("name", language.getName());
+				JSONLanguage.put("modified", language.getModified());
 				
                 JSONLanguage.put("words", words);
-                JSONLanguages.put(JSONLanguage);
+                JSONLanguages.put(JSONLanguage);//TODO: (3.low) Возложить функцию конвертирования в JSON на сам класс Language. Чтобы было как-то так: JSON.encode(language); или JSONLanguages.put(language);
             }
             main.put("languages", JSONLanguages);
             main.put("lastModified", settings.getLastTiming());
+			main.put("currentDeviceTime", currentTime);
             main.put("numberOfTiming", settings.getNumberOfTiming());
         }
         catch(JSONException e){}
@@ -162,9 +167,10 @@ public class Timing extends Thread
                 JSONArray words = JSONLanguage.getJSONArray("words");
                 String languageName = JSONLanguage.getString("name");
 				String languageId = JSONLanguage.getString("id");
+				long languageModified = JSONLanguage.getLong("modified");
                 if(settings.getLanguage().equals("null"))
                     settings.setLanguage(languageId);
-                languages.addLanguage(languageName, languageId);
+                languages.addLanguage(languageName, languageId, languageModified);
                 dictionary = new Dictionary(languageId);
                 for(int j = 0; j < words.length();j++)
                 {

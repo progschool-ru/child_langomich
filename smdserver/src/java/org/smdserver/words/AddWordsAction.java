@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.smdserver.actionssystem.ActionParams;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Date;
 import org.smdserver.auth.CheckLoginAction;
 
 public class AddWordsAction extends CheckLoginAction
@@ -23,9 +24,11 @@ public class AddWordsAction extends CheckLoginAction
 			JSONObject json = new JSONObject(JavaString.decode(dataString));
 			long lastModified = 0;
 			int numberOfTiming = 0;
+			long currentDeviceTime = 0;
 			try
 			{
 				lastModified = json.getLong("lastModified");
+				currentDeviceTime = json.getLong("currentDeviceTime");
 				numberOfTiming = json.getInt("numberOfTiming");
 			}
 			catch(JSONException e){}
@@ -43,7 +46,7 @@ public class AddWordsAction extends CheckLoginAction
 			}
 
 			List<Language> languages = parseJSON(json.getJSONArray(ActionParams.LANGUAGES));
-			storage.addUserWords(getUser().getUserId(), languages);
+			storage.addUserWords(getUser().getUserId(), languages, currentDeviceTime);
 			setAnswerParam(ActionParams.SUCCESS, true);
 
 			languages = storage.getUserWords(getUser().getUserId());

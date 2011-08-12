@@ -3,6 +3,7 @@ package org.smdserver.words;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +24,6 @@ public class WordsDBStorage implements IWordsStorage
 	private static final String ADD_LANGUAGE_QUERY = "INSERT INTO %1$s (language_id, name, user_id, modified, time_created, time_modified) VALUE (?, ?, ?, ?, NOW(), NOW());";
 	private static final String ADD_WORD_QUERY     = "INSERT INTO %1$s (translation, rating, modified, language_id, original, time_created, time_modified) VALUE (?, ?, ?, ?, ?, NOW(), NOW());";
 	private static final String UPDATE_WORD_QUERY = "UPDATE %1$s SET translation=?, rating=?, modified=?, time_modified=NOW() WHERE language_id=? AND original=?;";
-	private static final String GET_ALL_WORDS    = "SELECT * FROM %1$s as w, %2$s as l WHERE l.language_id = w.language_id AND l.user_id=?;";
 	private static final String GET_ALL_WORDS_WITH_EMPTY_LANGUAGES = "SELECT * FROM %1$s as w RIGHT OUTER JOIN %2$s as l ON l.language_id = w.language_id WHERE l.user_id=?;";
 	private static final String GET_LATEST_WORDS_WITH_EMPTY_LANGUAGES = "SELECT * FROM %1$s as w RIGHT OUTER JOIN %2$s as l ON l.language_id = w.language_id " +
 																		" WHERE l.user_id=? AND " +
@@ -44,7 +44,7 @@ public class WordsDBStorage implements IWordsStorage
 		wordsTable = prefix + WORDS_TABLE;
 	}
 	
-	public boolean addUserWords(String userId, List<Language> languages)
+	public boolean addUserWords(String userId, List<Language> languages, long currentDeviceTime)
 	{
 		try
 		{
@@ -75,7 +75,7 @@ public class WordsDBStorage implements IWordsStorage
 					st.addString(languageId);
 					st.addString(language.getName());
 					st.addString(userId);
-					st.addLong(language.getModified());
+					st.addLong(currentDeviceTime + 1);
 					
 					language.setId(languageId);
 					existedWords = new HashSet<String>();
