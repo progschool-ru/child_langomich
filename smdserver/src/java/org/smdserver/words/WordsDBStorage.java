@@ -20,12 +20,15 @@ public class WordsDBStorage implements IWordsStorage
 	private static final String LANGUAGES_TABLE = "languages";
 	private static final String WORDS_TABLE = "words";
 
-	private static final String ADD_LANGUAGE_QUERY = "INSERT INTO %1$s (language_id, name, user_id, time_created, time_modified) VALUE (?, ?, ?, NOW(), NOW());";
+	private static final String ADD_LANGUAGE_QUERY = "INSERT INTO %1$s (language_id, name, user_id, modified, time_created, time_modified) VALUE (?, ?, ?, ?, NOW(), NOW());";
 	private static final String ADD_WORD_QUERY     = "INSERT INTO %1$s (translation, rating, modified, language_id, original, time_created, time_modified) VALUE (?, ?, ?, ?, ?, NOW(), NOW());";
 	private static final String UPDATE_WORD_QUERY = "UPDATE %1$s SET translation=?, rating=?, modified=?, time_modified=NOW() WHERE language_id=? AND original=?;";
 	private static final String GET_ALL_WORDS    = "SELECT * FROM %1$s as w, %2$s as l WHERE l.language_id = w.language_id AND l.user_id=?;";
 	private static final String GET_ALL_WORDS_WITH_EMPTY_LANGUAGES = "SELECT * FROM %1$s as w RIGHT OUTER JOIN %2$s as l ON l.language_id = w.language_id WHERE l.user_id=?;";
-	private static final String GET_LATEST_WORDS = "SELECT * FROM %1$s as w, %2$s as l WHERE l.language_id = w.language_id AND l.user_id=? AND w.modified > ?;";
+	private static final String GET_LATEST_WORDS_WITH_EMPTY_LANGUAGES = "SELECT * FROM %1$s as w RIGHT OUTER JOIN %2$s as l ON l.language_id = w.language_id " +
+																		" WHERE l.user_id=? AND " +
+																		" (w.original IS NULL     AND l.modified > ?     OR" +
+																		"  w.original IS NOT NULL AND w.modified > ?);";
 	private static final String GET_WORDS_IN     = "SELECT original FROM %1$s WHERE language_id = ? AND original IN (%2$s);";
 	private static final String CLEAR_LANGUAGES = "DELETE FROM %1$s WHERE user_id = ?;";
 	private static final String GET_LANGUAGES_IN = "SELECT language_id FROM %1s WHERE language_id IN (%2$s);";
@@ -72,6 +75,7 @@ public class WordsDBStorage implements IWordsStorage
 					st.addString(languageId);
 					st.addString(language.getName());
 					st.addString(userId);
+					st.addLong(language.getModified());
 					
 					language.setId(languageId);
 					existedWords = new HashSet<String>();
@@ -111,10 +115,16 @@ public class WordsDBStorage implements IWordsStorage
 		return getUserWords(userId);
 	}
 
-	public List<Language> getCopyUserWords(String userId, long lastModified)
+	public List<Language> getCopyUserWords(String userId, long lastModified) // TODO: (2.medium) Думаю, что от этого метода надо избавиться.
 	{
-		ISmdStatement st = createSmdStatement(GET_LATEST_WORDS);
+		return getLatestUserWords(userId, lastModified);
+	}
+
+	public List<Language> getLatestUserWords(String userId, long lastModified)
+	{
+		ISmdStatement st = createSmdStatement(GET_LATEST_WORDS_WITH_EMPTY_LANGUAGES);
 		st.addString(userId);
+		st.addLong(lastModified);
 		st.addLong(lastModified);
 		return getWords(st);
 	}
@@ -143,6 +153,7 @@ public class WordsDBStorage implements IWordsStorage
 			st.addString(language.getId());
 			st.addString(language.getName());
 			st.addString(userId);
+			st.addLong(language.getModified());
 
 			List<Word> words = language.getWords();
 			for(Word word : words)
@@ -297,14 +308,14 @@ public class WordsDBStorage implements IWordsStorage
 		private Language getOrCreateLanguage(Map<String, Language> langs, ResultSet set)
 				throws SQLException
 		{
-			String languageId = set.getString("w.language_id");
+			String languageId = set.getString("l.language_id");
 			if(langs.containsKey(languageId))
 			{
 				return langs.get(languageId);
 			}
 			else
 			{
-				Language language = new Language(languageId, set.getString("l.name"));
+				Language language = new Language(languageId, set.getString("l.name"), set.getLong("l.modified"));
 				langs.put(languageId, language);
 				languages.add(language);
 				return language;

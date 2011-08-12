@@ -23,6 +23,12 @@ public class WordsDBStorageTest
 	private static final String USER_ID_WITH_EMPTY_LANGUAGE = "2";
 	private static final String USER_ID_WITHOUT_LANGUAGES = "3";
 
+	private static final String LANGUAGE_ID = "enId1";
+
+	private static final long TIME_BEFORE = 10000;
+	private static final long TIME_X      = 20000;
+	private static final long TIME_AFTER  = 30000;
+
 	ISmdDB db;
 	ResourceBundle rb;
 	private WordsDBStorage storage;
@@ -45,12 +51,12 @@ public class WordsDBStorageTest
 		storage = new WordsDBStorage(db, prefix);
 		List<Language> list = new ArrayList<Language>();
 
-		list.add(new Language("enId1", "en", new Word("first", "первый", 1, 1)));
-		list.add(new Language("frId1", "fr", new Word("first", "первый", 1, 1)));
+		list.add(new Language(LANGUAGE_ID, "en", TIME_BEFORE, new Word("first", "первый", 1, 1)));
+		list.add(new Language("frId1", "fr", TIME_BEFORE, new Word("first", "первый", 1, 1)));
 		assertTrue(storage.setUserWords(USER_ID_WITH_WORDS, list));
 
 		list = new ArrayList<Language>();
-		list.add(new Language("esId", "es"));
+		list.add(new Language("esId", "es", TIME_BEFORE));
 		storage.setUserWords(USER_ID_WITH_EMPTY_LANGUAGE, list);
 	}
 
@@ -75,7 +81,7 @@ public class WordsDBStorageTest
 	public void testSetUserWords ()
 	{
 		List<Language> languages = new ArrayList<Language>();
-		languages.add(new Language("frId3", "fr", new Word("first", "первый", 1, 1)));
+		languages.add(new Language("frId3", "fr", TIME_BEFORE, new Word("first", "первый", 1, 1)));
 
 		storage.setUserWords(USER_ID_WITHOUT_LANGUAGES, languages);
 
@@ -103,6 +109,7 @@ public class WordsDBStorageTest
 		assertEquals("Languages in '1's list", 2, first.size());
 		assertEquals("Lanugages in '2's list", 1, second.size());
 		assertEquals("Lanugages in '3's list", 0, third.size());
+		assertEquals("first language id of '1' user", LANGUAGE_ID, first.get(0).getId());
 		assertEquals("first language of '1' user", "en", first.get(0).getName());
 		assertEquals("second language of '1' user", "fr", first.get(1).getName());
 		assertEquals("first language of '2' user", "es", second.get(0).getName());
@@ -112,8 +119,8 @@ public class WordsDBStorageTest
 	public void testAddDirtyWords()
 	{
 		List<Language> languages = new ArrayList<Language>();
-		languages.add(new Language("frId3", "fr</table>", new Word("first</table>", "first", 1, 1)));
-		languages.add(new Language("frId4", "f&lt;/table&gt;", new Word("first&lt;/table&GT;", "second<>", 1, 1)));
+		languages.add(new Language("frId3", "fr</table>", TIME_BEFORE, new Word("first</table>", "first", 1, 1)));
+		languages.add(new Language("frId4", "f&lt;/table&gt;", TIME_BEFORE, new Word("first&lt;/table&GT;", "second<>", 1, 1)));
 
 		storage.setUserWords(USER_ID_WITHOUT_LANGUAGES, languages);
 
@@ -149,7 +156,7 @@ public class WordsDBStorageTest
 	public void testAddEmptyLanguage()
 	{
 		List<Language> languages = new ArrayList<Language>();
-		languages.add(new Language("frId3", "fr"));
+		languages.add(new Language("frId3", "fr", 0));
 		storage.setUserWords(USER_ID_WITHOUT_LANGUAGES, languages);
 
 		List<Language> third = storage.getUserWords(USER_ID_WITHOUT_LANGUAGES);
@@ -162,7 +169,7 @@ public class WordsDBStorageTest
 	}
 
 	@Test
-	public void testAddEmptyLanguagesList()
+	public void testAddEmptyListOfLanguages()
 	{
 		List<Language> languages = new ArrayList<Language>();
 		try
@@ -172,6 +179,68 @@ public class WordsDBStorageTest
 		catch(Exception e)
 		{
 			assertTrue("Shouldn't throw exception", false);
+		}
+	}
+
+	@Test
+	public void testGetLatestUserWords()
+	{
+		List<Language> languages = new ArrayList<Language>();
+		languages.add(new Language("getLatest1", "getLatest1", TIME_BEFORE));
+		languages.add(new Language("getLatest2", "getLatest2", TIME_AFTER));
+		languages.add(new Language(LANGUAGE_ID, "oldName", TIME_BEFORE, new Word("getLatestWord1", "getLatestWord1", 0, TIME_AFTER)));
+		
+		Language language = new Language("getLatest3", "getLatest3", TIME_AFTER);
+		language.getWords().add(new Word("getLatestWord2", "getLatestWord2", 0, TIME_BEFORE));
+		language.getWords().add(new Word("getLatestWord3", "getLatestWord3", 0, TIME_AFTER));
+
+		languages.add(language);
+
+		storage.addUserWords(USER_ID_WITH_WORDS, languages);
+
+		List<Language> result = storage.getLatestUserWords(USER_ID_WITH_WORDS, TIME_X);
+		assertEquals("There are should be three languages: " +
+						"LANGUAGE_ID with getLatestWord1, " +
+						"getLatest2 without words and " +
+						"getLatest3 with 1 word", 
+					3, result.size());
+
+		Language[] langs;
+		if(null == (langs = helpToOrderLanguages(result.get(0), result.get(1), result.get(2))))
+		{
+			if(null == (langs = helpToOrderLanguages(result.get(1), result.get(2), result.get(0))))
+			{
+				langs = helpToOrderLanguages(result.get(2), result.get(0), result.get(1));
+			}
+		}
+
+		assertNotNull(langs);
+		assertEquals(1, langs[0].getWords().size());
+		assertEquals(0, langs[1].getWords().size());
+		assertEquals(1, langs[2].getWords().size());
+	}
+
+	private Language[] helpToOrderLanguages(Language lang1, Language lang2, Language lang3)
+	{
+		if(lang1.getId().equals(LANGUAGE_ID))
+		{
+			Language[] languages = new Language[3];
+			languages[0] = lang1;
+			if(lang2.getId().equals("getLatest2"))
+			{
+				languages[1] = lang2;
+				languages[2] = lang3;
+			}
+			else
+			{
+				languages[1] = lang3;
+				languages[2] = lang2;
+			}
+			return languages;
+		}
+		else
+		{
+			return null;
 		}
 	}
 }

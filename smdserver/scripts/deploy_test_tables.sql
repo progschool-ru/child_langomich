@@ -23,6 +23,7 @@ CREATE TABLE smd_languages
 	language_id VARCHAR (36) NOT NULL,
 	name VARCHAR (80) NOT NULL,
 	user_id VARCHAR(36) NOT NULL,
+	modified BIGINT NOT NULL,
 	time_created DATETIME NOT NULL,
 	time_modified DATETIME NOT NULL,
 	PRIMARY KEY (language_id),

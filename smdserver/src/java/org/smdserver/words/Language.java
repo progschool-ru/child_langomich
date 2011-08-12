@@ -10,28 +10,34 @@ public class Language
 {
 	private String id;
 	private String name;
+	private long modified;
 	private List<Word> words = new ArrayList<Word>();
 
-	public Language (String id, String dirtyName)
+	public Language (String id, String dirtyName, long modified)
 	{
 		this.id = id;
 		this.name = cleanWord(dirtyName);
+		this.modified = modified;
 	}
-	public Language (String id, String dirtyName, Word word)
+	public Language (String id, String dirtyName, long modified, Word word)
 	{
 		this.id = id;
 		this.name = cleanWord(dirtyName);
+		this.modified = modified;
 		words.add(word);
 	}
-        public Language ()
+
+	public Language ()
 	{
 	}
+	
 	public Language (JSONObject json) throws WordsException
 	{
 		try
 		{
 			id = json.has("id") ? json.getString("id") : null;
 			name = cleanWord(json.getString("name"));
+			modified = json.has("modified") ? json.getLong("modified") : 0;
 
 			JSONArray wordJSONS = json.getJSONArray("words");
 			int length = wordJSONS.length();
@@ -60,6 +66,11 @@ public class Language
 	public void setId(String value)
 	{
 		id = value;
+	}
+
+	public long getModified()
+	{
+		return modified;
 	}
 
 	public List<Word> getWords ()

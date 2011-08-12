@@ -16,7 +16,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.smdserver.core.WebActions;
 import org.smdserver.core.WebParams;
-import org.smdserver.core.ConsoleSmdLogger;
 
 import static org.junit.Assert.*;
 
@@ -44,7 +43,7 @@ public class GetWordsActionTest extends UsersTestBase
 		wordsStorage = getTestStorageHelper().openWordsStorage(getResource(), USER_ID);
 
 		Word word = new Word(WORD_ORIG, WORD_TRAN, WORD_RATING, WORD_MODIFIED);
-		Language language = new Language(LANGUAGE_ID, LANGUAGE_NAME, word);
+		Language language = new Language(LANGUAGE_ID, LANGUAGE_NAME, WORD_MODIFIED, word);
 		List<Language> languages = new ArrayList<Language>();
 		languages.add(language);
 
