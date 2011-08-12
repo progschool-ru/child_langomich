@@ -24,6 +24,7 @@ public class WordsDBStorage implements IWordsStorage
 	private static final String ADD_WORD_QUERY     = "INSERT INTO %1$s (translation, rating, modified, language_id, original, time_created, time_modified) VALUE (?, ?, ?, ?, ?, NOW(), NOW());";
 	private static final String UPDATE_WORD_QUERY = "UPDATE %1$s SET translation=?, rating=?, modified=?, time_modified=NOW() WHERE language_id=? AND original=?;";
 	private static final String GET_ALL_WORDS    = "SELECT * FROM %1$s as w, %2$s as l WHERE l.language_id = w.language_id AND l.user_id=?;";
+	private static final String GET_ALL_WORDS_WITH_EMPTY_LANGUAGES = "SELECT * FROM %1$s as w RIGHT OUTER JOIN %2$s as l ON l.language_id = w.language_id WHERE l.user_id=?;";
 	private static final String GET_LATEST_WORDS = "SELECT * FROM %1$s as w, %2$s as l WHERE l.language_id = w.language_id AND l.user_id=? AND w.modified > ?;";
 	private static final String GET_WORDS_IN     = "SELECT original FROM %1$s WHERE language_id = ? AND original IN (%2$s);";
 	private static final String CLEAR_LANGUAGES = "DELETE FROM %1$s WHERE user_id = ?;";
@@ -120,7 +121,7 @@ public class WordsDBStorage implements IWordsStorage
 
 	public List<Language> getUserWords(String userId)
 	{
-		ISmdStatement st = createSmdStatement(GET_ALL_WORDS);
+		ISmdStatement st = createSmdStatement(GET_ALL_WORDS_WITH_EMPTY_LANGUAGES);
 		st.addString(userId);
 		return getWords(st);
 	}
@@ -284,7 +285,10 @@ public class WordsDBStorage implements IWordsStorage
 			{
 				Language language = getOrCreateLanguage(langs, set);
 				Word word = createWord(set);
-				language.getWords().add(word);
+				if(word != null)
+				{
+					language.getWords().add(word);
+				}
 				count ++;
 			}
 			return count;
@@ -310,6 +314,10 @@ public class WordsDBStorage implements IWordsStorage
 		private Word createWord(ResultSet set) throws SQLException
 		{
 			String original = set.getString("w.original");
+
+			if(original == null)
+				return null;
+
 			String translation = set.getString("w.translation");
 			int rating = set.getInt("w.rating");
 			long modified = set.getLong("w.modified");

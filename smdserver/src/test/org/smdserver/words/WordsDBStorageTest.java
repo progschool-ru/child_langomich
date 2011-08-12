@@ -19,6 +19,10 @@ public class WordsDBStorageTest
 {
 	private static final String DELETE_USERS = "DELETE FROM %1$susers;";
 
+	private static final String USER_ID_WITH_WORDS = "1";
+	private static final String USER_ID_WITH_EMPTY_LANGUAGE = "2";
+	private static final String USER_ID_WITHOUT_LANGUAGES = "3";
+
 	ISmdDB db;
 	ResourceBundle rb;
 	private WordsDBStorage storage;
@@ -34,20 +38,20 @@ public class WordsDBStorageTest
 		String prefix = rb.getString("db.tablesPrefix");
 
 		IUsersStorage us = new UsersDBStorage(db, prefix);
-		assertTrue(us.createUser("1", "lo1", "pa1"));
-		assertTrue(us.createUser("2", "lo2", "pa2"));
-		assertTrue(us.createUser("3", "lo3", "pa3"));
+		assertTrue(us.createUser(USER_ID_WITH_WORDS, "lo1", "pa1"));
+		assertTrue(us.createUser(USER_ID_WITH_EMPTY_LANGUAGE, "lo2", "pa2"));
+		assertTrue(us.createUser(USER_ID_WITHOUT_LANGUAGES, "lo3", "pa3"));
 
 		storage = new WordsDBStorage(db, prefix);
 		List<Language> list = new ArrayList<Language>();
 
 		list.add(new Language("enId1", "en", new Word("first", "первый", 1, 1)));
 		list.add(new Language("frId1", "fr", new Word("first", "первый", 1, 1)));
-		assertTrue(storage.setUserWords("1", list));
+		assertTrue(storage.setUserWords(USER_ID_WITH_WORDS, list));
 
 		list = new ArrayList<Language>();
-		list.add(new Language("esId", "es", new Word("first", "первый", 1, 1)));
-		storage.setUserWords("2", list);
+		list.add(new Language("esId", "es"));
+		storage.setUserWords(USER_ID_WITH_EMPTY_LANGUAGE, list);
 	}
 
    @After
@@ -73,12 +77,12 @@ public class WordsDBStorageTest
 		List<Language> languages = new ArrayList<Language>();
 		languages.add(new Language("frId3", "fr", new Word("first", "первый", 1, 1)));
 
-		storage.setUserWords("3", languages);
+		storage.setUserWords(USER_ID_WITHOUT_LANGUAGES, languages);
 
-		storage.setUserWords("1", new ArrayList<Language>());
+		storage.setUserWords(USER_ID_WITH_WORDS, new ArrayList<Language>());
 
-		List<Language> first = storage.getUserWords("1");
-		List<Language> third = storage.getUserWords("3");
+		List<Language> first = storage.getUserWords(USER_ID_WITH_WORDS);
+		List<Language> third = storage.getUserWords(USER_ID_WITHOUT_LANGUAGES);
 
 		assertNotNull(first);
 		assertNotNull(third);
@@ -93,10 +97,12 @@ public class WordsDBStorageTest
 	@Test
 	public void testGetUserWords ()
 	{
-		List<Language> first = storage.getUserWords("1");
-		List<Language> second = storage.getUserWords("2");
+		List<Language> first = storage.getUserWords(USER_ID_WITH_WORDS);
+		List<Language> second = storage.getUserWords(USER_ID_WITH_EMPTY_LANGUAGE);
+		List<Language> third = storage.getUserWords(USER_ID_WITHOUT_LANGUAGES);
 		assertEquals("Languages in '1's list", 2, first.size());
 		assertEquals("Lanugages in '2's list", 1, second.size());
+		assertEquals("Lanugages in '3's list", 0, third.size());
 		assertEquals("first language of '1' user", "en", first.get(0).getName());
 		assertEquals("second language of '1' user", "fr", first.get(1).getName());
 		assertEquals("first language of '2' user", "es", second.get(0).getName());
@@ -109,9 +115,9 @@ public class WordsDBStorageTest
 		languages.add(new Language("frId3", "fr</table>", new Word("first</table>", "first", 1, 1)));
 		languages.add(new Language("frId4", "f&lt;/table&gt;", new Word("first&lt;/table&GT;", "second<>", 1, 1)));
 
-		storage.setUserWords("3", languages);
+		storage.setUserWords(USER_ID_WITHOUT_LANGUAGES, languages);
 
-		List<Language> third = storage.getUserWords("3");
+		List<Language> third = storage.getUserWords(USER_ID_WITHOUT_LANGUAGES);
 		
 		Language firstLanguage = third.get(0);
 		Language secondLanguage;
@@ -137,5 +143,35 @@ public class WordsDBStorageTest
 		assertEquals("first&lt;/table&GT;", secondWord.getOriginal());	
 		assertEquals("second&lt;&gt;", secondWord.getTranslation());	
 		
+	}
+
+	@Test
+	public void testAddEmptyLanguage()
+	{
+		List<Language> languages = new ArrayList<Language>();
+		languages.add(new Language("frId3", "fr"));
+		storage.setUserWords(USER_ID_WITHOUT_LANGUAGES, languages);
+
+		List<Language> third = storage.getUserWords(USER_ID_WITHOUT_LANGUAGES);
+
+		assertEquals(1, third.size());
+
+		Language language = third.get(0);
+		assertEquals("fr", language.getName());
+		assertEquals(0, language.getWords().size());
+	}
+
+	@Test
+	public void testAddEmptyLanguagesList()
+	{
+		List<Language> languages = new ArrayList<Language>();
+		try
+		{
+			storage.setUserWords(USER_ID_WITHOUT_LANGUAGES, languages);
+		}
+		catch(Exception e)
+		{
+			assertTrue("Shouldn't throw exception", false);
+		}
 	}
 }
