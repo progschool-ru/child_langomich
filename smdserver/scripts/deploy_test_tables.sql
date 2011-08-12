@@ -18,6 +18,17 @@ CREATE TABLE smd_users
 	PRIMARY KEY (user_id)
 ) ENGINE = InnoDB CHARACTER SET = utf8;
 
+CREATE TABLE smd_devices
+(
+	device_id VARCHAR (36) NOT NULL,
+	user_id VARCHAR (36) NOT NULL,
+	last_connection BIGINT NOT NULL,
+	time_created DATETIME NOT NULL,
+	time_modified DATETIME NOT NULL,
+	PRIMARY KEY (device_id),
+	FOREIGN KEY (user_id) REFERENCES smd_users (user_id) ON DELETE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8;
+
 CREATE TABLE smd_languages
 (
 	language_id VARCHAR (36) NOT NULL,

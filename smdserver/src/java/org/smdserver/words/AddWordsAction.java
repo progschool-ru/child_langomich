@@ -1,7 +1,6 @@
 package org.smdserver.words;
 
 import com.ccg.util.JavaString;
-import java.text.ParseException;
 import org.smdserver.actionssystem.SessionKeys;
 import javax.servlet.http.HttpServletRequest;
 import org.json.JSONException;
@@ -10,7 +9,10 @@ import org.json.JSONArray;
 import org.smdserver.actionssystem.ActionParams;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
 import org.smdserver.auth.CheckLoginAction;
+import org.smdserver.users.IUsersStorage;
 
 public class AddWordsAction extends CheckLoginAction
 {	
@@ -22,47 +24,48 @@ public class AddWordsAction extends CheckLoginAction
 		{ 
 			JSONObject json = new JSONObject(JavaString.decode(dataString));
 			
-			long lastModified = json.has("lastModified") ? json.getLong("lastModified") : 0;
-			int numberOfTiming = json.has("numberOfTiming") ? json.getInt("numberOfTiming") : 0;
-			long currentDeviceTime = json.has("currentDeviceTime") ? json.getLong("currentDeviceTime") : 0;
+			long lastConnection = 0;
+			long currentConnection = new Date().getTime();
+
+			String deviceId = json.has(ActionParams.DEVICE_ID) ? json.getString(ActionParams.DEVICE_ID) : null;
 
 			IWordsStorage storage = getServletContext().getWordsStorage();
-			if(lastModified != 0)
+			IUsersStorage usersStorage = getServletContext().getUsersStorage();
+			String userId = getUser().getUserId();
+			
+			if(ActionParams.GIVE_ME_DEVICE_ID.equals(deviceId))
 			{
-				List<Language> languages;
-				if(numberOfTiming == 0)
-					languages = storage.getCopyUserWords(getUser().getUserId());
-				else
-					languages = storage.getCopyUserWords(getUser().getUserId(), lastModified);
-
-				setAnswerParam(ActionParams.LANGUAGES, languages);
-				setAnswerParam("mobile", "true");
+				deviceId = UUID.randomUUID().toString(); //TODO: (3.low) [#26069]
+				usersStorage.createDevice(userId, deviceId, currentConnection);
+			}
+			else if(deviceId != null)
+			{
+				lastConnection = usersStorage.getLastConnection(userId, deviceId);
+				usersStorage.setLastConnection(userId, deviceId, currentConnection);
 			}
 
-			List<Language> languages = parseJSON(json.getJSONArray(ActionParams.LANGUAGES));
-			storage.addUserWords(getUser().getUserId(), languages, currentDeviceTime);
-			setAnswerParam(ActionParams.SUCCESS, true);
+			if(lastConnection >= 0)
+			{
+				List<Language> responseLanguages = storage.getLatestUserWords(userId, lastConnection);
+				List<Language> requestLanguages = parseJSON(json.getJSONArray(ActionParams.LANGUAGES));
+				storage.addUserWords(userId, requestLanguages, currentConnection);
 
-			languages = storage.getUserWords(getUser().getUserId());
-			ArrayList al = new ArrayList();
-			for(int i = 0; i < languages.size();i++)
-				al.add(languages.get(i));
-			request.getSession().setAttribute(SessionKeys.LANGUAGES, al);
-		}
-		catch(JSONException e)
-		{
-			setAnswerParam(ActionParams.SUCCESS, false);
-			setAnswerParam(ActionParams.MESSAGE, e.getMessage());
-		}
-		catch(WordsException e)
-		{
-			setAnswerParam(ActionParams.SUCCESS, false);
-			setAnswerParam(ActionParams.MESSAGE, e.getMessage());
-		}
-		catch(ParseException e)
-		{
+				setAnswerParam(ActionParams.LANGUAGES, responseLanguages);
+				setAnswerParam(ActionParams.DEVICE_ID, deviceId);
+				setAnswerParam(ActionParams.SUCCESS, true);
+
+				List<Language> languages = storage.getUserWords(userId);
+				request.getSession().setAttribute(SessionKeys.LANGUAGES, languages);//TODO: (3.low) [#26599]
+			}
+			else
+			{
 				setAnswerParam(ActionParams.SUCCESS, false);
-				setAnswerParam(ActionParams.MESSAGE, e.getMessage());
+			}
+		}
+		catch(Exception e) //TODO: (3.low) [#25387]
+		{
+			setAnswerParam(ActionParams.SUCCESS, false);
+			setAnswerParam(ActionParams.MESSAGE, e.getMessage());
 		}
 		return null;
 	}

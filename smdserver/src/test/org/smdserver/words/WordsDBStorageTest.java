@@ -51,13 +51,13 @@ public class WordsDBStorageTest
 		storage = new WordsDBStorage(db, prefix);
 		List<Language> list = new ArrayList<Language>();
 
-		list.add(new Language(LANGUAGE_ID, "en", TIME_BEFORE, new Word("first", "первый", 1, 1)));
-		list.add(new Language("frId1", "fr", TIME_BEFORE, new Word("first", "первый", 1, 1)));
-		assertTrue(storage.setUserWords(USER_ID_WITH_WORDS, list));
+		list.add(new Language(LANGUAGE_ID, "en", new Word("first", "первый", 1)));
+		list.add(new Language("frId1", "fr", new Word("first", "первый", 1)));
+		assertTrue(storage.setUserWords(USER_ID_WITH_WORDS, list, TIME_BEFORE));
 
 		list = new ArrayList<Language>();
-		list.add(new Language("esId", "es", TIME_BEFORE));
-		storage.setUserWords(USER_ID_WITH_EMPTY_LANGUAGE, list);
+		list.add(new Language("esId", "es"));
+		storage.setUserWords(USER_ID_WITH_EMPTY_LANGUAGE, list, TIME_BEFORE);
 	}
 
    @After
@@ -81,7 +81,7 @@ public class WordsDBStorageTest
 	public void testSetUserWords ()
 	{
 		List<Language> languages = new ArrayList<Language>();
-		languages.add(new Language("frId3", "fr", TIME_BEFORE, new Word("first", "первый", 1, 1)));
+		languages.add(new Language("frId3", "fr", new Word("first", "первый", 1)));
 
 		storage.setUserWords(USER_ID_WITHOUT_LANGUAGES, languages);
 
@@ -119,8 +119,8 @@ public class WordsDBStorageTest
 	public void testAddDirtyWords()
 	{
 		List<Language> languages = new ArrayList<Language>();
-		languages.add(new Language("frId3", "fr</table>", TIME_BEFORE, new Word("first</table>", "first", 1, 1)));
-		languages.add(new Language("frId4", "f&lt;/table&gt;", TIME_BEFORE, new Word("first&lt;/table&GT;", "second<>", 1, 1)));
+		languages.add(new Language("frId3", "fr</table>", new Word("first</table>", "first", 1)));
+		languages.add(new Language("frId4", "f&lt;/table&gt;", new Word("first&lt;/table&GT;", "second<>", 1)));
 
 		storage.setUserWords(USER_ID_WITHOUT_LANGUAGES, languages);
 
@@ -156,7 +156,7 @@ public class WordsDBStorageTest
 	public void testAddEmptyLanguage()
 	{
 		List<Language> languages = new ArrayList<Language>();
-		languages.add(new Language("frId3", "fr", 0));
+		languages.add(new Language("frId3", "fr"));
 		storage.setUserWords(USER_ID_WITHOUT_LANGUAGES, languages);
 
 		List<Language> third = storage.getUserWords(USER_ID_WITHOUT_LANGUAGES);
@@ -185,18 +185,24 @@ public class WordsDBStorageTest
 	@Test
 	public void testGetLatestUserWords()
 	{
-		List<Language> languages = new ArrayList<Language>();
-		languages.add(new Language("getLatest1", "getLatest1", TIME_BEFORE));
-		languages.add(new Language("getLatest2", "getLatest2", TIME_AFTER));
-		languages.add(new Language(LANGUAGE_ID, "oldName", TIME_BEFORE, new Word("getLatestWord1", "getLatestWord1", 0, TIME_AFTER)));
+		List<Language> languagesB = new ArrayList<Language>();
+		List<Language> languagesA = new ArrayList<Language>();
+		List<Language> languagesAA = new ArrayList<Language>();
+		languagesB.add(new Language("getLatest1", "getLatest1"));
+		languagesA.add(new Language("getLatest2", "getLatest2"));
+		languagesA.add(new Language(LANGUAGE_ID, "oldName", new Word("getLatestWord1", "getLatestWord1", 0)));
 		
-		Language language = new Language("getLatest3", "getLatest3", TIME_AFTER);
-		language.getWords().add(new Word("getLatestWord2", "getLatestWord2", 0, TIME_BEFORE));
-		language.getWords().add(new Word("getLatestWord3", "getLatestWord3", 0, TIME_AFTER));
+		Language languageA = new Language("getLatest3", "getLatest3");
+		Language languageAA = new Language("getLatest3", "getLatest3");
+		languageAA.getWords().add(new Word("getLatestWord2", "getLatestWord2", 0));
+		languageA.getWords().add(new Word("getLatestWord3", "getLatestWord3", 0));
 
-		languages.add(language);
+		languagesA.add(languageA);
+		languagesAA.add(languageAA);
 
-		storage.addUserWords(USER_ID_WITH_WORDS, languages);
+		storage.addUserWords(USER_ID_WITH_WORDS, languagesB, TIME_BEFORE);
+		storage.addUserWords(USER_ID_WITH_WORDS, languagesA, TIME_AFTER);
+		storage.addUserWords(USER_ID_WITH_WORDS, languagesAA, TIME_BEFORE);
 
 		List<Language> result = storage.getLatestUserWords(USER_ID_WITH_WORDS, TIME_X);
 		assertEquals("There are should be three languages: " +

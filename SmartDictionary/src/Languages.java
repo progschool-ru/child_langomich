@@ -1,12 +1,9 @@
-import java.util.Date;
-
 public class Languages extends Records
 {
 	private final char ID_PREFIX = '_';
 	private final int LANGUAGE_NAME = SINGLE_RECORD;
 	private final int LANGUAGE_ID   = LANGUAGE_NAME + 1;
-	private final int LANGUAGE_MODIFIED   = LANGUAGE_NAME + 2;
-	private final int THE_LAST_COLUMN = LANGUAGE_MODIFIED;
+	private final int THE_LAST_COLUMN = LANGUAGE_ID;
 	
         public final String NAME = "Languages";
 
@@ -66,14 +63,14 @@ public class Languages extends Records
 			}
 		}
 		
-		String [] languageRecord = {languageName, languageId, Long.toString(new Date().getTime())};
+		String [] languageRecord = {languageName, languageId};
 		addRecord(languageRecord);
 		return languageId;
 	}
 	
-	public void addLanguage(String languageName, String languageId, long modified)
+	public void addLanguage(String languageName, String languageId)
 	{
-		String[] languageRecord = {languageName, languageId, Long.toString(modified)};
+		String[] languageRecord = {languageName, languageId};
 		Language[] languages = getLanguages();
 
 		for(int i = 0; i < languages.length; i++)

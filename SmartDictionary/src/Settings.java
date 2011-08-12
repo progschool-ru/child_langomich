@@ -10,6 +10,7 @@ public class Settings extends Records
         public final int PASSWORD = 6;
         public final int URL = 7;
         public final int TEXT = 8;
+		public final int DEVICE_ID = 9;
 
         public final String NAME = "Settings";
 
@@ -33,6 +34,8 @@ public class Settings extends Records
                 addRecord("lang.omich.net");// TODO: (3.low) хорошо бы вынести эту настройку в какой-нибудь config.properties файл.
             if(getRecord(TEXT, SINGLE_RECORD) == null)
                 addRecord("null");
+            if(getRecord(DEVICE_ID, SINGLE_RECORD) == null)
+                addRecord("null");
         }
         public void setNumberOfWords(int numberOfWords)
         {
@@ -45,6 +48,22 @@ public class Settings extends Records
                 return Integer.parseInt(record);
             return 1;
         }
+
+		public void setDeviceId(String deviceId)
+		{
+			setRecord(deviceId, DEVICE_ID);
+		}
+
+		public String getDeviceId()
+		{
+			String record = getRecord(DEVICE_ID, SINGLE_RECORD);
+			if(record != null && !record.equals("null"))
+			{
+				return record;
+			}
+			return "giveMeDeviceId";
+		}
+
         public void setLanguage(String language)
         {
             setRecord(language, LANGUAGE);

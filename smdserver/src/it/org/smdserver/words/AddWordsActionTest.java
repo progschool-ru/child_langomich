@@ -58,8 +58,8 @@ public class AddWordsActionTest extends UsersTestBase
 	{
 		wordsStorage = getTestStorageHelper().openWordsStorage(getResource(), USER_ID);
 
-		Word word = new Word(WORD_ORIG, WORD_TRAN, WORD_RATING, WORD_MODIFIED);
-		Language language = new Language(LANGUAGE_ID, LANGUAGE_NAME, WORD_MODIFIED, word);
+		Word word = new Word(WORD_ORIG, WORD_TRAN, WORD_RATING);
+		Language language = new Language(LANGUAGE_ID, LANGUAGE_NAME, word);
 		List<Language> languages = new ArrayList<Language>();
 		languages.add(language);
 		wordsStorage.setUserWords(USER_ID, languages);
@@ -91,8 +91,7 @@ public class AddWordsActionTest extends UsersTestBase
 		String param = "{\"languages\":[{\"name\":\"" + LANGUAGE_NAME2 + "\",\"words\":" +
 				"[{\"original\":\"" + WORD_ORIG +
 				"\",\"translation\":\"" + WORD_TRAN +
-				"\",\"rating\":" + WORD_RATING +
-				",\"modified\":" + WORD_MODIFIED + "}]}]}";
+				"\",\"rating\":" + WORD_RATING + "}]}]}";
 		addReq.setParameter(WebParams.DATA, JavaString.encode(param));
 
 		JSONObject addJSON = getJSONResource(wc, addReq);
@@ -116,7 +115,6 @@ public class AddWordsActionTest extends UsersTestBase
 		assertEquals(WORD_ORIG, word.getOriginal());
 		assertEquals(WORD_TRAN, word.getTranslation());
 		assertEquals(WORD_RATING, word.getRating());
-		assertEquals(WORD_MODIFIED, word.getModified());
 	}
 
 	@Test
@@ -127,8 +125,7 @@ public class AddWordsActionTest extends UsersTestBase
 				"\",\"name\":\"" + LANGUAGE_NAME + "\",\"words\":" +
 				"[{\"original\":\"" + WORD_ORIG2 +
 				"\",\"translation\":\"" + WORD_TRAN2 +
-				"\",\"rating\":" + WORD_RATING2 +
-				",\"modified\":" + WORD_MODIFIED2 + "}]}]}";
+				"\",\"rating\":" + WORD_RATING2 + "}]}]}";
 		addReq.setParameter(WebParams.DATA, JavaString.encode(param));
 		JSONObject addJSON = getJSONResource(wc, addReq);
 		assertTrue(addJSON.getBoolean(WebParams.SUCCESS));
@@ -144,7 +141,6 @@ public class AddWordsActionTest extends UsersTestBase
 		assertEquals(WORD_ORIG2, word.getOriginal());
 		assertEquals(WORD_TRAN2, word.getTranslation());
 		assertEquals(WORD_RATING2, word.getRating());
-		assertEquals(WORD_MODIFIED2, word.getModified());
 	}
 
 	@Test
@@ -155,8 +151,7 @@ public class AddWordsActionTest extends UsersTestBase
 				"\",\"name\":\"" + LANGUAGE_NAME + "\",\"words\":" +
 				"[{\"original\":\"" + WORD_ORIG +
 				"\",\"translation\":\"" + WORD_TRAN2 +
-				"\",\"rating\":" + WORD_RATING2 +
-				",\"modified\":" + WORD_MODIFIED2 + "}]}]}";
+				"\",\"rating\":" + WORD_RATING2 + "}]}]}";
 		addReq.setParameter(WebParams.DATA, JavaString.encode(param));
 		JSONObject addJSON = getJSONResource(wc, addReq);
 		assertTrue(addJSON.getBoolean(WebParams.SUCCESS));
@@ -170,7 +165,6 @@ public class AddWordsActionTest extends UsersTestBase
 		assertEquals(WORD_ORIG, word.getOriginal());
 		assertEquals(WORD_TRAN2, word.getTranslation());
 		assertEquals(WORD_RATING2, word.getRating());
-		assertEquals(WORD_MODIFIED2, word.getModified());
 	}
 
 	@Test
@@ -181,12 +175,11 @@ public class AddWordsActionTest extends UsersTestBase
 				"\",\"name\":\"" + LANGUAGE_NAME + "\",\"words\":" +
 				"[{\"original\":\"" + WORD_ORIG2 +
 				"\",\"translation\":\"" + WORD_TRAN2 +
-				"\",\"rating\":" + WORD_RATING2 +
-				",\"modified\":" + WORD_MODIFIED2 + "}," +
+				"\",\"rating\":" + WORD_RATING2 + "}," +
 				"{\"original\":\"" + WORD_ORIG +
 				"\",\"translation\":\"" + WORD_TRAN2 +
 				"\",\"rating\":" + WORD_RATING +
-				",\"modified\":" + WORD_MODIFIED2 + "}]}]}";
+				"}]}]}";
 		addReq.setParameter(WebParams.DATA, JavaString.encode(param));
 		JSONObject addJSON = getJSONResource(wc, addReq);
 		assertTrue(addJSON.getBoolean(WebParams.SUCCESS));
@@ -202,7 +195,6 @@ public class AddWordsActionTest extends UsersTestBase
 		assertEquals(WORD_ORIG, wordModified.getOriginal());
 		assertEquals(WORD_TRAN2, wordModified.getTranslation());
 		assertEquals(WORD_RATING, wordModified.getRating());
-		assertEquals(WORD_MODIFIED2, wordModified.getModified());
 
 		Word wordAdded = language.getWords().get(0).getOriginal().equals(WORD_ORIG2)
 					? language.getWords().get(0)
@@ -211,6 +203,5 @@ public class AddWordsActionTest extends UsersTestBase
 		assertEquals(WORD_ORIG2, wordAdded.getOriginal());
 		assertEquals(WORD_TRAN2, wordAdded.getTranslation());
 		assertEquals(WORD_RATING2, wordAdded.getRating());
-		assertEquals(WORD_MODIFIED2, wordAdded.getModified());
 	}
 }

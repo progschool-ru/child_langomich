@@ -52,7 +52,7 @@ public class Timing extends Thread
                 hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
                 hc.setRequestProperty("Cookie", c);
 
-                query = "data="+getData(currentTime);
+	            query = "data="+getData(settings.getDeviceId());
 
                 os = hc.openOutputStream();
                 os.write(query.getBytes());
@@ -65,7 +65,7 @@ public class Timing extends Thread
                 is.close();
 				hc.close();
 
-                text = "success - " + setData(JavaString.decode(new String(buff)));
+                text = "success - " + setData(JavaString.decode(new String(buff)), currentTime);
                 settings.setNumberOfTiming(settings.getNumberOfTiming()+1);
                 settings.setLastTiming(currentTime);
                 settings.setText(text);
@@ -81,7 +81,7 @@ public class Timing extends Thread
         return text;
     }
 	
-	private String getData(long currentTime)
+	private String getData(String deviceId)
 	{
         JSONObject main = new JSONObject();
         try
@@ -141,21 +141,17 @@ public class Timing extends Thread
 				{
 					JSONLanguage.put("id", language.getId());
 				}			
-				JSONLanguage.put("name", language.getName());
-				JSONLanguage.put("modified", language.getModified());
-				
+				JSONLanguage.put("name", language.getName());				
                 JSONLanguage.put("words", words);
                 JSONLanguages.put(JSONLanguage);//TODO: (3.low) Возложить функцию конвертирования в JSON на сам класс Language. Чтобы было как-то так: JSON.encode(language); или JSONLanguages.put(language);
             }
             main.put("languages", JSONLanguages);
-            main.put("lastModified", settings.getLastTiming());
-			main.put("currentDeviceTime", currentTime);
-            main.put("numberOfTiming", settings.getNumberOfTiming());
+			main.put("deviceId", deviceId);
         }
         catch(JSONException e){}
         return JavaString.encode(main.toString());
     }
-    private String setData(String data)
+    private String setData(String data, long currentTime)
 	{
         try
         {
@@ -167,20 +163,34 @@ public class Timing extends Thread
                 JSONArray words = JSONLanguage.getJSONArray("words");
                 String languageName = JSONLanguage.getString("name");
 				String languageId = JSONLanguage.getString("id");
-				long languageModified = JSONLanguage.getLong("modified");
                 if(settings.getLanguage().equals("null"))
                     settings.setLanguage(languageId);
-                languages.addLanguage(languageName, languageId, languageModified);
+                languages.addLanguage(languageName, languageId);
                 dictionary = new Dictionary(languageId);
                 for(int j = 0; j < words.length();j++)
                 {
                     JSONObject word = words.getJSONObject(j);
-                    dictionary.addRecord(word.getString("original"),word.getString("translation"),word.getInt("rating"),word.getLong("modified"));
+                    dictionary.addRecord(word.getString("original"),
+							             word.getString("translation"),
+										 word.getInt("rating"),
+										 currentTime);
                 }
             }
+			if(json.has("deviceId"))
+			{
+				settings.setDeviceId(json.getString("deviceId"));
+			}
             return  json.get("success").toString();
         }
-        catch(JSONException e){}
+        catch(JSONException e)
+		{
+			//TODO: (3.low) Предлагаю устроить в приложении хранилище 
+			// последних исключений с описаниями и при синхронизации отправлять их на сервер. 
+			// Так мы получим богатое подспорье для поиска и исправления багов.
+			// 
+			// Нужно организовать сбор этих данных во всех местах, 
+			// где сейчас исключение молча проглатывается.
+		}
         return null;
     }
 }

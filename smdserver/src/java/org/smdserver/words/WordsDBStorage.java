@@ -3,6 +3,7 @@ package org.smdserver.words;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -43,7 +44,7 @@ public class WordsDBStorage implements IWordsStorage
 		wordsTable = prefix + WORDS_TABLE;
 	}
 	
-	public boolean addUserWords(String userId, List<Language> languages, long currentDeviceTime)
+	public boolean addUserWords(String userId, List<Language> languages, long currentTime)
 	{
 		try
 		{
@@ -74,7 +75,7 @@ public class WordsDBStorage implements IWordsStorage
 					st.addString(languageId);
 					st.addString(language.getName());
 					st.addString(userId);
-					st.addLong(currentDeviceTime + 1);
+					st.addLong(currentTime + 1);// Единицу добавляем, чтобы извлечь его при следующем запросе.
 					
 					language.setId(languageId);
 					existedWords = new HashSet<String>();
@@ -94,7 +95,7 @@ public class WordsDBStorage implements IWordsStorage
 								? updateWordIndex : addWordIndex);
 					st.addString(word.getTranslation());
 					st.addInteger(word.getRating());
-					st.addLong(word.getModified());
+					st.addLong(currentTime);
 					st.addString(languageId);
 					st.addString(word.getOriginal());
 				}
@@ -107,16 +108,6 @@ public class WordsDBStorage implements IWordsStorage
 		{
 			return false;
 		}
-	}
-
-	public List<Language> getCopyUserWords(String userId)
-	{
-		return getUserWords(userId);
-	}
-
-	public List<Language> getCopyUserWords(String userId, long lastModified) // TODO: (2.medium) Думаю, что от этого метода надо избавиться.
-	{
-		return getLatestUserWords(userId, lastModified);
 	}
 
 	public List<Language> getLatestUserWords(String userId, long lastModified)
@@ -135,7 +126,7 @@ public class WordsDBStorage implements IWordsStorage
 		return getWords(st);
 	}
 
-	public boolean setUserWords(String userId, List<Language> languages)
+	public boolean setUserWords(String userId, List<Language> languages, long currentTime)
 	{
 		ISmdStatement st = new SmdStatement();
 
@@ -152,7 +143,7 @@ public class WordsDBStorage implements IWordsStorage
 			st.addString(language.getId());
 			st.addString(language.getName());
 			st.addString(userId);
-			st.addLong(language.getModified());
+			st.addLong(currentTime);
 
 			List<Word> words = language.getWords();
 			for(Word word : words)
@@ -160,7 +151,7 @@ public class WordsDBStorage implements IWordsStorage
 				st.startSet(addWordIndex);
 				st.addString(word.getTranslation());
 				st.addInteger(word.getRating());
-				st.addLong(word.getModified());				
+				st.addLong(currentTime);
 				st.addString(language.getId());
 				st.addString(word.getOriginal());
 			}
@@ -175,6 +166,11 @@ public class WordsDBStorage implements IWordsStorage
 		{
 			return false;
 		}
+	}
+
+	public boolean setUserWords(String userId, List<Language> languages)
+	{
+		return setUserWords(userId, languages, new Date().getTime());
 	}
 
 	private List<Language> getWords(ISmdStatement st)
@@ -314,7 +310,7 @@ public class WordsDBStorage implements IWordsStorage
 			}
 			else
 			{
-				Language language = new Language(languageId, set.getString("l.name"), set.getLong("l.modified"));
+				Language language = new Language(languageId, set.getString("l.name"));
 				langs.put(languageId, language);
 				languages.add(language);
 				return language;
@@ -330,9 +326,8 @@ public class WordsDBStorage implements IWordsStorage
 
 			String translation = set.getString("w.translation");
 			int rating = set.getInt("w.rating");
-			long modified = set.getLong("w.modified");
 
-			Word word = new Word(original, translation, rating, modified);
+			Word word = new Word(original, translation, rating);
 			return word;
 		}
 	}

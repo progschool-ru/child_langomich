@@ -4,7 +4,6 @@ import org.smdserver.core.UsersTestBase;
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebRequest;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
@@ -42,12 +41,12 @@ public class GetWordsActionTest extends UsersTestBase
 
 		wordsStorage = getTestStorageHelper().openWordsStorage(getResource(), USER_ID);
 
-		Word word = new Word(WORD_ORIG, WORD_TRAN, WORD_RATING, WORD_MODIFIED);
-		Language language = new Language(LANGUAGE_ID, LANGUAGE_NAME, WORD_MODIFIED, word);
+		Word word = new Word(WORD_ORIG, WORD_TRAN, WORD_RATING);
+		Language language = new Language(LANGUAGE_ID, LANGUAGE_NAME, word);
 		List<Language> languages = new ArrayList<Language>();
 		languages.add(language);
 
-		wordsStorage.addUserWords(USER_ID, languages);
+		wordsStorage.addUserWords(USER_ID, languages, WORD_MODIFIED);
 	}
 
 	@AfterClass
@@ -114,6 +113,5 @@ public class GetWordsActionTest extends UsersTestBase
 		assertEquals(WORD_ORIG, word.getOriginal());
 		assertEquals(WORD_TRAN, word.getTranslation());
 		assertEquals(WORD_RATING, word.getRating());
-		assertEquals(WORD_MODIFIED, word.getModified());
 	}
 }

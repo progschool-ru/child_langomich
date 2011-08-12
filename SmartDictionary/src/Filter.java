@@ -29,7 +29,7 @@ public class Filter implements RecordFilter{
             if(!language.equals(search))
                 return false;
             if(lastTiming != 1)
-                if(lastTiming > Long.parseLong(lastModified))
+                if(lastTiming >= Long.parseLong(lastModified))
                     return false;
         }
         catch (IOException ioe) {}

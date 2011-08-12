@@ -8,14 +8,12 @@ public class Word
 	private String original;
 	private String translation;
 	private int rating;
-	private long modified;
 
-	public Word (String dirtyOriginal, String dirtyTranslation, int rating, long modified)
+	public Word (String dirtyOriginal, String dirtyTranslation, int rating)
 	{
 		this.original = cleanWord(dirtyOriginal);
 		this.translation = cleanWord(dirtyTranslation);
 		this.rating = rating;
-		this.modified = modified;
 	}
 	public Word (JSONObject json) throws WordsException
 	{
@@ -24,7 +22,6 @@ public class Word
 			this.original = cleanWord(json.getString("original"));
 			this.translation = cleanWord(json.getString("translation"));
 			this.rating = json.getInt("rating");
-			this.modified = json.getLong("modified");
 		}
 		catch(JSONException e)
 		{
@@ -32,10 +29,6 @@ public class Word
 		}
 	}
 
-	public long getModified ()
-	{
-		return modified;
-	}
 	public String getOriginal ()
 	{
 		return original;
