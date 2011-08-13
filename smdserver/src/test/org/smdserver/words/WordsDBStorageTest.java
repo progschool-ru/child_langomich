@@ -24,6 +24,10 @@ public class WordsDBStorageTest
 	private static final String USER_ID_WITHOUT_LANGUAGES = "3";
 
 	private static final String LANGUAGE_ID = "enId1";
+	private static final String WORD_ORIGINAL = "enId1Word";
+	private static final String WORD_TRANSLATION = "enId1WordTrans";
+
+	private static final String EMPTY_LANGUAGE_ID = "esId";
 
 	private static final long TIME_BEFORE = 10000;
 	private static final long TIME_X      = 20000;
@@ -51,12 +55,12 @@ public class WordsDBStorageTest
 		storage = new WordsDBStorage(db, prefix);
 		List<Language> list = new ArrayList<Language>();
 
-		list.add(new Language(LANGUAGE_ID, "en", new Word("first", "первый", 1)));
+		list.add(new Language(LANGUAGE_ID, "en", new Word(WORD_ORIGINAL, WORD_TRANSLATION, 1)));
 		list.add(new Language("frId1", "fr", new Word("first", "первый", 1)));
 		assertTrue(storage.setUserWords(USER_ID_WITH_WORDS, list, TIME_BEFORE));
 
 		list = new ArrayList<Language>();
-		list.add(new Language("esId", "es"));
+		list.add(new Language(EMPTY_LANGUAGE_ID, "es"));
 		storage.setUserWords(USER_ID_WITH_EMPTY_LANGUAGE, list, TIME_BEFORE);
 	}
 
@@ -180,6 +184,26 @@ public class WordsDBStorageTest
 		{
 			assertTrue("Shouldn't throw exception", false);
 		}
+	}
+
+	@Test
+	public void testEditWords()
+	{
+		List<Language> languages = new ArrayList<Language>();
+		languages.add(new Language(EMPTY_LANGUAGE_ID, "oldName", new Word("someWord", "someTranslation", 0)));
+		languages.add(new Language("someNewId", "someName"));
+		storage.addUserWords(USER_ID_WITH_EMPTY_LANGUAGE, languages, TIME_BEFORE);
+
+		languages = new ArrayList<Language>();
+		languages.add(new Language("someNewId", "someName"));
+		languages.add(new Language(EMPTY_LANGUAGE_ID, "oldName", new Word("someWord", "someOtherTranslation", 0)));
+		storage.addUserWords(USER_ID_WITH_EMPTY_LANGUAGE, languages, TIME_AFTER);
+
+		List<Language> result = storage.getLatestUserWords(USER_ID_WITH_EMPTY_LANGUAGE, TIME_X);
+		assertEquals(1, result.size());
+		List<Word> words = result.get(0).getWords();
+		assertEquals(1, words.size());
+		assertEquals("someOtherTranslation", words.get(0).getTranslation());
 	}
 
 	@Test

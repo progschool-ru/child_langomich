@@ -51,6 +51,7 @@ public class WordsDBStorage implements IWordsStorage
 			Set<String> existedLanguages = getExistedObjects(
 					languages, 
 					GET_LANGUAGES_IN,
+					languagesTable,
 					new LanguageInVisitor(),
 					null);
 
@@ -84,6 +85,7 @@ public class WordsDBStorage implements IWordsStorage
 				{
 					existedWords = getExistedObjects(language.getWords(),
 							GET_WORDS_IN,
+							wordsTable,
 							new WordInVisitor(),
 							languageId);
 				}
@@ -207,6 +209,7 @@ public class WordsDBStorage implements IWordsStorage
 	}
 	
 	private Set<String> getExistedObjects(List list, String template, 
+			                              String table,
 			                              IInVisitor vis, String additionalParam)
 			                      throws DbException
 	{
@@ -216,7 +219,7 @@ public class WordsDBStorage implements IWordsStorage
 		}
 		
 		String inList = getInTemplate(list.size());
-		String query = String.format(template, wordsTable, inList);
+		String query = String.format(template, table, inList);
 		ISmdStatement st = new SmdStatement();
 		st.addQuery(query);
 		st.startSet(0);
