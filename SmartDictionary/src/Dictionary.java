@@ -67,6 +67,9 @@ public class Dictionary extends Records
             return getNumRecords();
         }
         public void newRecord(String original, String translation, int rating)
+				//TODO: (3.low) Следует более тчательно продумать названия setRecord, addRecord, newRecord.
+				// Возможно, следует сделать их более длинными, но более раскрывающими суть,
+				// потому что совсем не очевидно, чем addRecord отличается от newRecord, причём именно в эту сторону.
 	{
             int id = getId(original);
             if(id != 0)
@@ -85,7 +88,7 @@ public class Dictionary extends Records
                 }
             }
             else
-                newRecord(original, translation, rating, lastModified);
+                addRecord(original, translation, rating, lastModified);
         }
         public void addRecord(String original, String translation, int rating)
 	{
@@ -148,10 +151,13 @@ public class Dictionary extends Records
         }
         public int getId(String original)
 	{
+		String [] originals = getColumn(ORIGINAL);
+		if(originals == null)
+		{
+			return 0;
+		}
+
 		int id = 0;
-                if(getColumn(ORIGINAL) == null)     
-                    return id;
-                String [] originals = getColumn(ORIGINAL);
 		for(int i = 0;i < originals.length; i++ ) {
                     if(originals[i].equals(original)){
                         id = getId(i+1);

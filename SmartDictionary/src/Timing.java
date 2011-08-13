@@ -166,11 +166,15 @@ public class Timing extends Thread
                 if(settings.getLanguage().equals("null"))
                     settings.setLanguage(languageId);
                 languages.addLanguage(languageName, languageId);
-                dictionary = new Dictionary(languageId);
+                dictionary = new Dictionary(languageId);//TODO: (2.medium) Вообще, я бы попробовал избавиться
+				//  от повсеместного создания этих хранилищ.
+				// Пусть бы они создавались один раз в одном месте и передавались бы дочерним классам через параметры.
+				// Если у нас Dictionary один на всю программу, то мы бы могли наладить кэширование,
+				// например, через java.util.Hashtable. Что дало бы нам выигрыш в скорости при доступе к использованным ранее данным.
                 for(int j = 0; j < words.length();j++)
                 {
                     JSONObject word = words.getJSONObject(j);
-                    dictionary.addRecord(word.getString("original"),
+                    dictionary.newRecord(word.getString("original"),
 							             word.getString("translation"),
 										 word.getInt("rating"),
 										 currentTime);
