@@ -31,13 +31,12 @@ public class LoginActionTest extends UsersTestBase
 		UsersTestBase.tearDownClass();
 	}
 
-    @Before
-    public void setUp()
+	@Before
+	public void setUp()
 	{
-		String url = getActionUrl();
 		wc = new WebConversation();
-		req = new GetMethodWebRequest(url + WebActions.LOGIN);
-    }
+		req = createActionRequest(WebActions.LOGIN);
+	}
 
 	@After
 	public void tearDown()

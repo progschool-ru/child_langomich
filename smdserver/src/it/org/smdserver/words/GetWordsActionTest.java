@@ -57,12 +57,12 @@ public class GetWordsActionTest extends UsersTestBase
 		wordsStorage = null;
 	}
 
-    @Before
-    public void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
 		wc = new WebConversation();
 	
-		WebRequest req = new GetMethodWebRequest(getActionUrl() + WebActions.LOGIN);
+		WebRequest req = createActionRequest(WebActions.LOGIN);
 		req.setParameter(WebParams.LOGIN, LOGIN);
 		req.setParameter(WebParams.PASSWORD, PASSWORD);
 		JSONObject loginResponse = getJSONResource(wc, req);
@@ -85,7 +85,7 @@ public class GetWordsActionTest extends UsersTestBase
 	@Test
 	public void testNoSpareSymbolsAtTheEnd() throws Exception
 	{
-		WebRequest req = new GetMethodWebRequest(getActionUrl() + WebActions.GET_WORDS);
+		WebRequest req = createActionRequest(WebActions.GET_WORDS);
 		String response = getTextResource(wc, req);
 		assertEquals('}', response.charAt(response.length() - 1));
 	}
@@ -93,7 +93,7 @@ public class GetWordsActionTest extends UsersTestBase
 	@Test
 	public void testEncoded() throws Exception
 	{
-		WebRequest req = new GetMethodWebRequest(getActionUrl() + WebActions.GET_WORDS);
+		WebRequest req = createActionRequest(WebActions.GET_WORDS);
 		String response = getTextResource(wc, req);
 		assertTrue(response.toLowerCase().contains("\\u043f\\u0435\\u0440\\u0432\\u044b\\u0439"));
 	}
@@ -101,7 +101,7 @@ public class GetWordsActionTest extends UsersTestBase
 	@Test
 	public void testGetWords() throws Exception
 	{
-		WebRequest req = new GetMethodWebRequest(getActionUrl() + WebActions.GET_WORDS);
+		WebRequest req = createActionRequest(WebActions.GET_WORDS);
 		JSONObject jsonObject = getJSONResource(wc, req);
 		JSONArray languages = jsonObject.getJSONArray(KEY_LANGUAGES);
 		Language language = new Language(languages.getJSONObject(0));

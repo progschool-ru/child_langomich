@@ -7,15 +7,18 @@ import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebRequest;
 import java.util.ArrayList;
 import java.util.List;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.core.WebActions;
 import org.smdserver.core.WebParams;
 
+import org.w3c.tidy.ParserImpl.ParseBlock;
 import static org.junit.Assert.*;
 
 public class AddWordsActionTest extends UsersTestBase
@@ -53,8 +56,8 @@ public class AddWordsActionTest extends UsersTestBase
 		UsersTestBase.tearDownClass();
 	}
 
-    @Before
-    public void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
 		wordsStorage = getTestStorageHelper().openWordsStorage(getResource(), USER_ID);
 
@@ -66,7 +69,7 @@ public class AddWordsActionTest extends UsersTestBase
 
 		wc = new WebConversation();
 
-		WebRequest req = new GetMethodWebRequest(getActionUrl() + WebActions.LOGIN);
+		WebRequest req = createActionRequest(WebActions.LOGIN);
 		req.setParameter(WebParams.LOGIN, LOGIN);
 		req.setParameter(WebParams.PASSWORD, PASSWORD);
 		JSONObject loginResponse = getJSONResource(wc, req);
@@ -85,9 +88,51 @@ public class AddWordsActionTest extends UsersTestBase
 	}
 
 	@Test
+	public void testDeviceAddsNewLanguage() throws Exception
+	{
+		WebRequest deviceReq = createActionRequest(WebActions.ADD_WORDS);
+		JSONObject paramsJSON = new JSONObject();
+		paramsJSON.put(ActionParams.DEVICE_ID, ActionParams.GIVE_ME_DEVICE_ID);
+		paramsJSON.put(ActionParams.LANGUAGES, new JSONArray());
+		deviceReq.setParameter(WebParams.DATA, paramsJSON.toString());
+
+		JSONObject deviceJSON = getJSONResource(wc, deviceReq);
+		String deviceId = deviceJSON.getString(ActionParams.DEVICE_ID);
+
+
+		WebRequest addReq = createActionRequest(WebActions.ADD_WORDS);
+		List<Language> languages = new ArrayList<Language>();
+		languages.add(new Language(null, LANGUAGE_NAME2, new Word("someWord", "someTranslation", 0)));
+		paramsJSON = new JSONObject();
+		paramsJSON.put(ActionParams.DEVICE_ID, deviceId);
+		paramsJSON.put(ActionParams.LANGUAGES, languages);
+		addReq.setParameter(WebParams.DATA, paramsJSON.toString());
+
+		JSONObject addJSON = getJSONResource(wc, addReq);
+		JSONArray addLanguages = addJSON.has(ActionParams.LANGUAGES) ? addJSON.getJSONArray(ActionParams.LANGUAGES) : null;
+
+		assertNotNull(addLanguages);
+		assertEquals(1, addLanguages.length());
+		assertEquals(LANGUAGE_NAME2, addLanguages.getJSONObject(0).getString("name"));
+		assertEquals(0, addLanguages.getJSONObject(0).getJSONArray("words").length());
+
+		
+		WebRequest checkReq = createActionRequest(WebActions.ADD_WORDS);
+		paramsJSON = new JSONObject();
+		paramsJSON.put(ActionParams.DEVICE_ID, deviceId);
+		paramsJSON.put(ActionParams.LANGUAGES, new JSONArray());
+		checkReq.setParameter(WebParams.DATA, paramsJSON.toString());
+
+		JSONObject checkJSON = getJSONResource(wc, checkReq);
+		JSONArray checkLanguages = checkJSON.has(ActionParams.LANGUAGES) ? checkJSON.getJSONArray(ActionParams.LANGUAGES) : null;
+
+		assertTrue(checkLanguages == null || checkLanguages.length() == 0);
+	}
+
+	@Test
 	public void testAddNewWordNewLanguage() throws Exception
 	{
-		WebRequest addReq = new GetMethodWebRequest(getActionUrl() + WebActions.ADD_WORDS);
+		WebRequest addReq = createActionRequest(WebActions.ADD_WORDS);
 		String param = "{\"languages\":[{\"name\":\"" + LANGUAGE_NAME2 + "\",\"words\":" +
 				"[{\"original\":\"" + WORD_ORIG +
 				"\",\"translation\":\"" + WORD_TRAN +
@@ -120,7 +165,7 @@ public class AddWordsActionTest extends UsersTestBase
 	@Test
 	public void testAddNewWordExistedLanguage() throws Exception
 	{
-		WebRequest addReq = new GetMethodWebRequest(getActionUrl() + WebActions.ADD_WORDS);
+		WebRequest addReq = createActionRequest(WebActions.ADD_WORDS);
 		String param = "{\"languages\":[{\"id\":\"" + LANGUAGE_ID +
 				"\",\"name\":\"" + LANGUAGE_NAME + "\",\"words\":" +
 				"[{\"original\":\"" + WORD_ORIG2 +
@@ -146,7 +191,7 @@ public class AddWordsActionTest extends UsersTestBase
 	@Test
 	public void testModifyWord() throws Exception
 	{
-		WebRequest addReq = new GetMethodWebRequest(getActionUrl() + WebActions.ADD_WORDS);
+		WebRequest addReq = createActionRequest(WebActions.ADD_WORDS);
 		String param = "{\"languages\":[{\"id\":\"" + LANGUAGE_ID +
 				"\",\"name\":\"" + LANGUAGE_NAME + "\",\"words\":" +
 				"[{\"original\":\"" + WORD_ORIG +
@@ -170,7 +215,7 @@ public class AddWordsActionTest extends UsersTestBase
 	@Test
 	public void testModifyAndAdd() throws Exception
 	{
-		WebRequest addReq = new GetMethodWebRequest(getActionUrl() + WebActions.ADD_WORDS);
+		WebRequest addReq = createActionRequest(WebActions.ADD_WORDS);
 		String param = "{\"languages\":[{\"id\":\"" + LANGUAGE_ID +
 				"\",\"name\":\"" + LANGUAGE_NAME + "\",\"words\":" +
 				"[{\"original\":\"" + WORD_ORIG2 +

@@ -1,6 +1,7 @@
 package org.smdserver.core;
 
 import com.ccg.util.JavaString;
+import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
@@ -21,8 +22,6 @@ public class UsersTestBase
 	public static final String COOKIE_HEADER = "SET-COOKIE";
 
 	private static ResourceBundle resource;
-	
-//	private static ITestStorageHelper fileStorageHelper = new TestFileStorageHelper();
 	private static ITestStorageHelper storageHelper = new TestDBStorageHelper();
 
 	protected static void setUpClass() throws Exception
@@ -41,9 +40,11 @@ public class UsersTestBase
 		return storageHelper;
 	}
 
-	protected static String getActionUrl()
+	protected static WebRequest createActionRequest(String actionName)
 	{
-		return getResource().getString("test.url") + getResource().getString("test.url.action");
+		String url = getResource().getString("test.url") +
+						getResource().getString("test.url.action") + actionName;
+		return new GetMethodWebRequest(url);
 	}
 
 	protected static ResourceBundle getResource()

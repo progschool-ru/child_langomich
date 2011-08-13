@@ -46,9 +46,21 @@ public class AddWordsAction extends CheckLoginAction
 
 			if(lastConnection >= 0)
 			{
-				List<Language> responseLanguages = storage.getLatestUserWords(userId, lastConnection);
+				// Добываем все обновления прошедшие позднее чем через миллисикунду после предыдущего обновления.
+				// Это мы делаем для того, чтобы не включать в выборку новые языки, которые уже возвращались в предыдущем ответе.
+				// Мы нагло предполагаем, что пользователю не пришло в голову добавлять слова с точностью до миллисекунды (ибо нефиг),
+				// а если и пришло, то надеемся, что сервер так быстро (в один момент) эти запросы не обработает.
+				//
+				// Если нам покажется, что это источник больших проблем, то можно просто формировать ответ новых языков и возвращать его методом addUserWords
+				// Хм. Пожалуй, так и сделаем (TODO: (3.low)), но чуть позже.
+				List<Language> responseLanguages = storage.getLatestUserWords(userId, lastConnection + 1);
 				List<Language> requestLanguages = parseJSON(json.getJSONArray(ActionParams.LANGUAGES));
 				storage.addUserWords(userId, requestLanguages, currentConnection);
+
+				// Следующей строкой мы добываем айдишники новых языков, которые были добавлены клиентом.
+				// Дело в том, что новым словам было установлено время изменения равное currentConnection и они не попадут в выборку,
+				// а вот новым языкам было установлено время изменения равное currentConnection + 1;
+				responseLanguages.addAll(storage.getLatestUserWords(userId, currentConnection));
 
 				setAnswerParam(ActionParams.LANGUAGES, responseLanguages);
 				setAnswerParam(ActionParams.DEVICE_ID, deviceId);

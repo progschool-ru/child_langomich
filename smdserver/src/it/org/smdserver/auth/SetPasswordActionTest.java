@@ -45,18 +45,18 @@ public class SetPasswordActionTest extends UsersTestBase
 	@Test
 	public void testSuccessChange() throws Exception
 	{
-		WebRequest req = new GetMethodWebRequest(getActionUrl() + WebActions.LOGIN);
+		WebRequest req = createActionRequest(WebActions.LOGIN);
 		req.setParameter(WebParams.LOGIN, LOGIN);
 		req.setParameter(WebParams.PASSWORD, PASSWORD);
 		JSONObject loginResponse = getJSONResource(wc, req);
 
 		String newPassword = "lalala";
 
-		req = new GetMethodWebRequest(getActionUrl() + WebActions.SET_PASSWORD);
+		req = createActionRequest(WebActions.SET_PASSWORD);
 		req.setParameter(WebParams.PASSWORD, newPassword);
 		JSONObject setPasswordResponse = getJSONResource(wc, req);
 
-		req = new GetMethodWebRequest(getActionUrl() + WebActions.LOGIN);
+		req = createActionRequest(WebActions.LOGIN);
 		req.setParameter(WebParams.LOGIN, LOGIN);
 		req.setParameter(WebParams.PASSWORD, PASSWORD);
 		JSONObject failureLoginResponse = getJSONResource(wc, req);
