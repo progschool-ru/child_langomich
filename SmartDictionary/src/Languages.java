@@ -68,21 +68,41 @@ public class Languages extends Records
 		return languageId;
 	}
 	
-	public void addLanguage(String languageName, String languageId)
+	public String addLanguageAndGetOldLanguageId(String languageName, String languageId, Dictionary dictionary)
 	{
 		String[] languageRecord = {languageName, languageId};
 		Language[] languages = getLanguages();
 
 		for(int i = 0; i < languages.length; i++)
 		{
-			if(languageId.equals(languages[i].getId()) 
-					|| isInternalId(languages[i].getId()) && languageName.equals(languages[i].getName()))
+			String oldLanguageId = languages[i].getId();
+			String oldLanguageName = languages[i].getName();
+
+			if(languageId.equals(oldLanguageId))
 			{
 				setRecord(languageRecord, getId(i+1));
-				return;
+				return null;
+			}
+			else if(isInternalId(oldLanguageId) && languageName.equals(oldLanguageName))
+			{
+				Dictionary oldDictionary = new Dictionary(oldLanguageId);
+				int numWords = oldDictionary.getNumRecords();
+				for(int j = 0; j < numWords; j++)
+				{
+					int id = oldDictionary.getId(j+1);
+					String [] wordRecord = oldDictionary.getFullRecord(id, oldDictionary.THE_LAST_COLUMN);
+					wordRecord[oldDictionary.LANGUAGE - 1] = languageId;
+					dictionary.addRecord(wordRecord);
+					oldDictionary.deleteRecord(j+1);
+				}
+				oldDictionary.destroy();
+
+				setRecord(languageRecord, getId(i+1));
+				return oldLanguageId;
 			}
 		}
-		addRecord(languageRecord);		
+		addRecord(languageRecord);
+		return null;
 	}
 
         public void deleteLanguage(int row)

@@ -187,6 +187,19 @@ public class WordsDBStorageTest
 	}
 
 	@Test
+	public void testGetModifiedLanguageWithOlderWords()
+	{
+		List<Language> languages = new ArrayList<Language>();
+		languages.add(new Language("someNewId", "someName", new Word("someWord", "someTranslation", 0)));
+		storage.addUserWords(USER_ID_WITHOUT_LANGUAGES, languages, TIME_X);
+
+		List<Language> result = storage.getLatestUserWords(USER_ID_WITHOUT_LANGUAGES, TIME_X);
+
+		assertEquals(1, result.size());
+		assertEquals(0, result.get(0).getWords().size());
+	}
+
+	@Test
 	public void testEditWords()
 	{
 		List<Language> languages = new ArrayList<Language>();

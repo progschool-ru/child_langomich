@@ -149,10 +149,12 @@ public class Timing extends Thread
 			main.put("deviceId", deviceId);
         }
         catch(JSONException e){}
+		//System.out.println("get: " + main.toString()); //Это я задолбался эти строки писать, а потом удалять, поэтому оставлю закомментированными.
         return JavaString.encode(main.toString());
     }
     private String setData(String data, long currentTime)
 	{
+		//System.out.println("set: " + data); //Это я задолбался эти строки писать, а потом удалять, поэтому оставлю закомментированными.
         try
         {
             JSONObject json = new JSONObject(data);
@@ -163,15 +165,16 @@ public class Timing extends Thread
                 JSONArray words = JSONLanguage.getJSONArray("words");
                 String languageName = JSONLanguage.getString("name");
 				String languageId = JSONLanguage.getString("id");
-                if(settings.getLanguage().equals("null"))
+
+				dictionary = new Dictionary(languageId);
+
+				String oldId = languages.addLanguageAndGetOldLanguageId(languageName, languageId, dictionary);
+				if(settings.getLanguage().equals("null") || settings.getLanguage().equals(oldId))
+				{
                     settings.setLanguage(languageId);
-                languages.addLanguage(languageName, languageId);
-                dictionary = new Dictionary(languageId);//TODO: (2.medium) Вообще, я бы попробовал избавиться
-				//  от повсеместного создания этих хранилищ.
-				// Пусть бы они создавались один раз в одном месте и передавались бы дочерним классам через параметры.
-				// Если у нас Dictionary один на всю программу, то мы бы могли наладить кэширование,
-				// например, через java.util.Hashtable. Что дало бы нам выигрыш в скорости при доступе к использованным ранее данным.
-                for(int j = 0; j < words.length();j++)
+				}
+
+				for(int j = 0; j < words.length();j++)
                 {
                     JSONObject word = words.getJSONObject(j);
                     dictionary.newRecord(word.getString("original"),
@@ -179,6 +182,7 @@ public class Timing extends Thread
 										 word.getInt("rating"),
 										 currentTime);
                 }
+				dictionary.destroy();
             }
 			if(json.has("deviceId"))
 			{

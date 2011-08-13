@@ -8,6 +8,7 @@ public class Dictionary extends Records
         public final int RATING = 3;
         public final int LANGUAGE = 4;
         public final int LAST_TIMING = 5;
+		public final int THE_LAST_COLUMN = LAST_TIMING;
 
         public final String NAME = "Dicionary";
 

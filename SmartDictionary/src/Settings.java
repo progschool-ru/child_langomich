@@ -28,10 +28,12 @@ public class Settings extends Records
                 addRecord("0");
             if(getRecord(LOGIN, SINGLE_RECORD) == null)
                 addRecord("null");
+				//addRecord("chivorotkiv");
             if(getRecord(PASSWORD, SINGLE_RECORD) == null)
                 addRecord("null");
             if(getRecord(URL, SINGLE_RECORD) == null)
                 addRecord("lang.omich.net");// TODO: (3.low) хорошо бы вынести эту настройку в какой-нибудь config.properties файл.
+				//addRecord("localhost:8080");
             if(getRecord(TEXT, SINGLE_RECORD) == null)
                 addRecord("null");
             if(getRecord(DEVICE_ID, SINGLE_RECORD) == null)

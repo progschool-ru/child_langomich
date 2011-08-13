@@ -25,10 +25,10 @@ public class WordsDBStorage implements IWordsStorage
 	private static final String ADD_WORD_QUERY     = "INSERT INTO %1$s (translation, rating, modified, language_id, original, time_created, time_modified) VALUE (?, ?, ?, ?, ?, NOW(), NOW());";
 	private static final String UPDATE_WORD_QUERY = "UPDATE %1$s SET translation=?, rating=?, modified=?, time_modified=NOW() WHERE language_id=? AND original=?;";
 	private static final String GET_ALL_WORDS_WITH_EMPTY_LANGUAGES = "SELECT * FROM %1$s as w RIGHT OUTER JOIN %2$s as l ON l.language_id = w.language_id WHERE l.user_id=?;";
-	private static final String GET_LATEST_WORDS_WITH_EMPTY_LANGUAGES = "SELECT * FROM %1$s as w RIGHT OUTER JOIN %2$s as l ON l.language_id = w.language_id " +
+	private static final String GET_LATEST_WORDS_WITH_EMPTY_LANGUAGES = "SELECT * FROM %1$s as w RIGHT OUTER JOIN %2$s as l ON l.language_id = w.language_id AND w.modified > ?" +
 																		" WHERE l.user_id=? AND " +
 																		" (w.original IS NULL     AND l.modified > ?     OR" +
-																		"  w.original IS NOT NULL AND w.modified > ?);";
+																		"  w.original IS NOT NULL );";
 	private static final String GET_WORDS_IN     = "SELECT original FROM %1$s WHERE language_id = ? AND original IN (%2$s);";
 	private static final String CLEAR_LANGUAGES = "DELETE FROM %1$s WHERE user_id = ?;";
 	private static final String GET_LANGUAGES_IN = "SELECT language_id FROM %1s WHERE language_id IN (%2$s);";
@@ -115,8 +115,8 @@ public class WordsDBStorage implements IWordsStorage
 	public List<Language> getLatestUserWords(String userId, long lastModified)
 	{
 		ISmdStatement st = createSmdStatement(GET_LATEST_WORDS_WITH_EMPTY_LANGUAGES);
-		st.addString(userId);
 		st.addLong(lastModified);
+		st.addString(userId);
 		st.addLong(lastModified);
 		return getWords(st);
 	}
