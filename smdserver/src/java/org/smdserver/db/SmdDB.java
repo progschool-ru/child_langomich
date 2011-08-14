@@ -55,7 +55,7 @@ public class SmdDB implements ISmdDB
 			}
 			catch(SQLException e)
 			{
-				log("SmdDB.updateGroup: " +e.getMessage());
+				log("SmdDB.processSmdStatement: " +e.getMessage());
 				updatedRows = -1;
 				try
 				{
@@ -172,7 +172,7 @@ public class SmdDB implements ISmdDB
 		}
 		catch(SQLException e)
 		{
-			log("select: " +e.getMessage());
+			log("selectWithSmdStatement: " +e.getMessage());
 			count = -1;
 		}
 		return count;
