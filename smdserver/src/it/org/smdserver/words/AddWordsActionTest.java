@@ -18,7 +18,6 @@ import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.core.WebActions;
 import org.smdserver.core.WebParams;
 
-import org.w3c.tidy.ParserImpl.ParseBlock;
 import static org.junit.Assert.*;
 
 public class AddWordsActionTest extends UsersTestBase

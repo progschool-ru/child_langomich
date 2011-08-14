@@ -12,14 +12,14 @@ public class Language
 	private String name;
 	private List<Word> words = new ArrayList<Word>();
 
-	public Language (String id, String dirtyName)
+	public Language (String dirtyId, String dirtyName)
 	{
-		this.id = id;
+		this.id = cleanWord(dirtyId);
 		this.name = cleanWord(dirtyName);
 	}
-	public Language (String id, String dirtyName, Word word)
+	public Language (String dirtyId, String dirtyName, Word word)
 	{
-		this.id = id;
+		this.id = cleanWord(dirtyId);
 		this.name = cleanWord(dirtyName);
 		words.add(word);
 	}
@@ -32,7 +32,7 @@ public class Language
 	{
 		try
 		{
-			id = json.has("id") ? json.getString("id") : null;
+			id = json.has("id") ? cleanWord(json.getString("id")) : null;
 			name = cleanWord(json.getString("name"));
 
 			JSONArray wordJSONS = json.getJSONArray("words");
@@ -59,9 +59,9 @@ public class Language
 		return id;
 	}
 
-	public void setId(String value)
+	public void setId(String dirtyValue)
 	{
-		id = value;
+		id = cleanWord(dirtyValue);
 	}
 
 	public List<Word> getWords ()

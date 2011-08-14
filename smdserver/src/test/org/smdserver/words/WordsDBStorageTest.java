@@ -24,6 +24,7 @@ public class WordsDBStorageTest
 	private static final String USER_ID_WITHOUT_LANGUAGES = "3";
 
 	private static final String LANGUAGE_ID = "enId1";
+	private static final String LANGUAGE_NAME = "enId1Name";
 	private static final String WORD_ORIGINAL = "enId1Word";
 	private static final String WORD_TRANSLATION = "enId1WordTrans";
 
@@ -37,8 +38,8 @@ public class WordsDBStorageTest
 	ResourceBundle rb;
 	private WordsDBStorage storage;
 
-    @Before
-    public void setUp () throws Exception
+	@Before
+	public void setUp () throws Exception
 	{
 		String testConfig = ResourceBundle.getBundle("org.smdserver.config")
 				                      .getString("server.test.properties.file");
@@ -55,7 +56,7 @@ public class WordsDBStorageTest
 		storage = new WordsDBStorage(db, prefix);
 		List<Language> list = new ArrayList<Language>();
 
-		list.add(new Language(LANGUAGE_ID, "en", new Word(WORD_ORIGINAL, WORD_TRANSLATION, 1)));
+		list.add(new Language(LANGUAGE_ID, LANGUAGE_NAME, new Word(WORD_ORIGINAL, WORD_TRANSLATION, 1)));
 		list.add(new Language("frId1", "fr", new Word("first", "первый", 1)));
 		assertTrue(storage.setUserWords(USER_ID_WITH_WORDS, list, TIME_BEFORE));
 
@@ -64,8 +65,8 @@ public class WordsDBStorageTest
 		storage.setUserWords(USER_ID_WITH_EMPTY_LANGUAGE, list, TIME_BEFORE);
 	}
 
-   @After
-    public void tearDown () throws Exception
+	@After
+	public void tearDown () throws Exception
 	{
 		db.close();
 
@@ -76,7 +77,7 @@ public class WordsDBStorageTest
 		Connection connection = DriverManager.getConnection(url, user, password);
 		connection.createStatement().executeUpdate(String.format(DELETE_USERS, prefix));
 		storage = null;
-    }
+	}
 
 	/**
 	 * Test of setUserWords method, of class WordsStorage.
@@ -114,9 +115,94 @@ public class WordsDBStorageTest
 		assertEquals("Lanugages in '2's list", 1, second.size());
 		assertEquals("Lanugages in '3's list", 0, third.size());
 		assertEquals("first language id of '1' user", LANGUAGE_ID, first.get(0).getId());
-		assertEquals("first language of '1' user", "en", first.get(0).getName());
+		assertEquals("first language of '1' user", LANGUAGE_NAME, first.get(0).getName());
 		assertEquals("second language of '1' user", "fr", first.get(1).getName());
 		assertEquals("first language of '2' user", "es", second.get(0).getName());
+	}
+
+	@Test
+	public void testRenameAndMerge()
+	{
+		//prepare language;
+		List<Language> list = new ArrayList<Language>();
+		list.add(new Language(EMPTY_LANGUAGE_ID, "someName", new Word("someWord", "someTranslation", 0)));
+		storage.addUserWords(USER_ID_WITH_EMPTY_LANGUAGE, list, TIME_AFTER);
+		assertEquals(1, storage.getUserWords(USER_ID_WITH_EMPTY_LANGUAGE).size());
+
+		//test merge
+		list = new ArrayList<Language>();
+		list.add(new Language(null, "someName", new Word("anotherWord", "anotherTranslation", 0)));
+		list.add(new Language(EMPTY_LANGUAGE_ID, "anotherName"));
+		boolean success = storage.addUserWords(USER_ID_WITH_EMPTY_LANGUAGE, list, TIME_AFTER);
+
+		List<Language> result = storage.getUserWords(USER_ID_WITH_EMPTY_LANGUAGE);
+
+		assertTrue(success);
+		assertEquals(2, result.size());
+
+		Language l1 = result.get(0);
+		Language l2 = result.get(1);
+		if(l2.getId().equals(EMPTY_LANGUAGE_ID))
+		{
+			l2 = l1;
+			l1 = result.get(1);
+		}
+
+		assertEquals(1, l1.getWords().size());
+		assertEquals(1, l2.getWords().size());
+		Word word1 = l1.getWords().get(0);
+		Word word2 = l2.getWords().get(0);
+		assertEquals(EMPTY_LANGUAGE_ID, l1.getId());
+		assertEquals("Old language should be renamed",      "anotherName", l1.getName());
+		assertEquals("Old language keeps old word",         "someWord", word1.getOriginal());
+		assertEquals("There is new language with new name", "someName", l2.getName());
+		assertEquals("New word belongs to new language",    "anotherWord", word2.getOriginal());
+	}
+
+	@Test
+	public void testMergeLanguages()
+	{
+		//prepare language;
+		List<Language> list = new ArrayList<Language>();
+		list.add(new Language(EMPTY_LANGUAGE_ID, "someName", new Word("someWord", "someTranslation", 0)));
+		storage.addUserWords(USER_ID_WITH_EMPTY_LANGUAGE, list, TIME_AFTER);
+		assertEquals(1, storage.getUserWords(USER_ID_WITH_EMPTY_LANGUAGE).size());
+
+		//test merge
+		list = new ArrayList<Language>();
+		list.add(new Language(null, "someName", new Word("anotherWord", "anotherTranslation", 0)));
+		boolean success = storage.addUserWords(USER_ID_WITH_EMPTY_LANGUAGE, list, TIME_AFTER);
+
+		List<Language> result = storage.getUserWords(USER_ID_WITH_EMPTY_LANGUAGE);
+
+		assertTrue(success);
+		assertEquals(1, result.size());
+
+		Language l = result.get(0);
+		assertEquals(2, l.getWords().size());
+
+		Word word0 = l.getWords().get(0);
+		Word word1 = l.getWords().get(1);
+		assertTrue(word0.getOriginal().equals("someWord") && word1.getOriginal().equals("anotherWord") ||
+					word1.getOriginal().equals("someWord") && word0.getOriginal().equals("anotherWord"));
+	}
+
+	@Test
+	public void testAddToAnotherUser()
+	{
+		List<Language> list = new ArrayList<Language>();
+		list.add(new Language(EMPTY_LANGUAGE_ID, "someName", new Word("someWord", "someTranslation", 0)));
+		list.add(new Language("someLanguageId", "someLanguageName", new Word("anotherWord", "anotherTranslation", 0)));
+		
+		boolean success = storage.addUserWords(USER_ID_WITHOUT_LANGUAGES, list, TIME_AFTER);
+
+		List<Language> result1 = storage.getUserWords(USER_ID_WITH_EMPTY_LANGUAGE);
+		List<Language> result2 = storage.getUserWords(USER_ID_WITHOUT_LANGUAGES);
+
+		assertFalse(success);
+		assertEquals("There is still one language for that user", 1, result1.size());
+		assertEquals("There is still empty language", 0, result1.get(0).getWords().size());
+		assertEquals("There are still no languages for that user", 0, result2.size());
 	}
 	
 	@Test

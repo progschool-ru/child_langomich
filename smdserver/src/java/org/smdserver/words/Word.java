@@ -44,6 +44,8 @@ public class Word
 	
 	public static String cleanWord(String dirtyValue)
 	{
+		if(dirtyValue == null)
+			return null;
 		return dirtyValue.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	}
 }
