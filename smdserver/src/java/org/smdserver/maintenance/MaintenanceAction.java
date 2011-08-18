@@ -14,11 +14,10 @@ public abstract class MaintenanceAction extends SmdAction
 	{
 		String password = request.getParameter(ActionParams.PASSWORD);
 		
-		ResourceBundle rb = getServletContext().getConfigResource();
-		serverRB = ResourceBundle.getBundle(rb.getString("server.properties.file"));
+		IMaintenanceConfig config = getServletContext().getConfig();
 		
-		boolean isInMaintenance = "true".equals(serverRB.getString("maintenance.allowed"));
-		boolean isPasswordCorrect = password != null && password.equals(serverRB.getString("maintenance.password"));
+		boolean isInMaintenance = config.isMaintenanceAllowed();
+		boolean isPasswordCorrect = password != null && password.equals(config.getMaintenancePassword());
 		
 		boolean success = isInMaintenance && isPasswordCorrect;
 		setAnswerParam(ActionParams.SUCCESS, success);

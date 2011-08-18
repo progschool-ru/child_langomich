@@ -7,31 +7,25 @@ import org.smdserver.jsp.ILink;
 import org.smdserver.jsp.LinkCreator;
 import org.smdserver.jsp.SmdUrl;
 
-class ConfigProperties implements IConfigProperties
+//TODO: (1.high) Make it internal.
+public class ConfigProperties implements IConfigProperties
 {
-	private static final String ABS_PATH_PREFIX = "link.path.";
-	private static final String DEFAULT_PAGE_KEY = "pages.default.page.handler";
 	private static final String HANDLER_KEY = ".handler";
 	private static final String MAIN_TEMPLATE_KEY = ".mainTemplate";
-	private static final String MENU_ITEMS_KEY = "items";
-	private static final String MENU_PREFIX = "menu.";
-	private static final String NEEDS_AUTHORITY_KEY = ".needsAuthority";
 	private static final String PAGES_PREFIX = "pages.";
-	private static final String TEXT_KEY = ".text";
-	private static final String TITLE_KEY = ".title";
-	private static final String URL_KEY = ".url";
-	private static final String WEB_CHARSET_KEY = "web.charset";
 	
 	private String basePath;
 	private ResourceBundle rb;
-	private String serverConfigKey;
+	private ResourceBundle serverRB;
 	
 	public ConfigProperties(String configFile, String serverConfigKey,
 			                String basePath)
 	{
 		this.basePath = basePath;
 		this.rb = ResourceBundle.getBundle(configFile);
-		this.serverConfigKey = serverConfigKey;
+		
+		String serverFile = rb.getString(serverConfigKey);
+		this.serverRB = ResourceBundle.getBundle(serverFile);
 	}
 	
 	@Deprecated
@@ -43,19 +37,20 @@ class ConfigProperties implements IConfigProperties
 	public void close()
 	{
 		rb = null;
-		serverConfigKey = null;
+		serverRB = null;
+		basePath = null;
 	}
 	
 	public String getWebCharset()
 	{
-		return rb.getString(WEB_CHARSET_KEY);
+		return rb.getString("web.charset");
 	}
 	
 	
 	//IJSPConfig implementation
 	public String getServletPrefix (String servlet)
 	{
-		return rb.getString(ABS_PATH_PREFIX + servlet);
+		return rb.getString("link.path." + servlet);
 	}
 	
 	public boolean containsMainTemplate(String page)
@@ -70,27 +65,27 @@ class ConfigProperties implements IConfigProperties
 	
 	public boolean needsAuthority(String page)
 	{
-		return rb.containsKey(PAGES_PREFIX + page + NEEDS_AUTHORITY_KEY);
+		return rb.containsKey(PAGES_PREFIX + page + ".needsAuthority");
 	}
 	
 	public String getTitle(String page)
 	{
-		String key = PAGES_PREFIX + page + TITLE_KEY;
+		String key = PAGES_PREFIX + page + ".title";
 		return rb.containsKey(key) ? rb.getString(key) : null;		
 	}
 	
 
 	public List<ILink> createMenu(String menu, SmdUrl currentLink)
 	{
-		String menuPrefix = MENU_PREFIX + menu + ".";
-		String [] items = rb.getString(menuPrefix + MENU_ITEMS_KEY).split(",");
+		String menuPrefix = "menu." + menu + ".";
+		String [] items = rb.getString(menuPrefix + "items").split(",");
 		List<ILink> list = new ArrayList<ILink>();
 		LinkCreator creator = new LinkCreator();
 
 		for(String item : items)
 		{
-			String url = rb.getString(menuPrefix + item + URL_KEY);
-			String text = rb.getString(menuPrefix + item + TEXT_KEY);
+			String url = rb.getString(menuPrefix + item + ".url");
+			String text = rb.getString(menuPrefix + item + ".text");
 			list.add(creator.createLink(url, text, currentLink, basePath, null));
 		}
 		return list;
@@ -108,6 +103,39 @@ class ConfigProperties implements IConfigProperties
 	
 	public String getDefaultHandler ()
 	{
-		return rb.getString(DEFAULT_PAGE_KEY);
+		return rb.getString("pages.default.page.handler");
+	}
+	
+	
+	//IDBConfig implementation
+	public String getTablesPrefix()
+	{
+		return serverRB.getString("db.tablesPrefix");
+	}
+	
+	public String getDBUrl()
+	{
+		return serverRB.getString("db.url");
+	}
+	
+	public String getDBUser()
+	{
+		return serverRB.getString("db.user");
+	}
+	
+	public String getDBPassword()
+	{
+		return serverRB.getString("db.password");
+	}
+	
+	//IMaintenanceConfig implementation
+	public boolean isMaintenanceAllowed()
+	{
+		return "true".equals(serverRB.getString("maintenance.allowed"));
+	}
+	
+	public String getMaintenancePassword()
+	{
+		return serverRB.getString("maintenance.password");
 	}
 }

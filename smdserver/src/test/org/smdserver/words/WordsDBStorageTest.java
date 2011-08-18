@@ -4,10 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.smdserver.core.ConfigProperties;
+import org.smdserver.db.IDBConfig;
 import org.smdserver.util.ConsoleSmdLogger;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
@@ -35,18 +36,18 @@ public class WordsDBStorageTest
 	private static final long TIME_AFTER  = 30000;
 
 	ISmdDB db;
-	ResourceBundle rb;
+	IDBConfig config;
 	private WordsDBStorage storage;
 
 	@Before
 	public void setUp () throws Exception
 	{
-		String testConfig = ResourceBundle.getBundle("org.smdserver.config")
-				                      .getString("server.test.properties.file");
-		rb = ResourceBundle.getBundle(testConfig);
+		config = new ConfigProperties("org.smdserver.config", 
+				                                "server.test.properties.file", 
+				                                null);
 
-		db = new SmdDB(rb, new ConsoleSmdLogger(System.out));
-		String prefix = rb.getString("db.tablesPrefix");
+		db = new SmdDB(config, new ConsoleSmdLogger(System.out));
+		String prefix = config.getTablesPrefix();
 
 		IUsersStorage us = new UsersDBStorage(db, prefix);
 		assertTrue(us.createUser(USER_ID_WITH_WORDS, "lo1", "pa1"));
@@ -70,10 +71,10 @@ public class WordsDBStorageTest
 	{
 		db.close();
 
-		String url = rb.getString("db.url");
-		String user = rb.getString("db.user");
-		String password = rb.getString("db.password");
-		String prefix = rb.getString("db.tablesPrefix");
+		String url = config.getDBUrl();
+		String user = config.getDBUser();
+		String password = config.getDBPassword();
+		String prefix = config.getTablesPrefix();
 		Connection connection = DriverManager.getConnection(url, user, password);
 		connection.createStatement().executeUpdate(String.format(DELETE_USERS, prefix));
 		storage = null;

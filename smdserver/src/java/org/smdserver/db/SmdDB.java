@@ -6,19 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-import java.util.ResourceBundle;
 import org.smdserver.util.ISmdLogger;
 
 public class SmdDB implements ISmdDB
 {
-	private ResourceBundle rb;
+	private IDBConfig config;
 	private Connection connection;
 	private ISmdLogger logger;
 	private final Object sync = new Object();
 
-	public SmdDB(ResourceBundle rb, ISmdLogger logger) throws DbException
+	public SmdDB(IDBConfig config, ISmdLogger logger) throws DbException
 	{
-		this.rb = rb;
+		this.config = config;
 		this.logger = logger;
 
 		checkConnection();
@@ -241,9 +240,9 @@ public class SmdDB implements ISmdDB
 			closeWithoutSync();
 		}
 
-		String url = rb.getString("db.url");
-		String user = rb.getString("db.user");
-		String password = rb.getString("db.password");
+		String url = config.getDBUrl();
+		String user = config.getDBUser();
+		String password = config.getDBPassword();
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();

@@ -3,7 +3,6 @@ package org.smdserver.db;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ResourceBundle;
 import org.junit.Test;
 import org.smdserver.util.ConsoleSmdLogger;
 import static org.junit.Assert.*;
@@ -13,9 +12,10 @@ public class SmdDBTest extends DBTestBase
 	private ISmdDB db;
 
 	@Override
-	protected void setUpChild(ResourceBundle rb) throws Exception
+	protected void setUpChild(IDBConfig config) throws Exception
 	{
-		db = new SmdDB(rb, new ConsoleSmdLogger(System.out));
+
+		db = new SmdDB(config, new ConsoleSmdLogger(System.out));
 	}
 	
 	@Override

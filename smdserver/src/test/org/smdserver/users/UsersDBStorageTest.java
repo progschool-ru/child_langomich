@@ -2,12 +2,13 @@ package org.smdserver.users;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.ResourceBundle;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.smdserver.core.ConfigProperties;
 import org.smdserver.util.ConsoleSmdLogger;
 import org.smdserver.db.DbException;
+import org.smdserver.db.IDBConfig;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
 import static org.junit.Assert.*;
@@ -22,19 +23,19 @@ public class UsersDBStorageTest
 	private static final String DELETE_QUERY = "DELETE FROM smd_users;";
 
 	ISmdDB db;
-	ResourceBundle rb;
+	IDBConfig config;
 	private UsersDBStorage instance;
 
     @Before
     public void setUp () throws Exception
 	{
-		String testConfig = ResourceBundle.getBundle("org.smdserver.config")
-				                      .getString("server.test.properties.file");
-		rb = ResourceBundle.getBundle(testConfig);
+		config = new ConfigProperties("org.smdserver.config", 
+				                                "server.test.properties.file", 
+				                                null);
 
-		db = new SmdDB(rb, new ConsoleSmdLogger(System.out));
+		db = new SmdDB(config, new ConsoleSmdLogger(System.out));
 		
-		String prefix = rb.getString("db.tablesPrefix");
+		String prefix = config.getTablesPrefix();
 
 		instance = new UsersDBStorage(db, prefix);
 		boolean result = instance.createUser(FIRST_ID, FIRST_LOGIN, FIRST_PASSWORD);
@@ -46,9 +47,9 @@ public class UsersDBStorageTest
 	{
 		db.close();
 
-		String url = rb.getString("db.url");
-		String user = rb.getString("db.user");
-		String password = rb.getString("db.password");
+		String url = config.getDBUrl();
+		String user = config.getDBUser();
+		String password = config.getDBPassword();
 		Connection connection = DriverManager.getConnection(url, user, password);
 		connection.createStatement().executeUpdate(DELETE_QUERY);
 		instance = null;

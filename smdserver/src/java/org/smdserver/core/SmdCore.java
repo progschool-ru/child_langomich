@@ -1,13 +1,18 @@
 package org.smdserver.core;
 
 import java.io.PrintStream;
-import java.util.ResourceBundle;
 import javax.servlet.ServletContext;
+import org.smdserver.db.DbException;
+import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
 import org.smdserver.jsp.IJSPConfig;
 import org.smdserver.jsp.SmdUrl;
+import org.smdserver.users.IUsersStorage;
+import org.smdserver.users.UsersDBStorage;
 import org.smdserver.util.ComplexSmdLogger;
 import org.smdserver.util.ISmdLogger;
+import org.smdserver.words.IWordsStorage;
+import org.smdserver.words.WordsDBStorage;
 
 class SmdCore implements ISmdCore
 {
@@ -18,9 +23,21 @@ class SmdCore implements ISmdCore
 	
 	private ConfigProperties configProperties;
 	private ISmdLogger logger;
+	private ISmdDB db;
+	private String tablesPrefix;
 	
 	public SmdCore()
 	{
+	}
+
+	@Override
+	public void finalize() throws Throwable
+	{
+		if(db != null)
+		{
+			db.close();
+		}
+		super.finalize();
 	}
 	
 	public void setContext (ServletContext context)
@@ -33,16 +50,19 @@ class SmdCore implements ISmdCore
 		return configProperties;
 	}
 	
-	@Deprecated
-	public ResourceBundle getConfigResource()
+	public ISmdServletContext createContext()
 	{
-		return configProperties.getConfigResource();
+		return new SmdServletContext(createUsersStorage(), 
+				                     createWordsStorage(), 
+				                     configProperties,
+				                     logger);
 	}
 	
 	private void init(ServletContext context)
 	{
 		logger = new ComplexSmdLogger(context, LOG_STREAM);	
 		recreateConfigProperties(context);
+		initDB(configProperties, logger);
 		SmdUrl.initParams(configProperties, configProperties.getWebCharset(), logger);
 	}
 	
@@ -57,4 +77,49 @@ class SmdCore implements ISmdCore
 				                                SERVER_PROPERTIES_FILE_KEY,
 				                                context.getContextPath());
 	}
+
+	private boolean initDB(ConfigProperties config, ISmdLogger logger)
+	{
+		if(db != null)
+		{
+			db.close();
+			db = null;
+		}
+			
+		tablesPrefix = config.getTablesPrefix();
+		try
+		{
+			db = new SmdDB(config, logger);
+			return true;
+		}
+		catch (DbException e)
+		{
+			logger.log(e.getMessage());
+			return false;
+		}
+	}	
+	
+	private IWordsStorage createWordsStorage()
+	{
+		if(db != null)
+		{
+			return new WordsDBStorage(db, tablesPrefix);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	private IUsersStorage createUsersStorage()
+	{
+		if(db != null)
+		{
+			return new UsersDBStorage(db, tablesPrefix);
+		}
+		else
+		{
+			return null;
+		}
+	}	
 }

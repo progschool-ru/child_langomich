@@ -47,14 +47,15 @@ class TestDBStorageHelper implements ITestStorageHelper
 
 	private String initDBAndGetPrefix(ResourceBundle resource) throws DbException
 	{
-		String serverConfig = resource.getString("server.properties.file");
-		ResourceBundle rb = ResourceBundle.getBundle(serverConfig);
-		String prefix = rb.getString("db.tablesPrefix");
+		IConfigProperties config = new ConfigProperties("org.smdserver.config", 
+				                                        "server.properties.file", 
+				                                         userId);
+		String prefix = config.getTablesPrefix();
 
 		if(db == null)
 		{
-		//TODO: (2.medium)[#26068] use test properties here:
-			db = new SmdDB(rb, new ConsoleSmdLogger(System.out));
+		//TODO: (2.medium)[#26068] use test properties here:	
+			db = new SmdDB(config, new ConsoleSmdLogger(System.out));
 		}
 		return prefix;
 	}

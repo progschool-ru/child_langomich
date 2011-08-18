@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ResourceBundle;
 import org.junit.After;
 import org.junit.Before;
+import org.smdserver.core.ConfigProperties;
 
 public class DBTestBase 
 {
@@ -19,19 +19,19 @@ public class DBTestBase
 	@Before
     public void setUp () throws Exception
 	{
-		String testConfig = ResourceBundle.getBundle("org.smdserver.config")
-				                      .getString("server.test.properties.file");
-		ResourceBundle rb = ResourceBundle.getBundle(testConfig);
+		IDBConfig config = new ConfigProperties("org.smdserver.config", 
+				                                "server.test.properties.file", 
+				                                null);
 
-		String url = rb.getString("db.url");
-		String user = rb.getString("db.user");
-		String password = rb.getString("db.password");
+		String url = config.getDBUrl();
+		String user = config.getDBUser();
+		String password = config.getDBPassword();
 		connection = DriverManager.getConnection(url, user, password);
-		testTable = rb.getString("db.tablesPrefix") + TEST_TABLE;
+		testTable = config.getTablesPrefix() + TEST_TABLE;
 		String clearQuery = String.format("DELETE FROM %1$s;", testTable);
 		Statement st = connection.createStatement();
 		st.executeUpdate(clearQuery);
-		setUpChild(rb);
+		setUpChild(config);
     }
 
 	@After
@@ -50,7 +50,7 @@ public class DBTestBase
 		tearDownChild();
 	}
 	
-	protected void setUpChild(ResourceBundle rb) throws Exception {}
+	protected void setUpChild(IDBConfig config) throws Exception {}
 	protected void tearDownChild() throws Exception {}
 	
 	protected Connection getConnection()
