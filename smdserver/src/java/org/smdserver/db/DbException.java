@@ -1,6 +1,6 @@
 package org.smdserver.db;
 
-import org.smdserver.core.SmdException;
+import org.smdserver.util.SmdException;
 
 public class DbException extends SmdException
 {

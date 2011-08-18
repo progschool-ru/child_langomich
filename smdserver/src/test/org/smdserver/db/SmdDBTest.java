@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 import org.junit.Test;
-import org.smdserver.core.ConsoleSmdLogger;
+import org.smdserver.util.ConsoleSmdLogger;
 import static org.junit.Assert.*;
 
 public class SmdDBTest extends DBTestBase

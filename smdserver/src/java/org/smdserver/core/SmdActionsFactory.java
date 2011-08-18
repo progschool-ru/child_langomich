@@ -46,7 +46,7 @@ public class SmdActionsFactory implements IActionsFactory
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			System.out.println(e.getMessage()); //TODO: (3.low) Use logger
 		}
 		
 		return null;

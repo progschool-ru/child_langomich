@@ -1,5 +1,6 @@
 package org.smdserver.core;
 
+import org.smdserver.util.ConsoleSmdLogger;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import org.smdserver.db.DbException;

@@ -1,5 +1,6 @@
 package org.smdserver.core;
 
+import org.smdserver.util.ISmdLogger;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.words.IWordsStorage;
 

@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.smdserver.core.ConsoleSmdLogger;
+import org.smdserver.util.ConsoleSmdLogger;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
 import org.smdserver.users.IUsersStorage;

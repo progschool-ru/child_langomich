@@ -6,7 +6,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.core.SmdAction;
-import org.smdserver.core.SmdException;
+import org.smdserver.util.SmdException;
 import org.smdserver.jsp.SmdUrl;
 import org.smdserver.users.IUsersStorage;
 
