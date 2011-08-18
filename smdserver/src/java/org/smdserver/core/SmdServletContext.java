@@ -1,5 +1,6 @@
 package org.smdserver.core;
 
+import java.util.ResourceBundle;
 import org.smdserver.util.ISmdLogger;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.words.IWordsStorage;
@@ -9,22 +10,23 @@ public class SmdServletContext implements ISmdServletContext
 	private IUsersStorage usersStorage;
 	private IWordsStorage wordsStorage;
 	private ISmdLogger logger;
-	private String configResourceName;
+	private ResourceBundle configResource;
 
 	public SmdServletContext (IUsersStorage usersStorage, 
 								IWordsStorage wordsStorage,
-								String configResourceName,
+								ResourceBundle configResource,
 								ISmdLogger logger)
 	{
 		this.usersStorage = usersStorage;
 		this.wordsStorage = wordsStorage;
-		this.configResourceName = configResourceName;
+		this.configResource = configResource;
 		this.logger = logger;
 	}
 	
-	public String getConfigResourceName()
+	@Deprecated
+	public ResourceBundle getConfigResource()
 	{
-		return configResourceName;
+		return configResource;
 	}
 
 	public IUsersStorage getUsersStorage ()

@@ -4,6 +4,7 @@ import org.smdserver.core.NullAction;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javax.servlet.ServletException;
 import org.smdserver.actionssystem.IActionsFactory;
 import org.smdserver.core.ISmdServletContext;
 import org.smdserver.actionssystem.SmdServlet;
@@ -13,6 +14,8 @@ import org.smdserver.auth.MobileLoginAction;
 import org.smdserver.auth.LogoutAction;
 import org.smdserver.auth.SetPasswordAction;
 import org.smdserver.auth.RegistrAction;
+import org.smdserver.core.CoreInstance;
+import org.smdserver.core.ISmdCore;
 import org.smdserver.util.ComplexSmdLogger;
 import org.smdserver.util.ISmdLogger;
 import org.smdserver.core.SmdActionsFactory;
@@ -33,12 +36,11 @@ import org.smdserver.words.WordsDBStorage;
 
 public class MainServlet extends SmdServlet
 {
-	private static final String CONFIG_PARAM = "config";
 	private static final String SERVER_PROPERTIES_FILE_KEY = "server.properties.file";
 	private static final String DEFAULT_ACTION = "default";
 
-	private String configResource;
 	private ISmdDB db;
+	private ISmdCore core;
 
 	@Override
 	public void destroy()
@@ -47,6 +49,12 @@ public class MainServlet extends SmdServlet
 		{
 			db.close();
 		}
+	}
+	
+	@Override
+	public void init() throws ServletException
+	{
+		super.init();
 	}
 
 	protected String getDefaultActionName ()
@@ -78,9 +86,8 @@ public class MainServlet extends SmdServlet
 
 	protected IActionsFactory createActionsFactory ()
 	{
-		configResource = getServletContext().getInitParameter(CONFIG_PARAM);
-		SmdUrl.initRB(ResourceBundle.getBundle(configResource));
-		ResourceBundle rb = ResourceBundle.getBundle(configResource);	
+		ISmdCore core = CoreInstance.getInstance(getServletContext());
+		ResourceBundle rb = core.getConfigResource();	
 
 		ISmdLogger logger = new ComplexSmdLogger(getServletContext(), System.out);
 
@@ -89,7 +96,7 @@ public class MainServlet extends SmdServlet
 		
 		ISmdServletContext context = new SmdServletContext(usersStorage, 
 				                                           wordsStorage, 
-				                                           configResource,
+				                                           rb,
 				                                           logger);
 
 		return new SmdActionsFactory(context);

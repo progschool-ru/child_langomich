@@ -5,15 +5,14 @@ import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Set;
+import org.smdserver.util.ISmdLogger;
 
 public class SmdUrl implements IUrl
 {
-	private static final String ABS_PATH_PREFIX = "link.path.";
-	private static final String WEB_CHARSET_KEY = "web.charset";
-
-	private static ResourceBundle rb;
+	private static IJSPConfig jspConfig;
+	private static String webCharset;
+	private static ISmdLogger logger;
 
 	private String action;
 	private String servlet;
@@ -52,10 +51,13 @@ public class SmdUrl implements IUrl
 	{
 		construct(servlet, action, parameters, currentLink, basePath);
 	}
-
-	public static void initRB(ResourceBundle rb)
+	
+	public static void initParams(IJSPConfig jspConfig, String webCharset,
+			                      ISmdLogger logger)
 	{
-		SmdUrl.rb = rb;
+		SmdUrl.jspConfig = jspConfig;
+		SmdUrl.webCharset = webCharset;
+		SmdUrl.logger = logger;
 	}
 
 	public void setCurrentLink(SmdUrl currentLink)
@@ -92,11 +94,6 @@ public class SmdUrl implements IUrl
 				);
 	}
 
-	private static ResourceBundle getRB()
-	{
-		return rb;
-	}
-
 	private void construct(String internalUrl, SmdUrl currentLink,
 			                 String basePath,
 							 Map<String, Object> parameters)
@@ -119,7 +116,7 @@ public class SmdUrl implements IUrl
 		this.basePath = basePath;
 		this.parameters = parameters;
 
-		servletAbsPath = getRB().getString(ABS_PATH_PREFIX + servlet);
+		servletAbsPath = jspConfig.getServletPrefix(servlet);
 	}
 
 	private void reset()
@@ -207,13 +204,12 @@ public class SmdUrl implements IUrl
 			try
 			{
 				value = URLEncoder.encode(entry.getValue().toString(),
-						                  rb.getString(WEB_CHARSET_KEY));
+						                  webCharset);
 			}
 			catch(UnsupportedEncodingException e)
 			{
-				//TODO: (3.low) [#26067] Надо бы сюда внедрить нормальный логгер,
-				// вместо вывода в System.out.
-				System.out.println("As we use correct encoding, this message: " + e.getMessage());
+				if(logger != null)
+					logger.log("As we use correct encoding, this message: " + e.getMessage());
 				value = entry.getValue().toString();
 			}
 			sb.append(value);
