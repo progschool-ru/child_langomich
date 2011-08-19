@@ -1,4 +1,3 @@
-
 package org.smdserver.maintenance;
 
 import java.sql.Connection;
@@ -10,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import org.smdserver.actionssystem.ActionParams;
+import org.smdserver.db.IDBConfig;
 
 public abstract class DBAction extends MaintenanceAction
 {
@@ -18,11 +18,12 @@ public abstract class DBAction extends MaintenanceAction
 		boolean anyHost = "true".equals(request.getParameter(ActionParams.ANY_HOST));
 		String rootDBUser = request.getParameter(ActionParams.DB_USER);
 		String rootDBPassword = request.getParameter(ActionParams.DB_PASSWORD);
-				
-		String dbUrl = getServerRB().getString("db.url");
-		String user = getServerRB().getString("db.user");
-		String password = getServerRB().getString("db.password");
-		String tablesPrefix = getServerRB().getString("db.tablesPrefix");
+		
+		IDBConfig config = getServletContext().getDBConfig();
+		String dbUrl = config.getDBUrl();
+		String user = config.getDBUser();
+		String password = config.getDBPassword();
+		String tablesPrefix = config.getTablesPrefix();
 		
 		String regexString = "^(jdbc:\\w*://)(\\w*)(:\\d*)?/(\\w*)(.*$)";
 		Pattern regex = Pattern.compile(regexString);

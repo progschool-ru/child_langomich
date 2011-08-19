@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface IJSPConfig 
 {
+	public String getActionPath();
 	String getServletPrefix(String servlet);
 
 	boolean containsMainTemplate(String page);

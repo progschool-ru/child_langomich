@@ -1,9 +1,11 @@
 package org.smdserver.core;
 
+import org.smdserver.util.IClosable;
 import java.io.PrintStream;
 import javax.servlet.ServletContext;
 import org.smdserver.db.DBConfig;
 import org.smdserver.db.DbException;
+import org.smdserver.db.IDBConfig;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
 import org.smdserver.jsp.IJSPConfig;
@@ -50,6 +52,11 @@ class SmdCore implements ISmdCore
 	public IJSPConfig getJSPConfig()
 	{
 		return configProperties;
+	}
+	
+	public IDBConfig getDBConfig()
+	{
+		return dbConfig;
 	}
 	
 	public ISmdServletContext createContext()

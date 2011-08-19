@@ -1,4 +1,4 @@
-package org.smdserver.core;
+package org.smdserver.util;
 
 public interface IClosable 
 {

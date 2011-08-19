@@ -12,16 +12,15 @@ import org.smdserver.core.ISmdCore;
 
 public class PagesServlet extends HttpServlet
 {
+	public static final String PAGE_BEAN_KEY = "pageBean";
+
 	private static final String LOGIN_PAGE = "login";
 	private static final String PAGE_404 = "words";
 
-	private static final String MAIN_TEMPLATE_KEY = "mainTemplate";
-	private static final String MENU_KEY = "menu";
-	private static final String TITLE_KEY = "title";
 	private static final String LOGGED_MENU_KEY = "main";
 	private static final String ANONYMUS_MENU_KEY = "anonymus";
-	private static final String CURRENT_LINK_KEY = "currentLink";
-	private static final String WEB_CHARSET_KEY = "web.charset";
+	
+	private static final String PAGE_ACTION = "page";
 
 	private ISmdCore core;
 	
@@ -56,17 +55,23 @@ public class PagesServlet extends HttpServlet
 			response.sendRedirect(LOGIN_PAGE);
 			return;
 		}
+		
+		PagesBean bean = new PagesBean();
 
-		request.setAttribute(MAIN_TEMPLATE_KEY, config.getMainTemplate(page));
-		request.setAttribute(TITLE_KEY, config.getTitle(page));
-		SmdUrl currentUrl = new SmdUrl("page", page);
-		request.setAttribute(CURRENT_LINK_KEY, currentUrl);
-		request.setAttribute(WEB_CHARSET_KEY, config.getWebCharset());
+		bean.setDBConfig(core.getDBConfig());
+		bean.setJSPConfig(config);
+		bean.setMainTemplate(config.getMainTemplate(page));
+		bean.setTitle(config.getTitle(page));
+		SmdUrl currentUrl = new SmdUrl(PAGE_ACTION, page);
+		bean.setCurrentUrl(currentUrl);
+		bean.setWebCharset(config.getWebCharset());
 		
 		List<ILink> links = config.createMenu( 
 				      isLoggedIn(request) ? LOGGED_MENU_KEY : ANONYMUS_MENU_KEY,
 					  currentUrl);
-		request.setAttribute(MENU_KEY, links);
+		bean.setMenuLinks(links);
+		
+		request.setAttribute(PAGE_BEAN_KEY, bean);
 
 		String url = config.containsHandler(page) 
 						? config.getHandler(page)

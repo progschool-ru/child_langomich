@@ -1,5 +1,6 @@
 package org.smdserver.core;
 
+import org.smdserver.util.IClosable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -36,6 +37,11 @@ class ConfigProperties implements IConfigProperties, IClosable
 	
 	
 	//IJSPConfig implementation
+	public String getActionPath()
+	{
+		return getServletPrefix("action");
+	}
+	
 	public String getServletPrefix (String servlet)
 	{
 		return rb.getString("link.path." + servlet);

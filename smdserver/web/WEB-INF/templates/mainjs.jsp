@@ -4,17 +4,13 @@
 <jsp:include page="/js/Smd/AddWords/Smd.AddWords.js"/>
 <jsp:include page="/js/Smd/AddWords/Smd.AddWords.Words.js"/>
 <jsp:include page="/js/Smd/Smd.Unicode.js"/>
-<%
-	String configPath = getServletContext().getInitParameter("config");
-	java.util.ResourceBundle rb = java.util.ResourceBundle.getBundle(configPath);
-	String linkPathAction = rb.getString("link.path.action");
-%>
 
+<jsp:useBean id="pageBean" class="org.smdserver.jsp.PagesBean" scope="request"/>
 function initModules()
 {
 	Smd.Core.addModule("server", Smd.Server.Module, 
 					{
-						servletPaths : {action:"<%=linkPathAction%>"},
+						servletPaths : {action:"${pageBean.JSPConfig.actionPath}"},
 						basePath : "<%=request.getContextPath()%>"
 					});
 	Smd.Core.addModule("addWords", Smd.AddWords.Module, "server");

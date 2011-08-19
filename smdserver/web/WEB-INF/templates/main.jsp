@@ -2,8 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<c:set var="mainTemplate" value="/WEB-INF/templates/${requestScope['mainTemplate']}"/>
+<jsp:useBean id="pageBean" class="org.smdserver.jsp.PagesBean" scope="request"/>
+<c:set var="mainTemplate" value="/WEB-INF/templates/${pageBean.mainTemplate}"/>
 
-<smd:smdHTML title="${requestScope['title']}" menu="${requestScope['menu']}">
+<smd:smdHTML title="${pageBean.title}" menu="${pageBean.menuLinks}">
 	<jsp:include page="${mainTemplate}"/>
 </smd:smdHTML>

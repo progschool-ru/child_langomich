@@ -1,7 +1,7 @@
 package org.smdserver.db;
 
 import java.util.ResourceBundle;
-import org.smdserver.core.IClosable;
+import org.smdserver.util.IClosable;
 
 public class DBConfig implements IDBConfig, IClosable
 {	
