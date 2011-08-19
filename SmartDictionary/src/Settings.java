@@ -10,7 +10,7 @@ public class Settings extends Records
         public final int PASSWORD = 6;
         public final int URL = 7;
         public final int TEXT = 8;
-		public final int DEVICE_ID = 9;
+		public final int LAST_SERVER_TIMING = 9;
 
         public final String NAME = "Settings";
 
@@ -36,8 +36,8 @@ public class Settings extends Records
 				//addRecord("localhost:8080");
             if(getRecord(TEXT, SINGLE_RECORD) == null)
                 addRecord("null");
-            if(getRecord(DEVICE_ID, SINGLE_RECORD) == null)
-                addRecord("null");
+            if(getRecord(LAST_SERVER_TIMING, SINGLE_RECORD) == null)
+                addRecord("-1");
         }
         public void setNumberOfWords(int numberOfWords)
         {
@@ -51,19 +51,19 @@ public class Settings extends Records
             return 1;
         }
 
-		public void setDeviceId(String deviceId)
+		public void setLastServerTiming(long timing)
 		{
-			setRecord(deviceId, DEVICE_ID);
+			setRecord(Long.toString(timing), LAST_SERVER_TIMING);
 		}
 
-		public String getDeviceId()
+		public long getLastServerTiming()
 		{
-			String record = getRecord(DEVICE_ID, SINGLE_RECORD);
+			String record = getRecord(LAST_SERVER_TIMING, SINGLE_RECORD);
 			if(record != null && !record.equals("null"))
 			{
-				return record;
+				return Long.parseLong(record);
 			}
-			return "giveMeDeviceId";
+			return -1;
 		}
 
         public void setLanguage(String language)

@@ -52,7 +52,7 @@ public class Timing extends Thread
                 hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
                 hc.setRequestProperty("Cookie", c);
 
-	            query = "data="+getData(settings.getDeviceId());
+	            query = "data="+getData(settings.getLastServerTiming());
 
                 os = hc.openOutputStream();
                 os.write(query.getBytes());
@@ -81,7 +81,7 @@ public class Timing extends Thread
         return text;
     }
 	
-	private String getData(String deviceId)
+	private String getData(long serverTiming)
 	{
         JSONObject main = new JSONObject();
         try
@@ -146,7 +146,10 @@ public class Timing extends Thread
                 JSONLanguages.put(JSONLanguage);//TODO: (3.low) Возложить функцию конвертирования в JSON на сам класс Language. Чтобы было как-то так: JSON.encode(language); или JSONLanguages.put(language);
             }
             main.put("languages", JSONLanguages);
-			main.put("deviceId", deviceId);
+			if(serverTiming > 0)
+			{
+				main.put("lastConnection", serverTiming);
+			}
         }
         catch(JSONException e){}
 		//System.out.println("get: " + main.toString()); //Это я задолбался эти строки писать, а потом удалять, поэтому оставлю закомментированными.
@@ -184,9 +187,9 @@ public class Timing extends Thread
                 }
 				dictionary.destroy();
             }
-			if(json.has("deviceId"))
+			if(json.has("lastConnection"))
 			{
-				settings.setDeviceId(json.getString("deviceId"));
+				settings.setLastServerTiming(json.getLong("lastConnection"));
 			}
             return  json.get("success").toString();
         }

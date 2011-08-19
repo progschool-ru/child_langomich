@@ -2,7 +2,6 @@ package org.smdserver.words;
 
 import com.ccg.util.JavaString;
 import org.smdserver.core.UsersTestBase;
-import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebRequest;
 import java.util.ArrayList;
@@ -91,24 +90,24 @@ public class AddWordsActionTest extends UsersTestBase
 	{
 		WebRequest deviceReq = createActionRequest(WebActions.ADD_WORDS);
 		JSONObject paramsJSON = new JSONObject();
-		paramsJSON.put(ActionParams.DEVICE_ID, ActionParams.GIVE_ME_DEVICE_ID);
 		paramsJSON.put(ActionParams.LANGUAGES, new JSONArray());
 		deviceReq.setParameter(WebParams.DATA, paramsJSON.toString());
 
 		JSONObject deviceJSON = getJSONResource(wc, deviceReq);
-		String deviceId = deviceJSON.getString(ActionParams.DEVICE_ID);
+		long lastConnection = deviceJSON.getLong(ActionParams.LAST_CONNECTION);
 
 
 		WebRequest addReq = createActionRequest(WebActions.ADD_WORDS);
 		List<Language> languages = new ArrayList<Language>();
 		languages.add(new Language(null, LANGUAGE_NAME2, new Word("someWord", "someTranslation", 0)));
 		paramsJSON = new JSONObject();
-		paramsJSON.put(ActionParams.DEVICE_ID, deviceId);
+		paramsJSON.put(ActionParams.LAST_CONNECTION, lastConnection);
 		paramsJSON.put(ActionParams.LANGUAGES, languages);
 		addReq.setParameter(WebParams.DATA, paramsJSON.toString());
 
 		JSONObject addJSON = getJSONResource(wc, addReq);
 		JSONArray addLanguages = addJSON.has(ActionParams.LANGUAGES) ? addJSON.getJSONArray(ActionParams.LANGUAGES) : null;
+		lastConnection = addJSON.getLong(ActionParams.LAST_CONNECTION);
 
 		assertNotNull(addLanguages);
 		assertEquals(1, addLanguages.length());
@@ -118,7 +117,7 @@ public class AddWordsActionTest extends UsersTestBase
 		
 		WebRequest checkReq = createActionRequest(WebActions.ADD_WORDS);
 		paramsJSON = new JSONObject();
-		paramsJSON.put(ActionParams.DEVICE_ID, deviceId);
+		paramsJSON.put(ActionParams.LAST_CONNECTION, lastConnection);
 		paramsJSON.put(ActionParams.LANGUAGES, new JSONArray());
 		checkReq.setParameter(WebParams.DATA, paramsJSON.toString());
 

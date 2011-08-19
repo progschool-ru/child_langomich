@@ -6,9 +6,8 @@ public class ActionParams
 	public static final String DATA     = "data";
 	public static final String DB_PASSWORD = "dbPassword";
 	public static final String DB_USER     = "dbUser";
-	public static final String DEVICE_ID= "deviceId";
-	public static final String GIVE_ME_DEVICE_ID = "giveMeDeviceId";
 	public static final String LANGUAGES= "languages";
+	public static final String LAST_CONNECTION = "lastConnection";
 	public static final String LOGIN    = "login";
 	public static final String MESSAGE  = "message";
 	public static final String PASSWORD = "password";

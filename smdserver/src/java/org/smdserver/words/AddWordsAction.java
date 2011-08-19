@@ -9,9 +9,7 @@ import org.smdserver.actionssystem.ActionParams;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 import org.smdserver.auth.CheckLoginAction;
-import org.smdserver.users.IUsersStorage;
 
 public class AddWordsAction extends CheckLoginAction
 {	
@@ -23,25 +21,13 @@ public class AddWordsAction extends CheckLoginAction
 		{ 
 			JSONObject json = new JSONObject(JavaString.decode(dataString));
 			
-			long lastConnection = 0;
+			long lastConnection = json.has(ActionParams.LAST_CONNECTION) 
+					              ? json.getLong(ActionParams.LAST_CONNECTION) 
+					              : 0;
 			long currentConnection = new Date().getTime();
 
-			String deviceId = json.has(ActionParams.DEVICE_ID) ? json.getString(ActionParams.DEVICE_ID) : null;
-
 			IWordsStorage storage = getServletContext().getWordsStorage();
-			IUsersStorage usersStorage = getServletContext().getUsersStorage();
 			String userId = getUser().getUserId();
-			
-			if(ActionParams.GIVE_ME_DEVICE_ID.equals(deviceId))
-			{
-				deviceId = UUID.randomUUID().toString(); //TODO: (3.low) [#26069]
-				usersStorage.createDevice(userId, deviceId, currentConnection);
-			}
-			else if(deviceId != null)
-			{
-				lastConnection = usersStorage.getLastConnection(userId, deviceId);
-				usersStorage.setLastConnection(userId, deviceId, currentConnection);
-			}
 
 			if(lastConnection >= 0)
 			{
@@ -62,7 +48,7 @@ public class AddWordsAction extends CheckLoginAction
 				responseLanguages.addAll(storage.getLatestUserWords(userId, currentConnection));
 
 				setAnswerParam(ActionParams.LANGUAGES, responseLanguages);
-				setAnswerParam(ActionParams.DEVICE_ID, deviceId);
+				setAnswerParam(ActionParams.LAST_CONNECTION, currentConnection);
 				setAnswerParam(ActionParams.SUCCESS, true);
 			}
 			else

@@ -47,26 +47,14 @@ public class DeployDBTablesAction extends DBAction
 				"time_modified DATETIME NOT NULL," +
 				"PRIMARY KEY (language_id, original)," +
 				"FOREIGN KEY (language_id) REFERENCES %1$slanguages(language_id) ON DELETE CASCADE" +
-			")  ENGINE = InnoDB CHARACTER SET = utf8;",
-
-			"CREATE TABLE %1$sdevices" +
-			"(" +
-				"device_id VARCHAR (36) NOT NULL," +
-				"user_id VARCHAR (36) NOT NULL," +
-				"last_connection BIGINT NOT NULL," +
-				"time_created DATETIME NOT NULL," +
-				"time_modified DATETIME NOT NULL," +
-				"PRIMARY KEY (device_id)," +
-				"FOREIGN KEY (user_id) REFERENCES %1$susers (user_id) ON DELETE CASCADE" +
-			") ENGINE = InnoDB CHARACTER SET = utf8;"
+			")  ENGINE = InnoDB CHARACTER SET = utf8;"
 		};
 		
 		List<String> queries = new ArrayList<String>();
 		queries.add(String.format(templates[0], tablesPrefix));
 		queries.add(String.format(templates[1], tablesPrefix));
 		queries.add(String.format(templates[2], tablesPrefix));
-		queries.add(String.format(templates[3], tablesPrefix));
-		
+
 		return queries;
 	}	
 }

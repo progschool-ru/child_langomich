@@ -13,7 +13,6 @@ import org.smdserver.db.SmdStatement;
 public class UsersDBStorage implements IUsersStorage
 {
 	public static final String USERS_TABLE = "users";
-	public static final String DEVICES_TABLE = "devices";
 
 	private static final String LOGIN_REGEX = "^[a-zA-Z][\\w-]+";
 	private static final String CREATE_USER_QUERY = "INSERT INTO %1$s (user_id, login_key, login, psw, email, time_created, time_modified) VALUE (?, ?, ?, ?, \"\", NOW(), NOW());";
@@ -22,48 +21,16 @@ public class UsersDBStorage implements IUsersStorage
 	private static final String SET_PASSWORD_BY_LOGIN_QUERY = "UPDATE %1$s SET psw=? WHERE login_key = ?;";
 	private static final String GET_PSW_BY_ID_QUERY = "SELECT psw FROM %1$s WHERE user_id = ?;";
 	private static final String DELETE_USER_BY_ID_QUERY = "DELETE FROM %1$s WHERE user_id = ?;";
-	private static final String GET_LAST_CONNECTION = "SELECT last_connection FROM %1$s WHERE device_id = ? AND user_id = ?;";
-	private static final String CREATE_DEVICE = "INSERT INTO %1$s (last_connection, device_id, user_id, time_created, time_modified) VALUE (?, ?, ?, NOW(), NOW());";
-	private static final String UPDATE_DEVICE = "UPDATE %1$s SET last_connection = ?, time_modified = NOW() WHERE device_id = ? AND user_id = ?;";
 
 	private ISmdDB db;
 	private String usersTable;
-	private String devicesTable;
 
 	public UsersDBStorage(ISmdDB db, String prefix)
 	{
 		this.db = db;
 		this.usersTable = prefix + USERS_TABLE;
-		this.devicesTable = prefix + DEVICES_TABLE;
-	}
-
-	public long getLastConnection (String userId, String deviceId)
-	{
-		FirstArgParser parser = new FirstArgParser();
-		ISmdStatement st = createSmdStatement(GET_LAST_CONNECTION, devicesTable);
-		st.addString(deviceId);
-		st.addString(userId);
-		try
-		{
-			db.selectSingle(st, parser);
-			return parser.getValue() == null ? -1 : (Long)parser.getValue();
-		}
-		catch (DbException e)
-		{
-			return -1;
-		}
-	}
-
-	public boolean setLastConnection (String userId, String deviceId, long lastConnection)
-	{
-		return setDevice(UPDATE_DEVICE, userId, deviceId, lastConnection);
 	}
 	
-	public boolean createDevice (String userId, String deviceId, long lastConnection)
-	{
-		return setDevice(CREATE_DEVICE, userId, deviceId, lastConnection);
-	}
-
 	public boolean createUser (String userId, String dirtyLogin, String dirtyPassword)
 	{
 		if(!validateLogin(dirtyLogin))
@@ -260,22 +227,5 @@ public class UsersDBStorage implements IUsersStorage
 	private static String getLoginKey(String login)
 	{
 		return login.toLowerCase().replaceAll("-", "_");
-	}
-
-	private boolean setDevice(String query, String userId, String deviceId, long lastConnection)
-	{
-		ISmdStatement st = createSmdStatement(query, devicesTable);
-		st.addLong(lastConnection);
-		st.addString(deviceId);
-		st.addString(userId);
-		try
-		{
-			int count = db.processSmdStatement(st);
-			return count == 1;
-		}
-		catch (DbException e)
-		{
-			return false;
-		}
 	}
 }
