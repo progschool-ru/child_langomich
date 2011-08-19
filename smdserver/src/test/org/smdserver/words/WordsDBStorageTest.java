@@ -78,6 +78,41 @@ public class WordsDBStorageTest
 		connection.createStatement().executeUpdate(String.format(DELETE_USERS, prefix));
 		storage = null;
 	}
+	
+	@Test
+	public void testDeleteWords()
+	{
+		List<Language> before = storage.getUserWords(USER_ID_WITH_WORDS);
+		assertEquals(2, before.size());
+		assertEquals(1, before.get(0).getWords().size());
+		Word word1 = before.get(0).getWords().get(0);
+		assertEquals(WORD_ORIGINAL, word1.getOriginal());
+		assertEquals(WORD_TRANSLATION, word1.getTranslation());
+		
+		List<Language> languages = new ArrayList<Language>();
+		languages.add(new Language(LANGUAGE_ID, LANGUAGE_NAME, new Word(WORD_ORIGINAL, "", 0)));
+		storage.addUserWords(USER_ID_WITH_WORDS, languages, TIME_AFTER);
+		
+		List<Language> result = storage.getUserWords(USER_ID_WITH_WORDS);
+		
+		assertEquals(2, result.size());
+		assertEquals(0, result.get(0).getWords().size());
+		
+		List<Language> resultBeforeBefore = storage.getLatestUserWords(USER_ID_WITH_WORDS, TIME_BEFORE / 2);
+		assertEquals(2, resultBeforeBefore.size());
+		assertEquals(1, resultBeforeBefore.get(0).getWords().size());
+		Word word = resultBeforeBefore.get(0).getWords().get(0);
+		assertEquals(WORD_ORIGINAL, word.getOriginal());
+		assertEquals("", word.getTranslation());
+		
+		List<Language> resultX = storage.getLatestUserWords(USER_ID_WITH_WORDS, TIME_X);
+		assertEquals(1, resultX.size());
+		assertEquals(1, resultX.get(0).getWords().size());
+		word = resultX.get(0).getWords().get(0);
+		assertEquals(WORD_ORIGINAL, word.getOriginal());
+		assertEquals("", word.getTranslation());
+
+	}
 
 	/**
 	 * Test of setUserWords method, of class WordsStorage.

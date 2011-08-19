@@ -22,7 +22,7 @@ public class WordsDBStorage implements IWordsStorage
 
 	private static final String ADD_LANGUAGE_QUERY = "INSERT INTO %1$s (language_id, name, user_id, modified, time_created, time_modified) VALUE (?, ?, ?, ?, NOW(), NOW());";
 	private static final String ADD_WORD_QUERY     = "INSERT INTO %1$s (translation, rating, modified, language_id, original, time_created, time_modified) VALUE (?, ?, ?, ?, ?, NOW(), NOW());";
-	private static final String GET_ALL_WORDS_WITH_EMPTY_LANGUAGES = "SELECT * FROM %1$s as w RIGHT OUTER JOIN %2$s as l ON l.language_id = w.language_id WHERE l.user_id=?;";
+	private static final String GET_ALL_WORDS_WITH_EMPTY_LANGUAGES = "SELECT * FROM %1$s as w RIGHT OUTER JOIN %2$s as l ON l.language_id = w.language_id AND w.translation <> \"\" WHERE l.user_id=?;";
 	private static final String GET_LATEST_WORDS_WITH_EMPTY_LANGUAGES = "SELECT * FROM %1$s as w RIGHT OUTER JOIN %2$s as l ON l.language_id = w.language_id AND w.modified > ?" +
 																		" WHERE l.user_id=? AND " +
 																		" (w.original IS NULL     AND l.modified > ?     OR" +
@@ -57,6 +57,11 @@ public class WordsDBStorage implements IWordsStorage
 
 	public List<Language> getLatestUserWords(String userId, long lastModified)
 	{
+		if(lastModified <= 0)
+		{
+			return getUserWords(userId);
+		}
+		
 		ISmdStatement st = createSmdStatement(GET_LATEST_WORDS_WITH_EMPTY_LANGUAGES);
 		st.addLong(lastModified);
 		st.addString(userId);

@@ -46,7 +46,8 @@ public class DeployDBTablesAction extends DBAction
 				"time_created DATETIME NOT NULL," +
 				"time_modified DATETIME NOT NULL," +
 				"PRIMARY KEY (language_id, original)," +
-				"FOREIGN KEY (language_id) REFERENCES %1$slanguages(language_id) ON DELETE CASCADE" +
+				"FOREIGN KEY (language_id) REFERENCES %1$slanguages(language_id) ON DELETE CASCADE," +
+				"INDEX(translation)" +
 			")  ENGINE = InnoDB CHARACTER SET = utf8;"
 		};
 		

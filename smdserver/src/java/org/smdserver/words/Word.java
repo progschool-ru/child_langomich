@@ -46,6 +46,6 @@ public class Word
 	{
 		if(dirtyValue == null)
 			return null;
-		return dirtyValue.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+		return dirtyValue.replaceAll("<", "&lt;").replaceAll(">", "&gt;").trim();
 	}
 }

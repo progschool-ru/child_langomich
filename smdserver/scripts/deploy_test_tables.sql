@@ -41,5 +41,6 @@ CREATE TABLE smd_words
 	time_created DATETIME NOT NULL,
 	time_modified DATETIME NOT NULL,
 	PRIMARY KEY (language_id, original),
-	FOREIGN KEY (language_id) REFERENCES smd_languages(language_id) ON DELETE CASCADE
+	FOREIGN KEY (language_id) REFERENCES smd_languages(language_id) ON DELETE CASCADE,
+	INDEX(translation)
 )  ENGINE = InnoDB CHARACTER SET = utf8;
