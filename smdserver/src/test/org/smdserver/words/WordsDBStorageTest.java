@@ -111,7 +111,6 @@ public class WordsDBStorageTest
 		word = resultX.get(0).getWords().get(0);
 		assertEquals(WORD_ORIGINAL, word.getOriginal());
 		assertEquals("", word.getTranslation());
-
 	}
 
 	/**

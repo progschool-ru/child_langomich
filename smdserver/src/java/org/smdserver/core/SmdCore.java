@@ -44,9 +44,12 @@ class SmdCore implements ISmdCore
 		super.finalize();
 	}
 	
-	public void setContext (ServletContext context)
+	public void setContext (ServletContext context)//TODO: (2.medium) Что делать с разными сервлетами, с разными контекстками?
 	{
-		init(context);
+		if(dbConfig == null)
+		{
+			init(context);
+		}
 	}
 	
 	public IJSPConfig getJSPConfig()

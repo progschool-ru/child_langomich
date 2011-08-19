@@ -119,7 +119,7 @@ public class ListForm extends myForm implements CommandListener
     {
         if(selectedRow == 1)
         {
-            dictionary.deleteRecord(mainSelectedRow);
+            dictionary.deleteTranslation(mainSelectedRow);
             if(mainSelectedRow == mainNumber)
                mainSelectedRow--;
             mainNumber--;

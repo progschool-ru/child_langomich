@@ -8,7 +8,6 @@ import com.ccg.util.JavaString;
 public class Timing extends Thread
 {
 	private static final String ACTION_PATH = "/smdserver/servlet";
-    private Dictionary dictionary;
     private Languages languages;
     private Settings settings;
 
@@ -30,7 +29,6 @@ public class Timing extends Thread
     {
 			long currentTime = new Date().getTime();
             settings = new Settings(); // TODO: (2.medium) Вопрос. Не нужно ли этим объектам вызывать destroy() в конце метода?
-            dictionary = new Dictionary();
             languages = new Languages();
 
             try
@@ -52,7 +50,8 @@ public class Timing extends Thread
                 hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
                 hc.setRequestProperty("Cookie", c);
 
-	            query = "data="+getData(settings.getLastServerTiming());
+				long lastTiming = settings.getLastServerTiming();
+	            query = "data="+getData(lastTiming);
 
                 os = hc.openOutputStream();
                 os.write(query.getBytes());
@@ -65,10 +64,17 @@ public class Timing extends Thread
                 is.close();
 				hc.close();
 
-                text = "success - " + setData(JavaString.decode(new String(buff)), currentTime);
+				String result = setData(JavaString.decode(new String(buff)), currentTime);
+                text = "success - " + result;
                 settings.setNumberOfTiming(settings.getNumberOfTiming()+1);
                 settings.setLastTiming(currentTime);
                 settings.setText(text);
+				
+				if("true".equals(result))
+				{
+					Dictionary dictionary = new Dictionary();
+					dictionary.deleteEmptyWords();
+				}
             }
             catch(IOException ioe)
             {
@@ -91,7 +97,7 @@ public class Timing extends Thread
             {
                 JSONObject JSONLanguage = new JSONObject();
                 JSONArray words = new JSONArray();
-                dictionary = new Dictionary(languages.getLanguage(i).getId(), settings.getLastTiming());
+                Dictionary dictionary = new Dictionary(languages.getLanguage(i).getId(), settings.getLastTiming());
                 for(int row = 1; row <= dictionary.getNumRecords();row++)
                 {
                     JSONObject word = new JSONObject();
@@ -135,6 +141,7 @@ public class Timing extends Thread
                     word.put("modified",Long.parseLong(dictionary.getCell(row, dictionary.LAST_TIMING)));
                     words.put(word);
                 }
+				dictionary.destroy();
 
 				Language language = languages.getLanguage(i);
 				if(!languages.isInternalId(language.getId()))
@@ -152,15 +159,20 @@ public class Timing extends Thread
 			}
         }
         catch(JSONException e){}
-		//System.out.println("get: " + main.toString()); //Это я задолбался эти строки писать, а потом удалять, поэтому оставлю закомментированными.
+		//System.out.println("get: " + main.toString()); //Чтобы эти строки не писать, а потом не удалять, оставлю закомментированными.
         return JavaString.encode(main.toString());
     }
     private String setData(String data, long currentTime)
 	{
-		//System.out.println("set: " + data); //Это я задолбался эти строки писать, а потом удалять, поэтому оставлю закомментированными.
+		//System.out.println("set: " + data); //Чтобы эти строки не писать, а потом не удалять, оставлю закомментированными.
         try
         {
             JSONObject json = new JSONObject(data);
+			if(!json.has("success") || !json.getBoolean("success"))
+			{
+				return json.get("success").toString();
+			}
+			
             JSONArray JSONLanguages = json.getJSONArray("languages");
             for(int i = 0; i < JSONLanguages.length();i++)
             {
@@ -169,7 +181,7 @@ public class Timing extends Thread
                 String languageName = JSONLanguage.getString("name");
 				String languageId = JSONLanguage.getString("id");
 
-				dictionary = new Dictionary(languageId);
+				Dictionary dictionary = new Dictionary(languageId);
 
 				String oldId = languages.addLanguageAndGetOldLanguageId(languageName, languageId, dictionary);
 				if(settings.getLanguage().equals("null") || settings.getLanguage().equals(oldId))

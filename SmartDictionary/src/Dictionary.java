@@ -1,5 +1,6 @@
 import java.util.Date;
 import java.util.Random;
+import java.util.Stack;
 
 public class Dictionary extends Records
 {
@@ -28,6 +29,28 @@ public class Dictionary extends Records
                 this.language = language;
                 recordStoreInit(NAME, new Filter(language, lastTiming), new Ordering(ORIGINAL));
         }
+		
+	public void deleteEmptyWords()
+	{
+		Stack stack = new Stack();
+		int number = getNumRecords();
+		for(int i = 0; i < number; i++)
+		{
+			int id = getId(i + 1);
+			String translation = getRecord(id, TRANSLATION);
+			if(isEmpty(translation))
+			{
+				stack.push(new Integer(id));
+			}
+		}
+		
+		while(!stack.empty())
+		{
+			Integer id = (Integer)stack.pop();
+			deleteRecord(id.intValue());
+		}
+	}
+	
 	public String getCell(int row, int column)
 	{
 		return getRecord(getId(row), column);
@@ -85,11 +108,20 @@ public class Dictionary extends Records
             {
                 if(lastModified > getLastModified(id))
                 {
-                    setRecord(original, translation, rating, id, lastModified);
+					if(isEmpty(translation))
+					{
+						deleteRecord(id);
+					}
+                    else
+					{
+						setRecord(original, translation, rating, id, lastModified);
+					}
                 }
             }
-            else
+			else if(!isEmpty(translation))
+			{
                 addRecord(original, translation, rating, lastModified);
+			}
         }
         public void addRecord(String original, String translation, int rating)
 	{
@@ -121,10 +153,14 @@ public class Dictionary extends Records
             str[4] = Long.toString(lastModified);
             setRecord(str, id);
         }
-        public void deleteRecord(int row)
+	public void deleteTranslation(int row)
 	{
-		super.deleteRecord(getId(row));
-        }
+		int id = getId(row);
+		String[] record = getFullRecord(id, THE_LAST_COLUMN);
+		record[TRANSLATION - 1] = "";
+		record[LAST_TIMING - 1] = Long.toString(System.currentTimeMillis());
+		setRecord(record, id);
+	}
         public boolean answer(int row, String answer)
 	{
 		int id = getId(row);
@@ -175,4 +211,9 @@ public class Dictionary extends Records
             else
                 return 0;
         }
+		
+	private boolean isEmpty(String string)
+	{
+		return "".equals(string);
+	}
 }
