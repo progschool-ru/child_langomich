@@ -7,9 +7,9 @@ public class Filter implements RecordFilter{
     
     private String search;
     private long lastTiming;
-	private boolean activeOnly;
+	private Boolean activeOnly;
 
-    Filter(String search, boolean activeOnly){
+    Filter(String search, Boolean activeOnly){
         this.search = search;
         lastTiming = 1;
 		this.activeOnly = activeOnly;
@@ -36,14 +36,20 @@ public class Filter implements RecordFilter{
                 language = dis.readUTF();
 			}
             lastModified = dis.readUTF();
-            if(!language.equals(search))
+            if(search != null && !language.equals(search))
                 return false;
             if(lastTiming != 1)
                 if(lastTiming >= Long.parseLong(lastModified))
                     return false;
 			
-			if(activeOnly && "".equals(translation))
-				return false;
+			if(activeOnly != null)
+			{
+				if(activeOnly.booleanValue() && "".equals(translation)
+						|| !activeOnly.booleanValue() && !"".endsWith(translation))
+				{		
+					return false;
+				}
+			}
         }
         catch (IOException ioe) {}
         return true;

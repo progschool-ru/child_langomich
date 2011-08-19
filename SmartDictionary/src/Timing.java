@@ -72,8 +72,8 @@ public class Timing extends Thread
 				
 				if("true".equals(result))
 				{
-					Dictionary dictionary = new Dictionary();
-					dictionary.deleteEmptyWords();
+					Dictionary dictionary = new Dictionary(null, Boolean.FALSE);
+					dictionary.deleteAllRecords();
 				}
             }
             catch(IOException ioe)

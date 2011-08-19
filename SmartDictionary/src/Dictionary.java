@@ -22,9 +22,9 @@ public class Dictionary extends Records
         Dictionary(String language)
         {
                 this.language = language;
-                recordStoreInit(NAME, new Filter(language, false), new Ordering(ORIGINAL));
+                recordStoreInit(NAME, new Filter(language, null), new Ordering(ORIGINAL));
         }
-		Dictionary(String language, boolean activeOnly)
+		Dictionary(String language, Boolean activeOnly)
 		{
 			this.language = language;
 			recordStoreInit(NAME, new Filter(language, activeOnly), new Ordering(ORIGINAL));
@@ -34,27 +34,6 @@ public class Dictionary extends Records
                 this.language = language;
                 recordStoreInit(NAME, new Filter(language, lastTiming), new Ordering(ORIGINAL));
         }
-		
-	public void deleteEmptyWords()
-	{
-		Stack stack = new Stack();
-		int number = getNumRecords();
-		for(int i = 0; i < number; i++)
-		{
-			int id = getId(i + 1);
-			String translation = getRecord(id, TRANSLATION);
-			if(isEmpty(translation))
-			{
-				stack.push(new Integer(id));
-			}
-		}
-		
-		while(!stack.empty())
-		{
-			Integer id = (Integer)stack.pop();
-			deleteRecord(id.intValue());
-		}
-	}
 	
 	public String getCell(int row, int column)
 	{

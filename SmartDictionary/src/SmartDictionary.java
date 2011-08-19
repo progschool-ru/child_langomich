@@ -92,7 +92,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 
  	public void workFormReset()
 	{
-            dictionary = new Dictionary(settings.getLanguage(), true);
+            dictionary = new Dictionary(settings.getLanguage(), Boolean.TRUE);
             workForm.removeCommand(OK);
             workForm.removeCommand(next);
             if(dictionary.getNumRecords() == 0)

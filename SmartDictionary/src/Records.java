@@ -62,6 +62,14 @@ public abstract class Records
 		}
 		return record;
 	}
+	
+	public void deleteAllRecords()
+	{
+		while(getNumRecords() > 0)
+		{
+			deleteRecord(getId(1));
+		}		
+	}
 
         public String getRecord(int id, int column)
 	{
