@@ -24,7 +24,6 @@ public class PagesServlet extends HttpServlet
 	private static final String PAGE_ACTION = "page";
 
 	private ISmdCore core;
-	private IUsersStorage usersStorage;
 	
 	@Override
 	public void init() throws ServletException
@@ -105,11 +104,6 @@ public class PagesServlet extends HttpServlet
 			return null;
 		}
 		
-		if(usersStorage == null)
-		{
-			usersStorage = core.createUsersStorage();
-		}
-		
-		return usersStorage.getUserByLogin(login).getUserId();
+		return core.createUsersStorage().getUserByLogin(login).getUserId();
 	}
 }

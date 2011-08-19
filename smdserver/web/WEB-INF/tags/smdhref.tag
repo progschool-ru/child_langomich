@@ -9,6 +9,8 @@
 <%@tag import="org.smdserver.jsp.*"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<jsp:useBean id="pageBean" scope="request" class="org.smdserver.jsp.PagesBean"/>
+
 <%
 	String redirect = (String)jspContext.getAttribute("redirect");
 	String redirectSuccess = (String)jspContext.getAttribute("redirectSuccess");
@@ -25,7 +27,7 @@
 
 	ILink link = new SmdLink((String)jspContext.getAttribute("url"),
 			                 (String)jspContext.getAttribute("text"),
-					         (SmdUrl)request.getAttribute("currentLink"),
+					         pageBean.getCurrentUrl(),
 					         basePath,
 					         params);
 

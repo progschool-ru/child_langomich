@@ -4,7 +4,7 @@
 <%@attribute name="encode" required="false" rtexprvalue="true"%>
 <%@tag trimDirectiveWhitespaces="true"%>
 <%@tag import="org.smdserver.jsp.*"%>
-
+<jsp:useBean id="pageBean" scope="request" class="org.smdserver.jsp.PagesBean"/>
 <%
 	String baseServlet = (String)jspContext.getAttribute("baseServlet");
 	String servlet = (String)jspContext.getAttribute("servlet");
@@ -12,7 +12,7 @@
 	Object encode = (String)jspContext.getAttribute("encode");
 
 	SmdUrl currentUrl = (baseServlet == null)
-			              ? (SmdUrl)request.getAttribute("currentLink")
+			              ? pageBean.getCurrentUrl()
 			              : new SmdUrl(baseServlet, "");
 	SmdUrl link = new SmdUrl(servlet, action,
 			                 currentUrl, request.getContextPath(), null);

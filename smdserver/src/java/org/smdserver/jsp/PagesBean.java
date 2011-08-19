@@ -35,7 +35,6 @@ public class PagesBean
 	{
 		if(wordsBean == null && core != null && userId != null)
 		{
-			System.out.println("Create wordsStorage");
 			wordsBean = new UserWords(core, userId);
 		}
 		return wordsBean;

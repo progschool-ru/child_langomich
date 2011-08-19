@@ -1,8 +1,7 @@
+<%@attribute name="languages" required="true" rtexprvalue="true" type="java.util.List"%>
 <%@tag trimDirectiveWhitespaces="true"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="smd" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<jsp:useBean id="pageBean" class="org.smdserver.jsp.PagesBean" scope="request"/>
-<c:set var="languages" scope="request" value="${pageBean.userWords.languages}"/>
 
 <table class="words">
 	<caption>Words</caption>
