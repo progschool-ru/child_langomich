@@ -63,7 +63,16 @@ public class Dictionary extends Records
                 String []Translation = getColumn(TRANSLATION);
                 String []Rating = getColumn(RATING);
                 for(int i = 0; i < getNumRecords(); i++)
-                    Records[i] = Original[i] +" "+ Translation[i] +" "+ Rating[i];
+				{
+					if(isEmpty(Translation[i]))
+					{
+						Records[i] = Original[i] + " - deleted";
+					}
+					else
+					{
+						Records[i] = Original[i] +" "+ Translation[i] +" "+ Rating[i];
+					}
+				}
                 return Records;
             }
             else
@@ -76,11 +85,23 @@ public class Dictionary extends Records
             Random random = new Random ();
             int AllPoint = 0;
             String []rating = getColumn(RATING);
+			String []translation = getColumn(TRANSLATION);
             int []Point = new int[getNumRecords()];
             for(int i = 0; i < getNumRecords(); i++){
-                Point[i] = 10 - Integer.parseInt(rating[i]);
+				if(isEmpty(translation[i]))
+				{
+					Point[i] = 0;
+				}
+				else
+				{
+					Point[i] = 10 - Integer.parseInt(rating[i]);
+				}
                 AllPoint += Point[i];
             }
+			if(AllPoint <= 0)
+			{
+				return 0;
+			}
             int r = Math.abs(random.nextInt())%AllPoint;
             for (int i = 0; i < getNumRecords(); i++)
 		{
