@@ -7,10 +7,12 @@ public class Filter implements RecordFilter{
     
     private String search;
     private long lastTiming;
+	private boolean activeOnly;
 
-    Filter(String search){
+    Filter(String search, boolean activeOnly){
         this.search = search;
         lastTiming = 1;
+		this.activeOnly = activeOnly;
     }
     Filter(String search, long lastTiming){
         this.search = search;
@@ -21,16 +23,27 @@ public class Filter implements RecordFilter{
         DataInputStream dis = new DataInputStream(bais);
         String language = "";
         String lastModified = "";
+		String translation = "";
         try
         {
-            for(int i = 0; i < 4;i++)
+			int i = 0;
+			for(; i < Dictionary.TRANSLATION; i++)
+			{
+				translation = dis.readUTF();
+			}
+            for(; i < Dictionary.LANGUAGE; i++)
+			{
                 language = dis.readUTF();
-                lastModified = dis.readUTF();
+			}
+            lastModified = dis.readUTF();
             if(!language.equals(search))
                 return false;
             if(lastTiming != 1)
                 if(lastTiming >= Long.parseLong(lastModified))
                     return false;
+			
+			if(activeOnly && "".equals(translation))
+				return false;
         }
         catch (IOException ioe) {}
         return true;

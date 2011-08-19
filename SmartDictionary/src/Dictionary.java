@@ -4,14 +4,14 @@ import java.util.Stack;
 
 public class Dictionary extends Records
 {
-        public final int ORIGINAL = 1;
-        public final int TRANSLATION = 2;
-        public final int RATING = 3;
-        public final int LANGUAGE = 4;
-        public final int LAST_TIMING = 5;
-		public final int THE_LAST_COLUMN = LAST_TIMING;
+	public static final int ORIGINAL = 1;
+	public static final int TRANSLATION = 2;
+	public static final int RATING = 3;
+	public static final int LANGUAGE = 4;
+	public static final int LAST_TIMING = 5;
+	public static final int THE_LAST_COLUMN = LAST_TIMING;
 
-        public final String NAME = "Dicionary";
+	public static final String NAME = "Dicionary";
 
         private String language;
 
@@ -22,8 +22,13 @@ public class Dictionary extends Records
         Dictionary(String language)
         {
                 this.language = language;
-                recordStoreInit(NAME, new Filter(language), new Ordering(ORIGINAL));
+                recordStoreInit(NAME, new Filter(language, false), new Ordering(ORIGINAL));
         }
+		Dictionary(String language, boolean activeOnly)
+		{
+			this.language = language;
+			recordStoreInit(NAME, new Filter(language, activeOnly), new Ordering(ORIGINAL));
+		}
         Dictionary(String language, long lastTiming)
         {
                 this.language = language;
