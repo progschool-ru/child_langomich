@@ -67,6 +67,30 @@ class SmdCore implements ISmdCore
 				                     logger);
 	}
 	
+	public IUsersStorage createUsersStorage()
+	{
+		if(db != null)
+		{
+			return new UsersDBStorage(db, tablesPrefix);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	public IWordsStorage createWordsStorage()
+	{
+		if(db != null)
+		{
+			return new WordsDBStorage(db, tablesPrefix);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
 	private void init(ServletContext context)
 	{
 		logger = new ComplexSmdLogger(context, LOG_STREAM);	
@@ -105,30 +129,6 @@ class SmdCore implements ISmdCore
 			return false;
 		}
 	}	
-	
-	private IWordsStorage createWordsStorage()
-	{
-		if(db != null)
-		{
-			return new WordsDBStorage(db, tablesPrefix);
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	private IUsersStorage createUsersStorage()
-	{
-		if(db != null)
-		{
-			return new UsersDBStorage(db, tablesPrefix);
-		}
-		else
-		{
-			return null;
-		}
-	}
 	
 	private void closeIfNotNull(IClosable object)
 	{

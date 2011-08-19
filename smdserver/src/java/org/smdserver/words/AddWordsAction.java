@@ -1,7 +1,6 @@
 package org.smdserver.words;
 
 import com.ccg.util.JavaString;
-import org.smdserver.actionssystem.SessionKeys;
 import javax.servlet.http.HttpServletRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,9 +64,6 @@ public class AddWordsAction extends CheckLoginAction
 				setAnswerParam(ActionParams.LANGUAGES, responseLanguages);
 				setAnswerParam(ActionParams.DEVICE_ID, deviceId);
 				setAnswerParam(ActionParams.SUCCESS, true);
-
-				List<Language> languages = storage.getUserWords(userId);
-				request.getSession().setAttribute(SessionKeys.LANGUAGES, languages);//TODO: (3.low) [#26599]
 			}
 			else
 			{

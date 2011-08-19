@@ -1,6 +1,9 @@
 <%@tag trimDirectiveWhitespaces="true"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="smd" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<jsp:useBean id="pageBean" class="org.smdserver.jsp.PagesBean" scope="request"/>
+<c:set var="languages" scope="request" value="${pageBean.userWords.languages}"/>
+
 <table class="words">
 	<caption>Words</caption>
 	<tr>
@@ -9,7 +12,6 @@
 		<th align="left">Translation</th>
 		<th align="left">Rating</th>
 	</tr>
-	<jsp:useBean id="languages" scope="session" class="java.util.ArrayList"/>
 	<c:forEach var="language" items="${languages}">
 		<c:forEach var="word" items="${language.words}">
 			<tr>

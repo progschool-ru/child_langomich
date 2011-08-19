@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.smdserver.actionssystem.SessionKeys;
 import org.smdserver.core.CoreInstance;
 import org.smdserver.core.ISmdCore;
+import org.smdserver.users.IUsersStorage;
 
 public class PagesServlet extends HttpServlet
 {
@@ -23,6 +24,7 @@ public class PagesServlet extends HttpServlet
 	private static final String PAGE_ACTION = "page";
 
 	private ISmdCore core;
+	private IUsersStorage usersStorage;
 	
 	@Override
 	public void init() throws ServletException
@@ -56,7 +58,7 @@ public class PagesServlet extends HttpServlet
 			return;
 		}
 		
-		PagesBean bean = new PagesBean();
+		PagesBean bean = new PagesBean(core, getUserId(request));
 
 		bean.setDBConfig(core.getDBConfig());
 		bean.setJSPConfig(config);
@@ -92,5 +94,22 @@ public class PagesServlet extends HttpServlet
 	{
 		String login = (String)request.getSession().getAttribute(SessionKeys.CURRENT_LOGIN);
 		return login != null;
+	}
+	
+	private String getUserId (HttpServletRequest request)
+	{
+		String login = (String)request.getSession().getAttribute(SessionKeys.CURRENT_LOGIN);
+		
+		if(login == null)
+		{
+			return null;
+		}
+		
+		if(usersStorage == null)
+		{
+			usersStorage = core.createUsersStorage();
+		}
+		
+		return usersStorage.getUserByLogin(login).getUserId();
 	}
 }

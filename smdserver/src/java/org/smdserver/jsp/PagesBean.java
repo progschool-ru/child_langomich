@@ -1,8 +1,11 @@
 package org.smdserver.jsp;
 
 import java.util.List;
+import org.smdserver.core.ISmdCore;
 import org.smdserver.db.IDBConfig;
 import org.smdserver.maintenance.IMaintenanceConfig;
+import org.smdserver.words.IUserWords;
+import org.smdserver.words.UserWords;
 
 public class PagesBean
 {
@@ -13,6 +16,30 @@ public class PagesBean
 	private List<ILink> menuLinks;
 	private IDBConfig dbConfig;
 	private IJSPConfig jspConfig;
+	
+	private ISmdCore core;
+	private String userId;
+	private IUserWords wordsBean;
+	
+	public PagesBean(ISmdCore core, String userId)
+	{
+		this.core = core;
+		this.userId = userId;
+	}
+	
+	public PagesBean()
+	{
+	}
+	
+	public IUserWords getUserWords()
+	{
+		if(wordsBean == null && core != null && userId != null)
+		{
+			System.out.println("Create wordsStorage");
+			wordsBean = new UserWords(core, userId);
+		}
+		return wordsBean;
+	}
 
 	public SmdUrl getCurrentUrl() 
 	{
