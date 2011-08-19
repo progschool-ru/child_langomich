@@ -7,8 +7,7 @@ import org.smdserver.jsp.ILink;
 import org.smdserver.jsp.LinkCreator;
 import org.smdserver.jsp.SmdUrl;
 
-//TODO: (1.high) Make it internal.
-public class ConfigProperties implements IConfigProperties
+class ConfigProperties implements IConfigProperties, IClosable
 {
 	private static final String HANDLER_KEY = ".handler";
 	private static final String MAIN_TEMPLATE_KEY = ".mainTemplate";
@@ -16,29 +15,18 @@ public class ConfigProperties implements IConfigProperties
 	
 	private String basePath;
 	private ResourceBundle rb;
-	private ResourceBundle serverRB;
 	
-	public ConfigProperties(String configFile, String serverConfigKey,
-			                String basePath)
+	public ConfigProperties(String configFile, String basePath)
 	{
 		this.basePath = basePath;
 		this.rb = ResourceBundle.getBundle(configFile);
-		
-		String serverFile = rb.getString(serverConfigKey);
-		this.serverRB = ResourceBundle.getBundle(serverFile);
 	}
 	
-	@Deprecated
-	public ResourceBundle getConfigResource()
-	{
-		return rb;
-	}
-	
-	public void close()
+	public boolean close()
 	{
 		rb = null;
-		serverRB = null;
 		basePath = null;
+		return true;
 	}
 	
 	public String getWebCharset()
@@ -104,38 +92,5 @@ public class ConfigProperties implements IConfigProperties
 	public String getDefaultHandler ()
 	{
 		return rb.getString("pages.default.page.handler");
-	}
-	
-	
-	//IDBConfig implementation
-	public String getTablesPrefix()
-	{
-		return serverRB.getString("db.tablesPrefix");
-	}
-	
-	public String getDBUrl()
-	{
-		return serverRB.getString("db.url");
-	}
-	
-	public String getDBUser()
-	{
-		return serverRB.getString("db.user");
-	}
-	
-	public String getDBPassword()
-	{
-		return serverRB.getString("db.password");
-	}
-	
-	//IMaintenanceConfig implementation
-	public boolean isMaintenanceAllowed()
-	{
-		return "true".equals(serverRB.getString("maintenance.allowed"));
-	}
-	
-	public String getMaintenancePassword()
-	{
-		return serverRB.getString("maintenance.password");
 	}
 }

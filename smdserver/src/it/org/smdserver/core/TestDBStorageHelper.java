@@ -3,7 +3,9 @@ package org.smdserver.core;
 import org.smdserver.util.ConsoleSmdLogger;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import org.smdserver.db.DBConfig;
 import org.smdserver.db.DbException;
+import org.smdserver.db.IDBConfig;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
 import org.smdserver.users.UsersDBStorage;
@@ -47,9 +49,8 @@ class TestDBStorageHelper implements ITestStorageHelper
 
 	private String initDBAndGetPrefix(ResourceBundle resource) throws DbException
 	{
-		IConfigProperties config = new ConfigProperties("org.smdserver.config", 
-				                                        "server.properties.file", 
-				                                         userId);
+		IDBConfig config = new DBConfig("org.smdserver.config", 
+				                                        "server.properties.file");
 		String prefix = config.getTablesPrefix();
 
 		if(db == null)

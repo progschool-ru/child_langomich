@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import org.junit.After;
 import org.junit.Before;
-import org.smdserver.core.ConfigProperties;
 
 public class DBTestBase 
 {
@@ -19,9 +18,8 @@ public class DBTestBase
 	@Before
     public void setUp () throws Exception
 	{
-		IDBConfig config = new ConfigProperties("org.smdserver.config", 
-				                                "server.test.properties.file", 
-				                                null);
+		IDBConfig config = new DBConfig("org.smdserver.config", 
+				                                "server.test.properties.file");
 
 		String url = config.getDBUrl();
 		String user = config.getDBUser();

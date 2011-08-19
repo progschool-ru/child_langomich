@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.smdserver.core.ConfigProperties;
+import org.smdserver.db.DBConfig;
 import org.smdserver.db.IDBConfig;
 import org.smdserver.util.ConsoleSmdLogger;
 import org.smdserver.db.ISmdDB;
@@ -42,9 +42,8 @@ public class WordsDBStorageTest
 	@Before
 	public void setUp () throws Exception
 	{
-		config = new ConfigProperties("org.smdserver.config", 
-				                                "server.test.properties.file", 
-				                                null);
+		config = new DBConfig("org.smdserver.config", 
+				                                "server.test.properties.file");
 
 		db = new SmdDB(config, new ConsoleSmdLogger(System.out));
 		String prefix = config.getTablesPrefix();

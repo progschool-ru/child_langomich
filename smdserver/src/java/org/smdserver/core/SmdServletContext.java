@@ -1,5 +1,6 @@
 package org.smdserver.core;
 
+import org.smdserver.db.IDBConfig;
 import org.smdserver.util.ISmdLogger;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.words.IWordsStorage;
@@ -9,11 +10,11 @@ public class SmdServletContext implements ISmdServletContext
 	private IUsersStorage usersStorage;
 	private IWordsStorage wordsStorage;
 	private ISmdLogger logger;
-	private IConfigProperties config;
+	private IDBConfig config;
 
 	public SmdServletContext (IUsersStorage usersStorage, 
 								IWordsStorage wordsStorage,
-								IConfigProperties config,
+								IDBConfig config,
 								ISmdLogger logger)
 	{
 		this.usersStorage = usersStorage;
@@ -22,7 +23,7 @@ public class SmdServletContext implements ISmdServletContext
 		this.config = config;
 	}
 
-	public IConfigProperties getConfig()
+	public IDBConfig getDBConfig()
 	{
 		return config;
 	}

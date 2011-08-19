@@ -1,6 +1,8 @@
 package org.smdserver.db;
 
-public interface IDBConfig 
+import org.smdserver.maintenance.IMaintenanceConfig;
+
+public interface IDBConfig extends IMaintenanceConfig
 {
 	public String getTablesPrefix();
 	public String getDBUrl();

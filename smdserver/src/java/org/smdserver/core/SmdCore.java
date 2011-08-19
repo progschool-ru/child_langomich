@@ -2,6 +2,7 @@ package org.smdserver.core;
 
 import java.io.PrintStream;
 import javax.servlet.ServletContext;
+import org.smdserver.db.DBConfig;
 import org.smdserver.db.DbException;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
@@ -22,6 +23,7 @@ class SmdCore implements ISmdCore
 	private static final PrintStream LOG_STREAM = System.out;
 	
 	private ConfigProperties configProperties;
+	private DBConfig dbConfig;
 	private ISmdLogger logger;
 	private ISmdDB db;
 	private String tablesPrefix;
@@ -54,7 +56,7 @@ class SmdCore implements ISmdCore
 	{
 		return new SmdServletContext(createUsersStorage(), 
 				                     createWordsStorage(), 
-				                     configProperties,
+				                     dbConfig,
 				                     logger);
 	}
 	
@@ -68,14 +70,12 @@ class SmdCore implements ISmdCore
 	
 	private void recreateConfigProperties(ServletContext context)
 	{
-		if(configProperties != null)
-		{
-			configProperties.close();
-		}
+		closeIfNotNull(configProperties);
 		String configFile = context.getInitParameter(CONFIG_PARAM);
-		configProperties = new ConfigProperties(configFile, 
-				                                SERVER_PROPERTIES_FILE_KEY,
-				                                context.getContextPath());
+		configProperties = new ConfigProperties(configFile, context.getContextPath());
+		
+		closeIfNotNull(dbConfig);
+		dbConfig = new DBConfig(configFile, SERVER_PROPERTIES_FILE_KEY);
 	}
 
 	private boolean initDB(ConfigProperties config, ISmdLogger logger)
@@ -86,10 +86,10 @@ class SmdCore implements ISmdCore
 			db = null;
 		}
 			
-		tablesPrefix = config.getTablesPrefix();
+		tablesPrefix = dbConfig.getTablesPrefix();
 		try
 		{
-			db = new SmdDB(config, logger);
+			db = new SmdDB(dbConfig, logger);
 			return true;
 		}
 		catch (DbException e)
@@ -121,5 +121,13 @@ class SmdCore implements ISmdCore
 		{
 			return null;
 		}
-	}	
+	}
+	
+	private void closeIfNotNull(IClosable object)
+	{
+		if(object != null)
+		{
+			object.close();
+		}
+	}
 }

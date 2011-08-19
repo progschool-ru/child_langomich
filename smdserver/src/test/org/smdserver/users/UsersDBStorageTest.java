@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.smdserver.core.ConfigProperties;
+import org.smdserver.db.DBConfig;
 import org.smdserver.util.ConsoleSmdLogger;
 import org.smdserver.db.DbException;
 import org.smdserver.db.IDBConfig;
@@ -29,9 +29,9 @@ public class UsersDBStorageTest
     @Before
     public void setUp () throws Exception
 	{
-		config = new ConfigProperties("org.smdserver.config", 
-				                                "server.test.properties.file", 
-				                                null);
+		//TODO: (3.low) Create DBConfig in single place in tests
+		config = new DBConfig("org.smdserver.config", 
+				                                "server.test.properties.file");
 
 		db = new SmdDB(config, new ConsoleSmdLogger(System.out));
 		
