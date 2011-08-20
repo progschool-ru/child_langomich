@@ -6,6 +6,7 @@ public class ActionParams
 	public static final String DATA     = "data";
 	public static final String DB_PASSWORD = "dbPassword";
 	public static final String DB_USER     = "dbUser";
+	public static final String LANGUAGE_ID = "languageId";
 	public static final String LANGUAGES= "languages";
 	public static final String LAST_CONNECTION = "lastConnection";
 	public static final String LOGIN    = "login";
@@ -16,4 +17,5 @@ public class ActionParams
 	public static final String REDIRECT_SUCCESS = "redirectSuccess";
 	public static final String SUCCESS  = "success";
 	public static final String USER     = "user";
+	public static final String WORDS    = "words";
 }

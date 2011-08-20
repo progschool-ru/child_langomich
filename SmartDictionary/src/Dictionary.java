@@ -96,7 +96,7 @@ public class Dictionary extends Records
             return getNumRecords();
         }
         public void newRecord(String original, String translation, int rating)
-				//TODO: (3.low) Следует более тчательно продумать названия setRecord, addRecord, newRecord.
+				//TODO: (3.low) Следует более тщательно продумать названия setRecord, addRecord, newRecord.
 				// Возможно, следует сделать их более длинными, но более раскрывающими суть,
 				// потому что совсем не очевидно, чем addRecord отличается от newRecord, причём именно в эту сторону.
 	{

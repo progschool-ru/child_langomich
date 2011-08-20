@@ -20,6 +20,7 @@ import org.smdserver.maintenance.DropDBAction;
 import org.smdserver.maintenance.DropDBTablesAction;
 import org.smdserver.words.GetWordsAction;
 import org.smdserver.words.AddWordsAction;
+import org.smdserver.words.DeleteWordsAction;
 
 public class MainServlet extends SmdServlet
 {
@@ -38,6 +39,7 @@ public class MainServlet extends SmdServlet
 
 		map.put("addWords", AddWordsAction.class);
 		map.put("getWords", GetWordsAction.class);
+		map.put("deleteWords", DeleteWordsAction.class);
 		map.put("login", LoginAction.class);
 		map.put("logout", LogoutAction.class);
 		map.put("mobileLogin", MobileLoginAction.class);

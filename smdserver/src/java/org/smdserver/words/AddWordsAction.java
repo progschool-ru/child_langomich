@@ -56,7 +56,7 @@ public class AddWordsAction extends CheckLoginAction
 				setAnswerParam(ActionParams.SUCCESS, false);
 			}
 		}
-		catch(Exception e) //TODO: (3.low) [#25387]
+		catch(Exception e) //TODO: (3.low) [#25387] Не каждое исключение можно сообщать в ответ.
 		{
 			setAnswerParam(ActionParams.SUCCESS, false);
 			setAnswerParam(ActionParams.MESSAGE, e.getMessage());

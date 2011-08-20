@@ -175,7 +175,8 @@ public class LanguageSaver
 
 	private void updateLanguageIfUpdated(Language language, SimpleLanguage simpleLanguage)
 	{
-		if(simpleLanguage.name.equals(language.getName()))
+		if(simpleLanguage.name.equals(language.getName()) 
+				|| language.getName() == null)
 			return;
 
 		simpleLanguage.name = language.getName();
