@@ -18,6 +18,8 @@
 				<td>${word.original}</td>
 				<td>${word.translation}</td>
 				<td>${word.rating}</td>
+				<td><smd:smdhref url="smd://action/deleteWords?languageId=${language.id}&words=[\"${word.original}\"]"
+							 text="delete" redirect="smd://page/words"/>
 			</tr>
 		</c:forEach>
 	</c:forEach>

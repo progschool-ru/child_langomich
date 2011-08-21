@@ -48,8 +48,8 @@ public class SmdLink extends SmdUrl implements ILink
 						: (cssClass == null ? "<a href=\"%1$s\">%2$s</a>"
 							: "<a href=\"%1$s\" class=\"%3$s\">%2$s</a>");
 
-
-		return String.format(format, getURL(), getText(), cssClass);
+		String url = getURL().replaceAll("\"", "%22");
+		return String.format(format, url, getText(), cssClass);
 	}
 
 	public void setCSSClass(String cssClass)
