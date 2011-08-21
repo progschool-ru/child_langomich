@@ -1,17 +1,11 @@
 package org.smdserver.words;
 
 import com.ccg.util.JavaString;
-import org.smdserver.core.UsersTestBase;
-import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebRequest;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.core.WebActions;
@@ -19,71 +13,13 @@ import org.smdserver.core.WebParams;
 
 import static org.junit.Assert.*;
 
-public class AddWordsActionTest extends UsersTestBase
+public class AddWordsActionTest extends WordsTestBase
 {
-	private static final String LANGUAGE_ID = "enId";
-	private static final String LANGUAGE_NAME = "en";
-//	private static final String LANGUAGE_ID2 = "frId";
 	private static final String LANGUAGE_NAME2 = "fr";
-	private static final String WORD_ORIG = "первый";
-	private static final String WORD_TRAN = "first";
-	private static final int    WORD_RATING = 1;
-	private static final long   WORD_MODIFIED = 3000;
+
 	private static final String WORD_ORIG2 = "второй";
 	private static final String WORD_TRAN2 = "second";
 	private static final int    WORD_RATING2 = 2;
-	private static final long   WORD_MODIFIED2 = 4000;
-
-	private static final String KEY_LANGUAGES = "languages";
-	private static final String KEY_NAME      = "name";
-	private static final String KEY_WORDS     = "words";
-
-	IWordsStorage wordsStorage;
-	private WebConversation wc;
-	private boolean flag = true;
-
-	@BeforeClass
-	public static void setUpClass() throws Exception
-	{
-		UsersTestBase.setUpClass();
-	}
-
-	@AfterClass
-	public static void tearDownClass() throws Exception
-	{
-		UsersTestBase.tearDownClass();
-	}
-
-	@Before
-	public void setUp() throws Exception
-	{
-		wordsStorage = getTestStorageHelper().openWordsStorage(getResource(), USER_ID);
-
-		Word word = new Word(WORD_ORIG, WORD_TRAN, WORD_RATING);
-		Language language = new Language(LANGUAGE_ID, LANGUAGE_NAME, word);
-		List<Language> languages = new ArrayList<Language>();
-		languages.add(language);
-		wordsStorage.setUserWords(USER_ID, languages);
-
-		wc = new WebConversation();
-
-		WebRequest req = createActionRequest(WebActions.LOGIN);
-		req.setParameter(WebParams.LOGIN, LOGIN);
-		req.setParameter(WebParams.PASSWORD, PASSWORD);
-		JSONObject loginResponse = getJSONResource(wc, req);
-		assertTrue(loginResponse.getBoolean(WebParams.SUCCESS));
-		flag = true;
-	}
-
-	@After
-	public void tearDown()
-	{
-		if(flag)
-		{
-			getTestStorageHelper().closeWordsStorage(getResource(), USER_ID);
-		}
-		wc = null;
-	}
 
 	@Test
 	public void testDeviceAddsNewLanguage() throws Exception
@@ -93,7 +29,7 @@ public class AddWordsActionTest extends UsersTestBase
 		paramsJSON.put(ActionParams.LANGUAGES, new JSONArray());
 		deviceReq.setParameter(WebParams.DATA, paramsJSON.toString());
 
-		JSONObject deviceJSON = getJSONResource(wc, deviceReq);
+		JSONObject deviceJSON = getJSONResource(getWC(), deviceReq);
 		long lastConnection = deviceJSON.getLong(ActionParams.LAST_CONNECTION);
 
 
@@ -105,7 +41,7 @@ public class AddWordsActionTest extends UsersTestBase
 		paramsJSON.put(ActionParams.LANGUAGES, languages);
 		addReq.setParameter(WebParams.DATA, paramsJSON.toString());
 
-		JSONObject addJSON = getJSONResource(wc, addReq);
+		JSONObject addJSON = getJSONResource(getWC(), addReq);
 		JSONArray addLanguages = addJSON.has(ActionParams.LANGUAGES) ? addJSON.getJSONArray(ActionParams.LANGUAGES) : null;
 		lastConnection = addJSON.getLong(ActionParams.LAST_CONNECTION);
 
@@ -121,7 +57,7 @@ public class AddWordsActionTest extends UsersTestBase
 		paramsJSON.put(ActionParams.LANGUAGES, new JSONArray());
 		checkReq.setParameter(WebParams.DATA, paramsJSON.toString());
 
-		JSONObject checkJSON = getJSONResource(wc, checkReq);
+		JSONObject checkJSON = getJSONResource(getWC(), checkReq);
 		JSONArray checkLanguages = checkJSON.has(ActionParams.LANGUAGES) ? checkJSON.getJSONArray(ActionParams.LANGUAGES) : null;
 
 		assertTrue(checkLanguages == null || checkLanguages.length() == 0);
@@ -137,11 +73,11 @@ public class AddWordsActionTest extends UsersTestBase
 				"\",\"rating\":" + WORD_RATING + "}]}]}";
 		addReq.setParameter(WebParams.DATA, JavaString.encode(param));
 
-		JSONObject addJSON = getJSONResource(wc, addReq);
+		JSONObject addJSON = getJSONResource(getWC(), addReq);
 
 		assertTrue(addJSON.getBoolean(WebParams.SUCCESS));
 
-		List<Language> languages = wordsStorage.getUserWords(USER_ID);
+		List<Language> languages = getWordsStorage().getUserWords(USER_ID);
 		assertEquals(2, languages.size());
 
 		Language language;
@@ -170,10 +106,10 @@ public class AddWordsActionTest extends UsersTestBase
 				"\",\"translation\":\"" + WORD_TRAN2 +
 				"\",\"rating\":" + WORD_RATING2 + "}]}]}";
 		addReq.setParameter(WebParams.DATA, JavaString.encode(param));
-		JSONObject addJSON = getJSONResource(wc, addReq);
+		JSONObject addJSON = getJSONResource(getWC(), addReq);
 		assertTrue(addJSON.getBoolean(WebParams.SUCCESS));
 
-		List<Language> languages = wordsStorage.getUserWords(USER_ID);
+		List<Language> languages = getWordsStorage().getUserWords(USER_ID);
 		assertEquals(1, languages.size());
 
 		Language language = languages.get(0);
@@ -196,10 +132,10 @@ public class AddWordsActionTest extends UsersTestBase
 				"\",\"translation\":\"" + WORD_TRAN2 +
 				"\",\"rating\":" + WORD_RATING2 + "}]}]}";
 		addReq.setParameter(WebParams.DATA, JavaString.encode(param));
-		JSONObject addJSON = getJSONResource(wc, addReq);
+		JSONObject addJSON = getJSONResource(getWC(), addReq);
 		assertTrue(addJSON.getBoolean(WebParams.SUCCESS));
 
-		List<Language> languages = wordsStorage.getUserWords(USER_ID);
+		List<Language> languages = getWordsStorage().getUserWords(USER_ID);
 		assertEquals(1, languages.size());
 
 		Language language = languages.get(0);
@@ -224,10 +160,10 @@ public class AddWordsActionTest extends UsersTestBase
 				"\",\"rating\":" + WORD_RATING +
 				"}]}]}";
 		addReq.setParameter(WebParams.DATA, JavaString.encode(param));
-		JSONObject addJSON = getJSONResource(wc, addReq);
+		JSONObject addJSON = getJSONResource(getWC(), addReq);
 		assertTrue(addJSON.getBoolean(WebParams.SUCCESS));
 
-		List<Language> languages = wordsStorage.getUserWords(USER_ID);
+		List<Language> languages = getWordsStorage().getUserWords(USER_ID);
 		assertEquals(1, languages.size());
 
 		Language language = languages.get(0);
