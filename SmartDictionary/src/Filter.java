@@ -52,6 +52,7 @@ public class Filter implements RecordFilter{
 			}
         }
         catch (IOException ioe) {}
+		//System.out.prinln("Filter matching"); //TODO: (3.low) раскомментировать эту строчку, будет видно, что метод вызывается на каждый чих. Поэпытаться понять, почему так происходит и попробовать уменьшить количество вызовов до чего-то разумного.
         return true;
     }
 

@@ -7,6 +7,28 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
+//TODO: (3.low) Где-то уже было сказано, что классы Dictionary и Languages должны предоставлять более
+// высокоуровневый интерфейс по работе со словами и языками, скрывая детали устройства класса Records.
+// Кажется, что такой интерфейс у них будет сильно отличаться друг от друга и от класса Records.
+// Поэтому я бы попробовал вовсе отказаться от наследования и использовать Records, как член классов
+// Dictionary, Languages, Settings. 
+//
+// Тогда у Records останутся публичные методы, они будут представлять его интерфейс.
+// Глядя на такой интерфейс, можно будет думать о том, как сделать его проще и удобнее.
+// Просто сейчас часть методов public, а часть protected и не всегда очевидно, 
+// какие из них являются интерфейсом, а какие технической необходимостью.
+//
+// У классов Dictionary, Languages также сформируется свой интерфейс,
+// действующий не понятиями записей и их номеров, а на понятиями слов и языков.
+//
+//
+//После того, как это будет сделано, 
+// нужно будет оценить количество выполняющихся вхолостую циклов и шагов.
+// и попытаться уменьшить их число.
+// Наши цели здесь: 
+// - желательно, чтобы сложность операций была не более, чем линейна по отношению к количеству слов в словарях
+// - сложность не должна быть более, чем квадратичной.
+
 public abstract class Records
 {
         public static final int SINGLE_RECORD = 1;
@@ -19,8 +41,9 @@ public abstract class Records
         private RecordStore rs = null;
         private RecordEnumeration re;
 
-        protected void recordStoreInit(String name, Filter filter, Ordering ordering)// TODO (2.medium) исправить warning.
+        protected void recordStoreInit(String name, Filter filter, Ordering ordering)// TODO: (2.medium) исправить warning связанный с internal параметром в публичном методе.
 		{
+			//System.out.println("Init records"); //TODO: (2.medium) раскомментировать эту строчку. Будет видно, что объекты Records создаются чаще, чем это необходимо. Попробовать обойтись меньшим количеством инициализаций. Также, наверное, стоит добиться того, чтобы каждый инициализированный объект должным образом деактивировался.
                 byteOutputStream = new ByteArrayOutputStream();
                 writer = new DataOutputStream(byteOutputStream);
         	try {

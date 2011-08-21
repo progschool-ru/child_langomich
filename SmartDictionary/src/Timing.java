@@ -33,7 +33,7 @@ public class Timing extends Thread
 
             try
             {
-                hc = (HttpConnection)Connector.open("http://"+settings.getURL() + ACTION_PATH + "/mobileLogin");
+                hc = (HttpConnection)Connector.open("http://"+settings.getURL() + ACTION_PATH + "/mobileLogin");// TODO: (2.medium) mobileLogin ни чем не лучше, чем просто login. Следует удалить MobileLoginAction и исползовать здесь LoginAction.
                 hc.setRequestMethod(HttpConnection.POST);
                 hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
@@ -45,7 +45,7 @@ public class Timing extends Thread
                 String c = hc.getHeaderField("Set-Cookie");
 				hc.close();
 
-                hc = (HttpConnection)Connector.open("http://"+settings.getURL() + ACTION_PATH + "/addWords");
+                hc = (HttpConnection)Connector.open("http://"+settings.getURL() + ACTION_PATH + "/addWords");// TODO: (3.low) Попытки загрузить более 20 слов по JPRS почти всегда неудачны. Выяснить с чем это связано. Попытаться исправить, ведь OperaMini может грузить достаточно большие страницы, значит и мы можем. (возможно, для этого придётся доработать серверный API)
                 hc.setRequestMethod(HttpConnection.POST);
                 hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
                 hc.setRequestProperty("Cookie", c);
@@ -101,13 +101,13 @@ public class Timing extends Thread
                 for(int row = 1; row <= dictionary.getNumRecords();row++)
                 {
                     JSONObject word = new JSONObject();
-                    word.put("original",dictionary.getCell(row, dictionary.ORIGINAL));//TODO: (2.medium)
+                    word.put("original",dictionary.getCell(row, Dictionary.ORIGINAL));//TODO: (2.medium)
 					// Всё-таки получается, что мы в разных местах (ещё и в SmartDictionary)
 					// завязаны на особенности работы с Records, надо вызывать getCell с двумя аргументами
 					// на то, что слово состоит из множества ячеек, на порядок этих ячеек.
 					//
 					// 1. всякие методы: getCell, getRecord и т.д. следует сделать protected
-					// 2. Dictionary должен предоставлять в своём интерфейсе метод public Word getWord(int row)
+					// 2. Dictionary должен предоставлять в своём интерфейсе метод public Word getWord(int row);
 					// 3. В классе Word определить методы getText, getOriginal и т.д. 
 					//     Тогда точно ни у кого не будет соблазна написать dictionary.getCell(row, 3);
 					//     Тогда не приходится вспоминать, что это getCell означает и как им пользоваться.
@@ -118,7 +118,7 @@ public class Timing extends Thread
 					//     всем записям и ищет нужный Id. 
 					//     Чтобы получить 4 поля, мы пробелгаем 4 одинаковых цикла в getId и перестраиваем re.
 					//     В случае getWord, мы это будем делать только один раз.
-					// 4. И пожалуйс стоит создать аналог getRecord, который возвращал бы массив String[] всех ячеек,
+					// 4. И пожалуй стоит создать аналог getRecord, который возвращал бы массив String[] всех ячеек,
 					//    которые сохранены в записи. 
 					//    Тогда внутри класса Dictionary, для того чтобы построить слово Word,
 					//    нам придётся обращаться к Records не три раза, а один.
@@ -136,9 +136,9 @@ public class Timing extends Thread
 					// Когда комментарий потерял актуальность (устарел или был выполнен), его следует удалить.
 					//
 			
-                    word.put("translation",dictionary.getCell(row, dictionary.TRANSLATION));
-                    word.put("rating",Integer.parseInt(dictionary.getCell(row, dictionary.RATING)));
-                    word.put("modified",Long.parseLong(dictionary.getCell(row, dictionary.LAST_TIMING)));
+                    word.put("translation",dictionary.getCell(row, Dictionary.TRANSLATION));
+                    word.put("rating",Integer.parseInt(dictionary.getCell(row, Dictionary.RATING)));
+                    word.put("modified",Long.parseLong(dictionary.getCell(row, Dictionary.LAST_TIMING)));
                     words.put(word);
                 }
 				dictionary.destroy();

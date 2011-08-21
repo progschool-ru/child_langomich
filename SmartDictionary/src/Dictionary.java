@@ -1,6 +1,5 @@
 import java.util.Date;
 import java.util.Random;
-import java.util.Stack;
 
 public class Dictionary extends Records
 {
