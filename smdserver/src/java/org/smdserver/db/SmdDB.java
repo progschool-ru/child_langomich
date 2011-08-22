@@ -36,6 +36,11 @@ public class SmdDB implements ISmdDB
 		}
 	}
 	
+	public String getTablesPrefix()
+	{
+		return config.getTablesPrefix();
+	}
+	
 	public int processSmdStatement(ISmdStatement statement) throws DbException
 	{
 		int updatedRows = 0;

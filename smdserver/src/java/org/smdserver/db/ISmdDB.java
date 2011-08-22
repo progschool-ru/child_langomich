@@ -13,6 +13,8 @@ public interface ISmdDB
 	public int processSmdStatement(ISmdStatement statement) throws DbException;
 	public boolean selectSingle(ISmdStatement st, IResultParser parser) throws DbException;
 	public int select(ISmdStatement st, IMultipleResultParser parser) throws DbException;
+	
+	public String getTablesPrefix();
 
 	public boolean isActive();
 	public boolean close();

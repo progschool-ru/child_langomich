@@ -1,16 +1,16 @@
 package org.smdserver.words;
 
 import java.util.List;
-import org.smdserver.core.ISmdCore;
+import org.smdserver.core.ISmdCoreFactory;
 
 public class UserWords implements IUserWords
 {
 	private IWordsStorage wordsStorage;
 	private String userId;
 	
-	public UserWords(ISmdCore core, String userId)
+	public UserWords(ISmdCoreFactory factory, String userId)
 	{
-		wordsStorage = core.createWordsStorage();
+		wordsStorage = factory.createWordsStorage();
 		this.userId = userId;
 	}
 	

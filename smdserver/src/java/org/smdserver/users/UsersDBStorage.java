@@ -25,10 +25,10 @@ public class UsersDBStorage implements IUsersStorage
 	private ISmdDB db;
 	private String usersTable;
 
-	public UsersDBStorage(ISmdDB db, String prefix)
+	public UsersDBStorage(ISmdDB db)
 	{
 		this.db = db;
-		this.usersTable = prefix + USERS_TABLE;
+		this.usersTable = db.getTablesPrefix() + USERS_TABLE;
 	}
 	
 	public boolean createUser (String userId, String dirtyLogin, String dirtyPassword)

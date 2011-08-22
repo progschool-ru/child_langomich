@@ -1,7 +1,7 @@
 package org.smdserver.jsp;
 
 import java.util.List;
-import org.smdserver.core.ISmdCore;
+import org.smdserver.core.ISmdCoreFactory;
 import org.smdserver.db.IDBConfig;
 import org.smdserver.maintenance.IMaintenanceConfig;
 import org.smdserver.words.IUserWords;
@@ -17,13 +17,13 @@ public class PagesBean
 	private IDBConfig dbConfig;
 	private IJSPConfig jspConfig;
 	
-	private ISmdCore core;
+	private ISmdCoreFactory factory;
 	private String userId;
 	private IUserWords wordsBean;
 	
-	public PagesBean(ISmdCore core, String userId)
+	public PagesBean(ISmdCoreFactory factory, String userId)
 	{
-		this.core = core;
+		this.factory = factory;
 		this.userId = userId;
 	}
 	
@@ -33,9 +33,9 @@ public class PagesBean
 	
 	public IUserWords getUserWords()
 	{
-		if(wordsBean == null && core != null && userId != null)
+		if(wordsBean == null && factory != null && userId != null)
 		{
-			wordsBean = new UserWords(core, userId);
+			wordsBean = new UserWords(factory, userId);
 		}
 		return wordsBean;
 	}

@@ -33,9 +33,10 @@ public class WordsDBStorage implements IWordsStorage
 	private String languagesTable;
 	private String wordsTable;
 
-	public WordsDBStorage(ISmdDB db, String prefix)
+	public WordsDBStorage(ISmdDB db)
 	{
 		this.db = db;
+		String prefix = db.getTablesPrefix();
 		languagesTable = prefix + LANGUAGES_TABLE;
 		wordsTable = prefix + WORDS_TABLE;
 	}

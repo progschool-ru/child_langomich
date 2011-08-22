@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.smdserver.actionssystem.SessionKeys;
 import org.smdserver.core.CoreInstance;
 import org.smdserver.core.ISmdCore;
-import org.smdserver.users.IUsersStorage;
 
 public class PagesServlet extends HttpServlet
 {
@@ -57,9 +56,9 @@ public class PagesServlet extends HttpServlet
 			return;
 		}
 		
-		PagesBean bean = new PagesBean(core, getUserId(request));
+		PagesBean bean = new PagesBean(core.getFactory(), getUserId(request));
 
-		bean.setDBConfig(core.getDBConfig());
+		bean.setDBConfig(core.getFactory().createDBConfig());
 		bean.setJSPConfig(config);
 		bean.setMainTemplate(config.getMainTemplate(page));
 		bean.setTitle(config.getTitle(page));
@@ -104,6 +103,6 @@ public class PagesServlet extends HttpServlet
 			return null;
 		}
 		
-		return core.createUsersStorage().getUserByLogin(login).getUserId();
+		return core.getFactory().createUsersStorage().getUserByLogin(login).getUserId();
 	}
 }

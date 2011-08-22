@@ -49,14 +49,13 @@ public class WordsDBStorageTest
 				                                "server.test.properties.file");
 
 		db = new SmdDB(config, new ConsoleSmdLogger(System.out));
-		String prefix = config.getTablesPrefix();
 
-		IUsersStorage us = new UsersDBStorage(db, prefix);
+		IUsersStorage us = new UsersDBStorage(db);
 		assertTrue(us.createUser(USER_ID_WITH_WORDS, "lo1", "pa1"));
 		assertTrue(us.createUser(USER_ID_WITH_EMPTY_LANGUAGE, "lo2", "pa2"));
 		assertTrue(us.createUser(USER_ID_WITHOUT_LANGUAGES, "lo3", "pa3"));
 
-		storage = new WordsDBStorage(db, prefix);
+		storage = new WordsDBStorage(db);
 		List<Language> list = new ArrayList<Language>();
 
 		list.add(new Language(LANGUAGE_ID, LANGUAGE_NAME, new Word(WORD_ORIGINAL, WORD_TRANSLATION, 1)));

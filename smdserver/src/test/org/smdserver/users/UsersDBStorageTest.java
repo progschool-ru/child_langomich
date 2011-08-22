@@ -34,10 +34,8 @@ public class UsersDBStorageTest
 				                                "server.test.properties.file");
 
 		db = new SmdDB(config, new ConsoleSmdLogger(System.out));
-		
-		String prefix = config.getTablesPrefix();
 
-		instance = new UsersDBStorage(db, prefix);
+		instance = new UsersDBStorage(db);
 		boolean result = instance.createUser(FIRST_ID, FIRST_LOGIN, FIRST_PASSWORD);
 		assertTrue(result);
     }

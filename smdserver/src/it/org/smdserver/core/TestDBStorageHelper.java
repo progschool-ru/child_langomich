@@ -23,8 +23,8 @@ class TestDBStorageHelper implements ITestStorageHelper
 	public void openUsersStorage(ResourceBundle resource,
 							String userId, String login, String password) throws Exception
 	{
-		String prefix = initDBAndGetPrefix(resource);
-		usersStorage = new UsersDBStorage(db, prefix);
+		initDBAndGetPrefix(resource);
+		usersStorage = new UsersDBStorage(db);
 		usersStorage.createUser(userId, login, password);
 		this.userId = userId;
 	}
@@ -38,8 +38,8 @@ class TestDBStorageHelper implements ITestStorageHelper
 
 	public IWordsStorage openWordsStorage(ResourceBundle resource, String userId) throws Exception
 	{
-		String prefix = initDBAndGetPrefix(resource);
-		wordsStorage = new WordsDBStorage(db, prefix);
+		initDBAndGetPrefix(resource);
+		wordsStorage = new WordsDBStorage(db);
 		return wordsStorage;
 	}
 	public void closeWordsStorage(ResourceBundle resource, String userId)

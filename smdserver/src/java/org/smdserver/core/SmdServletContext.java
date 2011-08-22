@@ -6,39 +6,46 @@ import org.smdserver.util.ISmdLogger;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.words.IWordsStorage;
 
-public class SmdServletContext implements ISmdServletContext
+class SmdServletContext implements ISmdServletContext
 {
 	private IUsersStorage usersStorage;
 	private IWordsStorage wordsStorage;
-	private ISmdLogger logger;
-	private IDBConfig config;
+	private IDBConfig dbConfig;
 	private IMailman mailman;
+	
+	private ISmdCoreFactory factory;
+	private ISmdLogger logger;
 
-	public SmdServletContext (IUsersStorage usersStorage, 
-								IWordsStorage wordsStorage,
-								IDBConfig config,
-								ISmdLogger logger,
-								IMailman mailman)
+	public SmdServletContext (ISmdCoreFactory factory, ISmdLogger logger)
 	{
-		this.usersStorage = usersStorage;
-		this.wordsStorage = wordsStorage;
 		this.logger = logger;
-		this.config = config;
-		this.mailman= mailman;
+		this.factory = factory;
 	}
 
 	public IDBConfig getDBConfig()
 	{
-		return config;
+		if(dbConfig == null)
+		{
+			dbConfig = factory.createDBConfig();
+		}
+		return dbConfig;
 	}
 
 	public IUsersStorage getUsersStorage ()
 	{
+		if(usersStorage == null)
+		{
+			usersStorage = factory.createUsersStorage();
+		}
 		return usersStorage;
 	}
 
 	public IWordsStorage getWordsStorage ()
 	{
+		if(wordsStorage == null)
+		{
+			wordsStorage = factory.createWordsStorage();
+		}
 		return wordsStorage;
 	}
 
@@ -57,6 +64,10 @@ public class SmdServletContext implements ISmdServletContext
 	
 	public IMailman getMailman()
 	{
+		if(mailman == null)
+		{
+			mailman = factory.createMailman();
+		}
 		return mailman;
 	}
 }
