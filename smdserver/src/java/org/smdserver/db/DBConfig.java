@@ -14,6 +14,11 @@ public class DBConfig implements IDBConfig, IClosable
 		this.serverRB = ResourceBundle.getBundle(serverFile);
 	}
 	
+	public DBConfig(ResourceBundle rb)
+	{
+		this.serverRB = rb;
+	}
+	
 	public boolean close()
 	{
 		this.serverRB = null;

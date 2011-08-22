@@ -34,6 +34,9 @@ public class WordsDBStorageTest
 	private static final long TIME_BEFORE = 10000;
 	private static final long TIME_X      = 20000;
 	private static final long TIME_AFTER  = 30000;
+	
+	private static final int RATING1 = 10;
+	private static final int RATING2 = 20;
 
 	ISmdDB db;
 	IDBConfig config;
@@ -120,7 +123,7 @@ public class WordsDBStorageTest
 	public void testSetUserWords ()
 	{
 		List<Language> languages = new ArrayList<Language>();
-		languages.add(new Language("frId3", "fr", new Word("first", "первый", 1)));
+		languages.add(new Language("frId3", "fr", new Word("first", "первый", RATING1)));
 
 		storage.setUserWords(USER_ID_WITHOUT_LANGUAGES, languages);
 
@@ -134,6 +137,8 @@ public class WordsDBStorageTest
 		assertEquals("User with id '1' should be replaced by new list", 0, first.size());
 		assertEquals("Languaes in '3's list", 1, third.size());
 		assertEquals("First '3's language", "fr", third.get(0).getName());
+		assertEquals("first", third.get(0).getWords().get(0).getOriginal());
+		assertEquals(RATING1, third.get(0).getWords().get(0).getRating());
 	}
 
 	/**
@@ -323,13 +328,13 @@ public class WordsDBStorageTest
 	public void testEditWords()
 	{
 		List<Language> languages = new ArrayList<Language>();
-		languages.add(new Language(EMPTY_LANGUAGE_ID, "oldName", new Word("someWord", "someTranslation", 0)));
+		languages.add(new Language(EMPTY_LANGUAGE_ID, "oldName", new Word("someWord", "someTranslation", RATING1)));
 		languages.add(new Language("someNewId", "someName"));
 		storage.addUserWords(USER_ID_WITH_EMPTY_LANGUAGE, languages, TIME_BEFORE);
 
 		languages = new ArrayList<Language>();
 		languages.add(new Language("someNewId", "someName"));
-		languages.add(new Language(EMPTY_LANGUAGE_ID, "oldName", new Word("someWord", "someOtherTranslation", 0)));
+		languages.add(new Language(EMPTY_LANGUAGE_ID, "oldName", new Word("someWord", "someOtherTranslation", RATING2)));
 		storage.addUserWords(USER_ID_WITH_EMPTY_LANGUAGE, languages, TIME_AFTER);
 
 		List<Language> result = storage.getLatestUserWords(USER_ID_WITH_EMPTY_LANGUAGE, TIME_X);
@@ -337,6 +342,7 @@ public class WordsDBStorageTest
 		List<Word> words = result.get(0).getWords();
 		assertEquals(1, words.size());
 		assertEquals("someOtherTranslation", words.get(0).getTranslation());
+		assertEquals(RATING2, words.get(0).getRating());
 	}
 
 	@Test

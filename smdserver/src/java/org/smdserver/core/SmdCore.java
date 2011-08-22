@@ -2,6 +2,7 @@ package org.smdserver.core;
 
 import org.smdserver.util.IClosable;
 import java.io.PrintStream;
+import java.util.ResourceBundle;
 import javax.servlet.ServletContext;
 import org.smdserver.db.DBConfig;
 import org.smdserver.db.DbException;
@@ -10,6 +11,8 @@ import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
 import org.smdserver.jsp.IJSPConfig;
 import org.smdserver.jsp.SmdUrl;
+import org.smdserver.mail.MailConfig;
+import org.smdserver.mail.Mailman;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.users.UsersDBStorage;
 import org.smdserver.util.ComplexSmdLogger;
@@ -26,6 +29,8 @@ class SmdCore implements ISmdCore
 	
 	private ConfigProperties configProperties;
 	private DBConfig dbConfig;
+	private MailConfig mailConfig;
+	
 	private ISmdLogger logger;
 	private ISmdDB db;
 	private String tablesPrefix;
@@ -67,7 +72,9 @@ class SmdCore implements ISmdCore
 		return new SmdServletContext(createUsersStorage(), 
 				                     createWordsStorage(), 
 				                     dbConfig,
-				                     logger);
+				                     logger, 
+									 new Mailman(mailConfig, logger)
+				);
 	}
 	
 	public IUsersStorage createUsersStorage()
@@ -108,8 +115,15 @@ class SmdCore implements ISmdCore
 		String configFile = context.getInitParameter(CONFIG_PARAM);
 		configProperties = new ConfigProperties(configFile, context.getContextPath());
 		
+		ResourceBundle rb = ResourceBundle.getBundle(configFile);	
+		String serverFile = rb.getString(SERVER_PROPERTIES_FILE_KEY);
+		ResourceBundle serverRB = ResourceBundle.getBundle(serverFile);		
+		
 		closeIfNotNull(dbConfig);
-		dbConfig = new DBConfig(configFile, SERVER_PROPERTIES_FILE_KEY);
+		dbConfig = new DBConfig(serverRB);
+		
+		closeIfNotNull(mailConfig);
+		mailConfig = new MailConfig(serverRB);
 	}
 
 	private boolean initDB(ConfigProperties config, ISmdLogger logger)
