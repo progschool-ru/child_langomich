@@ -67,11 +67,11 @@ public class Timing extends Thread
 				String result = setData(JavaString.decode(new String(buff)), currentTime);
                 text = "success - " + result;
                 settings.setNumberOfTiming(settings.getNumberOfTiming()+1);
-                settings.setLastTiming(currentTime);
                 settings.setText(text);
 				
 				if("true".equals(result))
 				{
+	                settings.setLastTiming(currentTime);
 					Dictionary dictionary = new Dictionary(null, Boolean.FALSE);
 					dictionary.deleteAllRecords();
 				}
