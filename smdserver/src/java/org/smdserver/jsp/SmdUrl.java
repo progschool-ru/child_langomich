@@ -52,11 +52,11 @@ public class SmdUrl implements IUrl
 		construct(servlet, action, parameters, currentLink, basePath);
 	}
 	
-	public static void initParams(IJSPConfig jspConfig, String webCharset,
+	public static void initParams(IJSPConfig jspConfig,
 			                      ISmdLogger logger)
 	{
 		SmdUrl.jspConfig = jspConfig;
-		SmdUrl.webCharset = webCharset;
+		SmdUrl.webCharset = jspConfig.getWebCharset();
 		SmdUrl.logger = logger;
 	}
 

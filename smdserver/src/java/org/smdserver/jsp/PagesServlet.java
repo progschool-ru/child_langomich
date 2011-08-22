@@ -35,7 +35,7 @@ public class PagesServlet extends HttpServlet
 	public void service (HttpServletRequest request, HttpServletResponse response)
 											throws ServletException, IOException
 	{
-		IJSPConfig config = core.getJSPConfig();
+		IJSPConfig config = core.getFactory().createJSPConfig();
 		String page = getPageName(request);
 
 		if(page == null)

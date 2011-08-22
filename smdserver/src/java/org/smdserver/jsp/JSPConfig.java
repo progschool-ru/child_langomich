@@ -1,14 +1,10 @@
-package org.smdserver.core;
+package org.smdserver.jsp;
 
-import org.smdserver.util.IClosable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import org.smdserver.jsp.ILink;
-import org.smdserver.jsp.LinkCreator;
-import org.smdserver.jsp.SmdUrl;
 
-class ConfigProperties implements IConfigProperties, IClosable
+public class JSPConfig implements IJSPConfig
 {
 	private static final String HANDLER_KEY = ".handler";
 	private static final String MAIN_TEMPLATE_KEY = ".mainTemplate";
@@ -17,26 +13,23 @@ class ConfigProperties implements IConfigProperties, IClosable
 	private String basePath;
 	private ResourceBundle rb;
 	
-	public ConfigProperties(String configFile, String basePath)
+	public JSPConfig(String configFile, String basePath)
 	{
 		this.basePath = basePath;
 		this.rb = ResourceBundle.getBundle(configFile);
 	}
 	
-	public boolean close()
+	public JSPConfig(ResourceBundle rb, String basePath)
 	{
-		rb = null;
-		basePath = null;
-		return true;
+		this.basePath = basePath;
+		this.rb = rb;
 	}
 	
 	public String getWebCharset()
 	{
 		return rb.getString("web.charset");
 	}
-	
-	
-	//IJSPConfig implementation
+
 	public String getActionPath()
 	{
 		return getServletPrefix("action");

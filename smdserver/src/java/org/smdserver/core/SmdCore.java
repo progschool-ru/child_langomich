@@ -1,6 +1,5 @@
 package org.smdserver.core;
 
-import org.smdserver.util.IClosable;
 import java.io.PrintStream;
 import java.util.ResourceBundle;
 import javax.servlet.ServletContext;
@@ -8,7 +7,6 @@ import org.smdserver.db.DbException;
 import org.smdserver.db.IDBConfig;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
-import org.smdserver.jsp.IJSPConfig;
 import org.smdserver.jsp.SmdUrl;
 import org.smdserver.util.ComplexSmdLogger;
 import org.smdserver.util.ISmdLogger;
@@ -20,7 +18,6 @@ class SmdCore implements ISmdCore
 	
 	private static final PrintStream LOG_STREAM = System.out;
 	
-	private ConfigProperties configProperties;
 	private ISmdCoreFactory factory;
 	
 	private ISmdLogger logger;
@@ -42,7 +39,7 @@ class SmdCore implements ISmdCore
 	
 	public void setContext (ServletContext context)//TODO: (2.medium) Что делать с разными сервлетами, с разными контекстками?
 	{
-		if(configProperties == null)
+		if(factory == null)
 		{
 			init(context);
 		}
@@ -53,11 +50,6 @@ class SmdCore implements ISmdCore
 		return factory;
 	}
 	
-	public IJSPConfig getJSPConfig()
-	{
-		return configProperties;
-	}
-	
 	public ISmdServletContext createContext()
 	{
 		return new SmdServletContext(factory, logger);
@@ -66,31 +58,24 @@ class SmdCore implements ISmdCore
 	private void init(ServletContext context)
 	{
 		logger = new ComplexSmdLogger(context, LOG_STREAM);	
-		recreateConfigProperties(context);
 
 		String configFile = context.getInitParameter(CONFIG_PARAM);
 		ResourceBundle rb = ResourceBundle.getBundle(configFile);	
 		String serverFile = rb.getString(SERVER_PROPERTIES_FILE_KEY);
 		ResourceBundle serverRB = ResourceBundle.getBundle(serverFile);
-		SmdCoreFactory f = new SmdCoreFactory(rb, serverRB, logger, null);
+		SmdCoreFactory f = new SmdCoreFactory(rb, serverRB, logger, 
+				                              null, context.getContextPath());
 		
-		initDB(configProperties, logger, f.createDBConfig());
+		initDB(f.createDBConfig(), logger);
 		
 		f.setDB(db);
 		factory = f;
 		
-		SmdUrl.initParams(configProperties, configProperties.getWebCharset(), logger);
+		SmdUrl.initParams(f.createJSPConfig(), logger);
 
 	}
-	
-	private void recreateConfigProperties(ServletContext context)
-	{
-		closeIfNotNull(configProperties);
-		String configFile = context.getInitParameter(CONFIG_PARAM);
-		configProperties = new ConfigProperties(configFile, context.getContextPath());		
-	}
 
-	private boolean initDB(ConfigProperties config, ISmdLogger logger, IDBConfig dbConfig)
+	private boolean initDB(IDBConfig dbConfig, ISmdLogger logger)
 	{
 		if(db != null)
 		{
@@ -109,12 +94,4 @@ class SmdCore implements ISmdCore
 			return false;
 		}
 	}	
-	
-	private void closeIfNotNull(IClosable object)
-	{
-		if(object != null)
-		{
-			object.close();
-		}
-	}
 }

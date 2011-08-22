@@ -1,9 +1,8 @@
 package org.smdserver.db;
 
 import java.util.ResourceBundle;
-import org.smdserver.util.IClosable;
 
-public class DBConfig implements IDBConfig, IClosable
+public class DBConfig implements IDBConfig
 {	
 	private ResourceBundle serverRB;
 	
@@ -17,12 +16,6 @@ public class DBConfig implements IDBConfig, IClosable
 	public DBConfig(ResourceBundle rb)
 	{
 		this.serverRB = rb;
-	}
-	
-	public boolean close()
-	{
-		this.serverRB = null;
-		return true;
 	}
 
 	//IDBConfig implementation

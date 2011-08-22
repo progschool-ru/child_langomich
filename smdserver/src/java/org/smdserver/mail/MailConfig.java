@@ -1,9 +1,8 @@
 package org.smdserver.mail;
 
 import java.util.ResourceBundle;
-import org.smdserver.util.IClosable;
 
-public class MailConfig implements IMailConfig, IClosable
+public class MailConfig implements IMailConfig
 {
 	private ResourceBundle rb;
 	
@@ -40,10 +39,5 @@ public class MailConfig implements IMailConfig, IClosable
 	public String getFrom()
 	{
 		return rb.getString("mail.from");
-	}
-	
-	public boolean close()
-	{
-		return true;
 	}
 }

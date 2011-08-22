@@ -4,6 +4,8 @@ import java.util.ResourceBundle;
 import org.smdserver.db.DBConfig;
 import org.smdserver.db.IDBConfig;
 import org.smdserver.db.ISmdDB;
+import org.smdserver.jsp.IJSPConfig;
+import org.smdserver.jsp.JSPConfig;
 import org.smdserver.mail.IMailConfig;
 import org.smdserver.mail.IMailman;
 import org.smdserver.mail.MailConfig;
@@ -20,14 +22,16 @@ class SmdCoreFactory implements ISmdCoreFactory
 	private ResourceBundle serverRB;
 	private ISmdLogger logger;
 	private ISmdDB db;
+	private String basePath;
 	
 	public SmdCoreFactory (ResourceBundle rb, ResourceBundle serverRB, 
-			               ISmdLogger logger, ISmdDB db)
+			               ISmdLogger logger, ISmdDB db, String basePath)
 	{
 		this.rb = rb;
 		this.serverRB = serverRB;
 		this.logger = logger;
 		this.db = db;
+		this.basePath = basePath;
 	}
 	
 	public IDBConfig createDBConfig()
@@ -63,6 +67,11 @@ class SmdCoreFactory implements ISmdCoreFactory
 		{
 			return null;
 		}
+	}
+	
+	public IJSPConfig createJSPConfig()
+	{
+		return new JSPConfig(rb, basePath);
 	}
 	
 	void setDB(ISmdDB db)
