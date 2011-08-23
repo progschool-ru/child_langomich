@@ -25,4 +25,9 @@ public class UserEx extends User
 	{
 		return about;
 	}
+	
+	public User generateUser()
+	{
+		return new User(getUserId(), getLogin(), getPsw());
+	}
 }

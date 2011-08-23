@@ -17,11 +17,14 @@ public class UsersDBStorage implements IUsersStorage
 	public static final String REGISTRATION_REQUESTS_TABLE = "registration_requests";
 
 	private static final String LOGIN_REGEX = "^[a-zA-Z][\\w-]+";
-	private static final String CREATE_USER_QUERY = "INSERT INTO %1$s (user_id, login_key, login, psw, email, about, time_created, time_modified) VALUE (?, ?, ?, ?, ?, ?, NOW(), NOW());";
+	
 	private static final String CHECK_PASSWORD_QUERY = "SELECT login FROM %1$s WHERE login_key = ? AND psw = ?;";
+	private static final String COPY_USER_FROM_REQUESTS = "INSERT INTO %1$s (user_id, login_key, login, psw, email, about, time_created, time_modified) SELECT user_id, login_key, login, psw, email, about, time_created, NOW() as time_modified FROM %2$s WHERE user_id = ?";
+	private static final String CREATE_USER_QUERY = "INSERT INTO %1$s (user_id, login_key, login, psw, email, about, time_created, time_modified) VALUE (?, ?, ?, ?, ?, ?, NOW(), NOW());";
+	private static final String GET_PSW_BY_ID_QUERY = "SELECT psw FROM %1$s WHERE user_id = ?;";
+	private static final String GET_USER_BY_ID_QUERY = "SELECT user_id, login, psw FROM %1$s WHERE user_id = ?;";
 	private static final String GET_USER_BY_LOGIN_QUERY = "SELECT user_id, login, psw FROM %1$s WHERE login_key = ?;";
 	private static final String SET_PASSWORD_BY_LOGIN_QUERY = "UPDATE %1$s SET psw=? WHERE login_key = ?;";
-	private static final String GET_PSW_BY_ID_QUERY = "SELECT psw FROM %1$s WHERE user_id = ?;";
 	private static final String DELETE_USER_BY_ID_QUERY = "DELETE FROM %1$s WHERE user_id = ?;";
 
 	private ISmdDB db;
@@ -51,35 +54,6 @@ public class UsersDBStorage implements IUsersStorage
 							   String email, String about)
 	{
 		return createUserRow(usersTable, userId, dirtyLogin, password, email, about);
-	}
-
-	private boolean createUserRow (String table, String userId, String dirtyLogin, 
-			                   String password,
-							   String email, String about)
-	{
-		if(!validateLogin(dirtyLogin))
-		{
-			return false;
-		}
-		
-		String psw = getPsw(dirtyLogin, password);
-
-		try
-		{
-			ISmdStatement st = createSmdStatement(CREATE_USER_QUERY, table);
-			st.addString(userId);
-			st.addString(getLoginKey(dirtyLogin));
-			st.addString(dirtyLogin);
-			st.addString(psw);
-			st.addString(email);
-			st.addString(about);
-			return 1 == db.processSmdStatement(st);
-		}
-		catch(DbException e)
-		{
-			log(e);
-			return false;
-		}
 	}
 
 	public boolean checkPassword (String dirtyLogin, String dirtyPassword)
@@ -121,6 +95,21 @@ public class UsersDBStorage implements IUsersStorage
 		db.selectSingle(st, parser);
 		return parser.getValue() != null;
 	}
+	
+	public UserEx getUserExById (String userId)
+	{
+		return getUserExById(userId, usersTable);
+	}
+	
+	public UserEx getRegistrationRequestById (String userId)
+	{
+		return getUserExById(userId, registrationRequestsTable);
+	}
+//	
+//	public User getUserById (String userId)
+//	{	
+//		return getUserByParam(userId, GET_USER_BY_ID_QUERY, usersTable, false);
+//	}	
 
 	public User getUserByLogin (String dirtyLogin)
 	{
@@ -129,19 +118,28 @@ public class UsersDBStorage implements IUsersStorage
 			return null;//Can do it without DB request.
 		}
 		
-		UserParser parser = new UserParser();
+		return getUserByParam(getLoginKey(dirtyLogin), GET_USER_BY_LOGIN_QUERY, usersTable, false);
+	}
+	
+	public boolean confirmRegistration(String userId)
+	{
+		ISmdStatement st = new SmdStatement();
+		st.addQuery(String.format(COPY_USER_FROM_REQUESTS, usersTable, registrationRequestsTable));
+		st.addQuery(String.format(DELETE_USER_BY_ID_QUERY, registrationRequestsTable));
+		st.startSet(0);
+		st.addString(userId);
+		st.startSet(1);
+		st.addString(userId);
 		try
 		{
-			ISmdStatement st = createSmdStatement(GET_USER_BY_LOGIN_QUERY);
-			st.addString(getLoginKey(dirtyLogin));
-			db.selectSingle(st, parser);
+			db.processSmdStatement(st);
 		}
 		catch(DbException e)
 		{
 			log(e);
-			return null;
+			return false;
 		}
-		return parser.user;
+		return true;
 	}
 	
 	public boolean setPassword (String dirtyLogin, String password)
@@ -187,32 +185,38 @@ public class UsersDBStorage implements IUsersStorage
 		}
 		return (String)parser.getValue();
 	}
-
-	public boolean removeUserById (String dbUserId)
+	
+	public boolean removeRegistratioinRequestById (String userId)
 	{
-		try
-		{
-			ISmdStatement st = createSmdStatement(DELETE_USER_BY_ID_QUERY);
-			st.addString(dbUserId);
-			return 1 == db.processSmdStatement(st);
-		}
-		catch (DbException e)
-		{
-			log(e);
-			return false;
-		}
+		return removeUserById(userId, registrationRequestsTable);
+	}
+
+	public boolean removeUserById (String userId)
+	{
+		return removeUserById(userId, usersTable);
 	}
 
 	private class UserParser implements IResultParser
 	{
 		User user;
+		boolean isExtended = false;
 
 		public boolean parse(ResultSet set) throws SQLException
 		{
 			String id = set.getString("user_id");
 			String login = set.getString("login");
 			String psw = set.getString("psw");
-			user = new User(id, login, psw);
+			
+			if(!isExtended)
+			{
+				user = new User(id, login, psw);
+			}
+			else
+			{
+				String email = set.getString("email");
+				String about = set.getString("about");
+				user = new UserEx(id, login, psw, email, about);
+			}
 			return true;
 		}
 	}
@@ -253,7 +257,7 @@ public class UsersDBStorage implements IUsersStorage
 	
 	private boolean validateLogin(String dirtyLogin)
 	{
-		return dirtyLogin.matches(LOGIN_REGEX);
+		return dirtyLogin != null && dirtyLogin.matches(LOGIN_REGEX);
 	}
 	
 	private static String getLoginKey(String login)
@@ -268,4 +272,71 @@ public class UsersDBStorage implements IUsersStorage
 			logger.log(e);
 		}
 	}
+
+	private boolean createUserRow (String table, String userId, String dirtyLogin, 
+			                   String password,
+							   String email, String about)
+	{
+		if(!validateLogin(dirtyLogin))
+		{
+			return false;
+		}
+		
+		String psw = getPsw(dirtyLogin, password);
+
+		try
+		{
+			ISmdStatement st = createSmdStatement(CREATE_USER_QUERY, table);
+			st.addString(userId);
+			st.addString(getLoginKey(dirtyLogin));
+			st.addString(dirtyLogin);
+			st.addString(psw);
+			st.addString(email);
+			st.addString(about);
+			return 1 == db.processSmdStatement(st);
+		}
+		catch(DbException e)
+		{
+			log(e);
+			return false;
+		}
+	}
+	
+	private UserEx getUserExById (String userId, String table)
+	{
+		return (UserEx) getUserByParam(userId, GET_USER_BY_ID_QUERY, table, true);
+	}
+
+	public boolean removeUserById (String userId, String table)
+	{
+		try
+		{
+			ISmdStatement st = createSmdStatement(DELETE_USER_BY_ID_QUERY, table);
+			st.addString(userId);
+			return 1 == db.processSmdStatement(st);
+		}
+		catch (DbException e)
+		{
+			log(e);
+			return false;
+		}
+	}
+	
+	private User getUserByParam (String param, String template, String table, boolean isExtended)
+	{	
+		UserParser parser = new UserParser();
+		parser.isExtended = isExtended;
+		try
+		{
+			ISmdStatement st = createSmdStatement(template, table);
+			st.addString(param);
+			db.selectSingle(st, parser);
+		}
+		catch(DbException e)
+		{
+			log(e);
+			return null;
+		}
+		return parser.user;
+	}	
 }

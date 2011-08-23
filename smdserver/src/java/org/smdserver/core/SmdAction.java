@@ -1,6 +1,7 @@
 package org.smdserver.core;
 
 import org.smdserver.actionssystem.Action;
+import org.smdserver.util.ISmdLogger;
 
 public abstract class SmdAction extends Action implements ISmdAction
 {
@@ -17,15 +18,8 @@ public abstract class SmdAction extends Action implements ISmdAction
 		return servletContext;
 	}
 
-	@Override
-	protected void log (String message)
+	protected ISmdLogger getLogger()
 	{
-		getServletContext().log(message);
-	}
-	
-	@Override
-	protected void log (Throwable e)
-	{
-		getServletContext().log(e);
+		return servletContext.getLogger();
 	}
 }

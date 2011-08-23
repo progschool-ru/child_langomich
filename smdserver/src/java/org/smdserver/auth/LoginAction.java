@@ -2,17 +2,20 @@ package org.smdserver.auth;
 
 import org.smdserver.actionssystem.SessionKeys;
 import javax.servlet.http.HttpServletRequest;
+import org.smdserver.actionssystem.ActionException;
 import org.smdserver.actionssystem.ActionParams;
+import org.smdserver.actionssystem.ParamsValidator;
 import org.smdserver.core.SmdAction;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.users.User;
 
 public class LoginAction extends SmdAction
 {
+	String login;
+	String password;
+	
 	protected String doAction (HttpServletRequest request)
 	{
-		String login = request.getParameter(ActionParams.LOGIN);
-		String password = request.getParameter(ActionParams.PASSWORD);
 		IUsersStorage storage = getServletContext().getUsersStorage();
 
 		boolean success = storage.checkPassword(login, password);
@@ -23,13 +26,34 @@ public class LoginAction extends SmdAction
 		{
 			User user = storage.getUserByLogin(login);
 			setAnswerParam(ActionParams.USER, user);
-			request.getSession().setAttribute(SessionKeys.CURRENT_LOGIN, user.getLogin());
+			makeUserLoggedIn(user, request);
 			return null;
 		}
 		else
 		{
-			request.getSession().setAttribute(SessionKeys.CURRENT_LOGIN, null);
+			makeUserLoggedOut(request);
 			return null;
 		}
+	}
+	
+	@Override
+	protected boolean validateParams(HttpServletRequest request) throws ActionException
+	{
+		ParamsValidator v = new ParamsValidator(request);
+		
+		login = v.getNotEmpty(ActionParams.LOGIN);
+		password = v.getNotEmpty(ActionParams.PASSWORD);
+		
+		return true;
+	}
+	
+	public static void makeUserLoggedIn(User user, HttpServletRequest request)
+	{
+		request.getSession().setAttribute(SessionKeys.CURRENT_LOGIN, user.getLogin());
+	}
+	
+	public static void makeUserLoggedOut(HttpServletRequest request)
+	{
+		request.getSession().setAttribute(SessionKeys.CURRENT_LOGIN, null);
 	}
 }

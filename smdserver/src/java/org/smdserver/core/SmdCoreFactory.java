@@ -1,6 +1,8 @@
 package org.smdserver.core;
 
 import java.util.ResourceBundle;
+import org.smdserver.auth.IRegisterConfig;
+import org.smdserver.auth.RegisterConfig;
 import org.smdserver.db.DBConfig;
 import org.smdserver.db.IDBConfig;
 import org.smdserver.db.ISmdDB;
@@ -37,6 +39,11 @@ class SmdCoreFactory implements ISmdCoreFactory
 	void setDB(ISmdDB db)
 	{
 		this.db = db;
+	}
+	
+	public IRegisterConfig createRegisterConfig()
+	{
+		return new RegisterConfig(serverRB);
 	}
 	
 	public IDBConfig createDBConfig()

@@ -19,67 +19,50 @@ public class RegistrAction extends SmdAction
 	private String email;
 	private String about;
 	
-	protected String doAction (HttpServletRequest request)
+	protected String doAction (HttpServletRequest request) throws SmdException
 	{
 		IUsersStorage storage = getServletContext().getUsersStorage();
 
 		boolean success;
-		try
-		{
-			success = (login != null && password != null && !password.isEmpty() && !storage.doesLoginExist(login));
-		}
-		catch(SmdException e)
-		{
-			log(e);
-			setAnswerParam(ActionParams.MESSAGE, e.getPublicMessage());
-			success = false;
-		}
+		String result = null;
+
+		success = (login != null && 
+				   password != null && 
+				   !password.isEmpty() && 
+				   !storage.doesLoginExist(login));
 
 		if(success)
 		{
-			try
-			{
-				//TODO: (3.low)[#26069] create and use universal ID generator
-				String uuid = UUID.randomUUID().toString();
-				storage.createRegistrationRequest(uuid, login, password, email, about);
-				setAnswerParam(ActionParams.SUCCESS, success);
-
-				Map<String, Object> params = new HashMap<String, Object>();
-				SmdUrl loginUrl = new SmdUrl("action",
-						                     "login?" + getRedirectParamsURI(request),
-											 null, "", params);		
-				params.put("password", password);
-				params.put("login", login);
-				return loginUrl.getURL();
-			}
-			catch(Exception e)
-			{
-				log(e);
-				success = false;
-			}
+			//TODO: (3.low)[#26069] create and use universal ID generator
+			String uuid = UUID.randomUUID().toString();
+			storage.createRegistrationRequest(uuid, login, password, email, about);
+				
+//			setAnswerParam(ActionParams.SUCCESS, success);
+//
+//			Map<String, Object> params = new HashMap<String, Object>();
+//			SmdUrl loginUrl = new SmdUrl("action",
+//										 "login?" + getRedirectParamsURI(request),
+//										 null, "", params);		
+//			params.put("password", password);
+//			params.put("login", login);
+//			System.out.println("succ " + success);
+//			return loginUrl.getURL();				
 		}
-		setAnswerParam(ActionParams.SUCCESS, success);
-		return null;
+		
+		setAnswerParam(ActionParams.SUCCESS, success);		
+		return result;
 	}
 	
 	@Override
-	protected boolean validateParams(HttpServletRequest request)
+	protected boolean validateParams(HttpServletRequest request) throws ActionException
 	{
 		ParamsValidator v = new ParamsValidator(request);
-		try
-		{
-			login = v.getNotEmpty(ActionParams.LOGIN);
-			password = v.getNotEmpty(ActionParams.PASSWORD);
-			email = v.getEmail(ActionParams.EMAIL);
-			about = request.getParameter(ActionParams.ABOUT);
-			return true;
-		}
-		catch(ActionException e)
-		{
-			log(e);
-			setAnswerParam(ActionParams.MESSAGE, e.getPublicMessage());
-			return false;
-		}
-
+		
+		login = v.getNotEmpty(ActionParams.LOGIN);
+		password = v.getNotEmpty(ActionParams.PASSWORD);
+		email = v.getEmail(ActionParams.EMAIL);
+		about = request.getParameter(ActionParams.ABOUT);
+		
+		return true;
 	}
 }

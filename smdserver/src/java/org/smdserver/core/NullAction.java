@@ -1,7 +1,6 @@
 package org.smdserver.core;
 
 import java.io.IOException;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.smdserver.actionssystem.IAction;
@@ -10,7 +9,7 @@ public class NullAction extends SmdAction implements IAction
 {
 	@Override
 	public String perform (HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException
+			throws IOException
 	{
 		String queryString = request.getQueryString();
 		StringBuilder message = new StringBuilder();

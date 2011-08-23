@@ -1,5 +1,6 @@
 package org.smdserver.core;
 
+import org.smdserver.auth.IRegisterConfig;
 import org.smdserver.db.IDBConfig;
 import org.smdserver.jsp.IJSPConfig;
 import org.smdserver.mail.IMailman;
@@ -12,6 +13,7 @@ public interface ISmdCoreFactory
 	public IMailman createMailman();
 	public IWordsStorage createWordsStorage();
 	public IUsersStorage createUsersStorage();
+	public IRegisterConfig createRegisterConfig();
 	public IJSPConfig createJSPConfig();
 	public ICoreConfig createCoreConfig();
 }

@@ -22,7 +22,13 @@ class SmdServletContext implements ISmdServletContext
 		this.logger = logger;
 		this.factory = factory;
 	}
+	
+	public ISmdCoreFactory getFactory()
+	{
+		return factory;
+	}
 
+	@Deprecated
 	public IDBConfig getDBConfig()
 	{
 		if(dbConfig == null)
@@ -32,6 +38,7 @@ class SmdServletContext implements ISmdServletContext
 		return dbConfig;
 	}
 	
+	@Deprecated
 	public ICoreConfig getCoreConfig()
 	{
 		if(coreConfig == null)

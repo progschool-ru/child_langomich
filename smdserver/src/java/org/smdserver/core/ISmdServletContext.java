@@ -11,7 +11,10 @@ public interface ISmdServletContext extends ISmdLogger
 	public IUsersStorage getUsersStorage ();
 	public IWordsStorage getWordsStorage ();
 	public ISmdLogger getLogger();
+	public ISmdCoreFactory getFactory();
+	@Deprecated
 	public IDBConfig getDBConfig();
+	@Deprecated
 	public ICoreConfig getCoreConfig();
 	public IMailman getMailman();
 	public void log (String message);

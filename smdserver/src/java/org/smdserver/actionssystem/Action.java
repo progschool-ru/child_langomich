@@ -4,37 +4,42 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import static org.smdserver.actionssystem.ActionParams.*;
 import com.ccg.util.JavaString;
+import org.smdserver.util.ISmdLogger;
+import org.smdserver.util.SmdException;
 
 public abstract class Action implements IAction
 {
 	private Map<String, Object> map = new HashMap<String, Object>();
 	private String redirectUrl;
 
-	abstract protected String doAction (HttpServletRequest request);
+	abstract protected String doAction (HttpServletRequest request) throws SmdException;
+	abstract protected ISmdLogger getLogger();
+
 
 	public String perform (HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException
+			throws IOException
 	{
 		String url = null;
 
 		boolean success = false;
-		if(validateParams(request) && validateContext(request))
+		try
 		{
-			try
+			if(validateParams(request) && validateContext(request))
 			{
 				url = doAction(request);
 				success = true && (!map.containsKey(SUCCESS) || (Boolean)map.get(SUCCESS));
 			}
-			catch(Exception e)
-			{
-				log(e);
-			}
+		}
+		catch(SmdException e)
+		{
+			log(e);
+			setAnswerParam(ActionParams.MESSAGE, e.getPublicMessage());
+			success = false;
 		}
 
 		setAnswerParam(SUCCESS, success);
@@ -89,22 +94,30 @@ public abstract class Action implements IAction
 		map.put(key, value);
 	}
 
-	protected boolean validateParams (HttpServletRequest request)
+	protected boolean validateParams (HttpServletRequest request) throws SmdException
 	{
 		return true;
 	}
 
-	protected boolean validateContext (HttpServletRequest request)
+	protected boolean validateContext (HttpServletRequest request) throws SmdException
 	{
 		return true;
 	}
 
 	protected void log(String message)
 	{
+		if(getLogger() != null)
+		{
+			getLogger().log(message);
+		}
 	}
 	
 	protected void log(Throwable e)
 	{
+		if(getLogger() != null)
+		{
+			getLogger().log(e);
+		}
 	}
 
 	private String extractRedirectUrl(boolean success, HttpServletRequest request)

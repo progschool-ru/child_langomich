@@ -1,14 +1,35 @@
 package org.smdserver.auth;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum ConfirmationType
 {
-	ADMIN ("second"),
-	MAIL ("first"),
-	NONE ("third");
+	ADMIN ("admin"),
+	MAIL ("mail"),
+	NONE ("none");
 	
-	private String value;
-	private ConfirmationType(String value)
+	private static Map<String, ConfirmationType> types;
+	
+	private String name;
+
+	private ConfirmationType(String name)
 	{
-		this.value = value;
+		this.name = name;
+		registerInstance();
+	}
+	
+	public static ConfirmationType getType (String name)
+	{
+		return types.get(name);
+	}
+	
+	private void registerInstance()
+	{
+		if(types == null)
+		{
+			 types = new HashMap<String, ConfirmationType>();
+		}
+		types.put(name, this);
 	}
 }
