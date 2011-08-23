@@ -2,10 +2,12 @@ package org.smdserver.actionssystem;
 
 public class ActionParams
 {
+	public static final String ABOUT    = "about";
 	public static final String ANY_HOST = "anyHost";
 	public static final String DATA     = "data";
 	public static final String DB_PASSWORD = "dbPassword";
 	public static final String DB_USER     = "dbUser";
+	public static final String EMAIL       = "email";
 	public static final String LANGUAGE_ID = "languageId";
 	public static final String LANGUAGES= "languages";
 	public static final String LAST_CONNECTION = "lastConnection";

@@ -13,4 +13,5 @@ public interface ISmdCoreFactory
 	public IWordsStorage createWordsStorage();
 	public IUsersStorage createUsersStorage();
 	public IJSPConfig createJSPConfig();
+	public ICoreConfig createCoreConfig();
 }

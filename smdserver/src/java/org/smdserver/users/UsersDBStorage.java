@@ -13,9 +13,10 @@ import org.smdserver.db.SmdStatement;
 public class UsersDBStorage implements IUsersStorage
 {
 	public static final String USERS_TABLE = "users";
+	public static final String REGISTRATION_REQUESTS_TABLE = "registration_requests";
 
 	private static final String LOGIN_REGEX = "^[a-zA-Z][\\w-]+";
-	private static final String CREATE_USER_QUERY = "INSERT INTO %1$s (user_id, login_key, login, psw, email, time_created, time_modified) VALUE (?, ?, ?, ?, \"\", NOW(), NOW());";
+	private static final String CREATE_USER_QUERY = "INSERT INTO %1$s (user_id, login_key, login, psw, email, about, time_created, time_modified) VALUE (?, ?, ?, ?, ?, ?, NOW(), NOW());";
 	private static final String CHECK_PASSWORD_QUERY = "SELECT login FROM %1$s WHERE login_key = ? AND psw = ?;";
 	private static final String GET_USER_BY_LOGIN_QUERY = "SELECT user_id, login, psw FROM %1$s WHERE login_key = ?;";
 	private static final String SET_PASSWORD_BY_LOGIN_QUERY = "UPDATE %1$s SET psw=? WHERE login_key = ?;";
@@ -24,29 +25,50 @@ public class UsersDBStorage implements IUsersStorage
 
 	private ISmdDB db;
 	private String usersTable;
+	private String registrationRequestsTable;
 
 	public UsersDBStorage(ISmdDB db)
 	{
 		this.db = db;
 		this.usersTable = db.getTablesPrefix() + USERS_TABLE;
+		this.registrationRequestsTable = db.getTablesPrefix() + REGISTRATION_REQUESTS_TABLE;
 	}
 	
-	public boolean createUser (String userId, String dirtyLogin, String dirtyPassword)
+	public boolean createRegistrationRequest(String userId, String dirtyLogin, 
+			                   String password,
+							   String email, String about)
+	{
+		return createUserRow(registrationRequestsTable, userId, dirtyLogin, 
+				             password, email, about);
+	}
+	
+	public boolean createUser (String userId, String dirtyLogin, 
+			                   String password,
+							   String email, String about)
+	{
+		return createUserRow(usersTable, userId, dirtyLogin, password, email, about);
+	}
+
+	private boolean createUserRow (String table, String userId, String dirtyLogin, 
+			                   String password,
+							   String email, String about)
 	{
 		if(!validateLogin(dirtyLogin))
 		{
 			return false;
 		}
 		
-		String psw = getPsw(dirtyLogin, dirtyPassword);
+		String psw = getPsw(dirtyLogin, password);
 
 		try
 		{
-			ISmdStatement st = createSmdStatement(CREATE_USER_QUERY);
+			ISmdStatement st = createSmdStatement(CREATE_USER_QUERY, table);
 			st.addString(userId);
 			st.addString(getLoginKey(dirtyLogin));
 			st.addString(dirtyLogin);
 			st.addString(psw);
+			st.addString(email);
+			st.addString(about);
 			return 1 == db.processSmdStatement(st);
 		}
 		catch(DbException e)

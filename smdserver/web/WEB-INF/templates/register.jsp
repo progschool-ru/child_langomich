@@ -14,6 +14,16 @@
 			<td><input  type="password" size="30"
 						name="password"></td>
 		</tr>
+		<tr>
+			<td>E-Mail:</td>
+			<td><input type="text" size="30" name="email"></td
+		</tr>
+		<tr>
+			<td colspan="2">
+				About:<br/>
+				<textarea name="about" cols="45"></textarea>
+			</td>
+		</tr>
 	</table>
 	<br/>
 	<input type="submit" value="Register">

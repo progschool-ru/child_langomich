@@ -19,6 +19,8 @@ public class UsersDBStorageTest
 	private static final String FIRST_LOGIN2 = "fIrst";
 	private static final String FIRST_ID = "1";
 	private static final String FIRST_PASSWORD = "firstPassword";
+	private static final String EMAIL = "some@example.org";
+	private static final String ABOUT = "Peter Ivanov";
 
 	private static final String DELETE_QUERY = "DELETE FROM smd_users;";
 
@@ -36,7 +38,7 @@ public class UsersDBStorageTest
 		db = new SmdDB(config, new ConsoleSmdLogger(System.out));
 
 		instance = new UsersDBStorage(db);
-		boolean result = instance.createUser(FIRST_ID, FIRST_LOGIN, FIRST_PASSWORD);
+		boolean result = instance.createUser(FIRST_ID, FIRST_LOGIN, FIRST_PASSWORD, EMAIL, ABOUT);
 		assertTrue(result);
     }
 
@@ -83,10 +85,10 @@ public class UsersDBStorageTest
 		String id = "2";
 		String psw = instance.getPsw(login, password);
 
-		boolean success = instance.createUser(id, login, password);
-		boolean success2 = instance.createUser(FIRST_ID, login, password);
-		boolean success3 = instance.createUser("someOtherId", login, password);
-		boolean success4 = instance.createUser("someOtherId2", login2, password);
+		boolean success = instance.createUser(id, login, password, EMAIL, ABOUT);
+		boolean success2 = instance.createUser(FIRST_ID, login, password, EMAIL, ABOUT);
+		boolean success3 = instance.createUser("someOtherId", login, password, EMAIL, ABOUT);
+		boolean success4 = instance.createUser("someOtherId2", login2, password, EMAIL, ABOUT);
 
 		User user = instance.getUserByLogin(login);
 		User user2 = instance.getUserByLogin(login2);
@@ -122,11 +124,11 @@ public class UsersDBStorageTest
 		String password = "secondPassword";
 		String psw = instance.getPsw(login4, password);
 
-		boolean success = instance.createUser(id, login, password);
-		boolean success2 = instance.createUser(id2, login2, password);
-		boolean success3 = instance.createUser(id3, login3, password);
-		boolean success4 = instance.createUser(id4, login4, password);
-		boolean success5 = instance.createUser(id5, login5, password);
+		boolean success = instance.createUser(id, login, password, EMAIL, ABOUT);
+		boolean success2 = instance.createUser(id2, login2, password, EMAIL, ABOUT);
+		boolean success3 = instance.createUser(id3, login3, password, EMAIL, ABOUT);
+		boolean success4 = instance.createUser(id4, login4, password, EMAIL, ABOUT);
+		boolean success5 = instance.createUser(id5, login5, password, EMAIL, ABOUT);
 
 		User user = instance.getUserByLogin(login);
 		User user2 = instance.getUserByLogin(login2);
@@ -217,8 +219,8 @@ public class UsersDBStorageTest
 		String login2 = "mamin_sibiryak";
 		String id2 = "ms";
 		
-		boolean success = instance.createUser(id, login, password);
-		boolean success2 = instance.createUser(id2, login2, password);
+		boolean success = instance.createUser(id, login, password, EMAIL, ABOUT);
+		boolean success2 = instance.createUser(id2, login2, password, EMAIL, ABOUT);
 		
 		User user = instance.getUserByLogin(login2);
 		

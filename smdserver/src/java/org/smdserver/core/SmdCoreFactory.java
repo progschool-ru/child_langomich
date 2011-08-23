@@ -74,6 +74,11 @@ class SmdCoreFactory implements ISmdCoreFactory
 		return new JSPConfig(rb, basePath);
 	}
 	
+	public ICoreConfig createCoreConfig()
+	{
+		return new CoreConfig(serverRB);
+	}
+	
 	void setDB(ISmdDB db)
 	{
 		this.db = db;

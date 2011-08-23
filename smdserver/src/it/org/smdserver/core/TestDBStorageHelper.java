@@ -25,7 +25,7 @@ class TestDBStorageHelper implements ITestStorageHelper
 	{
 		initDBAndGetPrefix(resource);
 		usersStorage = new UsersDBStorage(db);
-		usersStorage.createUser(userId, login, password);
+		usersStorage.createUser(userId, login, password, "some@example.org", "Peter Ivanov");
 		this.userId = userId;
 	}
 	

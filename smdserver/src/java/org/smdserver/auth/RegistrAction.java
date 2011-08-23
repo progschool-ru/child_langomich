@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
+import org.smdserver.actionssystem.ActionException;
 import org.smdserver.actionssystem.ActionParams;
+import org.smdserver.actionssystem.ParamsValidator;
 import org.smdserver.core.SmdAction;
 import org.smdserver.util.SmdException;
 import org.smdserver.jsp.SmdUrl;
@@ -12,10 +14,13 @@ import org.smdserver.users.IUsersStorage;
 
 public class RegistrAction extends SmdAction
 {
+	private String login;
+	private String password;
+	private String email;
+	private String about;
+	
 	protected String doAction (HttpServletRequest request)
 	{
-		String login = request.getParameter(ActionParams.LOGIN);
-		String password = request.getParameter(ActionParams.PASSWORD);
 		IUsersStorage storage = getServletContext().getUsersStorage();
 
 		boolean success;
@@ -34,7 +39,7 @@ public class RegistrAction extends SmdAction
 			{
 				//TODO: (3.low)[#26069] create and use universal ID generator
 				String uuid = UUID.randomUUID().toString();
-				getServletContext().getUsersStorage().createUser( uuid, login, password);
+				storage.createRegistrationRequest(uuid, login, password, email, about);
 				setAnswerParam(ActionParams.SUCCESS, success);
 
 				Map<String, Object> params = new HashMap<String, Object>();
@@ -47,11 +52,31 @@ public class RegistrAction extends SmdAction
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
+				log(e.getMessage());
 				success = false;
 			}
 		}
 		setAnswerParam(ActionParams.SUCCESS, success);
 		return null;
+	}
+	
+	@Override
+	protected boolean validateParams(HttpServletRequest request)
+	{
+		ParamsValidator v = new ParamsValidator(request);
+		try
+		{
+			login = v.getNotEmpty(ActionParams.LOGIN);
+			password = v.getNotEmpty(ActionParams.PASSWORD);
+			email = v.getEmail(ActionParams.EMAIL);
+			about = request.getParameter(ActionParams.ABOUT);
+			return true;
+		}
+		catch(ActionException e)
+		{
+			log(e.getMessage());
+			return false;
+		}
+
 	}
 }

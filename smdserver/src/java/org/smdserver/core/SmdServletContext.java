@@ -11,6 +11,7 @@ class SmdServletContext implements ISmdServletContext
 	private IUsersStorage usersStorage;
 	private IWordsStorage wordsStorage;
 	private IDBConfig dbConfig;
+	private ICoreConfig coreConfig;
 	private IMailman mailman;
 	
 	private ISmdCoreFactory factory;
@@ -29,6 +30,15 @@ class SmdServletContext implements ISmdServletContext
 			dbConfig = factory.createDBConfig();
 		}
 		return dbConfig;
+	}
+	
+	public ICoreConfig getCoreConfig()
+	{
+		if(coreConfig == null)
+		{
+			coreConfig = factory.createCoreConfig();
+		}
+		return coreConfig;
 	}
 
 	public IUsersStorage getUsersStorage ()

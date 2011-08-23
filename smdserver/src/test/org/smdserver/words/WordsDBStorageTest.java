@@ -23,6 +23,8 @@ public class WordsDBStorageTest
 	private static final String USER_ID_WITH_WORDS = "1";
 	private static final String USER_ID_WITH_EMPTY_LANGUAGE = "2";
 	private static final String USER_ID_WITHOUT_LANGUAGES = "3";
+	private static final String EMAIL = "some@examle.org";
+	private static final String ABOUT = "Petr Ivanov";
 
 	private static final String LANGUAGE_ID = "enId1";
 	private static final String LANGUAGE_NAME = "enId1Name";
@@ -51,9 +53,9 @@ public class WordsDBStorageTest
 		db = new SmdDB(config, new ConsoleSmdLogger(System.out));
 
 		IUsersStorage us = new UsersDBStorage(db);
-		assertTrue(us.createUser(USER_ID_WITH_WORDS, "lo1", "pa1"));
-		assertTrue(us.createUser(USER_ID_WITH_EMPTY_LANGUAGE, "lo2", "pa2"));
-		assertTrue(us.createUser(USER_ID_WITHOUT_LANGUAGES, "lo3", "pa3"));
+		assertTrue(us.createUser(USER_ID_WITH_WORDS, "lo1", "pa1", EMAIL, ABOUT));
+		assertTrue(us.createUser(USER_ID_WITH_EMPTY_LANGUAGE, "lo2", "pa2", EMAIL, ABOUT));
+		assertTrue(us.createUser(USER_ID_WITHOUT_LANGUAGES, "lo3", "pa3", EMAIL, ABOUT));
 
 		storage = new WordsDBStorage(db);
 		List<Language> list = new ArrayList<Language>();
