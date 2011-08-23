@@ -2,7 +2,7 @@ package org.smdserver.util;
 
 import java.io.PrintStream;
 
-public class ConsoleSmdLogger implements ISmdLogger
+public class ConsoleSmdLogger extends SmdLogger
 {
 	private PrintStream stream;
 

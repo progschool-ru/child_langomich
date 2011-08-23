@@ -90,7 +90,7 @@ class SmdCore implements ISmdCore
 		}
 		catch (DbException e)
 		{
-			logger.log(e.getMessage());
+			logger.log(e);
 			return false;
 		}
 	}	

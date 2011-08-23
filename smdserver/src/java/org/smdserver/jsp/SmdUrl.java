@@ -209,7 +209,9 @@ public class SmdUrl implements IUrl
 			catch(UnsupportedEncodingException e)
 			{
 				if(logger != null)
+				{
 					logger.log("As we use correct encoding, this message: " + e.getMessage());
+				}
 				value = entry.getValue().toString();
 			}
 			sb.append(value);

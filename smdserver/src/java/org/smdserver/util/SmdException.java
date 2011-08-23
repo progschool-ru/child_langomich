@@ -2,20 +2,27 @@ package org.smdserver.util;
 
 public class SmdException extends Exception
 {
-	private Exception reason;
+	public static final String ERROR = "Error";
+	
+	private String publicMessage;
 	
 	protected SmdException (String message)
 	{
 		super(message);
 	}
 	
-	protected void setReason(Exception e)
+	protected SmdException (String message, Throwable cause)
 	{
-		reason = e;
+		super(message, cause);
 	}
-
-	public Exception getReason()
+	
+	public String getPublicMessage()
 	{
-		return reason;
+		return publicMessage;
+	}
+	
+	protected void setPublicMessage(String value)
+	{
+		publicMessage = value;
 	}
 }

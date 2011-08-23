@@ -11,6 +11,7 @@ import org.smdserver.db.DbException;
 import org.smdserver.db.IDBConfig;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
+import org.smdserver.util.ISmdLogger;
 import static org.junit.Assert.*;
 
 public class UsersDBStorageTest
@@ -35,9 +36,10 @@ public class UsersDBStorageTest
 		config = new DBConfig("org.smdserver.config", 
 				                                "server.test.properties.file");
 
-		db = new SmdDB(config, new ConsoleSmdLogger(System.out));
+		ISmdLogger logger = new ConsoleSmdLogger(System.out);
+		db = new SmdDB(config, logger);
 
-		instance = new UsersDBStorage(db);
+		instance = new UsersDBStorage(db, logger);
 		boolean result = instance.createUser(FIRST_ID, FIRST_LOGIN, FIRST_PASSWORD, EMAIL, ABOUT);
 		assertTrue(result);
     }

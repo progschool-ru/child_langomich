@@ -20,7 +20,7 @@ public class SetPasswordAction extends CheckLoginAction
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
+				log(e);
 				success = false;
 			}
 		}

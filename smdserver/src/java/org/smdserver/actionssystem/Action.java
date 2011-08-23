@@ -33,8 +33,7 @@ public abstract class Action implements IAction
 			}
 			catch(Exception e)
 			{
-				log("Action caught: " + e.toString() + "\n" + e.getMessage());
-				e.printStackTrace();
+				log(e);
 			}
 		}
 
@@ -101,6 +100,10 @@ public abstract class Action implements IAction
 	}
 
 	protected void log(String message)
+	{
+	}
+	
+	protected void log(Throwable e)
 	{
 	}
 

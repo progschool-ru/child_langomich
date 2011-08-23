@@ -72,6 +72,14 @@ class SmdServletContext implements ISmdServletContext
 		}
 	}
 	
+	public void log (Throwable e)
+	{
+		if(logger != null)
+		{
+			logger.log(e);
+		}
+	}
+	
 	public IMailman getMailman()
 	{
 		if(mailman == null)

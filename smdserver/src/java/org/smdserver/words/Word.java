@@ -25,7 +25,7 @@ public class Word
 		}
 		catch(JSONException e)
 		{
-			throw new WordsException(WordsException.JSON_ERROR + "; " + e.getMessage());
+			throw new WordsException(WordsException.JSON_ERROR, e, true);
 		}
 	}
 

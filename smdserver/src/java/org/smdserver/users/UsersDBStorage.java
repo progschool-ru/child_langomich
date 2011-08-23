@@ -9,6 +9,7 @@ import org.smdserver.db.IResultParser;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.ISmdStatement;
 import org.smdserver.db.SmdStatement;
+import org.smdserver.util.ISmdLogger;
 
 public class UsersDBStorage implements IUsersStorage
 {
@@ -26,10 +27,13 @@ public class UsersDBStorage implements IUsersStorage
 	private ISmdDB db;
 	private String usersTable;
 	private String registrationRequestsTable;
+	private ISmdLogger logger;
 
-	public UsersDBStorage(ISmdDB db)
+	public UsersDBStorage(ISmdDB db, ISmdLogger logger)
 	{
 		this.db = db;
+		this.logger = logger;
+		
 		this.usersTable = db.getTablesPrefix() + USERS_TABLE;
 		this.registrationRequestsTable = db.getTablesPrefix() + REGISTRATION_REQUESTS_TABLE;
 	}
@@ -73,6 +77,7 @@ public class UsersDBStorage implements IUsersStorage
 		}
 		catch(DbException e)
 		{
+			log(e);
 			return false;
 		}
 	}
@@ -96,6 +101,7 @@ public class UsersDBStorage implements IUsersStorage
 		}
 		catch(DbException e)
 		{
+			log(e);
 			return false;
 		}
 
@@ -132,6 +138,7 @@ public class UsersDBStorage implements IUsersStorage
 		}
 		catch(DbException e)
 		{
+			log(e);
 			return null;
 		}
 		return parser.user;
@@ -154,11 +161,12 @@ public class UsersDBStorage implements IUsersStorage
 		}
 		catch(DbException e)
 		{
+			log(e);
 			return false;
 		}
 	}
 
-	static String getPsw (String login, String password)
+	String getPsw (String login, String password)
 	{
 		return getMD5Sum(getLoginKey(login) + password);
 	}
@@ -174,6 +182,7 @@ public class UsersDBStorage implements IUsersStorage
 		}
 		catch(DbException e)
 		{
+			log(e);
 			return null;
 		}
 		return (String)parser.getValue();
@@ -189,6 +198,7 @@ public class UsersDBStorage implements IUsersStorage
 		}
 		catch (DbException e)
 		{
+			log(e);
 			return false;
 		}
 	}
@@ -220,7 +230,7 @@ public class UsersDBStorage implements IUsersStorage
 		return createSmdStatement(query, usersTable);
 	}
 	
-	private static String getMD5Sum (String password)
+	private String getMD5Sum (String password)
 	{
 		try
 		{
@@ -236,7 +246,7 @@ public class UsersDBStorage implements IUsersStorage
 		}
 		catch(Exception e)
 		{
-			System.out.println(e.getMessage()); //TODO (3.low) use logger
+			log(e);
 			return password;
 		}
 	}
@@ -249,5 +259,13 @@ public class UsersDBStorage implements IUsersStorage
 	private static String getLoginKey(String login)
 	{
 		return login.toLowerCase().replaceAll("-", "_");
+	}
+	
+	private void log(Throwable e)
+	{
+		if(logger != null)
+		{
+			logger.log(e);
+		}
 	}
 }

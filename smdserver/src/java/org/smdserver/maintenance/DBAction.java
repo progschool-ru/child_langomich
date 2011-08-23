@@ -58,7 +58,7 @@ public abstract class DBAction extends MaintenanceAction
 		}
 		catch(Exception e)
 		{
-			log(e.getMessage());
+			log(e);
 			success = false;
 		}
 		

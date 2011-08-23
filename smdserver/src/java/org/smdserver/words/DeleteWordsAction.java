@@ -37,8 +37,7 @@ public class DeleteWordsAction extends CheckLoginAction
 		}
 		catch(Exception e)
 		{
-			log("DeleteWordsAction: " + e.toString());
-			log(e.getMessage());
+			log(e);
 			success = false;
 		}
 		setAnswerParam(ActionParams.SUCCESS, success);

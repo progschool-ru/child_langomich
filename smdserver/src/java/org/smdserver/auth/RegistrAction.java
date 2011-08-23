@@ -30,6 +30,8 @@ public class RegistrAction extends SmdAction
 		}
 		catch(SmdException e)
 		{
+			log(e);
+			setAnswerParam(ActionParams.MESSAGE, e.getPublicMessage());
 			success = false;
 		}
 
@@ -52,7 +54,7 @@ public class RegistrAction extends SmdAction
 			}
 			catch(Exception e)
 			{
-				log(e.getMessage());
+				log(e);
 				success = false;
 			}
 		}
@@ -74,7 +76,8 @@ public class RegistrAction extends SmdAction
 		}
 		catch(ActionException e)
 		{
-			log(e.getMessage());
+			log(e);
+			setAnswerParam(ActionParams.MESSAGE, e.getPublicMessage());
 			return false;
 		}
 

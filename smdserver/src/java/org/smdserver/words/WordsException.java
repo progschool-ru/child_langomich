@@ -4,11 +4,14 @@ import org.smdserver.util.SmdException;
 
 public class WordsException extends SmdException
 {
-	public static final String ICORRECT_DATE_FORMAT = "Incorrect Date format";
 	public static final String JSON_ERROR = "JSON error";
 
-	WordsException (String message)
+	WordsException (String message, Throwable cause, boolean isMessagePublic)
 	{
-		super(message);
+		super(message, cause);
+		if(isMessagePublic)
+		{
+			setPublicMessage(message);
+		}
 	}
 }

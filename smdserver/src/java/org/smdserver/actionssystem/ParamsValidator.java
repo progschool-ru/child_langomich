@@ -37,6 +37,7 @@ public class ParamsValidator
 	
 	private void throwError(String template, String paramName, String param) throws ActionException
 	{
-		throw new ActionException(String.format(template,paramName, param));
+		throw new ActionException(String.format(template, paramName, param),
+				                  String.format(template, paramName, "--"));
 	}
 }

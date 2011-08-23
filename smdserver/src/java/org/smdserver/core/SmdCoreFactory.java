@@ -34,6 +34,11 @@ class SmdCoreFactory implements ISmdCoreFactory
 		this.basePath = basePath;
 	}
 	
+	void setDB(ISmdDB db)
+	{
+		this.db = db;
+	}
+	
 	public IDBConfig createDBConfig()
 	{
 		return new DBConfig(serverRB);
@@ -49,7 +54,7 @@ class SmdCoreFactory implements ISmdCoreFactory
 	{
 		if(db != null)
 		{
-			return new WordsDBStorage(db);
+			return new WordsDBStorage(db, logger);
 		}
 		else
 		{
@@ -61,7 +66,7 @@ class SmdCoreFactory implements ISmdCoreFactory
 	{
 		if(db != null)
 		{
-			return new UsersDBStorage(db);
+			return new UsersDBStorage(db, logger);
 		}
 		else
 		{
@@ -77,11 +82,6 @@ class SmdCoreFactory implements ISmdCoreFactory
 	public ICoreConfig createCoreConfig()
 	{
 		return new CoreConfig(serverRB);
-	}
-	
-	void setDB(ISmdDB db)
-	{
-		this.db = db;
 	}
 
 	private IMailConfig createMailConfig()

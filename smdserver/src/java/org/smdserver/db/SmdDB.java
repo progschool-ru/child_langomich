@@ -59,7 +59,7 @@ public class SmdDB implements ISmdDB
 			}
 			catch(SQLException e)
 			{
-				log("SmdDB.processSmdStatement: " +e.getMessage());
+				log(e);
 				updatedRows = -1;
 				try
 				{
@@ -67,7 +67,6 @@ public class SmdDB implements ISmdDB
 				}
 				catch(SQLException ex)
 				{
-					log("SmdDB.processSmdStatement: rollbackError" +ex.getMessage());
 					throw new DbException(DbException.ROLLBACK_ERROR, ex);
 				}
 			}
@@ -106,8 +105,8 @@ public class SmdDB implements ISmdDB
 			}
 			catch(SQLException e)
 			{
-				log("SmdDB.updateGroup: " +e.getMessage());
-				log(queries.get(count));
+				log(e);
+				log("Queries count: " + queries.get(count));
 				updatedRows = -1;
 				try
 				{
@@ -115,7 +114,6 @@ public class SmdDB implements ISmdDB
 				}
 				catch(SQLException ex)
 				{
-					log("SmdDB.updateGroup: rollbackError" +ex.getMessage());
 					throw new DbException(DbException.ROLLBACK_ERROR, ex);
 				}
 			}
@@ -143,7 +141,7 @@ public class SmdDB implements ISmdDB
 		}
 		catch(SQLException e)
 		{
-			log("SmdDB.updateSingle: " +e.getMessage());
+			log(e);
 			log(dbQuery);
 			return false;
 		}
@@ -176,7 +174,7 @@ public class SmdDB implements ISmdDB
 		}
 		catch(SQLException e)
 		{
-			log("selectWithSmdStatement: " +e.getMessage());
+			log(e);
 			count = -1;
 		}
 		return count;
@@ -201,7 +199,7 @@ public class SmdDB implements ISmdDB
 		}
 		catch(SQLException e)
 		{
-			log("select: " +e.getMessage());
+			log(e);
 			log(dbQuery);
 			count = -1;
 		}
@@ -241,7 +239,7 @@ public class SmdDB implements ISmdDB
 		}
 		catch(SQLException e)
 		{
-			log("SmdDB.checkConnection: " +e.getMessage());
+			log(e);
 			closeWithoutSync();
 		}
 
@@ -255,8 +253,7 @@ public class SmdDB implements ISmdDB
 		}
 		catch(Exception e)
 		{
-			log("SmdDB.checkConnection: " +e.getMessage());
-			throw new DbException(DbException.CANT_CONNECT_TO_DATABASE, e);
+			throw new DbException(DbException.CANT_CONNECT_TO_DATABASE, e, DbException.CANT_CONNECT_TO_DATABASE);
 		}
 	}
 
@@ -269,7 +266,7 @@ public class SmdDB implements ISmdDB
 		}
 		catch(SQLException e)
 		{
-			log("SmdDB.setAutoCommit: " +e.getMessage());
+			log(e);
 			return false;
 		}
 	}
@@ -286,7 +283,8 @@ public class SmdDB implements ISmdDB
 		}
 		catch(SQLException e)
 		{
-			log("SmdDB can't close connection: " + e.getMessage());
+			log("SmdDB can't close connection: ");
+			log(e);
 			success = false;
 		}
 		connection = null;
@@ -298,6 +296,14 @@ public class SmdDB implements ISmdDB
 		if(logger != null)
 		{
 			logger.log(message);
+		}
+	}
+
+	private void log(Throwable e)
+	{
+		if(logger != null)
+		{
+			logger.log(e);
 		}
 	}
 }

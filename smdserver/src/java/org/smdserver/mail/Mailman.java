@@ -49,16 +49,16 @@ public class Mailman implements IMailman
 		}
 		catch(MessagingException e)
 		{
-			log("Sendmail error: " + e.getMessage());
+			log(e);
 			return false;
 		}		
 	}
 	
-	private void log(String message)
+	private void log(Throwable e)
 	{
 		if(logger != null)
 		{
-			logger.log(message);
+			logger.log(e);
 		}
 	}
 	

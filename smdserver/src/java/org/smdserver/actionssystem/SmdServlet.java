@@ -41,7 +41,10 @@ public abstract class SmdServlet extends HttpServlet
 				}
 				catch(Exception e)
 				{
-					throw new ServletException(e.getMessage());
+					throw new ServletException(
+							String.format(ActionException.CANT_CREATE_ACTIOIN, defaultActionName), 
+							e
+						);
 				}
 			}
 

@@ -9,6 +9,7 @@ import org.smdserver.db.IDBConfig;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
 import org.smdserver.users.UsersDBStorage;
+import org.smdserver.util.ISmdLogger;
 import org.smdserver.words.IWordsStorage;
 import org.smdserver.words.Language;
 import org.smdserver.words.WordsDBStorage;
@@ -19,12 +20,13 @@ class TestDBStorageHelper implements ITestStorageHelper
 	private WordsDBStorage wordsStorage;
 	private ISmdDB db;
 	private String userId;
+	private ISmdLogger logger = new ConsoleSmdLogger(System.out);
 
 	public void openUsersStorage(ResourceBundle resource,
 							String userId, String login, String password) throws Exception
 	{
 		initDBAndGetPrefix(resource);
-		usersStorage = new UsersDBStorage(db);
+		usersStorage = new UsersDBStorage(db, logger);
 		usersStorage.createUser(userId, login, password, "some@example.org", "Peter Ivanov");
 		this.userId = userId;
 	}
@@ -39,7 +41,7 @@ class TestDBStorageHelper implements ITestStorageHelper
 	public IWordsStorage openWordsStorage(ResourceBundle resource, String userId) throws Exception
 	{
 		initDBAndGetPrefix(resource);
-		wordsStorage = new WordsDBStorage(db);
+		wordsStorage = new WordsDBStorage(db, logger);
 		return wordsStorage;
 	}
 	public void closeWordsStorage(ResourceBundle resource, String userId)
@@ -56,7 +58,7 @@ class TestDBStorageHelper implements ITestStorageHelper
 		if(db == null)
 		{
 		//TODO: (2.medium)[#26068] use test properties here:	
-			db = new SmdDB(config, new ConsoleSmdLogger(System.out));
+			db = new SmdDB(config, logger);
 		}
 		return prefix;
 	}

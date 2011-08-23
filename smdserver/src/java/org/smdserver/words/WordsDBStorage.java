@@ -12,6 +12,7 @@ import org.smdserver.db.IMultipleResultParser;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.ISmdStatement;
 import org.smdserver.db.SmdStatement;
+import org.smdserver.util.ISmdLogger;
 import org.smdserver.words.helpers.LanguageSaver;
 import org.smdserver.words.helpers.LanguagesDistributor;
 
@@ -32,10 +33,12 @@ public class WordsDBStorage implements IWordsStorage
 	private ISmdDB db;
 	private String languagesTable;
 	private String wordsTable;
+	private ISmdLogger logger;
 
-	public WordsDBStorage(ISmdDB db)
+	public WordsDBStorage(ISmdDB db, ISmdLogger logger)
 	{
 		this.db = db;
+		this.logger = logger;
 		String prefix = db.getTablesPrefix();
 		languagesTable = prefix + LANGUAGES_TABLE;
 		wordsTable = prefix + WORDS_TABLE;
@@ -52,6 +55,7 @@ public class WordsDBStorage implements IWordsStorage
 		}
 		catch(DbException e)
 		{
+			log(e);
 			return false;
 		}
 	}
@@ -115,6 +119,7 @@ public class WordsDBStorage implements IWordsStorage
 		}
 		catch(DbException e)
 		{
+			log(e);
 			return false;
 		}
 	}
@@ -133,6 +138,7 @@ public class WordsDBStorage implements IWordsStorage
 		}
 		catch(DbException e)
 		{
+			log(e);
 			return null;
 		}
 		return parser.languages;		
@@ -198,6 +204,14 @@ public class WordsDBStorage implements IWordsStorage
 
 			Word word = new Word(original, translation, rating);
 			return word;
+		}
+	}
+	
+	private void log(Throwable e)
+	{
+		if(logger != null)
+		{
+			logger.log(e);
 		}
 	}
 }

@@ -18,8 +18,14 @@ public abstract class SmdAction extends Action implements ISmdAction
 	}
 
 	@Override
-	protected void log(String message)
+	protected void log (String message)
 	{
 		getServletContext().log(message);
+	}
+	
+	@Override
+	protected void log (Throwable e)
+	{
+		getServletContext().log(e);
 	}
 }

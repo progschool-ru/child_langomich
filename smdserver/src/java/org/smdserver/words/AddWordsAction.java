@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
 import org.smdserver.auth.CheckLoginAction;
+import org.smdserver.util.SmdException;
 
 public class AddWordsAction extends CheckLoginAction
 {	
@@ -56,10 +57,17 @@ public class AddWordsAction extends CheckLoginAction
 				setAnswerParam(ActionParams.SUCCESS, false);
 			}
 		}
-		catch(Exception e) //TODO: (3.low) [#25387] Не каждое исключение можно сообщать в ответ.
+		catch(SmdException e)
 		{
+			log(e);
 			setAnswerParam(ActionParams.SUCCESS, false);
-			setAnswerParam(ActionParams.MESSAGE, e.getMessage());
+			setAnswerParam(ActionParams.MESSAGE, e.getPublicMessage());
+		}
+		catch(Exception e)
+		{
+			log(e);
+			setAnswerParam(ActionParams.SUCCESS, false);
+			setAnswerParam(ActionParams.MESSAGE, SmdException.ERROR);
 		}
 		return null;
 	}
@@ -78,7 +86,7 @@ public class AddWordsAction extends CheckLoginAction
 		}
 		catch(JSONException e)
 		{
-			throw new WordsException(WordsException.JSON_ERROR + "; " + e.getMessage());
+			throw new WordsException(WordsException.JSON_ERROR, e, true);
 		}
 
 		return languages;
