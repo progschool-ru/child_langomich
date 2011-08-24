@@ -27,7 +27,7 @@
 			<div class="content">
 				<jsp:doBody/>
 			</div>
-	<c:if test='${sessionScope["currentLogin"] != null}'>
+	<c:if test='${sessionScope["currentUserId"] != null}'><%--TODO: (3.low) use something better, than session--%>
 			<div class="toolbar">
 				<smd:toolbar cssClass="toolbar-menu"/>
 			</div>

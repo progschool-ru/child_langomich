@@ -14,6 +14,7 @@ public interface IUsersStorage
 	public boolean checkPassword (String login, String password);
 	public boolean doesLoginExist (String login) throws SmdException;
 	public User    getUserByLogin (String login);
+	public User    getUserById (String userId);
 	public UserEx  getUserExById (String userId);
 	public boolean setPassword (String login, String password);
 }

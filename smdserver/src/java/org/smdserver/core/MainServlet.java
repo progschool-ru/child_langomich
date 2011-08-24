@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.smdserver.actionssystem.IActionsFactory;
 import org.smdserver.actionssystem.SmdServlet;
+import org.smdserver.auth.ConfirmRegistrationAction;
 import org.smdserver.auth.LoginAction;
-import org.smdserver.auth.MobileLoginAction;
 import org.smdserver.auth.LogoutAction;
 import org.smdserver.auth.SetPasswordAction;
 import org.smdserver.auth.RegistrAction;
@@ -35,11 +35,12 @@ public class MainServlet extends SmdServlet
 		map.put(DEFAULT_ACTION, NullAction.class);
 
 		map.put("addWords", AddWordsAction.class);
+		map.put("confirmRegistration", ConfirmRegistrationAction.class);
 		map.put("getWords", GetWordsAction.class);
 		map.put("deleteWords", DeleteWordsAction.class);
 		map.put("login", LoginAction.class);
 		map.put("logout", LogoutAction.class);
-		map.put("mobileLogin", MobileLoginAction.class);
+		map.put("mobileLogin", LoginAction.class);
 		map.put("registr", RegistrAction.class);
 		map.put("setPassword", SetPasswordAction.class);
 		

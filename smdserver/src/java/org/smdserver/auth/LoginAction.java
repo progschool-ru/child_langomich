@@ -49,11 +49,13 @@ public class LoginAction extends SmdAction
 	
 	public static void makeUserLoggedIn(User user, HttpServletRequest request)
 	{
+		request.getSession().setAttribute(SessionKeys.CURRENT_USER_ID, user.getUserId());
 		request.getSession().setAttribute(SessionKeys.CURRENT_LOGIN, user.getLogin());
 	}
 	
 	public static void makeUserLoggedOut(HttpServletRequest request)
 	{
+		request.getSession().setAttribute(SessionKeys.CURRENT_USER_ID, null);
 		request.getSession().setAttribute(SessionKeys.CURRENT_LOGIN, null);
 	}
 }

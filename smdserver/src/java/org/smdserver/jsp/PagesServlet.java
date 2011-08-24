@@ -90,19 +90,12 @@ public class PagesServlet extends HttpServlet
 
 	private boolean isLoggedIn (HttpServletRequest request)
 	{
-		String login = (String)request.getSession().getAttribute(SessionKeys.CURRENT_LOGIN);
-		return login != null;
+		String userId = (String)request.getSession().getAttribute(SessionKeys.CURRENT_USER_ID);
+		return userId != null;
 	}
 	
 	private String getUserId (HttpServletRequest request)
 	{
-		String login = (String)request.getSession().getAttribute(SessionKeys.CURRENT_LOGIN);
-		
-		if(login == null)
-		{
-			return null;
-		}
-		
-		return core.getFactory().createUsersStorage().getUserByLogin(login).getUserId();
+		return (String)request.getSession().getAttribute(SessionKeys.CURRENT_USER_ID);
 	}
 }

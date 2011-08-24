@@ -23,6 +23,7 @@ public class UsersDBStorage implements IUsersStorage
 	private static final String CREATE_USER_QUERY = "INSERT INTO %1$s (user_id, login_key, login, psw, email, about, time_created, time_modified) VALUE (?, ?, ?, ?, ?, ?, NOW(), NOW());";
 	private static final String GET_PSW_BY_ID_QUERY = "SELECT psw FROM %1$s WHERE user_id = ?;";
 	private static final String GET_USER_BY_ID_QUERY = "SELECT user_id, login, psw FROM %1$s WHERE user_id = ?;";
+	private static final String GET_USER_EX_BY_ID_QUERY = "SELECT user_id, login, psw, email, about FROM %1$s WHERE user_id = ?;";
 	private static final String GET_USER_BY_LOGIN_QUERY = "SELECT user_id, login, psw FROM %1$s WHERE login_key = ?;";
 	private static final String SET_PASSWORD_BY_LOGIN_QUERY = "UPDATE %1$s SET psw=? WHERE login_key = ?;";
 	private static final String DELETE_USER_BY_ID_QUERY = "DELETE FROM %1$s WHERE user_id = ?;";
@@ -105,11 +106,11 @@ public class UsersDBStorage implements IUsersStorage
 	{
 		return getUserExById(userId, registrationRequestsTable);
 	}
-//	
-//	public User getUserById (String userId)
-//	{	
-//		return getUserByParam(userId, GET_USER_BY_ID_QUERY, usersTable, false);
-//	}	
+	
+	public User getUserById (String userId)
+	{	
+		return getUserByParam(userId, GET_USER_BY_ID_QUERY, usersTable, false);
+	}	
 
 	public User getUserByLogin (String dirtyLogin)
 	{
@@ -132,14 +133,13 @@ public class UsersDBStorage implements IUsersStorage
 		st.addString(userId);
 		try
 		{
-			db.processSmdStatement(st);
+			return 2 == db.processSmdStatement(st);
 		}
 		catch(DbException e)
 		{
 			log(e);
 			return false;
 		}
-		return true;
 	}
 	
 	public boolean setPassword (String dirtyLogin, String password)
@@ -304,7 +304,7 @@ public class UsersDBStorage implements IUsersStorage
 	
 	private UserEx getUserExById (String userId, String table)
 	{
-		return (UserEx) getUserByParam(userId, GET_USER_BY_ID_QUERY, table, true);
+		return (UserEx) getUserByParam(userId, GET_USER_EX_BY_ID_QUERY, table, true);
 	}
 
 	public boolean removeUserById (String userId, String table)

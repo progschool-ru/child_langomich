@@ -8,24 +8,28 @@ import org.smdserver.core.actions.SmdAction;
 
 public abstract class CheckLoginAction extends SmdAction
 {
-	private String login;
+	private User user;
 	
 	@Override
 	protected boolean validateContext (HttpServletRequest request)
 	{
-		login = (String)request.getSession().getAttribute(SessionKeys.CURRENT_LOGIN);
-		boolean success = login != null;
+		String userId = (String)request.getSession().getAttribute(SessionKeys.CURRENT_USER_ID);
+		if(userId != null)
+		{
+			user = getServletContext().getUsersStorage().getUserById(userId);
+		}
+		boolean success = user != null;
 		setAnswerParam(ActionParams.SUCCESS, success);
 		return success;
 	}
 
 	protected String getLogin ()
 	{
-		return login;
+		return user.getLogin();
 	}
 
 	protected User getUser ()
 	{
-		return getServletContext().getUsersStorage().getUserByLogin(login);
+		return user;
 	}
 }
