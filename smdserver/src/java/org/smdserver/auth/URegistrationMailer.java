@@ -37,8 +37,21 @@ class URegistrationMailer
 	
 	public boolean sendConfirmationMessage(UserEx user)
 	{
-		String subject = locale.getSubjectPrefix() + " " + locale.getConfirmSubject();
-		String template = locale.getConfirmBody();
+		return sendConfirmationMessage(user, user.getEmail(),
+				           locale.getConfirmBody(), locale.getConfirmSubject());
+	}
+	
+	public boolean notifyAdminAboutRegistrationRequest(UserEx user)
+	{
+		return sendConfirmationMessage(user, config.getAdminEmail(),
+				        locale.getNotifyAdminAboutRegistrationRequestBody(), 
+				        locale.getNotifyAdminAboutRegistrationRequestSubject());
+	}
+	
+	private boolean sendConfirmationMessage(UserEx user, String to,
+			                                String template, String subject)
+	{
+		subject = locale.getSubjectPrefix() + " " + subject;
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		SmdUrl mainUrl = new SmdUrl("page", "");
@@ -51,8 +64,12 @@ class URegistrationMailer
 		SmdUrl refuseUrl = new SmdUrl("action", "refuseRegistration", null, params);
 		String refuseLink = serverString + refuseUrl.getURL();
 		
-		String message = String.format(template, user.getLogin(), confirmLink, refuseLink);
+		String message = String.format(template, user.getLogin(), 
+				                                 confirmLink, refuseLink,
+												 user.getUserId(),
+												 user.getEmail(),
+												 user.getAbout());
 		
-		return mailman.send(subject, message, user.getEmail());
+		return mailman.send(subject, message, to);
 	}
 }

@@ -15,6 +15,12 @@ public class UMailConfirmationActivity implements UIConfirmationActivity
 		URegistrationMailer mailer = new URegistrationMailer(context.getMailman(), 
 															 config, request,
 				                                             locale);
+		
+		if(config.shouldNotifyAdmin())
+		{
+			mailer.notifyAdminAboutRegistrationRequest(user);
+		}
+		
 		return mailer.sendConfirmationMessage(user);
 	}
 	

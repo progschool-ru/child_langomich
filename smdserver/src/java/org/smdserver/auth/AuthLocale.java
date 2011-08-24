@@ -20,6 +20,16 @@ public class AuthLocale extends ResourceBundleBased implements IAuthLocale
 		return getString("mail.register.confirm.subject");
 	}
 	
+	public String getNotifyAdminAboutRegistrationRequestSubject()
+	{
+		return getString("mail.register.confirm.notifyAdmin.subject");
+	}
+	
+	public String getNotifyAdminAboutRegistrationRequestBody()
+	{
+		return getString("mail.register.confirm.notifyAdmin.body");
+	}
+	
 	public String getSubjectPrefix()
 	{
 		return getString("mail.subjectPrefix");
