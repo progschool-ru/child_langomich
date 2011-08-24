@@ -1,9 +1,9 @@
 package org.smdserver.auth;
 
 import java.util.ResourceBundle;
-import org.smdserver.core.small.BaseConfig;
+import org.smdserver.core.small.ResourceBundleBased;
 
-public class RegisterConfig extends BaseConfig implements IRegisterConfig
+public class RegisterConfig extends ResourceBundleBased implements IRegisterConfig
 {
 	public RegisterConfig(ResourceBundle rb)
 	{

@@ -49,7 +49,7 @@ public class WordsDBStorageTest
 	public void setUp () throws Exception
 	{
 		config = new DBConfig("org.smdserver.config", 
-				                                "server.test.properties.file");
+				              "file.server.test.properties");
 
 		ISmdLogger logger = new ConsoleSmdLogger(System.out);//TODO: (3.low) Create logger in single place in tests
 		db = new SmdDB(config, logger);

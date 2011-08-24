@@ -13,13 +13,16 @@ class URegistrationMailer
 	IRegisterConfig config;
 	IMailman mailman;
 	String serverString;
+	IAuthLocale locale;
 	
 	public URegistrationMailer(IMailman mailman, 
 			                   IRegisterConfig config,
-							   HttpServletRequest request)
+							   HttpServletRequest request,
+							   IAuthLocale locale)
 	{
 		this.config = config;
 		this.mailman = mailman;
+		this.locale = locale;
 		
 		String url = request.getRequestURL().toString();
 		int first = url.indexOf("//");
@@ -34,10 +37,8 @@ class URegistrationMailer
 	
 	public boolean sendConfirmationMessage(UserEx user)
 	{
-		String subject = "Lang Omich: " + "Confirm registration";
-		String template = "Hi, %1$s!\nYou've registered account at http://lang.omich.net\n"
-				+ "Follow link to confirm your registration: %2$s\n"
-				+ "------\nTo refuse your registration follow link: %3$s\n";
+		String subject = locale.getSubjectPrefix() + " " + locale.getConfirmSubject();
+		String template = locale.getConfirmBody();
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		SmdUrl mainUrl = new SmdUrl("page", "");

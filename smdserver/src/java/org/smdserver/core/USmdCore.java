@@ -14,7 +14,8 @@ import org.smdserver.core.small.ISmdLogger;
 class USmdCore implements ISmdCore
 {
 	private static final String CONFIG_PARAM = "config";
-	private static final String SERVER_PROPERTIES_FILE_KEY = "server.properties.file";
+	private static final String SERVER_PROPERTIES_FILE_KEY = "file.server.properties";
+	private static final String LOCALE_FILE_KEY = "file.locale";
 	
 	private static final PrintStream LOG_STREAM = System.out;
 	
@@ -63,7 +64,10 @@ class USmdCore implements ISmdCore
 		ResourceBundle rb = ResourceBundle.getBundle(configFile);	
 		String serverFile = rb.getString(SERVER_PROPERTIES_FILE_KEY);
 		ResourceBundle serverRB = ResourceBundle.getBundle(serverFile);
-		USmdCoreFactory f = new USmdCoreFactory(rb, serverRB, logger, 
+		String localeFile = rb.getString(LOCALE_FILE_KEY);
+
+		USmdCoreFactory f = new USmdCoreFactory(rb, serverRB, localeFile,
+				                              logger, 
 				                              null, context.getContextPath());
 		
 		initDB(f.createDBConfig(), logger);

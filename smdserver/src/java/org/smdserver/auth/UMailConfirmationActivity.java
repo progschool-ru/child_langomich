@@ -11,8 +11,10 @@ public class UMailConfirmationActivity implements UIConfirmationActivity
 						   HttpServletRequest request,
 			               UserEx user)
 	{
+		IAuthLocale locale = context.getFactory().createAuthLocale(request.getLocale());
 		URegistrationMailer mailer = new URegistrationMailer(context.getMailman(), 
-															 config, request);
+															 config, request,
+				                                             locale);
 		return mailer.sendConfirmationMessage(user);
 	}
 	

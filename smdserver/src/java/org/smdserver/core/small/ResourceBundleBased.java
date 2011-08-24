@@ -2,11 +2,11 @@ package org.smdserver.core.small;
 
 import java.util.ResourceBundle;
 
-abstract public class BaseConfig 
+abstract public class ResourceBundleBased 
 {
 	private ResourceBundle rb;
 	
-	protected BaseConfig(ResourceBundle rb)
+	protected ResourceBundleBased(ResourceBundle rb)
 	{
 		this.rb = rb;
 	}

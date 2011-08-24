@@ -52,7 +52,7 @@ class TestDBStorageHelper implements ITestStorageHelper
 	private String initDBAndGetPrefix(ResourceBundle resource) throws DbException
 	{
 		IDBConfig config = new DBConfig("org.smdserver.config", 
-				                                        "server.properties.file");
+				                        "file.server.properties");
 		String prefix = config.getTablesPrefix();
 
 		if(db == null)

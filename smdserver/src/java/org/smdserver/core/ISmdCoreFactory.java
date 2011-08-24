@@ -1,5 +1,7 @@
 package org.smdserver.core;
 
+import java.util.Locale;
+import org.smdserver.auth.IAuthLocale;
 import org.smdserver.core.small.ICoreConfig;
 import org.smdserver.auth.IRegisterConfig;
 import org.smdserver.db.IDBConfig;
@@ -10,6 +12,7 @@ import org.smdserver.words.IWordsStorage;
 
 public interface ISmdCoreFactory 
 {
+	public IAuthLocale createAuthLocale(Locale locale);
 	public IDBConfig createDBConfig();
 	public IMailman createMailman();
 	public IWordsStorage createWordsStorage();

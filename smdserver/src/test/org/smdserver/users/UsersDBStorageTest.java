@@ -34,7 +34,7 @@ public class UsersDBStorageTest
 	{
 		//TODO: (3.low) Create DBConfig in single place in tests
 		config = new DBConfig("org.smdserver.config", 
-				                                "server.test.properties.file");
+				              "file.server.test.properties");
 
 		ISmdLogger logger = new ConsoleSmdLogger(System.out);
 		db = new SmdDB(config, logger);

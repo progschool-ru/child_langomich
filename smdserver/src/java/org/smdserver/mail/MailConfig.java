@@ -1,9 +1,9 @@
 package org.smdserver.mail;
 
 import java.util.ResourceBundle;
-import org.smdserver.core.small.BaseConfig;
+import org.smdserver.core.small.ResourceBundleBased;
 
-public class MailConfig extends BaseConfig implements IMailConfig
+public class MailConfig extends ResourceBundleBased implements IMailConfig
 {
 	public MailConfig(ResourceBundle rb)
 	{

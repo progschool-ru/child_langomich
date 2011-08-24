@@ -19,7 +19,7 @@ public class DBTestBase
     public void setUp () throws Exception
 	{
 		IDBConfig config = new DBConfig("org.smdserver.config", 
-				                                "server.test.properties.file");
+				                        "file.server.test.properties");
 
 		String url = config.getDBUrl();
 		String user = config.getDBUser();

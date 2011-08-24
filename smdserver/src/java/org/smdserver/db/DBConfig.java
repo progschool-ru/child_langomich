@@ -1,9 +1,9 @@
 package org.smdserver.db;
 
 import java.util.ResourceBundle;
-import org.smdserver.core.small.BaseConfig;
+import org.smdserver.core.small.ResourceBundleBased;
 
-public class DBConfig extends BaseConfig implements IDBConfig
+public class DBConfig extends ResourceBundleBased implements IDBConfig
 {	
 	public DBConfig(String configFile, String serverConfigKey)
 	{

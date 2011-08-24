@@ -33,7 +33,9 @@ public class ConfirmRegistrationAction extends SmdAction
 			
 			IMailman mailman = cntxt.getMailman();
 			IRegisterConfig config = cntxt.getFactory().createRegisterConfig();
-			URegistrationMailer mailer = new URegistrationMailer(mailman, config, request);	
+			IAuthLocale locale = cntxt.getFactory().createAuthLocale(request.getLocale());
+			URegistrationMailer mailer = new URegistrationMailer(mailman, config, 
+					                                             request, locale);	
 			boolean wasNotified = mailer.notifyAboutConfirmation();
 			if(!wasNotified)
 			{

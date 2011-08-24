@@ -1,7 +1,10 @@
 package org.smdserver.core;
 
+import java.util.Locale;
 import org.smdserver.core.small.ICoreConfig;
 import java.util.ResourceBundle;
+import org.smdserver.auth.AuthLocale;
+import org.smdserver.auth.IAuthLocale;
 import org.smdserver.auth.IRegisterConfig;
 import org.smdserver.auth.RegisterConfig;
 import org.smdserver.db.DBConfig;
@@ -21,15 +24,18 @@ import org.smdserver.words.WordsDBStorage;
 
 class USmdCoreFactory implements ISmdCoreFactory
 {
+	private String localeRBFile;
 	private ResourceBundle rb;
 	private ResourceBundle serverRB;
 	private ISmdLogger logger;
 	private ISmdDB db;
 	private String basePath;
 	
-	public USmdCoreFactory (ResourceBundle rb, ResourceBundle serverRB, 
-			               ISmdLogger logger, ISmdDB db, String basePath)
+	public USmdCoreFactory (ResourceBundle rb, ResourceBundle serverRB,
+			                String localeRBFile,
+			                ISmdLogger logger, ISmdDB db, String basePath)
 	{
+		this.localeRBFile = localeRBFile;
 		this.rb = rb;
 		this.serverRB = serverRB;
 		this.logger = logger;
@@ -40,6 +46,11 @@ class USmdCoreFactory implements ISmdCoreFactory
 	void setDB(ISmdDB db)
 	{
 		this.db = db;
+	}
+	
+	public IAuthLocale createAuthLocale(Locale locale)
+	{
+		return new AuthLocale(ResourceBundle.getBundle(localeRBFile, locale));
 	}
 	
 	public IRegisterConfig createRegisterConfig()

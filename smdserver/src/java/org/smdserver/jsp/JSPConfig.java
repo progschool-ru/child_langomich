@@ -3,9 +3,9 @@ package org.smdserver.jsp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import org.smdserver.core.small.BaseConfig;
+import org.smdserver.core.small.ResourceBundleBased;
 
-public class JSPConfig extends BaseConfig implements IJSPConfig
+public class JSPConfig extends ResourceBundleBased implements IJSPConfig
 {
 	private static final String HANDLER_KEY = ".handler";
 	private static final String MAIN_TEMPLATE_KEY = ".mainTemplate";
