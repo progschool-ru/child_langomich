@@ -7,10 +7,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
-import static org.smdserver.actionssystem.ActionParams.*;
 import com.ccg.util.JavaString;
-import org.smdserver.util.ISmdLogger;
-import org.smdserver.util.SmdException;
+import org.smdserver.core.small.ISmdLogger;
+import org.smdserver.core.small.SmdException;
+
+import static org.smdserver.actionssystem.ActionParams.*;
 
 public abstract class Action implements IAction
 {

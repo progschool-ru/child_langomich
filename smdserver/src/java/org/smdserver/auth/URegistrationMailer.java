@@ -2,12 +2,12 @@ package org.smdserver.auth;
 
 import org.smdserver.mail.IMailman;
 
-class RegistrationMailer 
+class URegistrationMailer 
 {
 	IRegisterConfig config;
 	IMailman mailman;
 	
-	public RegistrationMailer(IMailman mailman, IRegisterConfig config)
+	public URegistrationMailer(IMailman mailman, IRegisterConfig config)
 	{
 		this.config = config;
 		this.mailman = mailman;

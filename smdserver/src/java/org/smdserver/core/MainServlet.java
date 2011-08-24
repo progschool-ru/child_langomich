@@ -1,19 +1,16 @@
-package org.smdserver;
+package org.smdserver.core;
 
-import org.smdserver.core.NullAction;
+import org.smdserver.core.actions.NullAction;
 import java.util.HashMap;
 import java.util.Map;
 import org.smdserver.actionssystem.IActionsFactory;
-import org.smdserver.core.ISmdServletContext;
 import org.smdserver.actionssystem.SmdServlet;
 import org.smdserver.auth.LoginAction;
 import org.smdserver.auth.MobileLoginAction;
 import org.smdserver.auth.LogoutAction;
 import org.smdserver.auth.SetPasswordAction;
 import org.smdserver.auth.RegistrAction;
-import org.smdserver.core.CoreInstance;
-import org.smdserver.core.ISmdCore;
-import org.smdserver.core.SmdActionsFactory;
+import org.smdserver.core.actions.SmdActionsFactory;
 import org.smdserver.maintenance.CreateDBAction;
 import org.smdserver.maintenance.DeployDBTablesAction;
 import org.smdserver.maintenance.DropDBAction;

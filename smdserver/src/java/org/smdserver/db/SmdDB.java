@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-import org.smdserver.util.ISmdLogger;
+import org.smdserver.core.small.ISmdLogger;
 
 public class SmdDB implements ISmdDB
 {
@@ -211,7 +211,7 @@ public class SmdDB implements ISmdDB
 	{
 		if(parser == null)
 			return false;
-		SingleToMultipleParserConverter p = new SingleToMultipleParserConverter(parser);
+		USingleToMultipleParserConverter p = new USingleToMultipleParserConverter(parser);
 		return select(st, p) == 1;
 	}
 	
@@ -221,7 +221,7 @@ public class SmdDB implements ISmdDB
 		if(parser == null)
 			return false;
 		
-		SingleToMultipleParserConverter p = new SingleToMultipleParserConverter(parser);
+		USingleToMultipleParserConverter p = new USingleToMultipleParserConverter(parser);
 		return select(dbQuery, p) == 1;
 	}
 	

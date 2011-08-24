@@ -1,9 +1,9 @@
-package org.smdserver.util;
+package org.smdserver.core.small;
 
 import java.io.PrintStream;
 import javax.servlet.ServletContext;
 
-public class ComplexSmdLogger extends SmdLogger
+public class ComplexSmdLogger extends USmdLogger
 {
 	private ServletContext servletContext;
 	private PrintStream stream;

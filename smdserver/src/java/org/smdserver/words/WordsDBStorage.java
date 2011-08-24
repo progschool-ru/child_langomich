@@ -12,7 +12,7 @@ import org.smdserver.db.IMultipleResultParser;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.ISmdStatement;
 import org.smdserver.db.SmdStatement;
-import org.smdserver.util.ISmdLogger;
+import org.smdserver.core.small.ISmdLogger;
 import org.smdserver.words.helpers.LanguageSaver;
 import org.smdserver.words.helpers.LanguagesDistributor;
 

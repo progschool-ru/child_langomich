@@ -3,7 +3,7 @@ package org.smdserver.auth;
 import org.smdserver.actionssystem.SessionKeys;
 import javax.servlet.http.HttpServletRequest;
 import org.smdserver.actionssystem.ActionParams;
-import org.smdserver.core.SmdAction;
+import org.smdserver.core.actions.SmdAction;
 import org.smdserver.users.IUsersStorage;
 
 public class MobileLoginAction extends SmdAction

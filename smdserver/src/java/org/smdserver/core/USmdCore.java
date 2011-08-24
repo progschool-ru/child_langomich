@@ -8,10 +8,10 @@ import org.smdserver.db.IDBConfig;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
 import org.smdserver.jsp.SmdUrl;
-import org.smdserver.util.ComplexSmdLogger;
-import org.smdserver.util.ISmdLogger;
+import org.smdserver.core.small.ComplexSmdLogger;
+import org.smdserver.core.small.ISmdLogger;
 
-class SmdCore implements ISmdCore
+class USmdCore implements ISmdCore
 {
 	private static final String CONFIG_PARAM = "config";
 	private static final String SERVER_PROPERTIES_FILE_KEY = "server.properties.file";
@@ -23,7 +23,7 @@ class SmdCore implements ISmdCore
 	private ISmdLogger logger;
 	private ISmdDB db;
 	
-	public SmdCore()
+	public USmdCore()
 	{
 	}
 
@@ -52,7 +52,7 @@ class SmdCore implements ISmdCore
 	
 	public ISmdServletContext createContext()
 	{
-		return new SmdServletContext(factory, logger);
+		return new USmdServletContext(factory, logger);
 	}
 	
 	private void init(ServletContext context)
@@ -63,7 +63,7 @@ class SmdCore implements ISmdCore
 		ResourceBundle rb = ResourceBundle.getBundle(configFile);	
 		String serverFile = rb.getString(SERVER_PROPERTIES_FILE_KEY);
 		ResourceBundle serverRB = ResourceBundle.getBundle(serverFile);
-		SmdCoreFactory f = new SmdCoreFactory(rb, serverRB, logger, 
+		USmdCoreFactory f = new USmdCoreFactory(rb, serverRB, logger, 
 				                              null, context.getContextPath());
 		
 		initDB(f.createDBConfig(), logger);

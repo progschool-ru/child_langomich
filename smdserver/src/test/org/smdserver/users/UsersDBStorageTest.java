@@ -6,12 +6,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.smdserver.db.DBConfig;
-import org.smdserver.util.ConsoleSmdLogger;
+import org.smdserver.core.small.ConsoleSmdLogger;
 import org.smdserver.db.DbException;
 import org.smdserver.db.IDBConfig;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
-import org.smdserver.util.ISmdLogger;
+import org.smdserver.core.small.ISmdLogger;
 import static org.junit.Assert.*;
 
 public class UsersDBStorageTest

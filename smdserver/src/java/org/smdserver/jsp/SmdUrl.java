@@ -6,7 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Set;
-import org.smdserver.util.ISmdLogger;
+import org.smdserver.core.small.ISmdLogger;
 
 public class SmdUrl implements IUrl
 {

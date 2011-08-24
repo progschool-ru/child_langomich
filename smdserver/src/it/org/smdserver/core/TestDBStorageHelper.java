@@ -1,6 +1,6 @@
 package org.smdserver.core;
 
-import org.smdserver.util.ConsoleSmdLogger;
+import org.smdserver.core.small.ConsoleSmdLogger;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import org.smdserver.db.DBConfig;
@@ -9,7 +9,7 @@ import org.smdserver.db.IDBConfig;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
 import org.smdserver.users.UsersDBStorage;
-import org.smdserver.util.ISmdLogger;
+import org.smdserver.core.small.ISmdLogger;
 import org.smdserver.words.IWordsStorage;
 import org.smdserver.words.Language;
 import org.smdserver.words.WordsDBStorage;

@@ -6,7 +6,7 @@ package org.smdserver.actionssystem;
  * If you use key from this list, you should be sure that you don't break work
  * of other classes.
  */
-public class SessionKeys
+public class SessionKeys //TODO: (3.low) Превратить это в enum, там, где используется использовать через метод, принимающий экземпляры SessionKeys
 {
 	/**
 	 * Set in LoginAction. Attribute type is String or null.

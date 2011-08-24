@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.smdserver.actionssystem.ActionException;
 import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.actionssystem.ParamsValidator;
-import org.smdserver.core.SmdAction;
+import org.smdserver.core.actions.SmdAction;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.users.User;
 

@@ -1,8 +1,8 @@
-package org.smdserver.util;
+package org.smdserver.core.small;
 
 import java.io.PrintStream;
 
-public class ConsoleSmdLogger extends SmdLogger
+public class ConsoleSmdLogger extends USmdLogger
 {
 	private PrintStream stream;
 

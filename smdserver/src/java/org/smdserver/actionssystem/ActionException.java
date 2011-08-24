@@ -1,6 +1,6 @@
 package org.smdserver.actionssystem;
 
-import org.smdserver.util.SmdException;
+import org.smdserver.core.small.SmdException;
 
 public class ActionException extends SmdException
 {

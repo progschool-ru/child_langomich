@@ -2,9 +2,9 @@ package org.smdserver.maintenance;
 
 import javax.servlet.http.HttpServletRequest;
 import org.smdserver.actionssystem.ActionParams;
-import org.smdserver.core.SmdAction;
+import org.smdserver.core.actions.SmdAction;
 
-public abstract class MaintenanceAction extends SmdAction
+abstract class UMaintenanceAction extends SmdAction
 {
 	@Override
 	protected boolean validateContext (HttpServletRequest request)

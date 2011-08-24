@@ -1,10 +1,11 @@
-package org.smdserver.core;
+package org.smdserver.core.actions;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import org.smdserver.actionssystem.IAction;
 import org.smdserver.actionssystem.IActionsFactory;
+import org.smdserver.core.ISmdServletContext;
 
 public class SmdActionsFactory implements IActionsFactory
 {

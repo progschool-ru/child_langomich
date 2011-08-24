@@ -1,6 +1,7 @@
-package org.smdserver.core;
+package org.smdserver.core.actions;
 
 import org.smdserver.actionssystem.IAction;
+import org.smdserver.core.ISmdServletContext;
 
 public interface ISmdAction extends IAction
 {

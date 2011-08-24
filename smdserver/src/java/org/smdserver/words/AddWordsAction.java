@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
 import org.smdserver.auth.CheckLoginAction;
-import org.smdserver.util.SmdException;
+import org.smdserver.core.small.SmdException;
 
 public class AddWordsAction extends CheckLoginAction
 {	

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-	<context-param>
-		<description>Config properties file</description>
-		<param-name>config</param-name>
-		<param-value>org.smdserver.config</param-value>
-	</context-param>
+    <context-param>
+        <description>Config properties file</description>
+        <param-name>config</param-name>
+        <param-value>org.smdserver.config</param-value>
+    </context-param>
     <session-config>
         <session-timeout>
             30
@@ -15,11 +15,11 @@
         <jsp-property-group>
             <display-name>allPages</display-name>
             <url-pattern>/index.jsp</url-pattern>
-			<url-pattern>/WEB-INF/templates/empty.jsp</url-pattern>
+            <url-pattern>/WEB-INF/templates/empty.jsp</url-pattern>
             <url-pattern>/WEB-INF/templates/login.jsp</url-pattern>
             <url-pattern>/WEB-INF/templates/main.jsp</url-pattern>
-			<url-pattern>/WEB-INF/templates/mainjs.jsp</url-pattern>
-			<url-pattern>/WEB-INF/templates/maintenance.jsp</url-pattern>
+            <url-pattern>/WEB-INF/templates/mainjs.jsp</url-pattern>
+            <url-pattern>/WEB-INF/templates/maintenance.jsp</url-pattern>
             <url-pattern>/WEB-INF/templates/profile.jsp</url-pattern>
             <url-pattern>/WEB-INF/templates/register.jsp</url-pattern>
             <url-pattern>/WEB-INF/templates/words.jsp</url-pattern>
@@ -49,7 +49,7 @@
     <!-- Main Smart Dictionary servlet. -->
     <servlet>
         <servlet-name>smd</servlet-name>
-        <servlet-class>org.smdserver.MainServlet</servlet-class>
+        <servlet-class>org.smdserver.core.MainServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>smd</servlet-name>

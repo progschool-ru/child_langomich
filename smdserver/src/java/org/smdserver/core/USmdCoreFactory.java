@@ -14,11 +14,11 @@ import org.smdserver.mail.MailConfig;
 import org.smdserver.mail.Mailman;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.users.UsersDBStorage;
-import org.smdserver.util.ISmdLogger;
+import org.smdserver.core.small.ISmdLogger;
 import org.smdserver.words.IWordsStorage;
 import org.smdserver.words.WordsDBStorage;
 
-class SmdCoreFactory implements ISmdCoreFactory
+class USmdCoreFactory implements ISmdCoreFactory
 {
 	private ResourceBundle rb;
 	private ResourceBundle serverRB;
@@ -26,7 +26,7 @@ class SmdCoreFactory implements ISmdCoreFactory
 	private ISmdDB db;
 	private String basePath;
 	
-	public SmdCoreFactory (ResourceBundle rb, ResourceBundle serverRB, 
+	public USmdCoreFactory (ResourceBundle rb, ResourceBundle serverRB, 
 			               ISmdLogger logger, ISmdDB db, String basePath)
 	{
 		this.rb = rb;
@@ -88,7 +88,7 @@ class SmdCoreFactory implements ISmdCoreFactory
 	
 	public ICoreConfig createCoreConfig()
 	{
-		return new CoreConfig(serverRB);
+		return new UCoreConfig(serverRB);
 	}
 
 	private IMailConfig createMailConfig()

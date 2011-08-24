@@ -9,12 +9,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.smdserver.db.DBConfig;
 import org.smdserver.db.IDBConfig;
-import org.smdserver.util.ConsoleSmdLogger;
+import org.smdserver.core.small.ConsoleSmdLogger;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.users.UsersDBStorage;
-import org.smdserver.util.ISmdLogger;
+import org.smdserver.core.small.ISmdLogger;
 import static org.junit.Assert.*;
 
 public class WordsDBStorageTest

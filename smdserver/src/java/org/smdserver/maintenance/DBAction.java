@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.db.IDBConfig;
 
-public abstract class DBAction extends MaintenanceAction
+public abstract class DBAction extends UMaintenanceAction
 {
 	protected String doAction (HttpServletRequest request)
 	{

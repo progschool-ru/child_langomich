@@ -1,4 +1,4 @@
-package org.smdserver.core;
+package org.smdserver.core.actions;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;

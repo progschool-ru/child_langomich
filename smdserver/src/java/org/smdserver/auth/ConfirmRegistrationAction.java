@@ -5,12 +5,12 @@ import org.smdserver.actionssystem.ActionException;
 import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.actionssystem.ParamsValidator;
 import org.smdserver.core.ISmdServletContext;
-import org.smdserver.core.SmdAction;
+import org.smdserver.core.actions.SmdAction;
 import org.smdserver.mail.IMailman;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.users.User;
 import org.smdserver.users.UserEx;
-import org.smdserver.util.SmdException;
+import org.smdserver.core.small.SmdException;
 
 public class ConfirmRegistrationAction extends SmdAction
 {
@@ -33,7 +33,7 @@ public class ConfirmRegistrationAction extends SmdAction
 			
 			IMailman mailman = cntxt.getMailman();
 			IRegisterConfig config = cntxt.getFactory().createRegisterConfig();
-			RegistrationMailer mailer = new RegistrationMailer(mailman, config);	
+			URegistrationMailer mailer = new URegistrationMailer(mailman, config);	
 			boolean wasNotified = mailer.notifyAboutConfirmation();
 			if(!wasNotified)
 			{

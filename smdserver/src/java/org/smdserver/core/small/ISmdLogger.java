@@ -1,4 +1,4 @@
-package org.smdserver.util;
+package org.smdserver.core.small;
 
 public interface ISmdLogger
 {

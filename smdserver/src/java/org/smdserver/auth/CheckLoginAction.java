@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.smdserver.users.User;
 import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.actionssystem.SessionKeys;
-import org.smdserver.core.SmdAction;
+import org.smdserver.core.actions.SmdAction;
 
 public abstract class CheckLoginAction extends SmdAction
 {

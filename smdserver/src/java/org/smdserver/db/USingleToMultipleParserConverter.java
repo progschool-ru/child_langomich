@@ -3,11 +3,11 @@ package org.smdserver.db;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-class SingleToMultipleParserConverter implements IMultipleResultParser
+class USingleToMultipleParserConverter implements IMultipleResultParser
 {
 	private IResultParser parser;
 
-	public SingleToMultipleParserConverter(IResultParser parser)
+	public USingleToMultipleParserConverter(IResultParser parser)
 	{
 		this.parser = parser;
 	}

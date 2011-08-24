@@ -1,6 +1,6 @@
 package org.smdserver.users;
 
-import org.smdserver.util.SmdException;
+import org.smdserver.core.small.SmdException;
 
 public interface IUsersStorage
 {

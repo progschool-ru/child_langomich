@@ -2,11 +2,11 @@ package org.smdserver.core;
 
 import java.util.ResourceBundle;
 
-class CoreConfig implements ICoreConfig
+class UCoreConfig implements ICoreConfig
 {
 	private ResourceBundle rb;
 	
-	public CoreConfig(ResourceBundle rb)
+	public UCoreConfig(ResourceBundle rb)
 	{
 		this.rb = rb;
 	}

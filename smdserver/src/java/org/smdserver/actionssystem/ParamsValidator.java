@@ -3,7 +3,7 @@ package org.smdserver.actionssystem;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 
-public class ParamsValidator 
+public class ParamsValidator //TODO: (1.high) create interface and make this class internal
 {
 	private static final String EMAIL_REGEX = "[a-z0-9._%-]+@[a-z0-9.-]+\\.[a-z]{2,4}";
 	private HttpServletRequest request;

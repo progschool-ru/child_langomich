@@ -1,6 +1,6 @@
-package org.smdserver.util;
+package org.smdserver.core.small;
 
-abstract class SmdLogger implements ISmdLogger
+abstract class USmdLogger implements ISmdLogger
 {
 	private static final String EXCEPTION = "Exception: %1$s\n"
 			+ "Top of the stack:\n"

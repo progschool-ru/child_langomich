@@ -1,7 +1,8 @@
-package org.smdserver.core;
+package org.smdserver.core.actions;
 
 import org.smdserver.actionssystem.Action;
-import org.smdserver.util.ISmdLogger;
+import org.smdserver.core.ISmdServletContext;
+import org.smdserver.core.small.ISmdLogger;
 
 public abstract class SmdAction extends Action implements ISmdAction
 {

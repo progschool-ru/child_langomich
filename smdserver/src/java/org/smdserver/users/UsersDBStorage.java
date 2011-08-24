@@ -9,7 +9,7 @@ import org.smdserver.db.IResultParser;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.ISmdStatement;
 import org.smdserver.db.SmdStatement;
-import org.smdserver.util.ISmdLogger;
+import org.smdserver.core.small.ISmdLogger;
 
 public class UsersDBStorage implements IUsersStorage
 {

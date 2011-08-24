@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.smdserver.actionssystem.ActionException;
 import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.actionssystem.ParamsValidator;
-import org.smdserver.core.SmdAction;
-import org.smdserver.util.SmdException;
+import org.smdserver.core.actions.SmdAction;
+import org.smdserver.core.small.SmdException;
 import org.smdserver.jsp.SmdUrl;
 import org.smdserver.users.IUsersStorage;
 

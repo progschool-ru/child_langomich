@@ -1,6 +1,6 @@
 package org.smdserver.words;
 
-import org.smdserver.util.SmdException;
+import org.smdserver.core.small.SmdException;
 
 public class WordsException extends SmdException
 {

@@ -2,11 +2,11 @@ package org.smdserver.core;
 
 import org.smdserver.db.IDBConfig;
 import org.smdserver.mail.IMailman;
-import org.smdserver.util.ISmdLogger;
+import org.smdserver.core.small.ISmdLogger;
 import org.smdserver.users.IUsersStorage;
 import org.smdserver.words.IWordsStorage;
 
-class SmdServletContext implements ISmdServletContext
+class USmdServletContext implements ISmdServletContext
 {
 	private IUsersStorage usersStorage;
 	private IWordsStorage wordsStorage;
@@ -17,7 +17,7 @@ class SmdServletContext implements ISmdServletContext
 	private ISmdCoreFactory factory;
 	private ISmdLogger logger;
 
-	public SmdServletContext (ISmdCoreFactory factory, ISmdLogger logger)
+	public USmdServletContext (ISmdCoreFactory factory, ISmdLogger logger)
 	{
 		this.logger = logger;
 		this.factory = factory;
@@ -71,6 +71,7 @@ class SmdServletContext implements ISmdServletContext
 		return logger;
 	}
 
+	@Deprecated
 	public void log (String message)
 	{
 		if(logger != null)
@@ -79,6 +80,7 @@ class SmdServletContext implements ISmdServletContext
 		}
 	}
 	
+	@Deprecated
 	public void log (Throwable e)
 	{
 		if(logger != null)
