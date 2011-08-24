@@ -41,8 +41,8 @@ public class Mailman implements IMailman
 			message.setSubject(subject);
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			message.setFrom(new InternetAddress(config.getFrom()));
+			message.setReplyTo(InternetAddress.parse(config.getReplyTo()));
 			message.setText(text);
-//			message.setHeader("X-Mailer", "Java Mail: ");
 			message.setSentDate(new Date());
 			Transport.send(message);
 			return true;

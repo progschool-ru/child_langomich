@@ -39,4 +39,9 @@ public class MailConfig extends ResourceBundleBased implements IMailConfig
 	{
 		return getString("mail.from");
 	}
+	
+	public String getReplyTo()
+	{
+		return getString("mail.replyTo");
+	}
 }
