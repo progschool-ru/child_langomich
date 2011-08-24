@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
+import org.smdserver.core.small.StringUtil;
 import org.smdserver.db.DbException;
 import org.smdserver.db.IMultipleResultParser;
 import org.smdserver.db.ISmdDB;
@@ -107,7 +107,9 @@ public class LanguageSaver
 	private String createLanguage(Language language)
 	{
 		if(language.getId() == null)
-			language.setId(UUID.randomUUID().toString());//TODO: (3.low)[#26069] use common util for creation Ids.
+		{
+			language.setId(StringUtil.generateStringId());
+		}
 		st.startSet(addLanguageIndex);
 		st.addString(language.getId());
 		st.addString(language.getName());

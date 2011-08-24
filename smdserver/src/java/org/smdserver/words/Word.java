@@ -2,6 +2,7 @@ package org.smdserver.words;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.smdserver.core.small.StringUtil;
 
 public class Word
 {
@@ -42,10 +43,8 @@ public class Word
 		return translation;
 	}
 	
-	public static String cleanWord(String dirtyValue)
+	private String cleanWord(String dirtyValue)
 	{
-		if(dirtyValue == null)
-			return null;
-		return dirtyValue.replaceAll("<", "&lt;").replaceAll(">", "&gt;").trim();
+		return StringUtil.escapeHTML(dirtyValue);
 	}
 }

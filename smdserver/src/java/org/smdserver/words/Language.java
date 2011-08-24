@@ -5,6 +5,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.smdserver.core.small.StringUtil;
 
 public class Language
 {
@@ -71,6 +72,6 @@ public class Language
 	
 	private static String cleanWord(String dirtyValue)
 	{
-		return Word.cleanWord(dirtyValue);
+		return StringUtil.escapeHTML(dirtyValue);
 	}
 }
