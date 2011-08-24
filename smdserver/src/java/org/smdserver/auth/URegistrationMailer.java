@@ -30,9 +30,11 @@ class URegistrationMailer
 		this.serverString = url.substring(0, second);
 	}
 	
-	public boolean notifyAboutConfirmation()
+	public boolean notifyAboutConfirmation(UserEx user)
 	{
-		return false;
+		return sendNotifiactionAboutConfirmation(user, config.getAdminEmail(),
+				        locale.getNotifyUserAboutConfirmationBody(), 
+				        locale.getNotifyUserAboutConfirmationSubject());
 	}
 	
 	public boolean sendConfirmationMessage(UserEx user)
@@ -41,6 +43,24 @@ class URegistrationMailer
 				           locale.getConfirmBody(), locale.getConfirmSubject());
 	}
 	
+	public boolean notifyAdminAboutConfirmation(UserEx user)
+	{
+		return sendNotifiactionAboutConfirmation(user, config.getAdminEmail(),
+				        locale.getNotifyAdminAboutConfirmationBody(), 
+				        locale.getNotifyAdminAboutConfirmationSubject());
+	}
+	
+	public boolean notifyAdminAboutRefusing (String userId)
+	{
+		String subject = constructSubject(locale.getNotifyAdminAboutRefusingSubject(), 
+				                          userId);
+		String template = locale.getNotifyAdminAboutRefusingBody();
+		
+		String message = String.format(template, userId);
+		
+		return mailman.send(subject, message, config.getAdminEmail());
+	}
+
 	public boolean notifyAdminAboutRegistrationRequest(UserEx user)
 	{
 		return sendConfirmationMessage(user, config.getAdminEmail(),
@@ -51,7 +71,7 @@ class URegistrationMailer
 	private boolean sendConfirmationMessage(UserEx user, String to,
 			                                String template, String subject)
 	{
-		subject = locale.getSubjectPrefix() + " " + subject;
+		subject = constructSubject(subject, user.getUserId());
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		SmdUrl mainUrl = new SmdUrl("page", "");
@@ -71,5 +91,26 @@ class URegistrationMailer
 												 user.getAbout());
 		
 		return mailman.send(subject, message, to);
+	}
+	
+	private boolean sendNotifiactionAboutConfirmation(UserEx user, String to,
+			                                String template, String subject)
+	{
+		subject = constructSubject(subject, user.getUserId());
+		
+		SmdUrl loginUrl = new SmdUrl("page", "login");
+		String loginLink = serverString + loginUrl.getURL();
+		
+		String message = String.format(template, user.getLogin(),
+												 user.getUserId(),
+												 user.getEmail(),
+												 user.getAbout(),
+												 loginLink);
+		return mailman.send(subject, message, to);
+	}
+	
+	private String constructSubject(String subject, String userId)
+	{
+		return locale.getSubjectPrefix() + " " + String.format(subject, userId);
 	}
 }

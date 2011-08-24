@@ -35,8 +35,13 @@ public class ConfirmRegistrationAction extends SmdAction
 			IRegisterConfig config = cntxt.getFactory().createRegisterConfig();
 			IAuthLocale locale = cntxt.getFactory().createAuthLocale(request.getLocale());
 			URegistrationMailer mailer = new URegistrationMailer(mailman, config, 
-					                                             request, locale);	
-			boolean wasNotified = mailer.notifyAboutConfirmation();
+					                                             request, locale);
+			if(config.shouldNotifyAdmin())
+			{
+				mailer.notifyAdminAboutConfirmation(userEx);
+			}
+			boolean wasNotified = mailer.notifyAboutConfirmation(userEx);
+			
 			if(!wasNotified)
 			{
 				setAnswerMessage("Notification wasn't sent");
