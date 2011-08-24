@@ -10,7 +10,6 @@
 
 	ILink link = linkCreator.createLink(getUrl(), getText(),
 			        pageBean.getCurrentUrl(),
-					basePath,
 					null);
 	link.setCSSClass(getCssClass());
 %>

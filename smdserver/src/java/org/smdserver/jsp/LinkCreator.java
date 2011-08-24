@@ -6,24 +6,23 @@ import java.util.Map;
 
 public class LinkCreator
 {
-	public IUrl createUrl(String internalUrl, SmdUrl currentLink, String basePath)
+	public IUrl createUrl(String internalUrl, SmdUrl currentLink)
 	{
 		ICreator creator = getCreator(internalUrl);
-		return creator.createUrl(internalUrl, currentLink, basePath);
+		return creator.createUrl(internalUrl, currentLink);
 	}
 
-	public ILink createLink(String internalUrl, String text, String basePath)
+	public ILink createLink(String internalUrl, String text)
 	{
-		return createLink(internalUrl, text, null, basePath, null);
+		return createLink(internalUrl, text, null, null);
 	}
 
 	public ILink createLink(String internalUrl, String text,
-			                SmdUrl currentLink,
-							String basePath, Map<String, Object> parameters)
+			                SmdUrl currentLink, Map<String, Object> parameters)
 	{
 		ICreator creator = getCreator(internalUrl);
 		return creator.createLink(internalUrl, text,
-				                        currentLink, basePath, parameters);
+				                        currentLink, parameters);
 	}
 
 	private ICreator getCreator(String internalUrl)
@@ -42,41 +41,38 @@ public class LinkCreator
 
 	private static interface ICreator
 	{
-		public IUrl createUrl(String url, SmdUrl currentUrl, String basePath);
+		public IUrl createUrl(String url, SmdUrl currentUrl);
 		
 		public ILink createLink(String url, String text,
 				                SmdUrl currentLink,
-				                String basePath,
 				                Map<String, Object> parameters);
 	}
 
 	private static class SmdLinkCreator implements ICreator
 	{
-		public IUrl createUrl(String url, SmdUrl currentUrl, String basePath)
+		public IUrl createUrl(String url, SmdUrl currentUrl)
 		{
-			return new SmdUrl(url, currentUrl, basePath);
+			return new SmdUrl(url, currentUrl);
 		}
 		
 		public SmdLink createLink(String internalUrl, String text,
 								SmdUrl currentLink,
-								String basePath,
 								Map<String, Object> parameters)
 		{
 			return new SmdLink(internalUrl, text,
-							   currentLink, basePath, parameters);
+							   currentLink, parameters);
 		}
 	}
 
 	private static class SimpleCreator implements ICreator
 	{
-		public IUrl createUrl(String url, SmdUrl currentUrl, String basePath)
+		public IUrl createUrl(String url, SmdUrl currentUrl)
 		{
 			return new SimpleLink(url, null);
 		}
 
 		public ILink createLink(String url, String text,
 				                SmdUrl currentLink,
-				                String basePath,
 				                Map<String, Object> parameters)
 		{
 			return new SimpleLink(url, text);

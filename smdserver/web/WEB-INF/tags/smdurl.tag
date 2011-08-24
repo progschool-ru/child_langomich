@@ -15,7 +15,7 @@
 			              ? pageBean.getCurrentUrl()
 			              : new SmdUrl(baseServlet, "");
 	SmdUrl link = new SmdUrl(servlet, action,
-			                 currentUrl, request.getContextPath(), null);
+			                 currentUrl, null);
 
 	String result = (encode == null)
 			        ? link.getURL()

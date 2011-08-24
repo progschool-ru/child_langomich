@@ -27,29 +27,27 @@ public class SmdUrl implements IUrl
 	private boolean isParamsURIBuilt = false;
 	private String url;
 
-	public SmdUrl(String internalUrl, SmdUrl currentLink,
-			                 String basePath)
+	public SmdUrl(String internalUrl, SmdUrl currentLink)
 	{
-		construct(internalUrl, currentLink, basePath, null);
+		construct(internalUrl, currentLink, null);
 	}
 
 	public SmdUrl(String internalUrl, SmdUrl currentLink,
-			                 String basePath,
-							 Map<String, Object> parameters)
+			      Map<String, Object> parameters)
 	{
-		construct(internalUrl, currentLink, basePath, parameters);
+		construct(internalUrl, currentLink, parameters);
 	}
 	
 	public SmdUrl(String servlet, String action)
 	{
-		construct(servlet, action, null, null, null);
+		construct(servlet, action, null, null);
 	}
 
 	public SmdUrl(String servlet, String action,
-					SmdUrl currentLink, String basePath,
+					SmdUrl currentLink,
 					Map<String, Object> parameters)
 	{
-		construct(servlet, action, parameters, currentLink, basePath);
+		construct(servlet, action, parameters, currentLink);
 	}
 	
 	public static void initParams(IJSPConfig jspConfig,
@@ -95,25 +93,24 @@ public class SmdUrl implements IUrl
 	}
 
 	private void construct(String internalUrl, SmdUrl currentLink,
-			                 String basePath,
-							 Map<String, Object> parameters)
+			               Map<String, Object> parameters)
 	{
 		RegularExpression re = new RegularExpression("\\w+://(.*?)/(.*)");
 		Match match = new Match();
 		re.matches(internalUrl, match);
 		String servlet = internalUrl.substring(match.getBeginning(1), match.getEnd(1));
 		String action = internalUrl.substring(match.getBeginning(2));
-		construct(servlet, action, parameters, currentLink, basePath);
+		construct(servlet, action, parameters, currentLink);
 	}
 
 	private void construct (String servlet, String action,
 					Map<String, Object> parameters,
-					SmdUrl currentLink, String basePath)
+					SmdUrl currentLink)
 	{
 		this.servlet = servlet;
 		this.action = action;
 		this.currentLink = currentLink;
-		this.basePath = basePath;
+		this.basePath = jspConfig.getBasePath();
 		this.parameters = parameters;
 
 		servletAbsPath = jspConfig.getServletPrefix(servlet);

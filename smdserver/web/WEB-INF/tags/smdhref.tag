@@ -23,29 +23,26 @@
 		params = new java.util.HashMap<String, Object>();
 	}
 
-	String basePath = request.getContextPath();
-
 	ILink link = new SmdLink((String)jspContext.getAttribute("url"),
 			                 (String)jspContext.getAttribute("text"),
 					         pageBean.getCurrentUrl(),
-					         basePath,
 					         params);
 
 	SmdLink targetLink = link instanceof SmdLink ? (SmdLink)link : null;
 	if(redirect != null)
 	{
 		params.put("redirect",
-				new SmdUrl(redirect, targetLink, basePath));
+				new SmdUrl(redirect, targetLink));
 	}
 	if(redirectSuccess != null)
 	{
 		params.put("redirectSuccess",
-				new SmdUrl(redirectSuccess, targetLink, basePath));
+				new SmdUrl(redirectSuccess, targetLink));
 	}
 	if(redirectFailure != null)
 	{
 		params.put("redirectFailure",
-				new SmdUrl(redirectFailure, targetLink, basePath));
+				new SmdUrl(redirectFailure, targetLink));
 	}
 %>
 <c:choose>

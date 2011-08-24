@@ -6,7 +6,7 @@ import java.util.Map;
 public enum ConfirmationType
 {
 	ADMIN ("admin", new UNoneConfirmationActivity()),
-	MAIL  ("mail",  new UNoneConfirmationActivity()),
+	MAIL  ("mail",  new UMailConfirmationActivity()),
 	NONE  ("none",  new UNoneConfirmationActivity());
 	
 	private static Map<String, ConfirmationType> types;

@@ -9,25 +9,24 @@ public class SmdLink extends SmdUrl implements ILink
 
 	public SmdLink (String internalUrl, String text,
 							SmdUrl currentLink,
-							String basePath,
 							Map<String, Object> parameters)
 	{
-		super(internalUrl, currentLink, basePath, parameters);
+		super(internalUrl, currentLink, parameters);
 		construct(text);
 	}
 
 	public SmdLink(String servlet, String action, String text)
 	{
-		super(servlet, action, null, null, null);
+		super(servlet, action, null, null);
 		construct(text);
 	}
 
 
 	public SmdLink(String servlet, String action, String text,
-					SmdUrl currentLink, String basePath,
+					SmdUrl currentLink,
 					Map<String, Object> parameters)
 	{
-		super(servlet, action, currentLink, basePath, parameters);
+		super(servlet, action, currentLink, parameters);
 		construct(text);
 	}
 

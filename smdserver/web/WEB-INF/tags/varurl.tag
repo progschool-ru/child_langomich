@@ -6,7 +6,6 @@
 <jsp:useBean id="pageBean" scope="request" class="org.smdserver.jsp.PagesBean"/>
 <%
 	IUrl url = linkCreator.createUrl((String)jspContext.getAttribute("url"),
-					                 pageBean.getCurrentUrl(),
-					                 request.getContextPath());
+					                 pageBean.getCurrentUrl());
 %>
 <%=url.getURL()%>

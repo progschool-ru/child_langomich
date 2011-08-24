@@ -1,11 +1,14 @@
 package org.smdserver.auth;
 
+import javax.servlet.http.HttpServletRequest;
 import org.smdserver.core.ISmdServletContext;
+import org.smdserver.users.UserEx;
 
 public interface UIConfirmationActivity 
 {
-	public String process (IRegisterConfig config,
+	public boolean process (IRegisterConfig config,
 			               ISmdServletContext context,
-			               String userId, String login, String password,
-						   String email, String about);
+						   HttpServletRequest request,
+			               UserEx user);
+	public String getForwardParam(UserEx user);
 }

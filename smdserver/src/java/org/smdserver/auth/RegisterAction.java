@@ -9,6 +9,7 @@ import org.smdserver.core.ISmdCoreFactory;
 import org.smdserver.core.actions.SmdAction;
 import org.smdserver.core.small.SmdException;
 import org.smdserver.users.IUsersStorage;
+import org.smdserver.users.UserEx;
 
 public class RegisterAction extends SmdAction
 {
@@ -23,7 +24,6 @@ public class RegisterAction extends SmdAction
 
 		boolean success;
 		String result = null;
-		String message = null;
 
 		if(!storage.doesLoginExist(login))
 		{
@@ -33,14 +33,16 @@ public class RegisterAction extends SmdAction
 			
 			if(created)
 			{
+				UserEx user = new UserEx(uuid, login, null, email, about);
 				ISmdCoreFactory factory = getServletContext().getFactory();
 				IRegisterConfig config = factory.createRegisterConfig();
 				ConfirmationType type = config.getConfirmationType();
 				
-				result = type.getActivity().process(config,
-						                            getServletContext(), 
-						                            uuid, login, password, 
-						                            email, about);
+				type.getActivity().process(config,
+						                   getServletContext(),
+						                   request,
+						                   user);
+				result = type.getActivity().getForwardParam(user);
 				
 				success = true;
 			}

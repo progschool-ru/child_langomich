@@ -29,6 +29,11 @@ public class JSPConfig implements IJSPConfig
 	{
 		return rb.getString("web.charset");
 	}
+	
+	public String getBasePath()
+	{
+		return basePath;
+	}
 
 	public String getActionPath()
 	{
@@ -73,7 +78,7 @@ public class JSPConfig implements IJSPConfig
 		{
 			String url = rb.getString(menuPrefix + item + ".url");
 			String text = rb.getString(menuPrefix + item + ".text");
-			list.add(creator.createLink(url, text, currentLink, basePath, null));
+			list.add(creator.createLink(url, text, currentLink, null));
 		}
 		return list;
 	}
