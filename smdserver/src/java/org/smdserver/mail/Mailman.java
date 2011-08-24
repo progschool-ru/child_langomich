@@ -32,7 +32,7 @@ public class Mailman implements IMailman
 		
 		try
 		{
-			Properties props = System.getProperties();
+			Properties props = new Properties();
 			props.put("mail.smtp.host", config.getSMTPHost());
 			props.put("mail.smtp.auth", "true");
 			Session session = Session.getDefaultInstance(props, 
