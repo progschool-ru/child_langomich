@@ -1,5 +1,6 @@
 package org.smdserver.core;
 
+import org.smdserver.core.small.ICoreConfig;
 import java.util.ResourceBundle;
 import org.smdserver.auth.IRegisterConfig;
 import org.smdserver.auth.RegisterConfig;

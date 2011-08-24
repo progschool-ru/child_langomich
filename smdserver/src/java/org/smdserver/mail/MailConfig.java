@@ -1,43 +1,42 @@
 package org.smdserver.mail;
 
 import java.util.ResourceBundle;
+import org.smdserver.core.small.BaseConfig;
 
-public class MailConfig implements IMailConfig
+public class MailConfig extends BaseConfig implements IMailConfig
 {
-	private ResourceBundle rb;
-	
 	public MailConfig(ResourceBundle rb)
 	{
-		this.rb = rb;
+		super(rb);
 	}
 	
 	public boolean isEnabled()
 	{
-		return "true".equals(rb.getString("mail.enabled"));
+		return getBoolean("mail.enabled");
 	}
 
 	public String getSMTPHost()
 	{
-		return rb.getString("mail.smtpHost");
+		return getString("mail.smtpHost");
 	}
 	
 	public boolean isAuth()
 	{
-		return "true".equals(rb.getString("mail.isAuth"));
+		return getBoolean("mail.isAuth");
 	}
 	
 	public String getLogin()
 	{
-		return rb.getString("mail.login");
+		return getString("mail.login");
 	}
 	
 	public String getPassword()
 	{
-		return rb.getString("mail.password");
+		return getString("mail.password");
 	}
 	
 	public String getFrom()
 	{
-		return rb.getString("mail.from");
+		return getString("mail.from");
 	}
 }

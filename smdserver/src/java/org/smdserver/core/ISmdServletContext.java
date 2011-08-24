@@ -1,5 +1,6 @@
 package org.smdserver.core;
 
+import org.smdserver.core.small.ICoreConfig;
 import org.smdserver.db.IDBConfig;
 import org.smdserver.mail.IMailman;
 import org.smdserver.core.small.ISmdLogger;

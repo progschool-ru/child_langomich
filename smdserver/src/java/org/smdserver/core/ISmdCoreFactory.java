@@ -1,5 +1,6 @@
 package org.smdserver.core;
 
+import org.smdserver.core.small.ICoreConfig;
 import org.smdserver.auth.IRegisterConfig;
 import org.smdserver.db.IDBConfig;
 import org.smdserver.jsp.IJSPConfig;

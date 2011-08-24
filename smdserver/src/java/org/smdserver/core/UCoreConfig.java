@@ -1,18 +1,18 @@
 package org.smdserver.core;
 
 import java.util.ResourceBundle;
+import org.smdserver.core.small.ICoreConfig;
+import org.smdserver.core.small.BaseConfig;
 
-class UCoreConfig implements ICoreConfig
+class UCoreConfig extends BaseConfig implements ICoreConfig
 {
-	private ResourceBundle rb;
-	
 	public UCoreConfig(ResourceBundle rb)
 	{
-		this.rb = rb;
+		super(rb);
 	}
 	
 	public String getSecret()
 	{
-		return rb.getString("hash.secret");
+		return getString("hash.secret");
 	}
 }

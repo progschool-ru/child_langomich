@@ -1,29 +1,28 @@
 package org.smdserver.auth;
 
 import java.util.ResourceBundle;
+import org.smdserver.core.small.BaseConfig;
 
-public class RegisterConfig implements IRegisterConfig
+public class RegisterConfig extends BaseConfig implements IRegisterConfig
 {
-	private ResourceBundle rb;
-	
 	public RegisterConfig(ResourceBundle rb)
 	{
-		this.rb = rb;
+		super(rb);
 	}
 	
 	public ConfirmationType getConfirmationType()
 	{
-		String name = rb.getString("registration.confirmation");
+		String name = getString("registration.confirmation");
 		return ConfirmationType.getType(name);
 	}
 	
 	public boolean shouldNotifyAdmin()
 	{
-		return "true".equals(rb.getString("registration.notifyAdmin"));
+		return getBoolean("registration.notifyAdmin");
 	}
 	
 	public String getAdminEmail()
 	{
-		return rb.getString("registration.adminEmail");
+		return getString("registration.adminEmail");
 	}
 }

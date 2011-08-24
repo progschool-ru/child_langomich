@@ -1,52 +1,51 @@
 package org.smdserver.db;
 
 import java.util.ResourceBundle;
+import org.smdserver.core.small.BaseConfig;
 
-public class DBConfig implements IDBConfig
+public class DBConfig extends BaseConfig implements IDBConfig
 {	
-	private ResourceBundle serverRB;
-	
 	public DBConfig(String configFile, String serverConfigKey)
 	{
-		ResourceBundle rb = ResourceBundle.getBundle(configFile);	
-		String serverFile = rb.getString(serverConfigKey);
-		this.serverRB = ResourceBundle.getBundle(serverFile);
+		super(ResourceBundle.getBundle(
+				     ResourceBundle.getBundle(configFile).getString(serverConfigKey)
+			));
 	}
 	
 	public DBConfig(ResourceBundle rb)
 	{
-		this.serverRB = rb;
+		super(rb);
 	}
 
 	//IDBConfig implementation
 	public String getTablesPrefix()
 	{
-		return serverRB.getString("db.tablesPrefix");
+		return getString("db.tablesPrefix");
 	}
 	
 	public String getDBUrl()
 	{
-		return serverRB.getString("db.url");
+		return getString("db.url");
 	}
 	
 	public String getDBUser()
 	{
-		return serverRB.getString("db.user");
+		return getString("db.user");
 	}
 	
 	public String getDBPassword()
 	{
-		return serverRB.getString("db.password");
+		return getString("db.password");
 	}
 	
 	//IMaintenanceConfig implementation
 	public boolean isMaintenanceAllowed()
 	{
-		return "true".equals(serverRB.getString("maintenance.allowed"));
+		return getBoolean("maintenance.allowed");
 	}
 	
 	public String getMaintenancePassword()
 	{
-		return serverRB.getString("maintenance.password");
+		return getString("maintenance.password");
 	}	
 }
