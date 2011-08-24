@@ -8,6 +8,7 @@ import org.smdserver.actionssystem.SmdServlet;
 import org.smdserver.auth.ConfirmRegistrationAction;
 import org.smdserver.auth.LoginAction;
 import org.smdserver.auth.LogoutAction;
+import org.smdserver.auth.RefuseRegistrationAction;
 import org.smdserver.auth.SetPasswordAction;
 import org.smdserver.auth.RegisterAction;
 import org.smdserver.core.actions.SmdActionsFactory;
@@ -35,14 +36,16 @@ public class MainServlet extends SmdServlet
 		map.put(DEFAULT_ACTION, NullAction.class);
 
 		map.put("addWords", AddWordsAction.class);
-		map.put("confirmRegistration", ConfirmRegistrationAction.class);
 		map.put("getWords", GetWordsAction.class);
 		map.put("deleteWords", DeleteWordsAction.class);
 		map.put("login", LoginAction.class);
 		map.put("logout", LogoutAction.class);
 		map.put("mobileLogin", LoginAction.class);
-		map.put("registr", RegisterAction.class);
 		map.put("setPassword", SetPasswordAction.class);
+
+		map.put("confirmRegistration", ConfirmRegistrationAction.class);
+		map.put("refuseRegistration", RefuseRegistrationAction.class);
+		map.put("registr", RegisterAction.class);
 		
 		map.put("maintenanceCreateDB", CreateDBAction.class);
 		map.put("maintenanceDeployDBTables", DeployDBTablesAction.class);

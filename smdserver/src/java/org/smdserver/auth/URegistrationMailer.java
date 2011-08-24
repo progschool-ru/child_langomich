@@ -40,13 +40,17 @@ class URegistrationMailer
 				+ "------\nTo refuse your registration follow link: %3$s\n";
 		
 		Map<String, Object> params = new HashMap<String, Object>();
-		SmdUrl url = new SmdUrl("action", "confirmRegistration", null, params);
 		SmdUrl mainUrl = new SmdUrl("page", "");
 		params.put(ActionParams.USER_ID, user.getUserId());
 		params.put(ActionParams.REDIRECT_SUCCESS, mainUrl.getURL());
-		String link = serverString + url.getURL();
 		
-		String message = String.format(template, user.getLogin(), link, "");
+		SmdUrl confirmUrl = new SmdUrl("action", "confirmRegistration", null, params);
+		String confirmLink = serverString + confirmUrl.getURL();
+		
+		SmdUrl refuseUrl = new SmdUrl("action", "refuseRegistration", null, params);
+		String refuseLink = serverString + refuseUrl.getURL();
+		
+		String message = String.format(template, user.getLogin(), confirmLink, refuseLink);
 		
 		return mailman.send(subject, message, user.getEmail());
 	}
