@@ -17,6 +17,8 @@ public abstract class Action implements IAction
 {
 	private Map<String, Object> map = new HashMap<String, Object>();
 	private String redirectUrl;
+	private String answerMessage;
+	private boolean answerSuccess = true;
 
 	abstract protected String doAction (HttpServletRequest request) throws SmdException;
 	abstract protected ISmdLogger getLogger();
@@ -33,17 +35,28 @@ public abstract class Action implements IAction
 			if(validateParams(request) && validateContext(request))
 			{
 				url = doAction(request);
-				success = true && (!map.containsKey(SUCCESS) || (Boolean)map.get(SUCCESS));
+				success = true && answerSuccess;
 			}
 		}
 		catch(SmdException e)
 		{
 			log(e);
-			setAnswerParam(ActionParams.MESSAGE, e.getPublicMessage());
+			setAnswerMessage(e.getPublicMessage());
 			success = false;
+		}
+		catch(Exception e)
+		{
+			log(e);
+			setAnswerSuccess(false);
+			setAnswerMessage(SmdException.ERROR);
 		}
 
 		setAnswerParam(SUCCESS, success);
+		
+		if(answerMessage != null)
+		{
+			setAnswerParam(ActionParams.MESSAGE, answerMessage);
+		}
 
 		if (url == null)
 		{
@@ -88,6 +101,16 @@ public abstract class Action implements IAction
 		}
 
 		return sb.toString();
+	}
+	
+	protected void setAnswerSuccess (boolean value)
+	{
+		this.answerSuccess = value;
+	}
+	
+	protected void setAnswerMessage (String value)
+	{
+		this.answerMessage = value;
 	}
 
 	protected void setAnswerParam (String key, Object value)

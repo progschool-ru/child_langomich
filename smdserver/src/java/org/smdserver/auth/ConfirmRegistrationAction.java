@@ -37,10 +37,10 @@ public class ConfirmRegistrationAction extends SmdAction
 			boolean wasNotified = mailer.notifyAboutConfirmation();
 			if(!wasNotified)
 			{
-				setAnswerParam(ActionParams.MESSAGE, "Notification wasn't sent");
+				setAnswerMessage("Notification wasn't sent");
 			}
 		}
-		setAnswerParam(ActionParams.SUCCESS, success);	
+		setAnswerSuccess(success);	
 		return null;
 	}
 	

@@ -40,7 +40,7 @@ public class DeleteWordsAction extends CheckLoginAction
 			log(e);
 			success = false;
 		}
-		setAnswerParam(ActionParams.SUCCESS, success);
+		setAnswerSuccess(success);
 		return null;
 	}
 }

@@ -19,7 +19,7 @@ public abstract class CheckLoginAction extends SmdAction
 			user = getServletContext().getUsersStorage().getUserById(userId);
 		}
 		boolean success = user != null;
-		setAnswerParam(ActionParams.SUCCESS, success);
+		setAnswerSuccess(success);
 		return success;
 	}
 

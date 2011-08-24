@@ -17,7 +17,7 @@ abstract class UMaintenanceAction extends SmdAction
 		boolean isPasswordCorrect = password != null && password.equals(config.getMaintenancePassword());
 		
 		boolean success = isInMaintenance && isPasswordCorrect;
-		setAnswerParam(ActionParams.SUCCESS, success);
+		setAnswerSuccess(success);
 		return success;
 	}
 }

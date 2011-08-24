@@ -47,20 +47,17 @@ public class RegisterAction extends SmdAction
 			else
 			{
 				success = false;
-				message = "Registration request wasn't created"; //TODO: (3.low) Move to locale;
+				setAnswerMessage("Registration request wasn't created"); //TODO: (3.low) Move to locale;
 			}							
 		}
 		else
 		{
 			success = false;
-			message = "Login already exists"; //TODO: (3.low) Move to locale;
+			setAnswerMessage("Login already exists"); //TODO: (3.low) Move to locale;
 		}
 		
-		setAnswerParam(ActionParams.SUCCESS, success);
-		if(message != null)
-		{
-			setAnswerParam(ActionParams.MESSAGE, message);
-		}
+		setAnswerSuccess(success);
+		
 		return result;
 	}
 	

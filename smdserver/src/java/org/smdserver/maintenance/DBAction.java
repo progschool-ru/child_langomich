@@ -62,7 +62,7 @@ public abstract class DBAction extends UMaintenanceAction
 			success = false;
 		}
 		
-		setAnswerParam(ActionParams.SUCCESS, success);
+		setAnswerSuccess(success);
 		
 		return null;
 	}

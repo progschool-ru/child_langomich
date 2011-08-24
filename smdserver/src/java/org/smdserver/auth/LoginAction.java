@@ -20,7 +20,7 @@ public class LoginAction extends SmdAction
 
 		boolean success = storage.checkPassword(login, password);
 
-		setAnswerParam(ActionParams.SUCCESS, success);
+		setAnswerSuccess(success);
 
 		if(success)
 		{

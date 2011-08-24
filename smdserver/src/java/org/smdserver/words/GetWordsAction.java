@@ -12,7 +12,7 @@ public class GetWordsAction extends CheckLoginAction
 		IWordsStorage storage = getServletContext().getWordsStorage();
 		List<Language> languages = storage.getUserWords(getUser().getUserId());
 		setAnswerParam(ActionParams.LANGUAGES, languages);
-		setAnswerParam(ActionParams.SUCCESS, true);
+		setAnswerSuccess(true);
                 return null;
 	}
 }

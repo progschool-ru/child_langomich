@@ -24,7 +24,7 @@ public class SetPasswordAction extends CheckLoginAction
 				success = false;
 			}
 		}
-		setAnswerParam(ActionParams.SUCCESS, success);
+		setAnswerSuccess(success);
 		return null;
 	}
 }
