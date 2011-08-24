@@ -1,18 +1,16 @@
 package org.smdserver.auth;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.smdserver.actionssystem.ActionException;
 import org.smdserver.actionssystem.ActionParams;
 import org.smdserver.actionssystem.ParamsValidator;
+import org.smdserver.core.ISmdCoreFactory;
 import org.smdserver.core.actions.SmdAction;
 import org.smdserver.core.small.SmdException;
-import org.smdserver.jsp.SmdUrl;
 import org.smdserver.users.IUsersStorage;
 
-public class RegistrAction extends SmdAction
+public class RegisterAction extends SmdAction
 {
 	private String login;
 	private String password;
@@ -25,31 +23,44 @@ public class RegistrAction extends SmdAction
 
 		boolean success;
 		String result = null;
+		String message = null;
 
-		success = (login != null && 
-				   password != null && 
-				   !password.isEmpty() && 
-				   !storage.doesLoginExist(login));
-
-		if(success)
+		if(!storage.doesLoginExist(login))
 		{
 			//TODO: (3.low)[#26069] create and use universal ID generator
 			String uuid = UUID.randomUUID().toString();
-			storage.createRegistrationRequest(uuid, login, password, email, about);
+			boolean created = storage.createRegistrationRequest(uuid, login, password, email, about);
+			
+			if(created)
+			{
+				ISmdCoreFactory factory = getServletContext().getFactory();
+				IRegisterConfig config = factory.createRegisterConfig();
+				ConfirmationType type = config.getConfirmationType();
 				
-//			setAnswerParam(ActionParams.SUCCESS, success);
-//
-//			Map<String, Object> params = new HashMap<String, Object>();
-//			SmdUrl loginUrl = new SmdUrl("action",
-//										 "login?" + getRedirectParamsURI(request),
-//										 null, "", params);		
-//			params.put("password", password);
-//			params.put("login", login);
-//			System.out.println("succ " + success);
-//			return loginUrl.getURL();				
+				result = type.getActivity().process(config,
+						                            getServletContext(), 
+						                            uuid, login, password, 
+						                            email, about);
+				
+				success = true;
+			}
+			else
+			{
+				success = false;
+				message = "Registration request wasn't created"; //TODO: (3.low) Move to locale;
+			}							
+		}
+		else
+		{
+			success = false;
+			message = "Login already exists"; //TODO: (3.low) Move to locale;
 		}
 		
-		setAnswerParam(ActionParams.SUCCESS, success);		
+		setAnswerParam(ActionParams.SUCCESS, success);
+		if(message != null)
+		{
+			setAnswerParam(ActionParams.MESSAGE, message);
+		}
 		return result;
 	}
 	

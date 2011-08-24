@@ -5,18 +5,25 @@ import java.util.Map;
 
 public enum ConfirmationType
 {
-	ADMIN ("admin"),
-	MAIL ("mail"),
-	NONE ("none");
+	ADMIN ("admin", new UNoneConfirmationActivity()),
+	MAIL  ("mail",  new UNoneConfirmationActivity()),
+	NONE  ("none",  new UNoneConfirmationActivity());
 	
 	private static Map<String, ConfirmationType> types;
 	
 	private String name;
+	private UIConfirmationActivity activity;
 
-	private ConfirmationType(String name)
+	private ConfirmationType(String name, UIConfirmationActivity activity)
 	{
 		this.name = name;
+		this.activity = activity;
 		registerInstance();
+	}
+	
+	UIConfirmationActivity getActivity()
+	{
+		return this.activity;
 	}
 	
 	public static ConfirmationType getType (String name)

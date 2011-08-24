@@ -9,7 +9,7 @@ import org.smdserver.auth.ConfirmRegistrationAction;
 import org.smdserver.auth.LoginAction;
 import org.smdserver.auth.LogoutAction;
 import org.smdserver.auth.SetPasswordAction;
-import org.smdserver.auth.RegistrAction;
+import org.smdserver.auth.RegisterAction;
 import org.smdserver.core.actions.SmdActionsFactory;
 import org.smdserver.maintenance.CreateDBAction;
 import org.smdserver.maintenance.DeployDBTablesAction;
@@ -41,7 +41,7 @@ public class MainServlet extends SmdServlet
 		map.put("login", LoginAction.class);
 		map.put("logout", LogoutAction.class);
 		map.put("mobileLogin", LoginAction.class);
-		map.put("registr", RegistrAction.class);
+		map.put("registr", RegisterAction.class);
 		map.put("setPassword", SetPasswordAction.class);
 		
 		map.put("maintenanceCreateDB", CreateDBAction.class);
