@@ -1,5 +1,6 @@
 <%@attribute name="title" rtexprvalue="true"%>
 <%@attribute name="menu" rtexprvalue="true" type="java.util.List"%>
+<%@attribute name="user" rtexprvalue="true" type="org.smdserver.users.User" %>
 <%@tag trimDirectiveWhitespaces="true"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="smd"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -21,13 +22,13 @@
 		<div class="header">
 			<smd:ahref url="smd://page/play" text="" cssClass="header-logo"/>
 			<smd:menu links="${menu}" ulClass="header-menu"/>
-			<smd:userInfo ulClass="header-user"/>
+			<smd:userInfo ulClass="header-user" user="${user}"/>
 		</div>
 		<div class="main">
 			<div class="content">
 				<jsp:doBody/>
 			</div>
-	<c:if test='${sessionScope["currentUserId"] != null}'><%--TODO: (3.low) use something better, than session--%>
+	<c:if test='${user != null}'>
 			<div class="toolbar">
 				<smd:toolbar cssClass="toolbar-menu"/>
 			</div>

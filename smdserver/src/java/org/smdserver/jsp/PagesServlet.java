@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.smdserver.actionssystem.SessionKeys;
 import org.smdserver.core.CoreInstance;
 import org.smdserver.core.ISmdCore;
+import org.smdserver.users.User;
 
 public class PagesServlet extends HttpServlet
 {
@@ -49,14 +50,17 @@ public class PagesServlet extends HttpServlet
 			response.sendRedirect(PAGE_404);
 			return;
 		}
+		
+		User user = getUser(request);
+		boolean isLoggedIn = (user != null);
 
-		if(config.needsAuthority(page) && !isLoggedIn(request))
+		if(config.needsAuthority(page) && !isLoggedIn)
 		{
 			response.sendRedirect(LOGIN_PAGE);
 			return;
 		}
 		
-		PagesBean bean = new PagesBean(core.getFactory(), getUserId(request));
+		PagesBean bean = new PagesBean(core.getFactory(), user);
 
 		bean.setDBConfig(core.getFactory().createDBConfig());
 		bean.setJSPConfig(config);
@@ -67,7 +71,7 @@ public class PagesServlet extends HttpServlet
 		bean.setWebCharset(config.getWebCharset());
 		
 		List<ILink> links = config.createMenu( 
-				      isLoggedIn(request) ? LOGGED_MENU_KEY : ANONYMUS_MENU_KEY,
+				      isLoggedIn ? LOGGED_MENU_KEY : ANONYMUS_MENU_KEY,
 					  currentUrl);
 		bean.setMenuLinks(links);
 		
@@ -88,14 +92,14 @@ public class PagesServlet extends HttpServlet
 		return request.getPathInfo().substring(1);
 	}
 
-	private boolean isLoggedIn (HttpServletRequest request)
+	private User getUser (HttpServletRequest request)
 	{
 		String userId = (String)request.getSession().getAttribute(SessionKeys.CURRENT_USER_ID);
-		return userId != null;
-	}
-	
-	private String getUserId (HttpServletRequest request)
-	{
-		return (String)request.getSession().getAttribute(SessionKeys.CURRENT_USER_ID);
+		User user = null;
+		if (userId != null)
+		{
+			user = core.getFactory().createUsersStorage().getUserById(userId);
+		}
+		return user;
 	}
 }

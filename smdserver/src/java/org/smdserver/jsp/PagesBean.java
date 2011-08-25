@@ -4,6 +4,7 @@ import java.util.List;
 import org.smdserver.core.ISmdCoreFactory;
 import org.smdserver.db.IDBConfig;
 import org.smdserver.maintenance.IMaintenanceConfig;
+import org.smdserver.users.User;
 import org.smdserver.words.IUserWords;
 import org.smdserver.words.UserWords;
 
@@ -18,24 +19,29 @@ public class PagesBean
 	private IJSPConfig jspConfig;
 	
 	private ISmdCoreFactory factory;
-	private String userId;
+	private User user;
 	private IUserWords wordsBean;
 	
-	public PagesBean(ISmdCoreFactory factory, String userId)
+	public PagesBean(ISmdCoreFactory factory, User user)
 	{
 		this.factory = factory;
-		this.userId = userId;
+		this.user = user;
 	}
 	
 	public PagesBean()
 	{
 	}
 	
+	public User getUser()
+	{
+		return user;
+	}
+	
 	public IUserWords getUserWords()
 	{
-		if(wordsBean == null && factory != null && userId != null)
+		if(wordsBean == null && factory != null && user != null)
 		{
-			wordsBean = new UserWords(factory, userId);
+			wordsBean = new UserWords(factory, user.getUserId());
 		}
 		return wordsBean;
 	}
