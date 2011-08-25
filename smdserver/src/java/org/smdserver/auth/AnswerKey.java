@@ -1,12 +1,14 @@
 package org.smdserver.auth;
 
+import org.smdserver.jsp.Messages;
+
 enum AnswerKey 
 {
 	NULL_KEY(null),
-	REGISTER_CONFIRM_SENT("register.confirmSent"),
-	REGISTER_CONFIRM_SENT_TO_ADMIN("register.confirmSentToAdmin"),
-	REGISTER_ACCOUNT_WAS_CREATED("register.accountWasCreated"),
-	REGISTER_NOTIFICATION_WASNT_CREATED("register.notificationWasNotSent");
+	REGISTER_CONFIRM_SENT(Messages.REGISTER_CONFIRM_SENT),
+	REGISTER_CONFIRM_SENT_TO_ADMIN(Messages.REGISTER_CONFIRM_SENT_TO_ADMIN),
+	REGISTER_ACCOUNT_WAS_CREATED(Messages.REGISTER_ACCOUNT_WAS_CREATED),
+	REGISTER_NOTIFICATION_WASNT_CREATED(Messages.REGISTER_NOTIFICATION_WASNT_CREATED);
 	
 	private String key;
 	

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.smdserver.actionssystem.ActionParams;
+import org.smdserver.jsp.Messages;
 import org.smdserver.jsp.SmdUrl;
 import org.smdserver.mail.IMailman;
 import org.smdserver.users.UserEx;
@@ -73,15 +74,27 @@ class URegistrationMailer
 	{
 		subject = constructSubject(subject, user.getUserId());
 		
-		Map<String, Object> params = new HashMap<String, Object>();
-		SmdUrl mainUrl = new SmdUrl("page", "");
-		params.put(ActionParams.USER_ID, user.getUserId());
-		params.put(ActionParams.REDIRECT_SUCCESS, mainUrl.getURL());
+		Map<String, Object> confirmParams = new HashMap<String,Object>();
+		confirmParams.put(ActionParams.KEY, Messages.REGISTER_ACCOUNT_WAS_CREATED);
+		SmdUrl confirmRedirect = new SmdUrl("page", "message", null, confirmParams);
 		
-		SmdUrl confirmUrl = new SmdUrl("action", "confirmRegistration", null, params);
+		Map<String, Object> refuseParams = new HashMap<String,Object>();
+		refuseParams.put(ActionParams.KEY, Messages.REGISTER_REQUEST_REFUSED);
+		SmdUrl refuseRedirect = new SmdUrl("page", "message", null, refuseParams);		
+
+		
+		Map<String, Object> mainConfirmParams = new HashMap<String, Object>();
+		mainConfirmParams.put(ActionParams.USER_ID, user.getUserId());
+		mainConfirmParams.put(ActionParams.REDIRECT_SUCCESS, confirmRedirect.getURL());
+		
+		Map<String, Object> mainRefuseParams = new HashMap<String, Object>();
+		mainRefuseParams.put(ActionParams.USER_ID, user.getUserId());
+		mainRefuseParams.put(ActionParams.REDIRECT_SUCCESS, refuseRedirect.getURL());
+
+		SmdUrl confirmUrl = new SmdUrl("action", "confirmRegistration", null, mainConfirmParams);
 		String confirmLink = serverString + confirmUrl.getURL();
 		
-		SmdUrl refuseUrl = new SmdUrl("action", "refuseRegistration", null, params);
+		SmdUrl refuseUrl = new SmdUrl("action", "refuseRegistration", null, mainRefuseParams);
 		String refuseLink = serverString + refuseUrl.getURL();
 		
 		String message = String.format(template, user.getLogin(), 
