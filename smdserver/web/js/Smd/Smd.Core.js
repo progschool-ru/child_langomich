@@ -46,6 +46,7 @@ Smd.Core = {
 
 		ajax : function(url, settings)
 		{
+			settings.type = "POST";
 			return jQuery.ajax(url, settings);
 		}
 	},

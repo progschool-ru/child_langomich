@@ -45,7 +45,7 @@ public class MainServlet extends SmdServlet
 
 		map.put("confirmRegistration", ConfirmRegistrationAction.class);
 		map.put("refuseRegistration", RefuseRegistrationAction.class);
-		map.put("registr", RegisterAction.class);
+		map.put("register", RegisterAction.class);
 		
 		map.put("maintenanceCreateDB", CreateDBAction.class);
 		map.put("maintenanceDeployDBTables", DeployDBTablesAction.class);

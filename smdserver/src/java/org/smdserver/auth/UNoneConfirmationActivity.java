@@ -9,12 +9,12 @@ import org.smdserver.users.UserEx;
 
 class UNoneConfirmationActivity implements UIConfirmationActivity
 {
-	public boolean process (IRegisterConfig config,
+	public AnswerKey process (IRegisterConfig config,
 			               ISmdServletContext context,
 						   HttpServletRequest request,
 			               UserEx user)
 	{
-		return true;
+		return AnswerKey.NULL_KEY;
 	}
 	
 	public String getForwardParam(UserEx user)
@@ -23,6 +23,6 @@ class UNoneConfirmationActivity implements UIConfirmationActivity
 		SmdUrl confirmUrl = new SmdUrl("action", "confirmRegistration",
 									 null, params);
 		params.put("userId", user.getUserId());
-		return confirmUrl.getURL();
+		return confirmUrl.getForwardPath();
 	}
 }

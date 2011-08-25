@@ -6,6 +6,7 @@ public interface IJSPConfig
 {
 	public String getBasePath();
 	public String getActionPath();
+	public String getPagePath();
 	String getServletPrefix(String servlet);
 
 	boolean containsMainTemplate(String page);

@@ -4,9 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.smdserver.core.ISmdServletContext;
 import org.smdserver.users.UserEx;
 
-public interface UIConfirmationActivity 
+interface UIConfirmationActivity 
 {
-	public boolean process (IRegisterConfig config,
+	public AnswerKey process (IRegisterConfig config,
 			               ISmdServletContext context,
 						   HttpServletRequest request,
 			               UserEx user);

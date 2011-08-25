@@ -39,10 +39,11 @@ public class RegisterAction extends SmdAction
 				IRegisterConfig config = factory.createRegisterConfig();
 				ConfirmationType type = config.getConfirmationType();
 				
-				type.getActivity().process(config,
+				AnswerKey answerKey = type.getActivity().process(config,
 						                   getServletContext(),
 						                   request,
 						                   user);
+				setAnswerParam(ActionParams.KEY, answerKey.getKey());
 				result = type.getActivity().getForwardParam(user);
 				
 				success = true;

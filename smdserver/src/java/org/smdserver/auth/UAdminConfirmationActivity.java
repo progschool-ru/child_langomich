@@ -5,9 +5,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.smdserver.core.ISmdServletContext;
 import org.smdserver.users.UserEx;
 
-public class UAdminConfirmationActivity implements UIConfirmationActivity
+class UAdminConfirmationActivity implements UIConfirmationActivity
 {
-	public boolean process (IRegisterConfig config,
+	public AnswerKey process (IRegisterConfig config,
 			               ISmdServletContext context,
 						   HttpServletRequest request,
 			               UserEx user)
@@ -17,7 +17,14 @@ public class UAdminConfirmationActivity implements UIConfirmationActivity
 															 config, request,
 				                                             locale);
 		
-		return mailer.notifyAdminAboutRegistrationRequest(user);
+		if(mailer.notifyAdminAboutRegistrationRequest(user))
+		{
+			return AnswerKey.REGISTER_CONFIRM_SENT_TO_ADMIN;
+		}
+		else
+		{
+			return AnswerKey.REGISTER_NOTIFICATION_WASNT_CREATED;
+		}
 	}
 	
 	public String getForwardParam(UserEx user)

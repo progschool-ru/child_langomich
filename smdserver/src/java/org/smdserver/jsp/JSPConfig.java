@@ -39,6 +39,11 @@ public class JSPConfig extends ResourceBundleBased implements IJSPConfig
 	{
 		return getServletPrefix("action");
 	}
+
+	public String getPagePath()
+	{
+		return getServletPrefix("page");
+	}
 	
 	public String getServletPrefix (String servlet)
 	{

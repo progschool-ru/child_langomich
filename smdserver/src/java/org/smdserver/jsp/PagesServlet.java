@@ -47,7 +47,8 @@ public class PagesServlet extends HttpServlet
 
 		if(!config.containsMainTemplate(page))
 		{
-			response.sendRedirect(PAGE_404);
+			SmdUrl u404 = new SmdUrl(PAGE_ACTION, PAGE_404);
+			response.sendRedirect(u404.getURL());
 			return;
 		}
 		
@@ -56,7 +57,8 @@ public class PagesServlet extends HttpServlet
 
 		if(config.needsAuthority(page) && !isLoggedIn)
 		{
-			response.sendRedirect(LOGIN_PAGE);
+			SmdUrl uLogin = new SmdUrl(PAGE_ACTION, LOGIN_PAGE);
+			response.sendRedirect(uLogin.getURL());
 			return;
 		}
 		

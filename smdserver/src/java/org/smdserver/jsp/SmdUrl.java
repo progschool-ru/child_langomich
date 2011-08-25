@@ -78,6 +78,21 @@ public class SmdUrl implements IUrl
 		}
 		return url;
 	}
+	
+	public String getForwardPath()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(servletAbsPath);
+		sb.append("/");
+		sb.append(action);
+		
+		if(getParamsURI() != null)
+		{
+			sb.append(action.indexOf('?') == -1 ? '?' : '&');
+			sb.append(paramsURI);
+		}
+		return sb.toString();
+	}
 
 	protected boolean isTheSamePath()
 	{

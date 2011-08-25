@@ -4,9 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.smdserver.core.ISmdServletContext;
 import org.smdserver.users.UserEx;
 
-public class UMailConfirmationActivity implements UIConfirmationActivity
+class UMailConfirmationActivity implements UIConfirmationActivity
 {
-	public boolean process (IRegisterConfig config,
+	public AnswerKey process (IRegisterConfig config,
 			               ISmdServletContext context,
 						   HttpServletRequest request,
 			               UserEx user)
@@ -21,7 +21,14 @@ public class UMailConfirmationActivity implements UIConfirmationActivity
 			mailer.notifyAdminAboutRegistrationRequest(user);
 		}
 		
-		return mailer.sendConfirmationMessage(user);
+		if(mailer.sendConfirmationMessage(user))
+		{
+			return AnswerKey.REGISTER_CONFIRM_SENT;
+		}
+		else
+		{
+			return AnswerKey.REGISTER_NOTIFICATION_WASNT_CREATED;
+		}
 	}
 	
 	public String getForwardParam(UserEx user)

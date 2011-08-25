@@ -171,7 +171,7 @@ Smd.AddWords = {
 
 		if(words.length == 0)
 		{
-			alert("This form was completed incorrectly");
+			alert("This form was filled in incorrectly");
 			return false;
 		}
 		

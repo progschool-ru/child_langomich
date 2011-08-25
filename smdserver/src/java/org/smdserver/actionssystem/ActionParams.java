@@ -8,6 +8,7 @@ public class ActionParams
 	public static final String DB_PASSWORD = "dbPassword";
 	public static final String DB_USER     = "dbUser";
 	public static final String EMAIL       = "email";
+	public static final String KEY         = "key";
 	public static final String LANGUAGE_ID = "languageId";
 	public static final String LANGUAGES= "languages";
 	public static final String LAST_CONNECTION = "lastConnection";
