@@ -85,7 +85,7 @@ class USmdCoreFactory implements ISmdCoreFactory
 	{
 		if(db != null)
 		{
-			return new UsersDBStorage(db, logger);
+			return new UsersDBStorage(db, logger, createCoreConfig().getSecret());
 		}
 		else
 		{

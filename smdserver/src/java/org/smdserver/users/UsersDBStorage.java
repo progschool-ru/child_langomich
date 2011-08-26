@@ -32,11 +32,13 @@ public class UsersDBStorage implements IUsersStorage
 	private String usersTable;
 	private String registrationRequestsTable;
 	private ISmdLogger logger;
+	private String secret;
 
-	public UsersDBStorage(ISmdDB db, ISmdLogger logger)
+	public UsersDBStorage(ISmdDB db, ISmdLogger logger, String secret)
 	{
 		this.db = db;
 		this.logger = logger;
+		this.secret = secret;
 		
 		this.usersTable = db.getTablesPrefix() + USERS_TABLE;
 		this.registrationRequestsTable = db.getTablesPrefix() + REGISTRATION_REQUESTS_TABLE;
@@ -166,7 +168,7 @@ public class UsersDBStorage implements IUsersStorage
 
 	String getPsw (String login, String password)
 	{
-		return getMD5Sum(getLoginKey(login) + password);
+		return getMD5Sum(secret + getLoginKey(login) + password);
 	}
 
 	String getPswById (String dbUserId)

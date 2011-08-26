@@ -54,7 +54,7 @@ public class WordsDBStorageTest
 		ISmdLogger logger = new ConsoleSmdLogger(System.out);//TODO: (3.low) Create logger in single place in tests
 		db = new SmdDB(config, logger);
 
-		IUsersStorage us = new UsersDBStorage(db, logger);
+		IUsersStorage us = new UsersDBStorage(db, logger, "");
 		assertTrue(us.createUser(USER_ID_WITH_WORDS, "lo1", "pa1", EMAIL, ABOUT));
 		assertTrue(us.createUser(USER_ID_WITH_EMPTY_LANGUAGE, "lo2", "pa2", EMAIL, ABOUT));
 		assertTrue(us.createUser(USER_ID_WITHOUT_LANGUAGES, "lo3", "pa3", EMAIL, ABOUT));

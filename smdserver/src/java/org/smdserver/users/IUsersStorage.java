@@ -17,5 +17,6 @@ public interface IUsersStorage
 	public User    getUserById (String userId);
 	public UserEx  getUserExById (String userId);
 	public boolean removeRegistratioinRequestById (String userId);
+	public boolean removeUserById (String userId);
 	public boolean setPassword (String login, String password);
 }

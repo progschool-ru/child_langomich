@@ -3,7 +3,6 @@ package org.smdserver.auth;
 import org.smdserver.core.WebParams;
 import org.smdserver.core.WebActions;
 import org.smdserver.core.UsersTestBase;
-import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebRequest;
 import org.json.JSONObject;
@@ -21,13 +20,13 @@ public class SetPasswordActionTest extends UsersTestBase
 	@BeforeClass
 	public static void setUpClass() throws Exception 
 	{
-		UsersTestBase.setUpClass();
+		fillUsers();
 	}
 
 	@AfterClass
 	public static void tearDownClass() throws Exception 
 	{
-		UsersTestBase.tearDownClass();
+		clearUsers();
 	}
 
 	@Before
@@ -71,5 +70,4 @@ public class SetPasswordActionTest extends UsersTestBase
 		assertFalse(failureLoginResponse.getBoolean(WebParams.SUCCESS));
 		assertTrue(successLoginResponse.getBoolean(WebParams.SUCCESS));
 	}
-
 }

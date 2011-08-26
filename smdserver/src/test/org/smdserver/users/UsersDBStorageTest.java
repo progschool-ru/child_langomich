@@ -39,7 +39,7 @@ public class UsersDBStorageTest
 		ISmdLogger logger = new ConsoleSmdLogger(System.out);
 		db = new SmdDB(config, logger);
 
-		instance = new UsersDBStorage(db, logger);
+		instance = new UsersDBStorage(db, logger, "");
 		boolean result = instance.createUser(FIRST_ID, FIRST_LOGIN, FIRST_PASSWORD, EMAIL, ABOUT);
 		assertTrue(result);
     }

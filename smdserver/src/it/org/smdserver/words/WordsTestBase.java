@@ -32,17 +32,14 @@ public class WordsTestBase extends UsersTestBase
 	@Before
 	public void setUp() throws Exception
 	{
-		UsersTestBase.setUpClass();
-		wordsStorage = getTestStorageHelper().openWordsStorage(getResource(), USER_ID);
+		fillUsers();
+		wordsStorage = getCore().getFactory().createWordsStorage();
 		
 		Word word = new Word(WORD_ORIG, WORD_TRAN, WORD_RATING);
 		Language language = new Language(LANGUAGE_ID, LANGUAGE_NAME, word);
 		List<Language> languages = new ArrayList<Language>();
 		languages.add(language);
-
 		wordsStorage.addUserWords(USER_ID, languages, WORD_MODIFIED);	
-		
-		
 		
 		wc = new WebConversation();
 		
@@ -57,9 +54,9 @@ public class WordsTestBase extends UsersTestBase
 	public void tearDown() throws Exception
 	{	
 		wc = null;
-		getTestStorageHelper().closeWordsStorage(getResource(), USER_ID);
+		wordsStorage.setUserWords(USER_ID, new ArrayList<Language>());
 		wordsStorage = null;
-		UsersTestBase.tearDownClass();		
+		clearUsers();	
 	}
 	
 	protected IWordsStorage getWordsStorage()
