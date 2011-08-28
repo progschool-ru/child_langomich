@@ -29,6 +29,7 @@ public class WordsDBStorage implements IWordsStorage
 																		" (w.original IS NULL     AND l.modified > ?     OR" +
 																		"  w.original IS NOT NULL );";
 	private static final String CLEAR_LANGUAGES = "DELETE FROM %1$s WHERE user_id = ?;";
+	private static final String GET_LANGUAGES = "SELECT * FROM %1$s WHERE user_id = ?";
 
 	private ISmdDB db;
 	private String languagesTable;
@@ -58,6 +59,26 @@ public class WordsDBStorage implements IWordsStorage
 			log(e);
 			return false;
 		}
+	}
+	
+	public List<Language> getLanguages(String userId)
+	{
+		ISmdStatement st = new SmdStatement();
+		st.addQuery(String.format(GET_LANGUAGES, languagesTable));
+		st.startSet(0);
+		st.addString(userId);
+		GetLanguagesParser parser = new GetLanguagesParser();
+		
+		try
+		{
+			db.select(st, parser);
+		}
+		catch(DbException e)
+		{
+			log(e);
+			return null;
+		}
+		return parser.languages;
 	}
 
 	public List<Language> getLatestUserWords(String userId, long lastModified)
@@ -150,6 +171,25 @@ public class WordsDBStorage implements IWordsStorage
 		st.addQuery(String.format(query, wordsTable, languagesTable));
 		st.startSet(0);
 		return st;
+	}
+	
+	private class GetLanguagesParser implements IMultipleResultParser
+	{
+		List<Language> languages;
+		
+		public int parse(ResultSet set) throws SQLException
+		{
+			int count = 0;
+			languages = new ArrayList<Language>();
+			while(set.next())
+			{
+				Language language = new Language(set.getString("language_id"), 
+						                         set.getString("name"));
+				languages.add(language);
+				count++;
+			}
+			return count;
+		}
 	}
 
 	private class LanguagesCreatorParser implements IMultipleResultParser
