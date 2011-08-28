@@ -98,7 +98,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		workFormReset();
 	}
 
- 	public void workFormReset()
+ 	public void workFormReset()//TODO: (1.high) Уже при 50 словах тормозит: долго появляются новые слова и долго выдаётся результат пользователю. Попытаься найти узкое место и устранить его в первую очередь. (по коду разбросаны указания на разные неоптимальности, все сразу их исправлять не нужно - исправим постепенно по мере добирания рук. Начать нужно именно с узкого места).
 	{
             dictionary = new Dictionary(settings.getLanguage(), Boolean.TRUE);
             workForm.removeCommand(OK);

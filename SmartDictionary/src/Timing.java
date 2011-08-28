@@ -45,7 +45,7 @@ public class Timing extends Thread
                 String c = hc.getHeaderField("Set-Cookie");
 				hc.close();
 
-                hc = (HttpConnection)Connector.open("http://"+settings.getURL() + ACTION_PATH + "/addWords");// TODO: (3.low) Попытки загрузить более 20 слов по JPRS почти всегда неудачны. Выяснить с чем это связано. Попытаться исправить, ведь OperaMini может грузить достаточно большие страницы, значит и мы можем. (возможно, для этого придётся доработать серверный API)
+                hc = (HttpConnection)Connector.open("http://"+settings.getURL() + ACTION_PATH + "/addWords");// TODO: (1.high) Попытки загрузить более 20 слов по JPRS почти всегда неудачны. Выяснить с чем это связано. Попытаться исправить, ведь OperaMini может грузить достаточно большие страницы, значит и мы можем. (возможно, для этого придётся доработать серверный API)
                 hc.setRequestMethod(HttpConnection.POST);
                 hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
                 hc.setRequestProperty("Cookie", c);
