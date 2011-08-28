@@ -31,9 +31,9 @@ Smd.RegistrationUsers = {
 	{
 		try
 		{
-			this.api.ajax(this.serverModule.getUrl("smd://action/register"),
+			this.api.ajax("smd://action/register",
 				{
-					async : false,
+					async : true,
 					context : this,
 					data : {
 						login:    form.login.value,
@@ -41,19 +41,10 @@ Smd.RegistrationUsers = {
 						email:    form.email.value,
 						about:    form.about.value
 					},
-					success : function(event, textStatus, response)
+					success : this.handleAnswer,
+					error : function(answer)
 					{
-						var preparing = this.api.unescapeFromJavaString(response.responseText.trim());
-						var answer = JSON.parse(preparing);
-						
-						if(!answer.success)
-						{
-							allert(answer.message);
-						}
-						else
-						{
-							this.handleAnswer(answer);
-						}
+						alert(answer.message);
 					}
 				});
 		}

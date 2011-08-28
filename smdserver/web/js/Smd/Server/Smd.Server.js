@@ -25,14 +25,12 @@ Smd.Server = {
 
 	_loadLanguages : function(async)
 	{
-		var postfix =  "?_dc=" + new Date().getTime();
-		this.api.ajax(this.getUrl("smd://action/getLanguages") + postfix,
+		this.api.ajax("smd://action/getLanguages",
 			{
 				async : async,
 				context : this,
-				success : function(event, textStatus, response){
-					var preparing = this.api.unescapeFromJavaString(response.responseText.trim());
-					var responseObject = JSON.parse(preparing);
+				success : function(responseObject)
+				{
 					this._languages = responseObject.languages;
 				}
 			});

@@ -119,6 +119,38 @@ Smd.AddWords = {
 
 	handleSubmit : function (form)
 	{
+		try
+		{
+			var data = this.getDataValue(form);
+			this.sendRequest(data);
+		}
+		catch(e)
+		{
+			this.api.log(e);
+		}
+		return false;
+	},
+	
+	sendRequest : function(data)
+	{
+		this.api.ajax("smd://action/addWords",
+			{
+				async : true,
+				context : this,
+				data : {data:data},
+				success : function()
+				{
+					document.location.reload();
+				},
+				error : function(answer)
+				{
+					alert("Error during request: " + answer.message);
+				}
+			});		
+	},
+	
+	getDataValue : function(form)
+	{
 		var date = new Date().getTime();
 		var r = 0;
 
@@ -176,8 +208,7 @@ Smd.AddWords = {
 					words:words
 				}]
 		};
-		form.data.value = this.api.escapeToJavaString(JSON.stringify(data));
-		return true;
+		return this.api.escapeToJavaString(JSON.stringify(data));
 	},
 
 	callOfSpeed : function(element, func, speed, callback)

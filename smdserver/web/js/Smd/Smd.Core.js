@@ -31,6 +31,11 @@ Smd.Core = {
 		}
 		return false;
 	},
+	
+	setServerModuleName : function(name)
+	{
+		this._serverModuleName = name;
+	},
 
 	API : {
 		$ : $,
@@ -54,14 +59,52 @@ Smd.Core = {
 		{
 			return Smd.Unicode.quickUnescapeFromUtf16(value);
 		},
-
-		ajax : function(url, settings)
+		
+		log : function(message)
 		{
+			console.log(message);
+		},
+
+		ajax : function(innerUrl, settings)
+		{
+			var core = Smd.Core;
+			var scope = this;
+			var url = core._modules[core._serverModuleName].getUrl(innerUrl);
+			
 			settings.type = "POST";
+			
+			var success = settings.success;
+			var error = settings.error;
+			
+			settings.success = function(event, textStatus, response)
+			{
+				var preparing = scope.unescapeFromJavaString(response.responseText.trim());
+				var answer = JSON.parse(preparing);
+
+				if(answer.success)
+				{
+					success.call(settings.context, answer);
+				}
+				else
+				{
+					error.call(settings.context, answer);
+				}				
+			}
+
+			settings.error = function(jqXHR, textStatus, errorThrown)
+			{
+				scope.log("error during request: " + url)
+				scope.log(jqXHR);
+				scope.log(textStatus);
+				scope.log(errorThrown);
+				error.call(settings.context);
+			}
+
 			return jQuery.ajax(url, settings);
 		}
 	},
 	
 	_modules : {},
-	_apps    : []
+	_apps    : [],
+	_serverModuleName : null
 };
