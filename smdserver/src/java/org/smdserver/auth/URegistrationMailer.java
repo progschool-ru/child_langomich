@@ -33,7 +33,7 @@ class URegistrationMailer
 	
 	public boolean notifyAboutConfirmation(UserEx user)
 	{
-		return sendNotifiactionAboutConfirmation(user, config.getAdminEmail(),
+		return sendNotifiactionAboutConfirmation(user, user.getEmail(),
 				        locale.getNotifyUserAboutConfirmationBody(), 
 				        locale.getNotifyUserAboutConfirmationSubject());
 	}
