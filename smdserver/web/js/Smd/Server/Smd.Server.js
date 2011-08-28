@@ -1,13 +1,9 @@
 Smd = window.Smd || {};
 Smd.Server = {
-	Module : function(api, params, dontLoadWords)
+	Module : function(params)
 	{
-		this.api = api;
 		this._servletPaths = params.servletPaths;
 		this._basePath = params.basePath;
-
-		if(!dontLoadWords)
-			this._loadWords(false);
 	},
 
 	getUrl : function(internalUrl)
@@ -20,26 +16,29 @@ Smd.Server = {
 
 	getLanguages : function()
 	{
+		if(!this._languages)
+		{
+			this._loadLanguages(false);
+		}
 		return this._languages;
 	},
 
-	_loadWords : function(async)
+	_loadLanguages : function(async)
 	{
 		var postfix =  "?_dc=" + new Date().getTime();
-		this.api.ajax(this.getUrl("smd://action/getWords") + postfix,
+		this.api.ajax(this.getUrl("smd://action/getLanguages") + postfix,
 			{
 				async : async,
 				context : this,
 				success : function(event, textStatus, response){
 					var preparing = this.api.unescapeFromJavaString(response.responseText.trim());
-					this._words = JSON.parse(preparing);
-					this._languages = this._words.languages;
+					var responseObject = JSON.parse(preparing);
+					this._languages = responseObject.languages;
 				}
 			});
 	},
 
-	_words : null,
-	_languages : [],
+	_languages : null,
 
 	SMD_PROTOCOL_PREFIX_LENGTH : "smd://".length
 }

@@ -9,7 +9,7 @@
 <jsp:useBean id="pageBean" class="org.smdserver.jsp.PagesBean" scope="request"/>
 function initModules()
 {
-	Smd.Core.addModule("server", Smd.Server.Module, 
+	Smd.Core.addModule("server", Smd.Server, 
 					{
 						servletPaths : {
 							action: "${pageBean.JSPConfig.actionPath}",
@@ -17,8 +17,8 @@ function initModules()
 						},
 						basePath : "<%=request.getContextPath()%>"
 					});
-	Smd.Core.addModule("addWords", Smd.AddWords.Module, "server");
-	Smd.Core.addModule("registractionUsers", Smd.RegistrationUsers.Module, "server");
+	Smd.Core.addModule("addWords", Smd.AddWords, "server");
+	Smd.Core.addModule("registractionUsers", Smd.RegistrationUsers, "server");
 }
 
 function createApps()

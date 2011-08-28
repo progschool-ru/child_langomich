@@ -1,13 +1,6 @@
 Smd.AddWords = {
-	Module : function(api, serverModuleName)
+	Module : function()
 	{
-		this.api = api;
-
-		this.App = function(params)
-		{
-			Smd.AddWords.App.call(this, api, serverModuleName, params);
-		}
-		this.App.prototype = Smd.AddWords;
 	},
 
 	App : function(api, serverModuleName, container)

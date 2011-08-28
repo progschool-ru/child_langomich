@@ -3,7 +3,18 @@ Smd = {}
 Smd.Core = {
 	addModule : function(name, module, params)
 	{
-		this._modules[name] = new module(this.API, params);
+		var instance = new module.Module(params);
+		this._modules[name] = instance;
+		instance.api = this.API;
+		
+		if(module.App)
+		{
+			instance.App = function(instanceParams)
+			{
+				module.App.call(this, instance.api, params, instanceParams);
+			}
+			instance.App.prototype = module;
+		}
 	},
 
 	getModule : function(name)

@@ -1,13 +1,6 @@
 Smd.RegistrationUsers = {
-	Module : function(api, serverModuleName)
+	Module : function()
 	{
-		this.api = api;
-
-		this.App = function(params)
-		{
-			Smd.RegistrationUsers.App.call(this, api, serverModuleName, params);
-		}
-		this.App.prototype = Smd.RegistrationUsers;
 	},
 	
 	App : function(api, serverModuleName, container)
