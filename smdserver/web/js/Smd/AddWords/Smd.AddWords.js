@@ -133,7 +133,7 @@ Smd.AddWords = {
 	
 	sendRequest : function(data)
 	{
-		this.api.ajax("smd://action/addWords",
+		this.serverModule.ajax("smd://action/addWords",
 			{
 				async : true,
 				context : this,

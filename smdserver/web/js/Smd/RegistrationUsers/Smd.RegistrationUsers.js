@@ -31,7 +31,7 @@ Smd.RegistrationUsers = {
 	{
 		try
 		{
-			this.api.ajax("smd://action/register",
+			this.serverModule.ajax("smd://action/register",
 				{
 					async : true,
 					context : this,

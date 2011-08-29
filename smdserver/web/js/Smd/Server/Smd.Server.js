@@ -13,6 +13,42 @@ Smd.Server = {
 		var action = internalUrl.substring(servletLength);
 		return this._basePath + this._servletPaths[servlet] + action;
 	},
+	
+	ajax : function(innerUrl, settings)
+	{
+		var url = this.getUrl(innerUrl);
+		var api = this.api;
+		
+		settings.type = "POST";
+		var success = settings.success;
+		var error = settings.error;
+
+		settings.success = function(event, textStatus, response)
+		{
+			var preparing = api.unescapeFromJavaString(response.responseText.trim());
+			var answer = JSON.parse(preparing);
+
+			if(answer.success)
+			{
+				success.call(settings.context, answer);
+			}
+			else
+			{
+				error.call(settings.context, answer);
+			}				
+		}
+
+		settings.error = function(jqXHR, textStatus, errorThrown)
+		{
+			api.log("error during request: " + url)
+			api.log(jqXHR);
+			api.log(textStatus);
+			api.log(errorThrown);
+			error.call(settings.context);
+		}
+		
+		return this.api.ajax(url, settings);
+	},
 
 	getLanguages : function()
 	{
@@ -25,7 +61,7 @@ Smd.Server = {
 
 	_loadLanguages : function(async)
 	{
-		this.api.ajax("smd://action/getLanguages",
+		this.ajax("smd://action/getLanguages",
 			{
 				async : async,
 				context : this,

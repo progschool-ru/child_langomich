@@ -17,7 +17,6 @@ function initModules()
 						},
 						basePath : "<%=request.getContextPath()%>"
 					});
-	Smd.Core.setServerModuleName("server");
 	Smd.Core.addModule("addWords", Smd.AddWords, "server");
 	Smd.Core.addModule("registractionUsers", Smd.RegistrationUsers, "server");
 }
