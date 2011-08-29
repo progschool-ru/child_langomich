@@ -317,3 +317,24 @@ p.footer-output-date
 	padding: .7em 0 0 2em;
 }
 /******** end of Footer *********/
+
+
+/********* Register form *********/
+.b-register_input
+{
+	width: 100%;
+	max-width: 30em;
+}
+
+.b-register_area
+{
+	width: 100%;
+	min-width: 20em;
+	min-height: 6em;
+}
+
+.b-register_description
+{
+	font-size: small;
+}
+/********* en of Register form ***********/

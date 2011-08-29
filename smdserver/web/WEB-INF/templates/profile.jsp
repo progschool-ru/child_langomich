@@ -4,7 +4,7 @@
 				 redirect="smd://page/profile" mode="url"/>">
 	<table>
 	<tr>
-			<td>Password:</td>
+			<th>Password:</th>
 			<td><input  type="password" size="30"
 						name="password"></td>
 	</tr>
