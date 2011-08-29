@@ -45,6 +45,9 @@
 				Development: Sergei Skripnikov, <smd:ahref text="ProgSchool" url="http://progschool.ru"/>
 			</p>
 			<p>
+				Design: <a href="http://cat-terrorist.livejournal.com"><img width="14px" height="14px" style="vertical-align: middle; border: 0; padding-right: 1px;" src="http://l-stat.livejournal.com/img/userinfo.gif?v=3"/></a><a href="http://cat-terrorist.livejournal.com"><b>cat_terrorist</b></a>
+			</p>
+			<p>
 				E-Mail: <smd:ahref text="admin@omich.net" url="mailto: admin@omich.net?subject=for smd"/>
 			</p>
 			<p class="footer-output-date">
