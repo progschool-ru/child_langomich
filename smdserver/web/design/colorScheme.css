@@ -12,7 +12,6 @@ a:visited { color: #308; }
 .header-menu a:link { color: #dadaff; }
 .header-menu a:visited { color: #f0e0ff; }
 
-.main { background-color:white; }
 .toolbar-menu
 {
 	background-color: silver;
@@ -21,4 +20,4 @@ a:visited { color: #308; }
 	background-image: -webkit-gradient(linear, left bottom,	left top,
 	                                  color-stop(0, #888), color-stop(1, #ddd));
 }
-.footer { background-color: white; }
+.footer { border-bottom-color: #a9a9a9;}
