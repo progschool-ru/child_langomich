@@ -17,12 +17,12 @@ Smd.RegistrationUsers = {
 		
 		form.submit(function(){return scope.handleSubmit(this);});
 		
-		container.append(this.createTextInputPair("Login:", "login", this.LOGIN_REGEX, "<p>Must contain at least 2 symbols. Only english letters and digits are allowed.</p>"));
-		container.append(this.createTextInputPair("Password:", "password"));
-		container.append(this.createTextInputPair("E-Mail:", "email", this.EMAIL_REGEX));
-		container.append(this.createAboutPair("About:", "about", "<p>Who are you and how did you know about LangOmich?</p><p>This information won't be published. We are just interested to know.</p>"));
+		container.append(this.createTextInputPair(this.i18n("RegistrationUsers.LOGIN"), "login", this.LOGIN_REGEX, this.i18n("RegistrationUsers.LOGIN_DESCRIPTION")));
+		container.append(this.createTextInputPair(this.i18n("RegistrationUsers.PASSWORD"), "password"));
+		container.append(this.createTextInputPair(this.i18n("RegistrationUsers.EMAIL"), "email", this.EMAIL_REGEX));
+		container.append(this.createAboutPair(this.i18n("RegistrationUsers.ABOUT"), "about", this.i18n("RegistrationUsers.ABOUT_DESCRIPTION")));
 		form.append(this.$("<br/>"));
-		form.append(this.createInput({type: "submit", value: "Register"}));
+		form.append(this.createInput({type: "submit", value: this.i18n("RegistrationUsers.SUBMIT")}));
 
 		return form;
 	},
@@ -106,6 +106,11 @@ Smd.RegistrationUsers = {
 		descriptionContainer.append(description || "&nbsp;");
 		div.append(descriptionContainer);
 		return div;
+	},
+	
+	i18n: function(key)
+	{
+		return this.localeModule.get(key);
 	},
 	
 	TEXT_INPUT_CLASS:  "b-register_input",
