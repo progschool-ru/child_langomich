@@ -1,0 +1,39 @@
+html { font-family:  Helvetica, sans-serif; }
+
+a { text-decoration: underline; }
+
+.alink
+{
+	border:none;
+	border-bottom: 1px dashed;
+	padding: 0;
+	cursor: pointer;
+	display: inline-block;
+}
+
+/******* Tables *********/
+table
+{
+	display:block;
+	border-collapse: separate;
+	border-spacing: 2px;
+	padding: .3em;
+	border-width: 1px;
+	border-style: solid;
+	
+	-webkit-border-radius: .5em;
+	-moz-border-radius: .5em;
+	border-radius: .5em;
+}
+
+th 
+{
+	font-weight: normal;	
+}
+
+td, th
+{
+	padding:.2em .5em;
+}
+
+/******** End of Tables ********/

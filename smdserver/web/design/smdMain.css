@@ -1,17 +1,17 @@
 @import 'cssReset.css';
 @import 'colorScheme.css';
+@import 'textDecoration.css';
+
 @import 'addWords/addWords.css';
+@import 'words/words.css';
 
 /* 
  * конвертер изображений в data URI: http://www.sveinbjorn.org/dataurlmaker 
  * или http://websemantics.co.uk/online_tools/image_to_data_uri_convertor/ 
  */
 
-html
-{
-	font-family:  Helvetica, sans-serif;
-	height: 100%;
-}
+html { height: 100%;}
+
 body
 { 
 	margin: 0em .5em;
@@ -20,17 +20,6 @@ body
 	background-size: 300px 306px;
 	min-height: 100%;
 	position: relative;
-}
-
-a { text-decoration: underline; }
-
-.alink
-{
-	border:none;
-	border-bottom: 1px dashed;
-	padding: 0;
-	cursor: pointer;
-	display: inline-block;
 }
 
 div { position: relative; }
@@ -213,18 +202,6 @@ div { position: relative; }
 	padding-right: 1em;
 }
 /** end of content **/
-
-/******** Words ***********/
-table.words td, table.words th
-{
-	border: 1px solid;
-	padding: .5em;
-}
-table.words caption
-{
-	display: none;
-}
-/******** end of Words *********/
 
 /******** Side Panel *********/
 .toolbar

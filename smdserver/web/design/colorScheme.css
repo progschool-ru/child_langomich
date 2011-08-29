@@ -1,4 +1,6 @@
 html { background-color:#a9a9a9; }
+
+/***************** General elements **********************/
 a:link { color: #008; }
 a:visited { color: #308; }
 .alink
@@ -6,6 +8,66 @@ a:visited { color: #308; }
 	color: #008;
 	border-bottom-color: #008;
 }
+/***** Tables ********/
+table
+{
+	border-color: #aaa;
+	
+
+	background-image: -moz-linear-gradient( bottom,	
+		                                    rgba(210, 210, 210, 0.5), 
+											rgba(250, 250, 250, 0.5));
+	background-image: -o-linear-gradient( bottom, 
+		                                  rgba(210, 210, 210, .5),	
+										  rgba(250, 250, 250, .5));
+	background-image: -webkit-gradient( linear, left bottom, left top,
+	                                    color-stop(0, rgba(210, 210, 210, .5)), 
+									    color-stop(1, rgba(250, 250, 250, .5)));
+	background-image: linear-gradient( bottom, 
+		                               rgba(210, 210, 210, .5), 
+									   rgba(250, 250, 250, .5));	
+}
+
+th
+{
+	background-color: #e8e8e8;
+	background-image: -moz-linear-gradient( left, #f4f4f4, #e0e0e0);
+	background-image: -o-linear-gradient( left, 
+		                                  #f4f4f4,	
+										  #e0e0e0);
+	background-image: -webkit-gradient( linear, left bottom,	right bottom,
+	                                    color-stop(0, #f4f4f4), 
+									    color-stop(1, #e0e0e0));
+	background-image: linear-gradient( left, 
+		                               #f4f4f4, 
+									   #e0e0e0);	
+}
+
+td
+{
+	background-color: #f8f8f8;
+	background-image: -moz-linear-gradient( left, #ffffff, #f0f0f0);
+	background-image: -o-linear-gradient( left, 
+		                                  #ffffff,	
+										  #f0f0f0);
+	background-image: -webkit-gradient( linear, left bottom,	right bottom,
+	                                    color-stop(0, #ffffff), 
+									    color-stop(1, #f0f0f0));
+	background-image: linear-gradient( left, 
+		                               #ffffff, 
+									   #f0f0f0);	
+}
+
+td, th
+{
+	-webkit-box-shadow:  2px 2px 2px #999;
+	-moz-box-shadow: 2px 2px 2px #999;
+	box-shadow: 2px 2px 2px #999;	
+}
+/*****End of tables ********/
+
+
+/***************** End of general elements ******************/
 
 
 .header-menu .current { background-color: white; }
@@ -19,5 +81,6 @@ a:visited { color: #308; }
 	background-image: -o-linear-gradient( bottom, #888,	#ddd);
 	background-image: -webkit-gradient(linear, left bottom,	left top,
 	                                  color-stop(0, #888), color-stop(1, #ddd));
+	background-image: linear-gradient(bottom, #888, #ddd);
 }
 .footer { border-bottom-color: #a9a9a9;}

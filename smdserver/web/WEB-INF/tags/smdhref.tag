@@ -4,6 +4,7 @@
 <%@attribute name="redirectSuccess" required="false" rtexprvalue="true"%>
 <%@attribute name="redirectFailure" required="false" rtexprvalue="true"%>
 <%@attribute name="mode" required="false" rtexprvalue="true"%>
+<%@attribute name="cssClass" required="false" %>
 
 <%@tag trimDirectiveWhitespaces="true"%>
 <%@tag import="org.smdserver.jsp.*"%>
@@ -27,6 +28,7 @@
 			                 (String)jspContext.getAttribute("text"),
 					         pageBean.getCurrentUrl(),
 					         params);
+	link.setCSSClass((String)jspContext.getAttribute("cssClass"));
 
 	SmdLink targetLink = link instanceof SmdLink ? (SmdLink)link : null;
 	if(redirect != null)
