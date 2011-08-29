@@ -1,13 +1,10 @@
 Smd.AddWords = {
-	Module : function()
-	{
-	},
-
-	App : function(api, serverModuleName, container)
+	App : function(api, params, container)
 	{
 		this.api = api;
 		this.$ = api.$;
-		this.serverModule = api.getModule(serverModuleName);
+		this.serverModule = api.getModule(params.serverModuleName);
+		this.localeModule = api.getModule(params.localeModuleName);
 		this.$(container).append(this.createForm());
 	},
 
@@ -35,7 +32,8 @@ Smd.AddWords = {
 
 		new this.Words(this.api, form, createButtonContainer,
 						this.INPUT_NAME_ORIGINAL,
-						this.INPUT_NAME_TRANSLATION);
+						this.INPUT_NAME_TRANSLATION,
+						this.i18n(this.MORE_BUTTON_LABEL));
 
 		form.append(
 			createButtonContainer().append(this.createSubmitButton())
@@ -71,7 +69,7 @@ Smd.AddWords = {
 		comboboxS.append(select);
 
 		var newLangButton = this.$("<div/>");
-		newLangButton.append(this.NEW_LANGUAGE_BUTTON_LABEL);
+		newLangButton.append(this.i18n(this.NEW_LANGUAGE_BUTTON_LABEL));
 		newLangButton.addClass(this.ALINK_CLASS);
 		newLangButton.addClass(this.LANGUAGE_BUTTON_CLASS);
 		comboboxS.append(newLangButton);
@@ -87,7 +85,7 @@ Smd.AddWords = {
 		comboboxN.append(newLangInput);
 
 		var existLangButton = this.$("<div/>");
-		existLangButton.append(this.EXISTING_LANGUAGE_BUTTON_LABEL);
+		existLangButton.append(this.i18n(this.EXISTING_LANGUAGE_BUTTON_LABEL));
 		existLangButton.addClass(this.ALINK_CLASS);
 		existLangButton.addClass(this.LANGUAGE_BUTTON_CLASS);
 		comboboxN.hide();
@@ -95,7 +93,7 @@ Smd.AddWords = {
 
 		var scope = this;
 		newLangButton.click(function(){
-			newLangInput.attr("value", scope.LANGUAGE_INPUT_TEXT);
+			newLangInput.attr("value", scope.i18n(scope.LANGUAGE_INPUT_TEXT));
 			scope.switchElements(comboboxS, comboboxN, null,
 				function(){newLangInput.focus().select();});
 		})
@@ -113,7 +111,7 @@ Smd.AddWords = {
 	{
 		var submit = this.$("<input type='submit'/>");
 		submit.addClass(this.SUBMIT_BUTTON_CLASS);
-		submit.attr("value",this.SUBMIT_BUTTON_LABEL);
+		submit.attr("value",this.i18n(this.SUBMIT_BUTTON_LABEL));
 		return submit;
 	},
 
@@ -235,6 +233,11 @@ Smd.AddWords = {
 		this.callOfSpeed(hideElem, hideElem.hide, speed, fun);
 		this.callOfSpeed(showElem, showElem.show, speed, fun);
 	},
+	
+	i18n: function(key)
+	{
+		return this.localeModule.get(key);
+	},
 
 	INPUT_NAME_ORIGINAL    : "original",
 	INPUT_NAME_TRANSLATION : "translation",
@@ -242,12 +245,13 @@ Smd.AddWords = {
 	
 	BUTTON_CONTAINER_CLASS : "b-addWords_button-container",
 	SUBMIT_BUTTON_CLASS    : "b-addWords_submit-button",
-	SUBMIT_BUTTON_LABEL    : "Submit",
+	SUBMIT_BUTTON_LABEL    : "AddWords.SUBMIT",
 
 	LANGUAGE_BUTTON_CLASS  : "b-addWords_language-button",
 	LANGUAGE_INPUT_CLASS   : "b-addWords_language-input",
-	LANGUAGE_INPUT_TEXT    : "langName",
+	LANGUAGE_INPUT_TEXT    : "AddWords.NEW_LANGUAGE_INPUT",
 	LANGUAGE_CONTAINER_CLASS : "b-addWords_language-container",
-	NEW_LANGUAGE_BUTTON_LABEL : "New Language",
-	EXISTING_LANGUAGE_BUTTON_LABEL : "Existing Language"
+	MORE_BUTTON_LABEL              : "AddWords.MORE",
+	NEW_LANGUAGE_BUTTON_LABEL      : "AddWords.NEW_LANGUAGE",
+	EXISTING_LANGUAGE_BUTTON_LABEL : "AddWords.EXISTING_LANGUAGE"
 }

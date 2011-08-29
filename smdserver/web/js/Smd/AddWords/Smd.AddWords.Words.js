@@ -1,10 +1,12 @@
 Smd.AddWords.Words = function(api, element, createButtonContainerFunction,
-								inputNameOriginal, inputNameTranslation)
+								inputNameOriginal, inputNameTranslation,
+								moreText)
 {
 	this.$ = api.$;
 	this._pairsCounter = 0;
 	this._original = inputNameOriginal;
 	this._translation = inputNameTranslation;
+	this._moreText = moreText;
 	
 	var wordsFieldset = this.$("<fieldset/>");
 	element.append(wordsFieldset);
@@ -28,7 +30,7 @@ Smd.AddWords.Words.prototype = {
 		var more = this.$("<div/>");
 		more.addClass(this.MORE_BUTTON_CLASS);
 		more.addClass(this.ALINK_CLASS);
-		more.append(this.MORE_BUTTON_LABEL);
+		more.append(this._moreText);
 		more.click(clickHandler);
 		return more;
 	},
@@ -125,7 +127,6 @@ Smd.AddWords.Words.prototype = {
 	LESS_BUTTON_CLASS       : "b-addWords_less-button",
 	LESS_BUTTON_LABEL       : "Less",
 	MORE_BUTTON_CLASS       : "b-addWords_more-button",
-	MORE_BUTTON_LABEL       : "More",
 	PAIR_DIV_CLASS          : "b-addWords_pair-div",
 	PAIR_INPUT_CLASS        : "b-addWords_pair-text-input"
 }

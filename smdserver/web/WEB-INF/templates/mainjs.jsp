@@ -5,6 +5,7 @@
 <jsp:include page="/js/Smd/AddWords/Smd.AddWords.Words.js"/>
 <jsp:include page="/js/Smd/RegistrationUsers/Smd.RegistrationUsers.js"/>
 <jsp:include page="/js/Smd/Smd.Unicode.js"/>
+<jsp:include page="/js/Smd/Locale/Smd.Locale.js"/>
 
 <jsp:useBean id="pageBean" class="org.smdserver.jsp.PagesBean" scope="request"/>
 function initModules()
@@ -17,8 +18,15 @@ function initModules()
 						},
 						basePath : "<%=request.getContextPath()%>"
 					});
-	Smd.Core.addModule("addWords", Smd.AddWords, "server");
-	Smd.Core.addModule("registractionUsers", Smd.RegistrationUsers, "server");
+	Smd.Core.addModule("locale", Smd.Locale);
+	Smd.Core.addModule("addWords", Smd.AddWords, {
+							serverModuleName:"server", 
+							localeModuleName:"locale"
+						});
+	Smd.Core.addModule("registractionUsers", Smd.RegistrationUsers, {
+							serverModuleName:"server", 
+							localeModuleName:"locale"
+						});
 }
 
 function createApps()

@@ -18,6 +18,7 @@
 	<fmt:message key="footerMenu.downloads" var="lFooterMenuDownloads"/>
 	<fmt:message key="progSchool" var="lProgSchool"/>
 	<fmt:message key="toolbarTitle" var="lToolbarTitle"/>
+	<fmt:message key="jsLocale" var="lJSLocale"/>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -26,6 +27,7 @@
 		<link rel="stylesheet" href="<%= request.getContextPath() %>/design/smdMain.css"/>
 		<script src="<%= request.getContextPath() %>/js/lib/jquery-1.6.2.js"></script>
 		<script src="<smd:varurl url="smd://page/main.js"/>"></script>
+		<script src="<%= request.getContextPath() %>/js/Smd/Locale/Smd.Locale.${lJSLocale}"></script>
 	</head>
 	<body>
 		<div class="header">

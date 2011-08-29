@@ -1,13 +1,10 @@
 Smd.RegistrationUsers = {
-	Module : function()
-	{
-	},
-	
-	App : function(api, serverModuleName, container)
+	App : function(api, params, container)
 	{
 		this.api = api;
 		this.$ = api.$;
-		this.serverModule = api.getModule(serverModuleName);
+		this.serverModule = api.getModule(params.serverModuleName);
+		this.localeModule = api.getModule(params.localeModuleName);
 		this.$(container).append(this.createForm());
 	},
 	
