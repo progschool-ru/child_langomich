@@ -1,17 +1,21 @@
 <%@attribute name="languages" required="true" rtexprvalue="true" type="java.util.List"%>
+<%@attribute name="localeName" rtexprvalue="true"%>
 <%@tag trimDirectiveWhitespaces="true"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="smd" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="i" value="1"/>
 
 <table class="words">
-	<caption>Words</caption>
-	<tr>
-		<th align="left">Original</th>
-		<th align="left">Translation</th>
-		<th align="left">Language</th>
-		<th align="left">Rating</th>
-	</tr>
+	<fmt:bundle basename="${localeName}" prefix="jsp.words.">
+		<caption><fmt:message key="words"/></caption>
+		<tr>
+			<th align="left"><fmt:message key="original"/></th>
+			<th align="left"><fmt:message key="translation"/></th>
+			<th align="left"><fmt:message key="language"/></th>
+			<th align="left"><fmt:message key="rating"/></th>
+		</tr>
+	</fmt:bundle>
 	<c:forEach var="language" items="${languages}">
 		<c:forEach var="word" items="${language.words}">
 			<c:choose>
