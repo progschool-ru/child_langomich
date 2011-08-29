@@ -2,6 +2,7 @@ package org.smdserver.jsp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import org.smdserver.core.small.ResourceBundleBased;
 
@@ -12,17 +13,13 @@ public class JSPConfig extends ResourceBundleBased implements IJSPConfig
 	private static final String PAGES_PREFIX = "pages.";
 	
 	private String basePath;
-	
-	public JSPConfig(String configFile, String basePath)
-	{
-		super(ResourceBundle.getBundle(configFile));
-		this.basePath = basePath;
-	}
-	
-	public JSPConfig(ResourceBundle rb, String basePath)
+	private String localeResource;
+		
+	public JSPConfig(ResourceBundle rb, String basePath, String localeResource)
 	{
 		super(rb);
 		this.basePath = basePath;
+		this.localeResource = localeResource;
 	}
 	
 	public String getWebCharset()
@@ -72,8 +69,9 @@ public class JSPConfig extends ResourceBundleBased implements IJSPConfig
 	}
 	
 
-	public List<ILink> createMenu(String menu, SmdUrl currentLink)
+	public List<ILink> createMenu(String menu, SmdUrl currentLink, Locale locale)
 	{
+		ResourceBundle rb = ResourceBundle.getBundle(localeResource, locale);
 		String menuPrefix = "menu." + menu + ".";
 		String [] items = getString(menuPrefix + "items").split(",");
 		List<ILink> list = new ArrayList<ILink>();
@@ -82,7 +80,8 @@ public class JSPConfig extends ResourceBundleBased implements IJSPConfig
 		for(String item : items)
 		{
 			String url = getString(menuPrefix + item + ".url");
-			String text = getString(menuPrefix + item + ".text");
+			String textKey = getString(menuPrefix + item + ".text");
+			String text = rb.getString(textKey);
 			list.add(creator.createLink(url, text, currentLink, null));
 		}
 		return list;

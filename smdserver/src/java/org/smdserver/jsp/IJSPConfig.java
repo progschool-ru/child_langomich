@@ -1,6 +1,7 @@
 package org.smdserver.jsp;
 
 import java.util.List;
+import java.util.Locale;
 
 public interface IJSPConfig 
 {
@@ -16,7 +17,7 @@ public interface IJSPConfig
 	String getDefaultHandler();
 	
 	boolean needsAuthority(String page);
-	List<ILink> createMenu(String menu, SmdUrl currentLink);
+	List<ILink> createMenu(String menu, SmdUrl currentLink, Locale locale);
 	String getTitle(String page);
 	String getWebCharset();
 }

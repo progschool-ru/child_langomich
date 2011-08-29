@@ -74,7 +74,7 @@ public class PagesServlet extends HttpServlet
 		
 		List<ILink> links = config.createMenu( 
 				      isLoggedIn ? LOGGED_MENU_KEY : ANONYMUS_MENU_KEY,
-					  currentUrl);
+					  currentUrl, request.getLocale());
 		bean.setMenuLinks(links);
 		
 		request.setAttribute(PAGE_BEAN_KEY, bean);

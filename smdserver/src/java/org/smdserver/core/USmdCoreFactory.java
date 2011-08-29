@@ -95,7 +95,7 @@ class USmdCoreFactory implements ISmdCoreFactory
 	
 	public IJSPConfig createJSPConfig()
 	{
-		return new JSPConfig(rb, basePath);
+		return new JSPConfig(rb, basePath, localeRBFile);
 	}
 	
 	public ICoreConfig createCoreConfig()
