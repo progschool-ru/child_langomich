@@ -113,7 +113,7 @@ public class UsersDBStorageTest
 	@Test
 	public void testCreateWithIncorrectSymbols ()
 	{
-		String login = "петя";
+		String login = "pетя";
 		String id = "2";
 		String login2 = "*4(";
 		String id2 = "3";

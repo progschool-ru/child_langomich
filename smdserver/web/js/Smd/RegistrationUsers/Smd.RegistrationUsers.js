@@ -17,9 +17,9 @@ Smd.RegistrationUsers = {
 		
 		form.submit(function(){return scope.handleSubmit(this);});
 		
-		container.append(this.createTextInputPair(this.i18n("RegistrationUsers.LOGIN"), "login", this.LOGIN_REGEX, this.i18n("RegistrationUsers.LOGIN_DESCRIPTION")));
-		container.append(this.createTextInputPair(this.i18n("RegistrationUsers.PASSWORD"), "password"));
-		container.append(this.createTextInputPair(this.i18n("RegistrationUsers.EMAIL"), "email", this.EMAIL_REGEX));
+		container.append(this.createTextInputPair(this.i18n("RegistrationUsers.LOGIN"), "login", "text", this.LOGIN_REGEX, this.i18n("RegistrationUsers.LOGIN_DESCRIPTION")));
+		container.append(this.createTextInputPair(this.i18n("RegistrationUsers.PASSWORD"), "password", "password"));
+		container.append(this.createTextInputPair(this.i18n("RegistrationUsers.EMAIL"), "email", "text", this.EMAIL_REGEX));
 		container.append(this.createAboutPair(this.i18n("RegistrationUsers.ABOUT"), "about", this.i18n("RegistrationUsers.ABOUT_DESCRIPTION")));
 		form.append(this.$("<br/>"));
 		
@@ -72,10 +72,10 @@ Smd.RegistrationUsers = {
 		return input;
 	},
 	
-	createTextInputPair: function(label, name, pattern, description)
+	createTextInputPair: function(label, name, type, pattern, description)
 	{
 		var input = this.createInput({
-				type: "text",
+				type: type,
 				name: name,
 				required: "required",
 				pattern: pattern

@@ -193,6 +193,7 @@ div { position: relative; }
 	content:"";
 	clear:both;
 	height: 4.5em;
+	margin-top:2em;
 }
 
 /** content **/
@@ -325,6 +326,7 @@ p.footer-output-date
 {
 	width: 100%;
 	max-width: 30em;
+	margin: .5em 0;
 }
 
 .b-register_area
