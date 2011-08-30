@@ -48,7 +48,7 @@
 		<div class="footer">
 			<ul class="footer-menu">
 				<li><smd:ahref text="${lFooterMenuMain}"           url="smd://page/words"/></li>
-				<li><smd:ahref text="${lFooterMenuAbout}"          url="http://www.progschool.ru/index.php/%D0%A8%D0%9F/Portfolio/SmartDictionary"/></li>
+				<li><smd:ahref text="${lFooterMenuAbout}"          url="smd://page/about"/></li>
 				<li><smd:ahref text="${lFooterMenuAsk}"            url="http://olymp.omich.net/q2a/ask"/></li>
 				<li><smd:ahref text="${lFooterMenuDownloads}"      url="http://narod.ru/disk/23418375001/SmartDictionary.jar.html"/></li>
 			</ul>

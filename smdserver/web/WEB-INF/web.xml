@@ -15,11 +15,13 @@
         <jsp-property-group>
             <display-name>allPages</display-name>
             <url-pattern>/index.jsp</url-pattern>
+            <url-pattern>/WEB-INF/templates/about.jsp</url-pattern>
             <url-pattern>/WEB-INF/templates/empty.jsp</url-pattern>
             <url-pattern>/WEB-INF/templates/login.jsp</url-pattern>
             <url-pattern>/WEB-INF/templates/main.jsp</url-pattern>
             <url-pattern>/WEB-INF/templates/mainjs.jsp</url-pattern>
             <url-pattern>/WEB-INF/templates/maintenance.jsp</url-pattern>
+            <url-pattern>/WEB-INF/templates/message.jsp</url-pattern>
             <url-pattern>/WEB-INF/templates/profile.jsp</url-pattern>
             <url-pattern>/WEB-INF/templates/register.jsp</url-pattern>
             <url-pattern>/WEB-INF/templates/words.jsp</url-pattern>

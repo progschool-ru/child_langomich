@@ -11,15 +11,26 @@ a { text-decoration: underline; }
 	display: inline-block;
 }
 
-p {margin-bottom: .5em;}
+h1, h2, h3, h4, h5, h6 {margin-top:1em;}
+h2 {font-size: large;}
+p, ul.ul, ul.ul li
+{
+	margin: .7em 0;
+	line-height: 1.3em;
+}
 p.audat {text-align: right;}
 
-ul.ul {margin: .5em 0 .5em 1em;}
+blockquote 
+{
+	margin: auto 1em;
+	line-height: 1.5em;
+}
+
+ul.ul {margin-left: 2em;}
 ul.ul li
 {
 	display: list-item;
-	list-style: inside disc;
-	margin-bottom:.2em;
+	list-style: disc;
 }
 
 /******* Tables *********/
