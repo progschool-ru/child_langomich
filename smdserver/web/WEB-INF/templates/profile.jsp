@@ -11,8 +11,12 @@
 				<td><input  type="password" size="30"
 							name="password"></td>
 			</tr>
+			<tr>
+				<th/>
+				<td class="submitTD">
+					<input type="submit" value="<fmt:message key="ok"/>">
+				</td>
+			</tr>
 		</table>
-		<br/>
-		<input type="submit" value="<fmt:message key="ok"/>">
 	</form>
 </fmt:bundle>
