@@ -48,7 +48,7 @@
 			<!-- /Yandex.Metrika counter -->
 		</c:if>
 		<div class="header">
-			<smd:ahref url="smd://page/play" text="" cssClass="header-logo"/>
+			<smd:ahref url="smd://page/words" text="" cssClass="header-logo"/>
 			<smd:menu links="${menu}" ulClass="header-menu"/>
 			<smd:userInfo ulClass="header-user" user="${user}" localeName="${localeName}"/>
 		</div>
