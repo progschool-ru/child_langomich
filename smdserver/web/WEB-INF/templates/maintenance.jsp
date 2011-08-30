@@ -18,8 +18,9 @@
 			<script src="<%= request.getContextPath() %>/js/Smd/Server/Smd.Server.js"></script>
 			<script>
 
-	function handleFormSubmit(form, server)
+	function handleFormSubmit(form)
 	{
+		var server = Smd.Core.getModule("server");
 		var action = $("#smdAction")[0].value;
 		var url = server.getUrl("smd://action/" + action);
 
@@ -59,12 +60,7 @@
 
 	$(document).ready(function()
 	{
-		var server = new Smd.Server.Module(null, {
-							servletPaths : {action:"${pageBean.JSPConfig.actionPath}"},
-							basePath : "<%=request.getContextPath()%>"
-						}, true);
-
-		$("#maintenanceForm").submit(function(){handleFormSubmit(this, server); return false;});
+		$("#maintenanceForm").submit(function(){handleFormSubmit(this); return false;});
 	});
 			</script>
 		</head>

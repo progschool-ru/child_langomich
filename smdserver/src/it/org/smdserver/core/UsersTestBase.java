@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.smdserver.db.DbException;
 import org.xml.sax.SAXException;
 
 public class UsersTestBase extends IntegrationTestBase
@@ -20,7 +21,7 @@ public class UsersTestBase extends IntegrationTestBase
 	public static final String PASSWORD = "testPassword";
 	public static final String COOKIE_HEADER = "SET-COOKIE";
 
-	protected static WebRequest createActionRequest(String actionName)
+	protected static WebRequest createActionRequest(String actionName) throws DbException
 	{
 		String url = getTestConfig().getTestUrl() +
 						getTestConfig().getTestUrlAction() + actionName;
@@ -51,12 +52,12 @@ public class UsersTestBase extends IntegrationTestBase
 		return new JSONObject(text);
 	}
 	
-	protected static void fillUsers()
+	protected static void fillUsers() throws DbException
 	{
 		getUsersStorage().createUser(USER_ID, LOGIN, PASSWORD, "some@example.org", "Peter Ivanov");
 	}
 	
-	protected static void clearUsers()
+	protected static void clearUsers() throws DbException
 	{
 		getUsersStorage().removeUserById(USER_ID);
 	}
