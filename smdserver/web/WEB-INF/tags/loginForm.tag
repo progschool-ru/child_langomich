@@ -5,7 +5,7 @@
 <fmt:bundle basename="${localeName}" prefix="jsp.loginForm.">
 	<form method="post" action="<smd:smdhref
 					url="smd://action/login"
-					redirect="smd://page/play"
+					redirect="smd://page/words"
 					mode="url"/>">
 		<table>
 			<tr>
@@ -16,8 +16,10 @@
 				<th><fmt:message key="password"/>:</th>
 				<td><input  type="password" size="30" name="password"></td>
 			</tr>
+			<tr>
+				<th>&nbsp;</th>
+				<td class="submitTD"><input type="submit" value="<fmt:message key="submit"/>"></td>
+			</tr>
 		</table>
-		<br/>
-		<input type="submit" value="<fmt:message key="submit"/>">
 	</form>
 </fmt:bundle>

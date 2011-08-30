@@ -12,10 +12,20 @@ a { text-decoration: underline; }
 }
 
 p {margin-bottom: .5em;}
+p.audat {text-align: right;}
+
+ul.ul {margin: .5em 0 .5em 1em;}
+ul.ul li
+{
+	display: list-item;
+	list-style: inside disc;
+	margin-bottom:.2em;
+}
 
 /******* Tables *********/
 table
 {
+	margin: 1em 0;
 	display:block;
 	border-collapse: separate;
 	border-spacing: 2px;
@@ -45,4 +55,8 @@ td, th
 	padding:.2em .5em;
 }
 
+.submitTD
+{
+	text-align: right;
+}
 /******** End of Tables ********/

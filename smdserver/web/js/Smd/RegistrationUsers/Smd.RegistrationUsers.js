@@ -22,7 +22,11 @@ Smd.RegistrationUsers = {
 		container.append(this.createTextInputPair(this.i18n("RegistrationUsers.EMAIL"), "email", this.EMAIL_REGEX));
 		container.append(this.createAboutPair(this.i18n("RegistrationUsers.ABOUT"), "about", this.i18n("RegistrationUsers.ABOUT_DESCRIPTION")));
 		form.append(this.$("<br/>"));
-		form.append(this.createInput({type: "submit", value: this.i18n("RegistrationUsers.SUBMIT")}));
+		
+		var submit = this.createInput({type: "submit", value: this.i18n("RegistrationUsers.SUBMIT")});
+		var submitContainer = this.createPair("", submit );
+		submitContainer.addClass(this.SUBMIT_CONTAINER_CLASS);
+		container.append(submitContainer);
 
 		return form;
 	},
@@ -116,6 +120,7 @@ Smd.RegistrationUsers = {
 	TEXT_INPUT_CLASS:  "b-register_input",
 	AREA_CLASS:        "b-register_area",
 	DESCRIPTION_CLASS: "b-register_description",
+	SUBMIT_CONTAINER_CLASS: "submitTD",
 	
 	MESSAGE_URL:  "smd://page/message",
 	REGISTER_URL: "smd://action/register",
