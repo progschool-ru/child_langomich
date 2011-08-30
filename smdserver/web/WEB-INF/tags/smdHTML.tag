@@ -9,7 +9,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <c:if test="${title != null and title != ''}">
-	<c:set var="titlePrefix" value="${title} \ "/>
+	<c:set var="titlePrefix" value="${title} \\ "/>
 </c:if>
 
 <fmt:bundle basename="${localeName}" prefix="jsp.smdHTML.">
