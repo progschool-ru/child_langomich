@@ -8,6 +8,7 @@
 <c:set var="mainTemplate" value="/WEB-INF/templates/${pageBean.mainTemplate}"/>
 
 <smd:smdHTML title="${title}" menu="${pageBean.menuLinks}" 
-			 user="${pageBean.user}" localeName="org.smdserver.locale">
+			 user="${pageBean.user}" localeName="org.smdserver.locale"
+			 yandexMetrikaId="${pageBean.JSPConfig.yandexMetrikaId}">
 	<jsp:include page="${mainTemplate}"/>
 </smd:smdHTML>

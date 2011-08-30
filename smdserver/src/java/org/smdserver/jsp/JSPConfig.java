@@ -101,4 +101,9 @@ public class JSPConfig extends ResourceBundleBased implements IJSPConfig
 	{
 		return getString("pages.default.page.handler");
 	}
+	
+	public String getYandexMetrikaId()
+	{
+		return getString("yandex.metrika.id");
+	}
 }

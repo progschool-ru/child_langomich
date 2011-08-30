@@ -1,6 +1,7 @@
 <%@attribute name="ulClass" rtexprvalue="true"%>
 <%@attribute name="user" rtexprvalue="true" type="org.smdserver.users.User" %>
 <%@attribute name="localeName" rtexprvalue="true"%>
+<%@tag trimDirectiveWhitespaces="true"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib tagdir="/WEB-INF/tags" prefix="smd" %>

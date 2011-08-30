@@ -1,4 +1,5 @@
 <%@attribute name="localeName" rtexprvalue="true"%>
+<%@tag trimDirectiveWhitespaces="true"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="smd" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

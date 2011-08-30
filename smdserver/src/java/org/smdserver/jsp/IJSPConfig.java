@@ -20,4 +20,5 @@ public interface IJSPConfig
 	List<ILink> createMenu(String menu, SmdUrl currentLink, Locale locale);
 	String getTitle(String page);
 	String getWebCharset();
+	public String getYandexMetrikaId();
 }

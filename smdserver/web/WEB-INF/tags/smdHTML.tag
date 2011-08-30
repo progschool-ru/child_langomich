@@ -2,6 +2,7 @@
 <%@attribute name="title" rtexprvalue="true"%>
 <%@attribute name="menu" rtexprvalue="true" type="java.util.List"%>
 <%@attribute name="user" rtexprvalue="true" type="org.smdserver.users.User" %>
+<%@attribute name="yandexMetrikaId" rtexprvalue="true" required="false" %>
 <%@tag trimDirectiveWhitespaces="true"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="smd"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -30,6 +31,22 @@
 		<script src="<%= request.getContextPath() %>/js/Smd/Locale/Smd.Locale.${lJSLocale}"></script>
 	</head>
 	<body>
+		<c:if test="${yandexMetrikaId != null}">
+			<!-- Yandex.Metrika counter -->
+			<div style="display:none;"><script type="text/javascript">
+			(function(w, c) {
+				(w[c] = w[c] || []).push(function() {
+					try {
+						w.yaCounter${yandexMetrikaId} = new Ya.Metrika({id:${yandexMetrikaId}, enableAll: true});
+					}
+					catch(e) { }
+				});
+			})(window, "yandex_metrika_callbacks");
+			</script></div>
+			<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
+			<noscript><div><img src="//mc.yandex.ru/watch/${yandexMetrikaId}" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+			<!-- /Yandex.Metrika counter -->
+		</c:if>
 		<div class="header">
 			<smd:ahref url="smd://page/play" text="" cssClass="header-logo"/>
 			<smd:menu links="${menu}" ulClass="header-menu"/>
