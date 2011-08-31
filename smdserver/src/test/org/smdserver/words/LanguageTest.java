@@ -1,6 +1,5 @@
 package org.smdserver.words;
 
-import java.text.SimpleDateFormat;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -11,9 +10,6 @@ public class LanguageTest
 	@Test
 	public void testParseJSONSuccess () throws WordsException, JSONException
 	{
-//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z");
-//		Word.setDateFormat(format);
-
 		String json = "{id: \"enId\", name:\"en\",words:[" +
 				"{id:\"firstId\",original:\"первый\",translation:\"first\",rating:4," +
 				"modified:1309263860924}," +

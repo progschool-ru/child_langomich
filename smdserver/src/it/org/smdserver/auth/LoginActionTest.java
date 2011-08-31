@@ -11,6 +11,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.smdserver.db.DbException;
 import static org.junit.Assert.*;
 
 public class LoginActionTest extends UsersTestBase
@@ -31,7 +32,7 @@ public class LoginActionTest extends UsersTestBase
 	}
 
 	@Before
-	public void setUp()
+	public void setUp() throws DbException
 	{
 		wc = new WebConversation();
 		req = createActionRequest(WebActions.LOGIN);
@@ -61,7 +62,12 @@ public class LoginActionTest extends UsersTestBase
 		req.setParameter(WebParams.PASSWORD, PASSWORD);
 
 		JSONObject json = getJSONResource(wc, req);
+		JSONObject user = json.getJSONObject("user");
 		assertTrue(json.getBoolean(WebParams.SUCCESS));
+		assertNotNull(user);
+		assertEquals(LOGIN, user.getString("login"));
+		assertFalse(user.has("psw"));
+		assertFalse(user.has("password"));
 	}
 
 	@Test
