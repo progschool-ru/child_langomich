@@ -91,25 +91,12 @@ public class MainForm extends myForm implements CommandListener
     public void dieIsCast()
     {
         if(mainSelectedRow == 1)
-        {
-            sd.workFormInit();
-
-            mainDisplay.setCurrent(sd.workForm);
-        }
+            sd.goToTheWorkForm();
         else if(mainSelectedRow == 2)
-        {
-            sd.addWordFormInit();
-            mainDisplay.setCurrent(sd.addWordForm);
-        }
+            sd.goToTheAddWordForm();
         else if(mainSelectedRow == 3)
-        {
-            ListForm lf = new ListForm(mainDisplay, this);
-            mainDisplay.setCurrent(lf);
-        }
+            sd.goToTheListForm();
         else if(mainSelectedRow == 4)
-        {
-            SettingsForm sf = new SettingsForm(mainDisplay, this);
-            mainDisplay.setCurrent(sf);
-        }
+            sd.goToTheSettingsForm();
     }
 }

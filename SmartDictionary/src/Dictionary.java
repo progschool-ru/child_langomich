@@ -23,11 +23,11 @@ public class Dictionary extends Records
                 this.language = language;
                 recordStoreInit(NAME, new Filter(language, null), new Ordering(ORIGINAL));
         }
-		Dictionary(String language, Boolean activeOnly)
-		{
-			this.language = language;
-			recordStoreInit(NAME, new Filter(language, activeOnly), new Ordering(ORIGINAL));
-		}
+        Dictionary(String language, Boolean activeOnly)
+        {
+                this.language = language;
+                recordStoreInit(NAME, new Filter(language, activeOnly), new Ordering(ORIGINAL));
+        }
         Dictionary(String language, long lastTiming)
         {
                 this.language = language;
@@ -181,19 +181,14 @@ public class Dictionary extends Records
                 int mi = 3;
                 int rating;
                 int row;
-                String translation;
-                String original;
+                String[] translation = getColumn(TRANSLATION);
+                String[] original = getColumn(ORIGINAL);
+                String[] ratings = getColumn(RATING);
                 for(int i = 0; i < words.getWordsNumber();i++)
                 {
                     row = words.getRow(i);
-                     System.out.println(row);
-                    rating = Integer.parseInt(getCell(row, RATING));
-                    translation = getCell(row, TRANSLATION);
-                    original = getCell(row, ORIGINAL);
-                   
-                    System.out.println(words.getTranslation(i));
-                    
-                    if(translation.equals(words.getTranslation(i)))
+                    rating = Integer.parseInt(ratings[row]);                
+                    if(translation[row].equals(words.getTranslation(i)))
                     {
                         if(rating  > 9-pl)
                             rating  = 9;
@@ -209,9 +204,9 @@ public class Dictionary extends Records
                             rating -= mi;
                         words.setAnswer(i, false);
                     }
-                    words.setTranslation(i, translation);
+                    words.setTranslation(i, translation[row]);
                     words.setRating(i, rating);
-                    setRecord(original, translation, rating, getId(row));
+                    setRecord(original[row], translation[row], rating, getId(row));
                 }
                 return words;
         }
@@ -222,7 +217,6 @@ public class Dictionary extends Records
 		{
 			return 0;
 		}
-
 		int id = 0;
 		for(int i = 0;i < originals.length; i++ ) {
                     if(originals[i].equals(original)){

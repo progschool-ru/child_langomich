@@ -1,31 +1,21 @@
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.TextBox;
-import javax.microedition.lcdui.Canvas;
-import javax.microedition.lcdui.TextField;
 
 // TODO: (3. low) Убрать отсюда все надписи на русском.
 public class SettingsForm extends myForm implements CommandListener
 {
     private Command choice = new Command(text.CHOICE, Command.SCREEN, 1);
     private Command back = new Command(text.BACK, Command.EXIT, 0);
-    private Command save = new Command(text.SAVE, Command.SCREEN, 1);
-    private Command cancel = new Command(text.CANCEL, Command.EXIT, 0);
-    private Command completeTiming = new Command(text.NEXT, Command.SCREEN, 1);
-
+    
     private Settings settings = new Settings();
-	private Language[] smallMenuLanguages;
+    private Language[] smallMenuLanguages;
 
-    TextBox newText;
+    SmartDictionary sd;
 
-    Canvas mainForm;
-
-    SettingsForm(Display mainDisplay, Canvas mainForm)
+    SettingsForm(SmartDictionary sd)
     {
-        this.mainForm = mainForm;
-        this.mainDisplay = mainDisplay;
+        this.sd = sd;
         this.addCommand(back);
         this.addCommand(choice);
         this.setCommandListener(this);
@@ -37,33 +27,6 @@ public class SettingsForm extends myForm implements CommandListener
             back();
         if(c == choice)
             forward();
-        if (c ==  cancel)
-            mainDisplay.setCurrent(this);
-        if (c ==  save)
-        {
-            if(mainSelectedRow == 2)
-            {
-				Languages languages = new Languages();
-				String languageId = languages.newLanguage(newText.getString());
-				settings.setLanguage(languageId);
-				languages.destroy();
-            }
-            else if(mainSelectedRow == 3)
-            {
-                if(selectedRow == 1)
-                    settings.setLogin(newText.getString());
-                else
-                    settings.setPassword(newText.getString());
-            }
-            else
-                settings.setURL(newText.getString());
-            mainDisplay.setCurrent(this);
-        }
-       if (c == completeTiming )
-       {
-            settings = new Settings();
-            mainDisplay.setCurrent(this);
-       }
     }
 
     protected void up()
@@ -121,7 +84,7 @@ public class SettingsForm extends myForm implements CommandListener
         if(mainButtonIsPressed)
             mainButtonIsPressed = false;
         else
-            mainDisplay.setCurrent(mainForm);
+            sd.goToTheMainForm();
         repaint();
     }
 	
@@ -142,11 +105,11 @@ public class SettingsForm extends myForm implements CommandListener
         String list[] = new String[mainNumber];
         list[0] = text.NUMBER_OF_WORDS+"  "+Integer.toString(settings.getNumberOfWords());
 		
-		Languages languages = new Languages();
-		Language language = languages.getLanguageById(settings.getLanguage());
-		languages.destroy();
-		
-		list[1] = text.LANGUAGE + "  " + (language == null ? null : language.getName());
+        Languages languages = new Languages();
+        Language language = languages.getLanguageById(settings.getLanguage());
+        languages.destroy();
+
+        list[1] = text.LANGUAGE + "  " + (language == null ? null : language.getName());
         list[2] = text.LOGIN+"  "+settings.getLogin();
         list[3] = text.URL+"  "+settings.getURL();
         list[4] = text.TIMING;
@@ -188,16 +151,16 @@ public class SettingsForm extends myForm implements CommandListener
         {
             int i = 0;
 
-			Languages languages = new Languages();
-			smallMenuLanguages = languages.getLanguages();
-			languages.destroy();
+            Languages languages = new Languages();
+            smallMenuLanguages = languages.getLanguages();
+            languages.destroy();
 
-			if(smallMenuLanguages != null)
-			{
-				smallMenuList = new String[smallMenuLanguages.length+1];
-				for(i = 0; i < smallMenuLanguages.length; i++)
-					smallMenuList[i] = smallMenuLanguages[i].getName();
-			}
+            if(smallMenuLanguages != null)
+            {
+                    smallMenuList = new String[smallMenuLanguages.length+1];
+                    for(i = 0; i < smallMenuLanguages.length; i++)
+                            smallMenuList[i] = smallMenuLanguages[i].getName();
+            }
             else
                 smallMenuList = new String[1];
             smallMenuList[i]= "Новый язык";
@@ -231,37 +194,29 @@ public class SettingsForm extends myForm implements CommandListener
         else if(mainSelectedRow == 2)
         {
             if(selectedRow == number)
-                newText(text.NEW_LANGUAGE);
+                sd.goToTheTextBox(text.NEW_LANGUAGE);
             else
                 settings.setLanguage(smallMenuLanguages[selectedRow-1].getId());
         }
         else if(mainSelectedRow == 3)
         {
             if(selectedRow == 1)
-                newText("Введите новый логин");
+                sd.goToTheTextBox("Введите новый логин");
             else
-                newText("Введите новый пароль");
+                sd.goToTheTextBox("Введите новый пароль");
         }
+        else if(mainSelectedRow == 4)
+            sd.goToTheTextBox("Введите новый адрес");
         else if(mainSelectedRow == 5)
-        {
-            try
-            {
-                 TimingForm timingForm = new TimingForm(new Timing(), completeTiming);
-                 timingForm.setCommandListener(this);
-                 mainDisplay.setCurrent(timingForm);
-            }
-            catch(Exception e){}
-        }
-		else //TODO: (3.low) плохо, что все пункты идут по порядку, а четвёртый затесался в конце.
-            newText("Введите новый адрес");
+            sd.goToTheTimingForm();         
     }
-    private void newText(String title)
+    public int getMainSelectedRow()
     {
-        newText = new TextBox(title, "", 20, TextField.ANY);
-        newText.addCommand(cancel);
-        newText.addCommand(save);
-        newText.setCommandListener(this);
-        mainDisplay.setCurrent(newText);
+        return mainSelectedRow;
+    }
+    public int getSelectedRow()
+    {
+        return selectedRow;
     }
 }
 

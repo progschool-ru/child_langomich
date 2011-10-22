@@ -1,8 +1,6 @@
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Canvas;
 
 public class ListForm extends myForm implements CommandListener
 {
@@ -11,12 +9,11 @@ public class ListForm extends myForm implements CommandListener
 
     Dictionary dictionary;
 
-    Canvas mainForm;
+    SmartDictionary sd;
 
-    ListForm(Display mainDisplay, Canvas mainForm)
+    ListForm(SmartDictionary sd)
     {
-        this.mainForm = mainForm;
-        this.mainDisplay = mainDisplay;
+        this.sd = sd;
         this.addCommand(back);
         this.addCommand(choice);
         this.setCommandListener(this);
@@ -84,7 +81,7 @@ public class ListForm extends myForm implements CommandListener
         if(mainButtonIsPressed)
             mainButtonIsPressed = false;
         else
-            mainDisplay.setCurrent(mainForm);
+            sd.goToTheMainForm();
         repaint();
     }
     protected void initMainNumber()
