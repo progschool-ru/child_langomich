@@ -27,10 +27,10 @@ public class Settings extends Records
             if(getRecord(NUMBER_OF_TIMING, SINGLE_RECORD) == null)
                 addRecord("0");
             if(getRecord(LOGIN, SINGLE_RECORD) == null)
-                addRecord("null");
+                addRecord("kkauut");//addRecord("null");
 				//addRecord("chivorotkiv");
             if(getRecord(PASSWORD, SINGLE_RECORD) == null)
-                addRecord("null");
+                addRecord("665577");//addRecord("null");
             if(getRecord(URL, SINGLE_RECORD) == null)
                 addRecord("lang.omich.net");// TODO: (3.low) хорошо бы вынести эту настройку в какой-нибудь config.properties файл.
 				//addRecord("localhost:8080");

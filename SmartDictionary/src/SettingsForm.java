@@ -125,7 +125,7 @@ public class SettingsForm extends myForm implements CommandListener
         repaint();
     }
 	
-    protected void mainNumber()
+    protected void initMainNumber()
     {
         mainNumber = 5;
     }

@@ -43,6 +43,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private int rows[];
         private int wordsN = 1;
 
+        private Words words;
         MainForm mf;
 
 	public void startApp() 
@@ -73,11 +74,13 @@ public class SmartDictionary extends MIDlet implements CommandListener
 		}
 		if(c == OK) 
 		{
-                        boolean answer[] = new boolean[wordsN];
-                        for(int i = 0; i < wordsN;i++){
-                           answer[i] = dictionary.answer(rows[i], tf[i].getString());
+                        for(int i = 0; i < words.getWordsNumber();i++){
+                            words.setTranslation(i, tf[i].getString());
+                            System.out.println(i);
+                            System.out.println(tf[i].getString());
+                            System.out.println(words.getTranslation(i));
                         }
-                        workFormAnswer(answer);
+                        workFormAnswer(dictionary.answer(words));
 		}
 		if(c == next)
 		{
@@ -116,35 +119,27 @@ public class SmartDictionary extends MIDlet implements CommandListener
                     wordsN = dictionary.getNumRecords();
                 else
                     wordsN = settings.getNumberOfWords();
-                rows = new int[wordsN];
                 tf = new TextField[wordsN];
-                for(int i = 0; i < wordsN; i++) {
-                    for(;;) {
-                        rows[i]  = dictionary.getRandomRow();
-                        boolean f = true;
-                        for(int j = 0; j < i; j++)
-                            if(rows[i] == rows[j])
-                                f = false;
-                        if(f)
-                            break;
-                    }
-                    tf[i] = new TextField("  "+dictionary.getCell(rows[i], dictionary.ORIGINAL)+"  -  ", "", 20, TextField.ANY);
+                words = dictionary.getRandomWords(wordsN);
+                for(int i = 0; i < wordsN; i++) 
+                {
+                    tf[i] = new TextField("  "+words.getOriginal(i)+"  -  ", "", 20, TextField.ANY);
                     workForm.append(tf[i]);
                 }
             }
 	}
-        public void workFormAnswer(boolean answer[])
+        public void workFormAnswer(Words words)
         {
             workForm.removeCommand(OK);
             workForm.addCommand(next);
             String m = new String();
             siAnswer = new StringItem[wordsN];
             for(int i = 0; i < wordsN; i++) {
-                if(answer[i])
+                if(words.getAnswer(i))
                     m = text.TRUE;
                 else
                     m = text.FALSE;
-                siAnswer[i] = new StringItem(dictionary.getCell(rows[i], dictionary.ORIGINAL)+" - "+dictionary.getCell(rows[i], dictionary.TRANSLATION)+"  "+dictionary.getCell(rows[i], dictionary.RATING)  , m);
+                siAnswer[i] = new StringItem(words.getOriginal(i) +" - "+words.getTranslation(i) +"  "+words.getRating(i), m);
                 workForm.append(siAnswer[i]);
             }
         }

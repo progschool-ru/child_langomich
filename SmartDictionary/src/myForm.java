@@ -38,12 +38,12 @@ public abstract class myForm extends Canvas
 
     public void paint(Graphics g)
     {
-        mainNumber();
+        initMainNumber();
         this.g = g;
         MLT = new myMultiLineText(Font.SIZE_SMALL,Font.STYLE_BOLD,Font.FACE_PROPORTIONAL,g);
         width = g.getClipWidth();
         height = g.getClipHeight();
-        lowerIndent = width/6;
+        lowerIndent = 0;//lowerIndent = width/6;
         size = width/5;
         mainIndent = width/4;
         sideIndent = size;
@@ -74,7 +74,7 @@ public abstract class myForm extends Canvas
 	abstract protected void forward();
 	abstract protected String getMainPath();
 	abstract protected String getMainName();
-	abstract protected void mainNumber();//TODO: (2.medium) Переименовить в  initMainNumber (либо в resetMainNumber/setDefaultMainNumber - если метод вызывается неоднократно, а не только при инициализации)
+	abstract protected void initMainNumber();
 	abstract protected void drawSomething();
 	
     protected void drawMenu()
@@ -97,9 +97,9 @@ public abstract class myForm extends Canvas
             drawImage(paths[i],size-8, size-8, 4, topY+4);
             String path = "/images/main/further.png";
             drawImage(path,size/2, size/2, width-size/4*3, topY+size/4);
-            int numberOfLines = MLT.setText(list[i], width, size);
+            int numberOfLines = MLT.setText(list[i], width-size*2, size);
             int linesHeight = numberOfLines*fontHeight;
-            MLT.drawMultStr(0, topY+(size-linesHeight)/2);
+            MLT.drawMultStr(size, topY+(size-linesHeight)/2);
             topY = topY+size;
         }
         drawSign();
@@ -155,7 +155,7 @@ public abstract class myForm extends Canvas
             for(int i = 0; i < mainNumber; i++)
             {
                 g.setColor(0,0,0);
-                if(mainSelectedRow!=i+1 && mainSelectedRow!=i+2)
+                if(mainSelectedRow!=i && mainSelectedRow!=i+1)
                     g.drawLine(0, topY, width, topY);
                 int numberOfLines = MLT.setText(list[i], width, size);
                 int allHeigh = numberOfLines*fontHeight+fontHeight;
@@ -167,13 +167,14 @@ public abstract class myForm extends Canvas
                 MLT.drawMultStr(0, topY+fontHeight/2);
                 topY = topY+allHeigh;
             }
+            if(mainSelectedRow!=mainNumber)
+                g.drawLine(0, topY, width, topY);
         }
         drawSign();
     }
 
     private void drawSelectedString(int x, int y, int width, int height)
     {
-
         int arc = height/3;
 
         for(int i = 0; i< height/2;i++)
@@ -217,6 +218,8 @@ public abstract class myForm extends Canvas
         int numberOfLines = MLT.setText(getMainName(), width-mainIndent-sideIndent,mainIndent);
         int linesHeight = numberOfLines*fontHeight;
         MLT.drawMultStr(mainIndent,(mainIndent-linesHeight)/2);
+        if(mainSelectedRow!=1)
+            g.drawLine(0, mainIndent, width, mainIndent); 
     }
 	
     private void drawButtons()

@@ -46,53 +46,63 @@ public class Dictionary extends Records
                 String []Translation = getColumn(TRANSLATION);
                 String []Rating = getColumn(RATING);
                 for(int i = 0; i < getNumRecords(); i++)
-				{
-					if(isEmpty(Translation[i]))
-					{
-						Records[i] = Original[i] + " - deleted";
-					}
-					else
-					{
-						Records[i] = Original[i] +" "+ Translation[i] +" "+ Rating[i];
-					}
-				}
+                {
+                        if(isEmpty(Translation[i]))
+                        {
+                                Records[i] = Original[i] + " - deleted";
+                        }
+                        else
+                        {
+                                Records[i] = Original[i] +" "+ Translation[i] +" "+ Rating[i];
+                        }
+                }
                 return Records;
             }
             else
                 return null;
         }
-        public int getRandomRow()
+        public Words getRandomWords(int wordsNumber)
 	{
             if(getNumRecords() == 0)
-                return 0;
+                return null;
             Random random = new Random ();
-            int AllPoint = 0;
             String []rating = getColumn(RATING);
-			String []translation = getColumn(TRANSLATION);
+            String []original = getColumn(ORIGINAL);
+            int AllPoint = 0; 
             int []Point = new int[getNumRecords()];
             for(int i = 0; i < getNumRecords(); i++){
-				if(isEmpty(translation[i]))
-				{
-					Point[i] = 0;
-				}
-				else
-				{
-					Point[i] = 10 - Integer.parseInt(rating[i]);
-				}
+                if(isEmpty(original[i]))
+                {
+                        Point[i] = 0;
+                }
+                else
+                {
+                        Point[i] = 10 - Integer.parseInt(rating[i]);
+                }
                 AllPoint += Point[i];
             }
-			if(AllPoint <= 0)
-			{
-				return 0;
-			}
-            int r = Math.abs(random.nextInt())%AllPoint;
-            for (int i = 0; i < getNumRecords(); i++)
-		{
+            if(AllPoint <= 0)
+            {
+                return null;
+            }
+            int rows[] = new int[wordsNumber];
+            for(int j = 0; j < wordsNumber;j++)
+            {
+                int r = Math.abs(random.nextInt())%AllPoint;
+                for (int i = 0; i < getNumRecords(); i++)
+                {
                     r = r - Point[i];
                     if(r <= 0 )
-                        return i+1;
-		}
-            return getNumRecords();
+                        rows[j] = i+1;
+                }
+                for(int k = 0; k < j; k++)
+                    if(rows[j] == rows[k])
+                        j--;
+            }
+            String[] randomWords = new String[wordsNumber];
+            for(int j = 0; j < wordsNumber; j++)
+                randomWords[j] = original[rows[j]-1];
+            return new Words(wordsNumber, rows, randomWords);
         }
         public void newRecord(String original, String translation, int rating)
 				//TODO: (3.low) Следует более тщательно продумать названия setRecord, addRecord, newRecord.
@@ -112,20 +122,20 @@ public class Dictionary extends Records
             {
                 if(lastModified > getLastModified(id))
                 {
-					if(isEmpty(translation))
-					{
-						deleteRecord(id);
-					}
+                    if(isEmpty(translation))
+                    {
+                            deleteRecord(id);
+                    }
                     else
-					{
-						setRecord(original, translation, rating, id, lastModified);
-					}
+                    {
+                            setRecord(original, translation, rating, id, lastModified);
+                    }
                 }
             }
-			else if(!isEmpty(translation))
-			{
+            else if(!isEmpty(translation))
+            {
                 addRecord(original, translation, rating, lastModified);
-			}
+            }
         }
         public void addRecord(String original, String translation, int rating)
 	{
@@ -165,30 +175,45 @@ public class Dictionary extends Records
 		record[LAST_TIMING - 1] = Long.toString(System.currentTimeMillis());
 		setRecord(record, id);
 	}
-        public boolean answer(int row, String answer)
+        public Words answer(Words words)
 	{
-		int id = getId(row);
-                int rating = Integer.parseInt(getCell(row, RATING));
                 int pl = 2;
                 int mi = 3;
-                if(getCell(row, TRANSLATION).equals(answer))
+                int rating;
+                int row;
+                String translation;
+                String original;
+                for(int i = 0; i < words.getWordsNumber();i++)
                 {
-                    if(rating  > 9-pl)
-                        rating  = 9;
+                    row = words.getRow(i);
+                     System.out.println(row);
+                    rating = Integer.parseInt(getCell(row, RATING));
+                    translation = getCell(row, TRANSLATION);
+                    original = getCell(row, ORIGINAL);
+                   
+                    System.out.println(words.getTranslation(i));
+                    
+                    if(translation.equals(words.getTranslation(i)))
+                    {
+                        if(rating  > 9-pl)
+                            rating  = 9;
+                        else
+                            rating += pl;
+                        words.setAnswer(i, true);
+                    }
                     else
-                        rating += pl;
-                    setRecord(getCell(row, ORIGINAL), getCell(row, TRANSLATION), rating, id);
-                    return true;
+                    {
+                        if(rating < mi)
+                            rating = 0;
+                        else
+                            rating -= mi;
+                        words.setAnswer(i, false);
+                    }
+                    words.setTranslation(i, translation);
+                    words.setRating(i, rating);
+                    setRecord(original, translation, rating, getId(row));
                 }
-                else
-                {
-                    if(rating < mi)
-                        rating = 0;
-                    else
-                        rating -= mi;
-                    setRecord(getCell(row, ORIGINAL), getCell(row, TRANSLATION), rating, id);
-                    return false;
-                }
+                return words;
         }
         public int getId(String original)
 	{

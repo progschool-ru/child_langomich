@@ -57,7 +57,7 @@ public class MainForm extends myForm implements CommandListener
     {
 
     }
-    protected void mainNumber()
+    protected void initMainNumber()
     {
         mainNumber = 4;
     }

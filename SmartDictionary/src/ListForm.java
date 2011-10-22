@@ -87,7 +87,7 @@ public class ListForm extends myForm implements CommandListener
             mainDisplay.setCurrent(mainForm);
         repaint();
     }
-    protected void mainNumber()
+    protected void initMainNumber()
     {
         mainNumber = dictionary.getNumRecords();
     }
@@ -109,7 +109,7 @@ public class ListForm extends myForm implements CommandListener
     }
     protected String getMainPath()
     {
-        return "/images/main/dictionary.png";
+        return "images/main/dictionary.png";
     }
     protected String getMainName()
     {
@@ -143,19 +143,18 @@ public class ListForm extends myForm implements CommandListener
     }
     public int getMainSelectedRowTopY()
     {
+        int topY = - shift;
         if(mainNumber!= 0)
         {
             String list[] = getList();
-            int topY = - shift;
             for(int i = 0; i < mainSelectedRow-1;i++)
             {
                 int numberOfLines = MLT.setText(list[i], width*5/6, size);
                 int allHeight = numberOfLines*fontHeight+fontHeight;
                 topY = topY+allHeight;
             }
-            return topY;
         }
-        return - shift;
+        return topY;
     }
     public int getMainSelectedRowHeight()
     {
