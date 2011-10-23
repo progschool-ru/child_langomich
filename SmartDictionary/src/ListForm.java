@@ -17,7 +17,7 @@ public class ListForm extends myForm implements CommandListener
         this.addCommand(back);
         this.addCommand(choice);
         this.setCommandListener(this);
-		this.dictionary = new Dictionary(new Settings().getLanguage());
+        this.dictionary = new Dictionary(sd.settings.getLanguage());
     }
     public void commandAction(Command c, Displayable s)
     {

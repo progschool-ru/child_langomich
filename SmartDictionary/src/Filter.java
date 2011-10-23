@@ -23,18 +23,18 @@ public class Filter implements RecordFilter{
         DataInputStream dis = new DataInputStream(bais);
         String language = "";
         String lastModified = "";
-		String translation = "";
+        String translation = "";
         try
         {
-			int i = 0;
-			for(; i < Dictionary.TRANSLATION; i++)
-			{
-				translation = dis.readUTF();
-			}
+            int i = 0;
+            for(; i < Dictionary.TRANSLATION; i++)
+            {
+                    translation = dis.readUTF();
+            }
             for(; i < Dictionary.LANGUAGE; i++)
-			{
+            {
                 language = dis.readUTF();
-			}
+            }
             lastModified = dis.readUTF();
             if(search != null && !language.equals(search))
                 return false;

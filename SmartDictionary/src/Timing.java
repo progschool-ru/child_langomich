@@ -7,7 +7,7 @@ import com.ccg.util.JavaString;
 
 public class Timing extends Thread
 {
-	private static final String ACTION_PATH = "/smdserver/servlet";
+    private static final String ACTION_PATH = "/smdserver/servlet";
     private Languages languages;
     private Settings settings;
 

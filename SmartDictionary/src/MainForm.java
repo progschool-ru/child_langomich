@@ -1,6 +1,5 @@
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 
 public class MainForm extends myForm implements CommandListener
@@ -13,7 +12,6 @@ public class MainForm extends myForm implements CommandListener
     MainForm(SmartDictionary sd)
     {
         this.sd = sd;
-        this.mainDisplay = Display.getDisplay(sd);
         this.addCommand(exitMIDlet);
         this.addCommand(choice);
         this.setCommandListener(this);

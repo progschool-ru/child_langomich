@@ -89,11 +89,15 @@ public class Dictionary extends Records
             for(int j = 0; j < wordsNumber;j++)
             {
                 int r = Math.abs(random.nextInt())%AllPoint;
+                System.out.println(r);
                 for (int i = 0; i < getNumRecords(); i++)
                 {
                     r = r - Point[i];
-                    if(r <= 0 )
+                    if(r <= 0 ) 
+                    {
                         rows[j] = i+1;
+                        break;
+                    }
                 }
                 for(int k = 0; k < j; k++)
                     if(rows[j] == rows[k])
@@ -187,8 +191,8 @@ public class Dictionary extends Records
                 for(int i = 0; i < words.getWordsNumber();i++)
                 {
                     row = words.getRow(i);
-                    rating = Integer.parseInt(ratings[row]);                
-                    if(translation[row].equals(words.getTranslation(i)))
+                    rating = Integer.parseInt(ratings[row-1]);                
+                    if(translation[row-1].equals(words.getTranslation(i)))
                     {
                         if(rating  > 9-pl)
                             rating  = 9;
@@ -204,9 +208,9 @@ public class Dictionary extends Records
                             rating -= mi;
                         words.setAnswer(i, false);
                     }
-                    words.setTranslation(i, translation[row]);
+                    words.setTranslation(i, translation[row-1]);
                     words.setRating(i, rating);
-                    setRecord(original[row], translation[row], rating, getId(row));
+                    setRecord(original[row-1], translation[row-1], rating, getId(row));
                 }
                 return words;
         }

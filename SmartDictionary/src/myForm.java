@@ -17,8 +17,7 @@ public abstract class myForm extends Canvas
     protected int fontHeight;
     private int lowerIndent;
 
-    protected int shift = - mainIndent; // TODO: (2.medium) Бессмысленное присваивание. mainIndent здесь равен нулю, значит и shift будет равен нулю. Кроме того, такие сложности лучше прописывать в конструкторе, тогда не будет никаких сюрпризов, зависящих от порядка инициализации переменных.
-
+    protected int shift;
     protected int mainSelectedRow = 1;
     protected int mainNumber;
 
@@ -34,8 +33,6 @@ public abstract class myForm extends Canvas
 
     protected myMultiLineText MLT;
 
-    protected Display mainDisplay;
-
     public void paint(Graphics g)
     {
         initMainNumber();
@@ -43,7 +40,7 @@ public abstract class myForm extends Canvas
         MLT = new myMultiLineText(Font.SIZE_SMALL,Font.STYLE_BOLD,Font.FACE_PROPORTIONAL,g);
         width = g.getClipWidth();
         height = g.getClipHeight();
-        lowerIndent = 0;//lowerIndent = width/6;
+        lowerIndent = 0;
         size = width/5;
         mainIndent = width/4;
         sideIndent = size;
@@ -101,12 +98,13 @@ public abstract class myForm extends Canvas
             int linesHeight = numberOfLines*fontHeight;
             MLT.drawMultStr(size, topY+(size-linesHeight)/2);
             topY = topY+size;
+            if(topY > height) 
+                    break;            
         }
         drawSign();
         g.setColor(0,0,0);
         if(mainSelectedRow!=mainNumber)
             g.drawLine(0, topY, width, topY);
-        drawButtons();
     }
 
     protected void drawSmallMenu()
@@ -134,6 +132,8 @@ public abstract class myForm extends Canvas
                     drawSelectedString(width/6, topY, width*5/6, allHeigh);
                 MLT.drawMultStr(width/6, topY+fontHeight/2);
                 topY = topY+allHeigh;
+                if(topY > height) 
+                    break;
             }
         }
     }
@@ -166,6 +166,8 @@ public abstract class myForm extends Canvas
                 }
                 MLT.drawMultStr(0, topY+fontHeight/2);
                 topY = topY+allHeigh;
+                if(topY > height) 
+                    break;
             }
             if(mainSelectedRow!=mainNumber)
                 g.drawLine(0, topY, width, topY);
@@ -221,12 +223,6 @@ public abstract class myForm extends Canvas
         if(mainSelectedRow!=1)
             g.drawLine(0, mainIndent, width, mainIndent); 
     }
-	
-    private void drawButtons()
-    {
-		// TODO: (3. low) Что за пустой приватный метод?
-    }
-	
     private void getShift()
     {
         if(mainButtonIsPressed)

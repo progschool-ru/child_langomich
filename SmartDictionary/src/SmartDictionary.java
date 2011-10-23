@@ -15,8 +15,8 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private Command next = new Command(text.NEXT, Command.SCREEN, 1);
         private Command Save = new Command(text.SAVE, Command.SCREEN, 1);
         
-            private Command save = new Command(text.SAVE, Command.SCREEN, 1);
-    private Command cancel = new Command(text.CANCEL, Command.EXIT, 0);
+        private Command save = new Command(text.SAVE, Command.SCREEN, 1);
+        private Command cancel = new Command(text.CANCEL, Command.EXIT, 0);
         
         private Command completeTiming = new Command(text.NEXT, Command.SCREEN, 1);
 
@@ -33,7 +33,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
         private StringItem si = new StringItem(text.EMPTY_DICTIONARY,"");
 
         private Dictionary dictionary;
-        private Settings settings = new Settings();
+        public Settings settings = new Settings();
 
         private int rows[];
         private int wordsN = 1;

@@ -8,7 +8,6 @@ public class SettingsForm extends myForm implements CommandListener
     private Command choice = new Command(text.CHOICE, Command.SCREEN, 1);
     private Command back = new Command(text.BACK, Command.EXIT, 0);
     
-    private Settings settings = new Settings();
     private Language[] smallMenuLanguages;
 
     SmartDictionary sd;
@@ -103,15 +102,15 @@ public class SettingsForm extends myForm implements CommandListener
     protected String[] getList()
     {
         String list[] = new String[mainNumber];
-        list[0] = text.NUMBER_OF_WORDS+"  "+Integer.toString(settings.getNumberOfWords());
+        list[0] = text.NUMBER_OF_WORDS+"  "+Integer.toString(sd.settings.getNumberOfWords());
 		
         Languages languages = new Languages();
-        Language language = languages.getLanguageById(settings.getLanguage());
+        Language language = languages.getLanguageById(sd.settings.getLanguage());
         languages.destroy();
 
         list[1] = text.LANGUAGE + "  " + (language == null ? null : language.getName());
-        list[2] = text.LOGIN+"  "+settings.getLogin();
-        list[3] = text.URL+"  "+settings.getURL();
+        list[2] = text.LOGIN+"  "+sd.settings.getLogin();
+        list[3] = text.URL+"  "+sd.settings.getURL();
         list[4] = text.TIMING;
         return list;
     }
@@ -189,14 +188,14 @@ public class SettingsForm extends myForm implements CommandListener
     {
         if(mainSelectedRow == 1)
         {
-            settings.setNumberOfWords(Integer.parseInt(smallMenuList[selectedRow-1]));
+            sd.settings.setNumberOfWords(Integer.parseInt(smallMenuList[selectedRow-1]));
         }
         else if(mainSelectedRow == 2)
         {
             if(selectedRow == number)
                 sd.goToTheTextBox(text.NEW_LANGUAGE);
             else
-                settings.setLanguage(smallMenuLanguages[selectedRow-1].getId());
+                sd.settings.setLanguage(smallMenuLanguages[selectedRow-1].getId());
         }
         else if(mainSelectedRow == 3)
         {

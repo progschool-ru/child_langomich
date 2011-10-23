@@ -14,8 +14,6 @@ public class TimingForm extends Canvas implements Runnable{
         this.completeTiming = completeTiming;
         Thread thisThread = new Thread(this);
         thisThread.start();
-        
-
     }
     public void paint(Graphics g)
     {
