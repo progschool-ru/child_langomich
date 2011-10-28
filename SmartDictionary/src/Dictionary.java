@@ -39,45 +39,44 @@ public class Dictionary extends Records
 		return getRecord(getId(row), column);
 	}
         public String[] getFullRecords(){
-            if(getNumRecords() > 0)
+            int numRecords = getNumRecords();
+            if(numRecords > 0)
             {
-                String []Records = new String[getNumRecords()];
-                String []Original = getColumn(ORIGINAL);
-                String []Translation = getColumn(TRANSLATION);
-                String []Rating = getColumn(RATING);
-                for(int i = 0; i < getNumRecords(); i++)
+                String fullRecords[][] = getAllFullRecords();
+                String records[] = new String[numRecords];
+                for(int i = 0; i < numRecords; i++)
                 {
-                        if(isEmpty(Translation[i]))
+                        if(isEmpty(fullRecords[i][TRANSLATION-1]))
                         {
-                                Records[i] = Original[i] + " - deleted";
+                                records[i] = fullRecords[i][ORIGINAL-1] + " - deleted";
                         }
                         else
                         {
-                                Records[i] = Original[i] +" "+ Translation[i] +" "+ Rating[i];
+                                records[i] = fullRecords[i][ORIGINAL-1] +" "+fullRecords[i][TRANSLATION-1] +" "+ fullRecords[i][RATING-1];
                         }
                 }
-                return Records;
+                return records;
             }
             else
                 return null;
         }
         public Words getRandomWords(int wordsNumber)
 	{
-            if(getNumRecords() == 0)
+            int numRecords = getNumRecords();
+            if(numRecords == 0)
                 return null;
             Random random = new Random ();
-            String []rating = getColumn(RATING);
-            String []original = getColumn(ORIGINAL);
+            String fullRecords[][] = getAllFullRecords();
             int AllPoint = 0; 
-            int []Point = new int[getNumRecords()];
-            for(int i = 0; i < getNumRecords(); i++){
-                if(isEmpty(original[i]))
+            int []Point = new int[numRecords];
+            for(int i = 0; i < numRecords; i++){
+                if(isEmpty(fullRecords[i][ORIGINAL-1]))
                 {
                         Point[i] = 0;
                 }
                 else
                 {
-                        Point[i] = 10 - Integer.parseInt(rating[i]);
+                        Point[i] = 10 - Integer.parseInt(fullRecords[i][RATING-1]);
                 }
                 AllPoint += Point[i];
             }
@@ -90,7 +89,7 @@ public class Dictionary extends Records
             {
                 int r = Math.abs(random.nextInt())%AllPoint;
                 System.out.println(r);
-                for (int i = 0; i < getNumRecords(); i++)
+                for (int i = 0; i < numRecords; i++)
                 {
                     r = r - Point[i];
                     if(r <= 0 ) 
@@ -105,7 +104,7 @@ public class Dictionary extends Records
             }
             String[] randomWords = new String[wordsNumber];
             for(int j = 0; j < wordsNumber; j++)
-                randomWords[j] = original[rows[j]-1];
+                randomWords[j] = fullRecords[rows[j]-1][ORIGINAL-1];
             return new Words(wordsNumber, rows, randomWords);
         }
         public void newRecord(String original, String translation, int rating)
@@ -185,14 +184,12 @@ public class Dictionary extends Records
                 int mi = 3;
                 int rating;
                 int row;
-                String[] translation = getColumn(TRANSLATION);
-                String[] original = getColumn(ORIGINAL);
-                String[] ratings = getColumn(RATING);
+                String fullRecords[][] = getAllFullRecords();
                 for(int i = 0; i < words.getWordsNumber();i++)
                 {
                     row = words.getRow(i);
-                    rating = Integer.parseInt(ratings[row-1]);                
-                    if(translation[row-1].equals(words.getTranslation(i)))
+                    rating = Integer.parseInt(fullRecords[row-1][RATING-1]);                
+                    if(fullRecords[row-1][TRANSLATION-1].equals(words.getTranslation(i)))
                     {
                         if(rating  > 9-pl)
                             rating  = 9;
@@ -208,9 +205,9 @@ public class Dictionary extends Records
                             rating -= mi;
                         words.setAnswer(i, false);
                     }
-                    words.setTranslation(i, translation[row-1]);
+                    words.setTranslation(i, fullRecords[row-1][TRANSLATION-1]);
                     words.setRating(i, rating);
-                    setRecord(original[row-1], translation[row-1], rating, getId(row));
+                    setRecord(fullRecords[row-1][ORIGINAL-1], fullRecords[row-1][TRANSLATION-1], rating, getId(row));
                 }
                 return words;
         }

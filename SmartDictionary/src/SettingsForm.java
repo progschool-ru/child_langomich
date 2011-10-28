@@ -7,7 +7,6 @@ public class SettingsForm extends myForm implements CommandListener
 {
     private Command choice = new Command(text.CHOICE, Command.SCREEN, 1);
     private Command back = new Command(text.BACK, Command.EXIT, 0);
-    
     private Language[] smallMenuLanguages;
 
     SmartDictionary sd;

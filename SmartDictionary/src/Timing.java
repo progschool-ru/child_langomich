@@ -27,7 +27,7 @@ public class Timing extends Thread
     }
     public void run()
     {
-			long currentTime = new Date().getTime();
+            long currentTime = new Date().getTime();
             settings = new Settings(); // TODO: (2.medium) Вопрос. Не нужно ли этим объектам вызывать destroy() в конце метода?
             languages = new Languages();
 

@@ -85,7 +85,30 @@ public abstract class Records
 		}
 		return record;
 	}
-	
+	public String[][] getAllFullRecords()
+	{
+            String records[][] = null;
+            if (getNumRecords() != 0)
+	    {
+                records = new String[getNumRecords()][];
+                for (int k = 0; k <  getNumRecords(); k++) {
+                    records[k] = new String[5];
+                    try {
+                        int id = re.nextRecordId();
+                        byte[] data = new byte[rs.getRecordSize(id)];
+                        data = rs.getRecord(id);
+                        byteInputStream = new ByteArrayInputStream(data);
+                        reader = new DataInputStream(byteInputStream);
+                        for(int j = 0; j < 5; j++)
+                            records[k][j] = reader.readUTF();
+                    }
+                    catch(RecordStoreException e ){records[k] = null;}
+                    catch(IOException ioe){records[k] = null;}
+                }
+                re.rebuild();
+            }
+            return records;
+	}
 	public void deleteAllRecords()
 	{
 		while(getNumRecords() > 0)

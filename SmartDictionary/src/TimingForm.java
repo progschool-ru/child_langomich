@@ -6,7 +6,7 @@ public class TimingForm extends Canvas implements Runnable{
     private Text text = new Text();
     private myMultiLineText MLT;
     Thread t;
-    int i = 0;
+    int i = 0;  
 
     TimingForm(Timing t, Command completeTiming)
     {

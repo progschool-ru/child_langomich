@@ -50,22 +50,19 @@ public class Settings extends Records
                 return Integer.parseInt(record);
             return 1;
         }
-
-		public void setLastServerTiming(long timing)
-		{
-			setRecord(Long.toString(timing), LAST_SERVER_TIMING);
-		}
-
-		public long getLastServerTiming()
-		{
-			String record = getRecord(LAST_SERVER_TIMING, SINGLE_RECORD);
-			if(record != null && !record.equals("null"))
-			{
-				return Long.parseLong(record);
-			}
-			return -1;
-		}
-
+        public void setLastServerTiming(long timing)
+        {
+                setRecord(Long.toString(timing), LAST_SERVER_TIMING);
+        }
+        public long getLastServerTiming()
+        {
+                String record = getRecord(LAST_SERVER_TIMING, SINGLE_RECORD);
+                if(record != null && !record.equals("null"))
+                {
+                        return Long.parseLong(record);
+                }
+                return -1;
+        }
         public void setLanguage(String language)
         {
             setRecord(language, LANGUAGE);
