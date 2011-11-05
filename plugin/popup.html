@@ -1,0 +1,64 @@
+<html>
+	<head>
+		<script src="alert.js" type="text/javascript"></script>
+		<script type="text/javascript">
+				//функция добавления слова и его перевода на сервер
+				function AddWordToServer(){
+				  var word = document.getElementById('word');
+				  var translate = document.getElementById('translate');
+				 
+				 //формируем данны которые будем отправлять на сервер
+				 var params = 'word='+encodeURIComponent(word)+"&translate="+encodeURIComponent(translate);
+				 
+				  var xmlhttp = new XMLHttpRequest();
+				  xmlhttp.open('POST', 'http://lang.omich.net', true);
+					xmlhttp.onreadystatechange = function() {
+						if (xmlhttp.readyState == 4) {
+							if(xmlhttp.status == 200) {
+								SendAlert("lang.omich.net отвечает, но пока не умеет добавлять данные)");
+							}else{
+								SendAlert(statusText);
+							}
+						}
+					}
+					xmlhttp.send(params);
+				
+				};
+
+				//при запуске popup об этом посылается сообщения на фоновую страницу
+				window.addEventListener("load", function(){
+					chrome.extension.sendRequest({message : "StartPopup"}, function(Response){
+					// и получаем ответ в котором содежится выделеный текст
+					document.getElementById('word').value = Response.nowText;
+					});
+				}, true)
+		</script>
+	</head>
+
+	<body>
+
+		<div>
+			<div id="add_word">
+				<table>
+					<tr>
+						<td>Слово</td>
+						<td>Язык</td>
+						<td>Перевод</td>
+					</tr>
+		
+					<tr>
+						<td><input type=text id="word" value=""></td>
+						<td><select name="ComboBox"><option value="1">ENG</option></select></td>
+					<td><input type=text id="translate" value=""></td>
+					</tr>
+		
+					<tr>
+					<td></td>
+					<td><!--<input type=button name="translate" value="Перевести">--></td>
+					<td align=right><input type=button name="add" value="Добавить" onclick="AddWordToServer()"></td>
+					</tr>
+				</table>
+			    
+ 
+     </body>
+<html>

@@ -1,0 +1,1 @@
+var text;chrome.extension.onRequest.addListener(		function(request, sender, sendResponse){		//прием выделеного текста с content_script.js		if(request.message == "SendSelection"){		 text = request.text;		}		// ловим событие старта popupa		if(request.message == "StartPopup"){			//отправляем выделеный текст на popup			sendResponse({nowText: text});		}			});
