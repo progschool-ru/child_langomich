@@ -1,15 +1,15 @@
-<html>
+п»ї<html>
 	<head>
 		<title>Smart dictionary settings</title>
 		<script  type="text/javascript">
-		//сохраняем логин и пароль от сайта в localStorage
+		//СЃРѕС…СЂР°РЅСЏРµРј Р»РѕРіРёРЅ Рё РїР°СЂРѕР»СЊ РѕС‚ СЃР°Р№С‚Р° РІ localStorage
 		function SafeSettings(){
 			var password = document.getElementById('password').value;
 			var login = document.getElementById('login').value;
 			localStorage["password"] = password;
 			localStorage["login"] = login;
 		}
-		//загружаем логин и пароль от сайта из localStorage
+		//Р·Р°РіСЂСѓР¶Р°РµРј Р»РѕРіРёРЅ Рё РїР°СЂРѕР»СЊ РѕС‚ СЃР°Р№С‚Р° РёР· localStorage
 		function LoadSettings(){
 			var login = localStorage["login"];
 			var password = localStorage["password"];
@@ -34,7 +34,7 @@
 				
 				<tr>
 					<td></td>
-					<td align="right"><input type="button" id="save" value="Сохранить" onclick="SafeSettings()"></td>
+					<td align="right"><input type="button" id="save" value="РЎРѕС…СЂР°РЅРёС‚СЊ" onclick="SafeSettings()"></td>
 				</tr>
 			</table>
 		</div>

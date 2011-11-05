@@ -1,4 +1,4 @@
-function SendAlert(text){
+﻿function SendAlert(text){
 	chrome.tabs.executeScript(null, SAlert(text));
 }
 
