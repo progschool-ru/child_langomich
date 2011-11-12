@@ -7,22 +7,7 @@
 				  var word = document.getElementById('word');
 				  var translate = document.getElementById('translate');
 				 
-				 //формируем данны которые будем отправлять на сервер
-				 var params = 'word='+encodeURIComponent(word)+"&translate="+encodeURIComponent(translate);
 				 
-				  var xmlhttp = new XMLHttpRequest();
-				  xmlhttp.open('POST', 'http://lang.omich.net', true);
-					xmlhttp.onreadystatechange = function() {
-						if (xmlhttp.readyState == 4) {
-							if(xmlhttp.status == 200) {
-								SendAlert("lang.omich.net  отвечает, но не умеет пока добавлять слова.");
-							}else{
-								SendAlert(statusText);
-							}
-						}
-					}
-					xmlhttp.send(params);
-				
 				};
 
 				//при запуске popup об этом посылается сообщения на фоновую страницу
@@ -34,7 +19,6 @@
 				}, true)
 		</script>
 	</head>
-
 	<body>
 
 		<div>
