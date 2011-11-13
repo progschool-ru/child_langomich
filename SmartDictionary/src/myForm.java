@@ -27,14 +27,22 @@ public abstract class myForm extends Canvas
 
     private int selectedRowTopY = 0;
     private int selectedRowHeight = 0;
-    
-    protected int lastPointerX = 0;
-    protected int lastPointerY = 0;
-    protected int firstPointerX = 0;
-    protected int firstPointerY = 0;
-    
-    protected boolean pressed = false;
 
+    private int lastPointerX = 0;
+    private int lastPointerY = 0;
+    private int firstPointerX = 0;
+    private int firstPointerY = 0;
+    
+    private int minFormY;
+    private int maxFormY;
+    private int maxMainFormY;
+    
+    private boolean pressed = false;
+    private boolean menuIsAll = true;   
+    
+    private boolean tu = false;
+    private boolean td = true;   
+    
     protected boolean mainButtonIsPressed = false;
 
     protected myMultiLineText MLT;
@@ -76,22 +84,19 @@ public abstract class myForm extends Canvas
         lastPointerY = y;   
         
         firstPointerX = x;
-        firstPointerY = y;    
-    }	
-    protected void pointerReleased(int x, int y)
-    {
-        if(x < firstPointerX + 2 & x > firstPointerX - 2 & y < firstPointerY + 2 & y > firstPointerY - 2)
+        firstPointerY = y;   
+        
+        int minY, maxY;
+        int k;
+        if(y > mainIndent & y < maxMainFormY)
         {
-            int minY, maxY;
-            int k;
             if(mainButtonIsPressed)
             {
-                k = getSelectedRowHeight();
-                minY = getSelectedRowTopY();
-                maxY =  minY + k;
-                if( y > minY && y < maxY)
-                    forward();
-                else
+                if(y > minFormY & y < maxFormY & x > width/6)
+                {
+                    k = getSelectedRowHeight();
+                    minY = getSelectedRowTopY();
+                    maxY =  minY + k;
                     while(y < minY || y > maxY)
                     {
                         k = getSelectedRowHeight();
@@ -101,58 +106,59 @@ public abstract class myForm extends Canvas
                             up();
                         else if(y > maxY)
                             down();
+                        pressed = false;
                         if(selectedRow == number || selectedRow == 1)
                             break;
                     }  
+                }
             }
-            else 
+            else if(mainNumber!=0) 
             {
                 k = getMainSelectedRowHeight();
                 minY = getMainSelectedRowTopY();
                 maxY =  minY + k;
-                if( y > minY && y < maxY)
-                    forward();
-                else
-                    while(y < minY || y > maxY)
-                    {
-                        k = getMainSelectedRowHeight();
-                        minY = getMainSelectedRowTopY();
-                        maxY =  minY + k;        
-                        if(y < minY)
-                            up();
-                        else if(y > maxY)
-                            down();
-                        if(mainSelectedRow == mainNumber || mainSelectedRow == 1)
-                            break;
-                    }  
-            } 
+                while(y < minY || y > maxY)
+                {
+                    k = getMainSelectedRowHeight();
+                    minY = getMainSelectedRowTopY();
+                    maxY =  minY + k;        
+                    if(y < minY)
+                        up();
+                    else if(y > maxY)
+                        down();
+                    pressed = false;
+                    if(mainSelectedRow == mainNumber || mainSelectedRow == 1)
+                        break;
+                }  
+            }     
         }
+        else 
+            pressed = false;
+        repaint();
+    }	
+    protected void pointerReleased(int x, int y)
+    {
+        int maxShift = size/4;
+        if(x < firstPointerX + maxShift 
+        & x > firstPointerX - maxShift
+        & y < firstPointerY + maxShift
+        & y > firstPointerY - maxShift 
+        & pressed)
+            forward();
         repaint();
     }  
     protected void pointerDragged(int x, int y)
     {     
-        int deltaX = x - lastPointerX;  
-        int deltaY = y - lastPointerY;   
-        int k;
-        if(mainButtonIsPressed)
-            k = getSelectedRowHeight();
-        else
-            k = getMainSelectedRowHeight();
-        if(deltaY < 0)
-        {
-            if(deltaY + k < 0)
-            {
-                up();
-                lastPointerY -= k;     
-            }
-        }
-        else 
-        {
-            if(deltaY - k > 0)
-            {
-                down();
-                lastPointerY += k;
-            }
+        
+        int deltaX = x - lastPointerX;
+        if(!menuIsAll)
+        {        
+            int deltaY = y - lastPointerY;  
+            if(tu & deltaY > 0)
+                   shift -=deltaY;
+            if(td & deltaY < 0)
+                   shift -=deltaY;  
+            lastPointerY = y; 
         }
         if(pressed)
         {
@@ -182,6 +188,9 @@ public abstract class myForm extends Canvas
 	
     protected void drawMenu()
     {
+        menuIsAll = true;
+        tu = false;
+        td = false;
         getShift();
         String list[] = getList();
         String paths[] = getPaths();
@@ -189,6 +198,18 @@ public abstract class myForm extends Canvas
 
         for(int i = 0; i < mainNumber; i++)
         {
+            int numberOfLines = MLT.setText(list[i], width-size*2, size);
+            int linesHeight = numberOfLines*fontHeight;
+            if(topY < mainIndent)
+            {
+                menuIsAll = false;
+                tu = true;
+                if(topY < 0)
+                {
+                    topY = topY+size;
+                    continue; 
+                }
+            }
             if(mainSelectedRow == i+1)
             {
                 drawSelectedString(0, topY, width, size);
@@ -200,13 +221,16 @@ public abstract class myForm extends Canvas
             drawImage(paths[i],size-8, size-8, 4, topY+4);
             String path = "/images/main/further.png";
             drawImage(path,size/2, size/2, width-size/4*3, topY+size/4);
-            int numberOfLines = MLT.setText(list[i], width-size*2, size);
-            int linesHeight = numberOfLines*fontHeight;
             MLT.drawMultStr(size, topY+(size-linesHeight)/2);
             topY = topY+size;
-            if(topY > height) 
-                    break;            
+            if(topY > height)
+            {
+                menuIsAll = false;
+                td = true;
+                break;  
+            }
         }
+        maxMainFormY = topY;
         drawSign();
         g.setColor(0,0,0);
         if(mainSelectedRow!=mainNumber)
@@ -215,9 +239,13 @@ public abstract class myForm extends Canvas
 
     protected void drawSmallMenu()
     {
+        menuIsAll = true;
+        tu = false;
+        td = false;
         if(mainNumber!=0)
         {
             int topY = indent;
+            minFormY = topY;
             int smallMenuHeight = 0;
             for(int i = 0; i < number; i++)
             {
@@ -233,19 +261,37 @@ public abstract class myForm extends Canvas
             {
                 int numberOfLines = MLT.setText(smallMenuList[i], width*5/6,size);
                 int allHeigh = numberOfLines*fontHeight+fontHeight;
+                if(topY < mainIndent)
+                {
+                    menuIsAll = false;
+                    tu = true;
+                    if(topY < 0)
+                    {
+                        topY = topY+allHeigh;
+                        continue; 
+                    }
+                }
                 g.setColor(50, 50, 50);
                 if(selectedRow == i+1)
                     drawSelectedString(width/6, topY, width*5/6, allHeigh);
                 MLT.drawMultStr(width/6, topY+fontHeight/2);
                 topY = topY+allHeigh;
-                if(topY > height) 
-                    break;
+                if(topY > height)
+                {
+                    menuIsAll = false;
+                    td = true;
+                    break;  
+                }
             }
+            maxFormY = topY;
         }
     }
 	
     protected void drawList()
     {
+        menuIsAll = true;
+        tu = false;
+        td = false;
         getShift();
         String list[] = getList();
         int topY = - shift;
@@ -260,11 +306,21 @@ public abstract class myForm extends Canvas
         {
             for(int i = 0; i < mainNumber; i++)
             {
+                int numberOfLines = MLT.setText(list[i], width, size);
+                int allHeigh = numberOfLines*fontHeight+fontHeight;
+                if(topY < mainIndent)
+                {
+                    menuIsAll = false;
+                    tu = true;
+                    if(topY < 0)
+                    {
+                        topY = topY+allHeigh;
+                        continue; 
+                    }
+                }
                 g.setColor(0,0,0);
                 if(mainSelectedRow!=i && mainSelectedRow!=i+1)
                     g.drawLine(0, topY, width, topY);
-                int numberOfLines = MLT.setText(list[i], width, size);
-                int allHeigh = numberOfLines*fontHeight+fontHeight;
                 if(mainSelectedRow == i+1)
                 {
                     drawSelectedString(0, topY, width, allHeigh);
@@ -272,9 +328,14 @@ public abstract class myForm extends Canvas
                 }
                 MLT.drawMultStr(0, topY+fontHeight/2);
                 topY = topY+allHeigh;
-                if(topY > height) 
-                    break;
+                if(topY > height)
+                {
+                    menuIsAll = false;
+                    td = true;
+                    break;  
+                }
             }
+            maxMainFormY = topY;
             if(mainSelectedRow!=mainNumber)
                 g.drawLine(0, topY, width, topY);
         }
@@ -323,7 +384,7 @@ public abstract class myForm extends Canvas
         g.fillRect(0, 0, width, mainIndent);
         g.setColor(0,0,0);
         drawImage(getMainPath(),mainIndent, mainIndent, 0, 0);
-        int numberOfLines = MLT.setText(getMainName()+lastPointerX+lastPointerY, width-mainIndent-sideIndent,mainIndent);
+        int numberOfLines = MLT.setText(getMainName(), width-mainIndent-sideIndent,mainIndent);
         int linesHeight = numberOfLines*fontHeight;
         MLT.drawMultStr(mainIndent,(mainIndent-linesHeight)/2);
         if(mainSelectedRow!=1)
