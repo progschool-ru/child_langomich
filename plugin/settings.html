@@ -1,19 +1,27 @@
 ﻿<html>
 	<head>
 		<title>Smart dictionary settings</title>
-		<script src="alert.js" type="text/javascript"></script>
-		<script src="jquery-1.7.min.js" type="text/javascript"></script>		
+		<script src="jquery-1.7.min.js" type="text/javascript"></script>
+		<script src="lib.js" type="text/javascript"></script>
+				
 	</head>
 	<body>
 	<script type="text/javascript" >
-		//Убираем символы экранирования
-		function CopyStr(str){
-			var NewStr = "";
-			for(var i=0; i<str.length; i++){
-				if(str.charAt(i) != "\\") NewStr = NewStr+str.charAt(i);
-			}
-			return NewStr;
+	
+	function savePassword(success){
+		localStorage["auth"] = success; 
+		if(success){
+			localStorage["login"] = login;
+			localStorage["password"] = password;
+			sendAlert("Логин и пароль сохранены");
+		}else{
+			localStorage["login"] = "";
+			localStorage["password"] = "";
+			$('#login').attr('value','');
+			$('#password').attr('value','');
+			sendAlert("Логин и пароль введены не верно");
 		}
+	}
 	
 		$(document).ready(function(){
 			if(localStorage["auth"] == "true"){
@@ -26,30 +34,8 @@
 			var password =  $('#password').attr('value');
 			var login =  $('#login').attr('value'); 
 			
-				 var auth = "login="+login+"&password="+password;
-				  $.ajax({
-						url: "http://lang.omich.net/smdserver/servlet/login",
-						type: "POST",
-						cache: false,
-						data: auth,
-						success: function(data){ 
-							var Authdata = JSON.parse(CopyStr(data));
-								localStorage["auth"] = Authdata.success;
-							if(Authdata.success == true){
-								localStorage["login"] = login;
-								localStorage["password"] = password;
-								SendAlert("Логин и пароль сохранены");
-							}else{
-								localStorage["login"] = "";
-								localStorage["password"] = "";
-								$('#login').attr('value','');
-								$('#password').attr('value','');
-								SendAlert("Логин и пароль введены не верно");
-							}
-						},
-						error: function(){ SendAlert("error");} 
-					});
-				
+			SMDServer.setAuthData(login,password);
+			SMDServer.auth(savePassword);
 			});
 		});
 		
