@@ -10,7 +10,13 @@
 				function checkAuthData(success){
 				};
 				
+				//загружаем языки
 				function setLanguages(languages){
+					//а если нету языков ?
+					languages.languages.forEach(function(item){
+						$("#languages").append( $('<option value="'+item.id+'">'+item.name+'</option>'));
+						}
+					)
 				};
 				
 				
@@ -33,13 +39,15 @@
 					// и получаем ответ в котором содежится выделеный текст
 					document.getElementById('word').value = Response.nowText;
 					
+					//так же надо добавить анимацию пока все загружаем
+					
 					//тут проверяем сохранен ли логин или пароль, если да 
 					//загружаем список языков
 					//и отображем форму с выделеным словом
 					if(localStorage["auth"] =="true"){
 							SMDServer.setAuthData(localStorage["login"],localStorage["password"]);
 							SMDServer.auth(checkAuthData);
-							SMDServer.LoadLanguages(setLanguages);
+							SMDServer.loadLanguages(setLanguages);
 					}else{
 						//если нет то отображем введите логин и пароль в настройках
 						sendAlert("вы не авторизованы");
@@ -62,7 +70,7 @@
 		
 					<tr>
 						<td><input type=text id="word" value=""></td>
-						<td><select name="ComboBox"><option value="1">ENG</option></select></td>
+						<td><select name="ComboBox" id="languages"></select></td>
 					<td><input type=text id="translate" value=""></td>
 					</tr>
 		

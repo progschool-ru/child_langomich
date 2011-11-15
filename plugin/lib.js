@@ -39,7 +39,7 @@ var SMDServer = {
 		});
 	},
 	
-	LoadLanguages : function(handler){
+	loadLanguages : function(handler){
 		$.ajax({
 			url: "http://lang.omich.net/smdserver/servlet/getLanguages",
 			success: function(data){ 
@@ -49,5 +49,19 @@ var SMDServer = {
 			error: function(){ sendAlert("error");} 
 		});
 		
+	},
+	
+	addWords : function(words, handler){
+		$.ajax({
+			url: "http://lang.omich.net/smdserver/servlet/addWords",
+			type: "POST",
+			data: {data: JSON.stringify(words)},
+			success: function(){ 
+						handler();
+					},
+			error: function(){ sendAlert("error");} 
+		});
 	}
+	
+	
 }
