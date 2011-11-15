@@ -27,18 +27,25 @@
 				
 				//функция добавления слова на сервер
 				function addWordToServer(){
+				//навести порядок
+				if($('#word').attr('value') == ""){
+					sendAlert("Поле Слово пустое"); return;
+				}
+				if($('#translate').attr('value') == ""){
+					sendAlert("Поле Перевод пустое"); return;
+				}
 				//формируем данные для отправки
 				//пока так пока не добьюсь работоспособности
 				//так же надо добавить проверку на пустоту строк
 				SMDServer.auth(checkAuthData);
 				var date = new Date().getTime();
-				
-				var word = {
+				var word = [];
+				word.push({
 					translation : $('#word').attr('value'), 
-				    original : $('#translate').attr('value'), 
+				    original : escapeToUtf16($('#translate').attr('value')), 
 				    rating :0,
 					modified: date
-				}
+				});
 				var data = {
 					currentDeviceTime: date,
 					languages :[{
@@ -46,7 +53,8 @@
 						name : $('#languages :selected').text(),
 						words : word 
 				     }]
-				}
+				};
+				//sendAlert(JSON.stringify(data));
 				SMDServer.addWords(data,add);
 			
 				

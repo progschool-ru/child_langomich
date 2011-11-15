@@ -1,11 +1,11 @@
 ﻿function sendAlert(text){
 	chrome.tabs.executeScript(null, sAlert(text));
-}
+};
 
 function sAlert(text){
 	alert(text);
-}
-
+};
+//Надо навести порядок с функциями кодирования
 //Убираем символы экранирования
 //Скорее всего тоже надо переделать
 function copyStr(str){
@@ -14,7 +14,39 @@ function copyStr(str){
 			if(str.charAt(i) != "\\") NewStr = NewStr+str.charAt(i);
 		}
 	return NewStr;
-}
+};
+//позаимствовал с кода сервера
+function escapeToUtf16(str){
+	var lit = "";
+	for (var i = 0; i < str.length; i++)
+		{
+			var v = str.charCodeAt(i);
+			lit = lit + StringToUni16._uni2j(v);
+		}
+	return lit;
+	
+};
+//позаимствовал с кода сервера
+var StringToUni16 = {
+		_symbs :    "0123456789ABCDEF",
+
+		_hexdigit : function (v){
+			return this._symbs.charAt(v & 0x0f);
+		},
+
+		_hexval :   function (v){
+			return this._hexdigit(v >>> 12) + this._hexdigit(v >>> 8) + this._hexdigit(v >>> 4) + this._hexdigit(v);
+		},
+
+		_uni2j :    function (val){
+			if (val == 10) return "\\n";
+			else if (val == 13) return "\\r";
+			else if (val == 92) return "\\\\";
+			else if (val == 34) return "\\\"";
+			else if (val < 32 || val > 126) return "\\u" + this._hexval(val);
+			else return String.fromCharCode(val);
+		}
+};
 
 var SMDServer = {
 	login: "",
@@ -50,13 +82,13 @@ var SMDServer = {
 		});
 		
 	},
-	//найти причину почему не добовляет
+
 	addWords : function(words, handler){
 		$.ajax({
 			url: "http://lang.omich.net/smdserver/servlet/addWords",
 			type: "POST",
 			data: {data: JSON.stringify(words)},
-			success: function(){ 
+			success: function(res){
 						handler();
 					},
 			error: function(){ sendAlert("error");} 
