@@ -4,9 +4,14 @@
 		<script src="lib.js" type="text/javascript"></script>
 		<script type="text/javascript">
 				
+				function add(){
+					sendAlert("Слово добавлено на сервер");
+				};
+		
 				//проверяет подошел ли логин и пароль
 				//тут не нужна т.к уже проверили в настройках
 				//но стои сделать проверку на доступность сервера
+				
 				function checkAuthData(success){
 				};
 				
@@ -14,7 +19,7 @@
 				function setLanguages(languages){
 					//а если нету языков ?
 					languages.languages.forEach(function(item){
-						$("#languages").append( $('<option value="'+item.id+'">'+item.name+'</option>'));
+						$('#languages').append( $('<option value="'+item.id+'">'+item.name+'</option>'));
 						}
 					)
 				};
@@ -22,13 +27,29 @@
 				
 				//функция добавления слова на сервер
 				function addWordToServer(){
-				  var word = document.getElementById('word');
-				  var translate = document.getElementById('translate');
-				
-				SMDServer.setAuthData(localStorage["login"],localStorage["password"]);
-				//Нужно как нибудь проверять авторизованы ли мы на сервере или нет
-				//что бы не делать этот запрос каждый раз при нажатии кнопки добавить
+				//формируем данные для отправки
+				//пока так пока не добьюсь работоспособности
+				//так же надо добавить проверку на пустоту строк
 				SMDServer.auth(checkAuthData);
+				var date = new Date().getTime();
+				
+				var word = {
+					translation : $('#word').attr('value'), 
+				    original : $('#translate').attr('value'), 
+				    rating :0,
+					modified: date
+				}
+				var data = {
+					currentDeviceTime: date,
+					languages :[{
+						id :$('#languages :selected').val(),
+						name : $('#languages :selected').text(),
+						words : word 
+				     }]
+				}
+				SMDServer.addWords(data,add);
+			
+				
 						
 						
 				};
@@ -57,6 +78,7 @@
 				}, true)
 		</script>
 	</head>
+	<!-- Cделать динамичную форму-->
 	<body>
 
 		<div>

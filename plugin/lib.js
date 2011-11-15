@@ -50,7 +50,7 @@ var SMDServer = {
 		});
 		
 	},
-	
+	//найти причину почему не добовляет
 	addWords : function(words, handler){
 		$.ajax({
 			url: "http://lang.omich.net/smdserver/servlet/addWords",
