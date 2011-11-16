@@ -83,7 +83,7 @@ var SMDServer = {
 		
 	},
 
-	addWords : function(words, handler){
+	sendWords : function(words, handler){
 		$.ajax({
 			url: "http://lang.omich.net/smdserver/servlet/addWords",
 			type: "POST",
@@ -96,4 +96,45 @@ var SMDServer = {
 	}
 	
 	
+};
+
+var Words = {
+
+	words : [],
+	id : "",
+	name : "",
+	
+	setLanguage: function(id, name){
+		this.id = id;
+		this.name = name;
+	},
+	
+	addWord: function(_original, _translation ){
+		var date = new Date().getTime();
+		this.words.push({
+					translation : _translation, 
+				    original : escapeToUtf16(_original), 
+				    rating :0,
+					modified: date
+		});
+	},
+	
+	clearWords: function(){
+		this.words.length = 0;
+		this.id = "";
+		this.name = "";
+	},
+	
+	getData: function(){
+		var date = new Date().getTime();
+		var data = {
+			currentDeviceTime: date,
+				languages :[{
+					id : this.id,
+					name : this.name,
+					words : this.words 
+				}]
+		}
+		return data;
+	}
 }
