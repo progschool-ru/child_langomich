@@ -24,7 +24,6 @@
 					)
 				};
 				
-				
 				//функция добавления слова на сервер
 				function addWordToServer(){
 					//навести порядок
@@ -32,7 +31,7 @@
 						sendAlert("Поле Слово пустое"); return;
 					}
 					if($('#translate').attr('value') == ""){
-						sendAlert("Поле Перевод пустое"); return;
+						sendAlert("Поле Переводэ пустое"); return;
 					}
 				
 					SMDServer.auth(checkAuthData);
@@ -44,53 +43,32 @@
 
 				//при запуске popup об этом посылается сообщения на фоновую страницу
 				window.addEventListener("load", function(){
+						if(localStorage["auth"] =="true"){
+					$('#words').append($('<tr><td>Слово</td><td>Язык</td><td>Перевод</td></tr>'));
+					$('#words').append($('<tr><td><input type=text id="word" value=""></td><td><select name="ComboBox" id="languages"></select></td><td><input type=text id="translate" value=""></td></tr>'));
+					$('#button').append($('<input type=button name="add" value="Добавить" onclick="addWordToServer()">'));
 					chrome.extension.sendRequest({message : "StartPopup"}, function(Response){
-					// и получаем ответ в котором содежится выделеный текст
-					document.getElementById('word').value = Response.nowText;
-					
-					//так же надо добавить анимацию пока все загружаем
-					
-					//тут проверяем сохранен ли логин или пароль, если да 
-					//загружаем список языков
-					//и отображем форму с выделеным словом
-					if(localStorage["auth"] =="true"){
-							SMDServer.setAuthData(localStorage["login"],localStorage["password"]);
-							SMDServer.auth(checkAuthData);
-							SMDServer.loadLanguages(setLanguages);
-					}else{
-						//если нет то отображем введите логин и пароль в настройках
-						sendAlert("вы не авторизованы");
-					}
-				
+					document.getElementById('word').value = Response.nowText;		
 					});
+					SMDServer.setAuthData(localStorage["login"],localStorage["password"]);
+					SMDServer.auth(checkAuthData);
+					SMDServer.loadLanguages(setLanguages);
+					}else{
+						$('#words').append($('<div align="center">Введите настройки для авторизации</div>'));
+					}		
 				}, true)
 		</script>
 	</head>
 	<!-- Cделать динамичную форму-->
 	<body>
 
-		<div>
-			<div id="add_word">
-				<table>
-					<tr>
-						<td>Слово</td>
-						<td>Язык</td>
-						<td>Перевод</td>
-					</tr>
 		
-					<tr>
-						<td><input type=text id="word" value=""></td>
-						<td><select name="ComboBox" id="languages"></select></td>
-					<td><input type=text id="translate" value=""></td>
-					</tr>
 		
-					<tr>
-					<td></td>
-					<td><!--<input type=button name="translate" value="Пепевести">--></td>
-					<td align=right><input type=button name="add" value="Добавить" onclick="addWordToServer()"></td>
-					</tr>
+				<table id="words">
+					
+		
 				</table>
 			    
- 
-     </body>
+ 			<div align="right" id="button"></div>
+  </body>
 <html>
