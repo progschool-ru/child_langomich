@@ -39,6 +39,7 @@ public abstract class myForm extends Canvas
     
     private boolean pressed = false;
     private boolean menuIsAll = true;   
+    private boolean miss = false;   
     
     private boolean tu = false;
     private boolean td = true;   
@@ -79,7 +80,7 @@ public abstract class myForm extends Canvas
     public void pointerPressed(int x, int y)
     {
         pressed = true;
-                
+        miss = false;        
         lastPointerX = x;
         lastPointerY = y;   
         
@@ -88,12 +89,15 @@ public abstract class myForm extends Canvas
         
         int minY, maxY;
         int k;
-        if(y > mainIndent & y < maxMainFormY)
+        System.out.println(1);
+        if(y > mainIndent & (y < maxMainFormY || y < maxFormY))
         {
             if(mainButtonIsPressed)
             {
+                System.out.println(2);
                 if(y > minFormY & y < maxFormY & x > width/6)
                 {
+                    System.out.println(3);
                     k = getSelectedRowHeight();
                     minY = getSelectedRowTopY();
                     maxY =  minY + k;
@@ -110,6 +114,11 @@ public abstract class myForm extends Canvas
                         if(selectedRow == number || selectedRow == 1)
                             break;
                     }  
+                }
+                else{
+                    System.out.println(4);
+                    miss = true;
+                    
                 }
             }
             else if(mainNumber!=0) 
@@ -132,8 +141,10 @@ public abstract class myForm extends Canvas
                 }  
             }     
         }
-        else 
+        else{ 
+            System.out.println(11);
             pressed = false;
+        }
         repaint();
     }	
     protected void pointerReleased(int x, int y)
@@ -144,7 +155,12 @@ public abstract class myForm extends Canvas
         & y < firstPointerY + maxShift
         & y > firstPointerY - maxShift 
         & pressed)
-            forward();
+        {
+            if(miss)
+                back();
+            else
+                forward(); 
+        }
         repaint();
     }  
     protected void pointerDragged(int x, int y)
@@ -191,6 +207,7 @@ public abstract class myForm extends Canvas
         menuIsAll = true;
         tu = false;
         td = false;
+        maxFormY = 0;
         getShift();
         String list[] = getList();
         String paths[] = getPaths();
