@@ -137,4 +137,40 @@ var Words = {
 		}
 		return data;
 	}
-}
+};
+
+var Form = function(id){
+	this.id = '#'+id;
+	this.num = 0;
+	this.table = '';
+	
+	function createTR(val){
+		return '<tr>'+val+'</tr>';
+	}
+	
+	function createTD(val){
+		return '<td>'+val+'</td>';
+	}
+	
+	function createTextInput(id){
+		return '<input type=text id="'+id+'" value="">';
+	}
+	
+	this.addInputStr = function(){
+		if(this.num==0){
+			 this.table = createTD('Слово')+createTD('Язык')+createTD('Перевод');
+			 createTR(this.table);
+		}
+		var str = createTD(createTextInput('word'+this.num));
+			str += createTD('<select></select>');
+			str += createTD(createTextInput('translate'+this.num));
+		this.table += createTR(str);
+		this.num++;
+	}
+	
+	this.createForm = function(handler){
+		$(this.id).append('<table>'+this.table+'</table>');
+		$(this.id).append('<div align="right"><input type=button name="add" value="Добавить" onclick="'+handler+'()"></div>');
+	}
+	
+};
