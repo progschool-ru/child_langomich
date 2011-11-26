@@ -89,15 +89,12 @@ public abstract class myForm extends Canvas
         
         int minY, maxY;
         int k;
-        System.out.println(1);
         if(y > mainIndent & (y < maxMainFormY || y < maxFormY))
         {
             if(mainButtonIsPressed)
             {
-                System.out.println(2);
                 if(y > minFormY & y < maxFormY & x > width/6)
                 {
-                    System.out.println(3);
                     k = getSelectedRowHeight();
                     minY = getSelectedRowTopY();
                     maxY =  minY + k;
@@ -115,11 +112,8 @@ public abstract class myForm extends Canvas
                             break;
                     }  
                 }
-                else{
-                    System.out.println(4);
+                else
                     miss = true;
-                    
-                }
             }
             else if(mainNumber!=0) 
             {
@@ -141,10 +135,8 @@ public abstract class myForm extends Canvas
                 }  
             }     
         }
-        else{ 
-            System.out.println(11);
+        else
             pressed = false;
-        }
         repaint();
     }	
     protected void pointerReleased(int x, int y)

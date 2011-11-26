@@ -43,38 +43,50 @@ public class Timing extends Thread
                 os.close();
 
                 String c = hc.getHeaderField("Set-Cookie");
-				hc.close();
+		hc.close();
 
-                hc = (HttpConnection)Connector.open("http://"+settings.getURL() + ACTION_PATH + "/addWords");// TODO: (1.high) Попытки загрузить более 20 слов по JPRS почти всегда неудачны. Выяснить с чем это связано. Попытаться исправить, ведь OperaMini может грузить достаточно большие страницы, значит и мы можем. (возможно, для этого придётся доработать серверный API)
+                hc = (HttpConnection)Connector.open("http://"+settings.getURL() + ACTION_PATH + "/addWords");
                 hc.setRequestMethod(HttpConnection.POST);
                 hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
                 hc.setRequestProperty("Cookie", c);
 
-				long lastTiming = settings.getLastServerTiming();
-	            query = "data="+getData(lastTiming);
+		long lastTiming = settings.getLastServerTiming();
+	        query = "data="+getData(lastTiming);
 
                 os = hc.openOutputStream();
                 os.write(query.getBytes());
                 os.close();
 
                 is = hc.openInputStream();
-                int length = (int) hc.getLength();
-                byte[] buff = new byte[length];
-                is.read(buff);
+                StringBuffer b = new StringBuffer();
+                long length = (long) hc.getLength();
+                int ch = 0;
+                if ( length != -1)
+                    for (int i =0 ; i < length ; i++ )
+                    {
+                        if ((ch = is.read()) != -1)
+                            b.append((char) ch);                           
+                    }
+                else
+                    while ((ch = is.read()) != -1)
+                    {
+                            length = is.available() ;
+                            b.append((char)ch);
+                    }
                 is.close();
-				hc.close();
-
-				String result = setData(JavaString.decode(new String(buff)), currentTime);
-                text = "success - " + result;
+                hc.close();
+                String str = b.toString();
+                str = JavaString.decode(str);
+		String result = setData(str, currentTime);
+                text = "success - "+length+" "+ result;
                 settings.setNumberOfTiming(settings.getNumberOfTiming()+1);
-                settings.setText(text);
-				
-				if("true".equals(result))
-				{
+                settings.setText(text);	
+                if("true".equals(result))
+                {
 	                settings.setLastTiming(currentTime);
-					Dictionary dictionary = new Dictionary(null, Boolean.FALSE);
-					dictionary.deleteAllRecords();
-				}
+                        Dictionary dictionary = new Dictionary(null, Boolean.FALSE);
+                        dictionary.deleteAllRecords();
+                }
             }
             catch(IOException ioe)
             {
@@ -141,37 +153,37 @@ public class Timing extends Thread
                     word.put("modified",Long.parseLong(dictionary.getCell(row, Dictionary.LAST_TIMING)));
                     words.put(word);
                 }
-				dictionary.destroy();
+                dictionary.destroy();
 
-				Language language = languages.getLanguage(i);
-				if(!languages.isInternalId(language.getId()))
-				{
-					JSONLanguage.put("id", language.getId());
-				}			
-				JSONLanguage.put("name", language.getName());				
+                Language language = languages.getLanguage(i);
+                if(!languages.isInternalId(language.getId()))
+                {
+                        JSONLanguage.put("id", language.getId());
+                }			
+                JSONLanguage.put("name", language.getName());				
                 JSONLanguage.put("words", words);
                 JSONLanguages.put(JSONLanguage);//TODO: (3.low) Возложить функцию конвертирования в JSON на сам класс Language. Чтобы было как-то так: JSON.encode(language); или JSONLanguages.put(language);
             }
             main.put("languages", JSONLanguages);
-			if(serverTiming > 0)
-			{
-				main.put("lastConnection", serverTiming);
-			}
+            if(serverTiming > 0)
+            {
+                    main.put("lastConnection", serverTiming);
+            }
         }
         catch(JSONException e){}
 		//System.out.println("get: " + main.toString()); //Чтобы эти строки не писать, а потом не удалять, оставлю закомментированными.
         return JavaString.encode(main.toString());
     }
     private String setData(String data, long currentTime)
-	{
+    {
 		//System.out.println("set: " + data); //Чтобы эти строки не писать, а потом не удалять, оставлю закомментированными.
         try
         {
             JSONObject json = new JSONObject(data);
-			if(!json.has("success") || !json.getBoolean("success"))
-			{
-				return json.get("success").toString();
-			}
+            if(!json.has("success") || !json.getBoolean("success"))
+            {
+                    return json.get("success").toString();
+            }
 			
             JSONArray JSONLanguages = json.getJSONArray("languages");
             for(int i = 0; i < JSONLanguages.length();i++)
@@ -179,34 +191,35 @@ public class Timing extends Thread
                 JSONObject JSONLanguage = JSONLanguages.getJSONObject(i);
                 JSONArray words = JSONLanguage.getJSONArray("words");
                 String languageName = JSONLanguage.getString("name");
-				String languageId = JSONLanguage.getString("id");
+                String languageId = JSONLanguage.getString("id");
 
-				Dictionary dictionary = new Dictionary(languageId);
+                Dictionary dictionary = new Dictionary(languageId);
 
-				String oldId = languages.addLanguageAndGetOldLanguageId(languageName, languageId, dictionary);
-				if(settings.getLanguage().equals("null") || settings.getLanguage().equals(oldId))
-				{
+                String oldId = languages.addLanguageAndGetOldLanguageId(languageName, languageId, dictionary);
+                if(settings.getLanguage().equals("null") || settings.getLanguage().equals(oldId))
+                {
                     settings.setLanguage(languageId);
-				}
+                }
 
-				for(int j = 0; j < words.length();j++)
+                for(int j = 0; j < words.length();j++)
                 {
                     JSONObject word = words.getJSONObject(j);
                     dictionary.newRecord(word.getString("original"),
-							             word.getString("translation"),
-										 word.getInt("rating"),
-										 currentTime);
+                    word.getString("translation"),
+                    word.getInt("rating"),
+                    currentTime);
                 }
-				dictionary.destroy();
+                dictionary.destroy();
             }
-			if(json.has("lastConnection"))
-			{
-				settings.setLastServerTiming(json.getLong("lastConnection"));
-			}
+            if(json.has("lastConnection"))
+            {
+                    settings.setLastServerTiming(json.getLong("lastConnection"));
+            }
             return  json.get("success").toString();
         }
         catch(JSONException e)
 		{
+                    System.out.println("error - "+e.getMessage());
 			//TODO: (3.low) Предлагаю устроить в приложении хранилище 
 			// последних исключений с описаниями и при синхронизации отправлять их на сервер. 
 			// Так мы получим богатое подспорье для поиска и исправления багов.
