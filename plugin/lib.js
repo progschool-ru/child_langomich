@@ -67,7 +67,7 @@ var SMDServer = {
 						var аuthdata = JSON.parse(copyStr(data));
 						handler(аuthdata.success);
 					},
-			error: function(){ sendAlert("error");} 
+			error: function(message){ sendAlert("error "+message);} 
 		});
 	},
 	
@@ -78,7 +78,7 @@ var SMDServer = {
 						var res = JSON.parse(copyStr(data));
 						handler(res);
 					},
-			error: function(){ sendAlert("error");} 
+			error: function(message){ sendAlert("error"+message);} 
 		});
 		
 	},
@@ -91,7 +91,7 @@ var SMDServer = {
 			success: function(res){
 						handler();
 					},
-			error: function(){ sendAlert("error");} 
+			error: function(message){ sendAlert("error"+message);} 
 		});
 	}
 	
@@ -139,10 +139,12 @@ var Words = {
 	}
 };
 
+//класс который генерирует html код формы
 var Form = function(id){
 	this.id = '#'+id;
-	this.num = 0;
 	this.table = '';
+	
+	var num = 0;
 	
 	function createTR(val){
 		return '<tr>'+val+'</tr>';
@@ -152,25 +154,36 @@ var Form = function(id){
 		return '<td>'+val+'</td>';
 	}
 	
-	function createTextInput(id){
-		return '<input type=text id="'+id+'" value="">';
+	function createTextInput(id,value){
+		return '<input type=text id="'+id+'" value="'+value+'">';
 	}
 	
-	this.addInputStr = function(){
-		if(this.num==0){
-			 this.table = createTD('Слово')+createTD('Язык')+createTD('Перевод');
-			 createTR(this.table);
+	function addInputStr(word,translate){
+		var table='';
+		if(num==0){
+			 table = createTD('Слово')+createTD('Язык')+createTD('Перевод');
+			 createTR(table);
 		}
-		var str = createTD(createTextInput('word'+this.num));
+		var str = createTD(createTextInput('word'+num,word));
 			str += createTD('<select></select>');
-			str += createTD(createTextInput('translate'+this.num));
-		this.table += createTR(str);
-		this.num++;
+			str += createTD(createTextInput('translate'+num, translate));
+		table += createTR(str);
+		
+		return table; 
+	}
+	
+	this.addWords = function(words){
+		this.table+=addInputStr(words,"");
+		num++;
 	}
 	
 	this.createForm = function(handler){
 		$(this.id).append('<table>'+this.table+'</table>');
 		$(this.id).append('<div align="right"><input type=button name="add" value="Добавить" onclick="'+handler+'()"></div>');
+	}
+	
+	this.getNum = function(){
+		return num;
 	}
 	
 };
