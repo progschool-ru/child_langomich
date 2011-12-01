@@ -1,17 +1,19 @@
 ﻿<html>
 	<head>
 		<style  type="text/css">
+		body{
+			width: 381px;
+		}
 		#table{
 			display: none;
-			width: 381px;
-			position: relative;
 		}
-		#box{
-			vertical-align: middle;
-			position: relative;
+		#input{
 			height: 81px;
-			width: 381px;
+			vertical-align: middle;
 			text-align:	center;
+			display: table-cell;
+		}
+		.content{
 		}
 		</style>
 		<script src="jquery-1.7.min.js" type="text/javascript"></script>
@@ -60,9 +62,10 @@
 						if(request.message == "SendNowText"){
 							form.addWords(request.NowText);
 						}
-							
+						
+						form.createForm("addWordToServer");	
 						SMDServer.loadLanguages(setLanguages);
-						form.createForm("addWordToServer");
+						
 					}
 				);
 				
@@ -70,22 +73,19 @@
 				//при запуске popup об этом посылается сообщения на фоновую страницу
 				window.addEventListener("load", function(){
 					if(localStorage["auth"] =="true"){
-						$('#input').append("<span>Загрузка языков</span>");
+						$('#input').append('<span class="content">Загрузка языков</span>');
 						chrome.extension.sendRequest({message : "StartPopup"});
 					}else{
-						$('#input').append($('<span>Введите настройки для авторизации</span>'));
+						$('#input').append($('<span class="content">Введите <a href="settings.html" target="_blank"> настройки</a> для авторизации</span>'));
 					}			
 					
 				}, true)
 		</script>
 	</head>
 	<body>
-			<div id="table">
-			</div>  
-			<div id="box" >
-			<div id="input">
-			
-			</div >  
-			</div>
+		<center>
+			<div id="table"></div>  
+			<div id="input"></div>
+		</center>
  	</body>
 <html>

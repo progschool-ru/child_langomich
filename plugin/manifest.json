@@ -1,7 +1,9 @@
 ﻿{ 
   "name": "lang.omich",
-  "version": "0.7" ,
+  "version": "0.7.2" ,
+  "homepage_url" : "http://lang.omich.net",
   "description": "Smart dictionary", 
+  
   "background_page": "background.html", 
   "options_page": "settings.html",	
 	
