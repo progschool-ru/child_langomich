@@ -1,0 +1,88 @@
+﻿<!doctype html>
+<html lang="ru">
+	<head>
+		<style  type="text/css">
+		body{
+			width: 300px;
+		}
+		#table{
+			display: none;
+		}
+		#input{
+			height: 61px;
+			vertical-align: middle;
+			text-align:	center;
+			display: table-cell;
+		}
+		.content{
+		}
+		</style>
+		<script src="jquery-1.7.min.js" type="text/javascript"></script>
+		<script src="lib.js" type="text/javascript"></script>
+		<script type="text/javascript">
+				opera.postError("lang.omich.popup start");
+				var form = new Form('table');
+				
+				function add(){
+					sendAlert("Слово добавлено на сервер");
+				};		
+				
+				function setLanguages(languages){
+					languages.languages.forEach(function(item){
+						$('select').append( $('<option value="'+item.id+'">'+item.name+'</option>'));
+						}
+					)
+					$('#input').remove();
+					$('#table').show();
+				};
+				
+				function addWordToServer(){
+					if($('#word0').attr('value') == ""){
+						sendAlert("Поле Слово пустое");
+						return;
+					}
+					if($('#translate0').attr('value') == ""){
+						sendAlert("Поле Перевод пустое");
+						return;
+					}
+				
+					SMDServer.auth(function(success){});
+					Words.setLanguage($('#languages :selected').val(),$('#languages :selected').text());
+					Words.addWord($('#translate0').attr('value'), $('#word0').attr('value'));
+					SMDServer.sendWords(Words.getData(), add);
+					Words.clearWords();
+				};
+				
+				opera.extension.onmessage = function(event){
+						opera.postError("lang.omich.popup message from index");
+						SMDServer.setAuthData(widget.preferences.login,widget.preferences.password);
+						SMDServer.auth(function(success){});
+												
+						
+							form.addWords(event.data);
+						
+						
+						form.createForm("addWordToServer");	
+						SMDServer.loadLanguages(setLanguages);
+				}
+	
+				
+				
+		
+				window.addEventListener("load", function(){
+					opera.postError("lang.omich.popup load");
+					if(widget.preferences.auth =="true"){
+						$('#input').append('<span class="content">Загрузка языков</span>');
+						opera.extension.postMessage({message:"popup_load"});
+					}else{
+						$('#input').append($('<span class="content">Введите <a href="options.html" target="_blank"> настройки</a> для авторизации</span>'));
+					}			
+					
+				}, true)
+		</script>
+	</head>
+	<body>
+			<div id="table"></div>  
+			<center><div id="input"></div></center>
+ 	</body>
+<html>

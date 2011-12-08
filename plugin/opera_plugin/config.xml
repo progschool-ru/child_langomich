@@ -1,0 +1,8 @@
+<?xml version="0.5.0" encoding="utf-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets">
+	<name>lang.omich</name>
+	<access origin="http://lang.omich.net"/>
+	<description>Smart dictionary</description>
+  	<author href="yourURL" email="yourEMail">Enter your name here</author>
+	 <content src="index.html" type="text/html" encoding="utf-8"/>
+</widget>

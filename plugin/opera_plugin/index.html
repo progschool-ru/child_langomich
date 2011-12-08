@@ -1,0 +1,36 @@
+﻿<!doctype html>
+<html lang="ru">
+  <head>
+    <script>
+		opera.postError("lang.omich.index Start ");
+		var  text ="";
+		
+		var theButton;
+		var ToolbarUIItemProperties = {
+			title: "lang.omich",
+			icon: "favicon.ico",
+			popup: {
+				href: "popup.html",
+				width: 381,
+				height: 90,
+			}
+		}
+        theButton = opera.contexts.toolbar.createItem(ToolbarUIItemProperties);
+        opera.contexts.toolbar.addItem(theButton);
+		
+		opera.extension.onmessage = function(event){
+			opera.postError("lang.omich.index message "+event.data.message);
+			switch(event.data.message){
+				case "popup_load":
+					event.source.postMessage(text);
+					break;
+				case "Selection":
+					text = event.data.data;
+					break;
+			}
+		}
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
