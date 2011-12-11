@@ -1,3 +1,5 @@
+package org.smdme;
+
 public class Language 
 {
 	private String name;

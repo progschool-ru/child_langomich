@@ -1,11 +1,13 @@
+package org.smdme;
+
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 
 public class MainForm extends myForm implements CommandListener
 {
-    private Command choice = new Command(text.CHOICE, Command.SCREEN, 1);
-    private Command exitMIDlet = new Command(text.EXIT, Command.EXIT, 0);
+    private Command choice = new Command(T.CHOICE, Command.SCREEN, 1);
+    private Command exitMIDlet = new Command(T.EXIT, Command.EXIT, 0);
 
     SmartDictionary sd;
 
@@ -61,25 +63,25 @@ public class MainForm extends myForm implements CommandListener
     }
     public String getMainPath()
     {
-        return "/images/main/main.png";
+        return "/org/images/main/main.png";
     }
     public String getMainName()
     {
-        return "Главное меню";
+        return new Text().MAIN_MENU;
     }
     protected String[] getList()
     {
         String list[] = new String[mainNumber];
-        list[0] = text.START;
-        list[1] = text.ADD_WORD;
-        list[2] = text.DICTIONARY;
-        list[3] = text.SETTINGS;
+        list[0] = T.START;
+        list[1] = T.ADD_WORD;
+        list[2] = T.DICTIONARY;
+        list[3] = T.SETTINGS;
         return list;
     }
     protected String[] getPaths()
     {
         String paths[] = new String[mainNumber];
-        String path = "/images/main";
+        String path = "/org/images/main";
         paths[0] = path+"/game.png";
         paths[1] = path+"/newWord.png";
         paths[2] = path+"/dictionary.png";

@@ -1,3 +1,5 @@
+package org.smdme;
+
 import javax.microedition.rms.*;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;

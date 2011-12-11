@@ -1,3 +1,5 @@
+package org.smdme;
+
 import java.util.Date;
 import java.util.Random;
 
@@ -59,6 +61,20 @@ public class Dictionary extends Records
             }
             else
                 return null;
+        }
+        public Words getAllWords()
+        {
+            int numRecords = getNumRecords();
+            String fullRecords[][] = getAllFullRecords();
+            Words words = new Words(numRecords);
+            for(int i=0; i < numRecords; i++)
+            {
+                words.setOriginal(i, fullRecords[i][ORIGINAL-1]);
+                words.setTranslation(i, fullRecords[i][TRANSLATION-1]);
+                words.setRating(i, Integer.parseInt(fullRecords[i][RATING-1]));
+                words.setLastTiming(i, Long.parseLong(fullRecords[i][LAST_TIMING-1]));
+            }
+            return words;
         }
         public Words getRandomWords(int wordsNumber)
 	{

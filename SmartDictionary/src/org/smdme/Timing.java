@@ -1,3 +1,5 @@
+package org.smdme;
+
 import javax.microedition.io.*;
 import java.io.*;
 import java.util.Date;
@@ -19,18 +21,17 @@ public class Timing extends Thread
     Thread t;
 
     private String text = "";
-    
     Timing()
     {
         super("Timing");
-        start();
     }
     public void run()
     {
+            Text T = new Text();
             long currentTime = new Date().getTime();
-            settings = new Settings(); // TODO: (2.medium) Вопрос. Не нужно ли этим объектам вызывать destroy() в конце метода?
+            settings = new Settings();
             languages = new Languages();
-
+            text = T.OPENING_A_CONNECTION;
             try
             {
                 hc = (HttpConnection)Connector.open("http://"+settings.getURL() + ACTION_PATH + "/mobileLogin");// TODO: (2.medium) mobileLogin ни чем не лучше, чем просто login. Следует удалить MobileLoginAction и исползовать здесь LoginAction.
@@ -39,12 +40,15 @@ public class Timing extends Thread
 
                 query = "login="+settings.getLogin()+"&password="+settings.getPassword()+"";
                 os = hc.openOutputStream();
+                
+                text = T.SENDING_DATA;
                 os.write(query.getBytes());
                 os.close();
 
                 String c = hc.getHeaderField("Set-Cookie");
 		hc.close();
-
+                
+                text = T.OPENING_A_CONNECTION;
                 hc = (HttpConnection)Connector.open("http://"+settings.getURL() + ACTION_PATH + "/addWords");
                 hc.setRequestMethod(HttpConnection.POST);
                 hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
@@ -52,7 +56,8 @@ public class Timing extends Thread
 
 		long lastTiming = settings.getLastServerTiming();
 	        query = "data="+getData(lastTiming);
-
+                
+                text = T.RECEIVE_DATA;
                 os = hc.openOutputStream();
                 os.write(query.getBytes());
                 os.close();
@@ -75,32 +80,37 @@ public class Timing extends Thread
                     }
                 is.close();
                 hc.close();
+                
+                text = T.PROCESSING;
                 String str = b.toString();
                 str = JavaString.decode(str);
 		String result = setData(str, currentTime);
-                text = "success - "+length+" "+ result;
                 settings.setNumberOfTiming(settings.getNumberOfTiming()+1);
-                settings.setText(text);	
                 if("true".equals(result))
                 {
+                        text = T.TIMING_IS_SUCCESSFUL;
 	                settings.setLastTiming(currentTime);
                         Dictionary dictionary = new Dictionary(null, Boolean.FALSE);
                         dictionary.deleteAllRecords();
+                        dictionary.destroy();
                 }
+                else
+                    text = T.TIMING_FAILED;
             }
             catch(IOException ioe)
             {
                 text = "error - "+ioe.getMessage();
-                settings.setText(text);
             }
+            settings.destroy();
+            languages.destroy();
     }
     public String getText()
     {
         return text;
     }
 	
-	private String getData(long serverTiming)
-	{
+    private String getData(long serverTiming)
+    {
         JSONObject main = new JSONObject();
         try
         {
@@ -110,47 +120,14 @@ public class Timing extends Thread
                 JSONObject JSONLanguage = new JSONObject();
                 JSONArray words = new JSONArray();
                 Dictionary dictionary = new Dictionary(languages.getLanguage(i).getId(), settings.getLastTiming());
-                for(int row = 1; row <= dictionary.getNumRecords();row++)
+                Words allWords = dictionary.getAllWords();
+                for(int j = 0; j < dictionary.getNumRecords();j++)
                 {
                     JSONObject word = new JSONObject();
-                    word.put("original",dictionary.getCell(row, Dictionary.ORIGINAL));//TODO: (2.medium)
-					// Всё-таки получается, что мы в разных местах (ещё и в SmartDictionary)
-					// завязаны на особенности работы с Records, надо вызывать getCell с двумя аргументами
-					// на то, что слово состоит из множества ячеек, на порядок этих ячеек.
-					//
-					// 1. всякие методы: getCell, getRecord и т.д. следует сделать protected
-					// 2. Dictionary должен предоставлять в своём интерфейсе метод public Word getWord(int row);
-					// 3. В классе Word определить методы getText, getOriginal и т.д. 
-					//     Тогда точно ни у кого не будет соблазна написать dictionary.getCell(row, 3);
-					//     Тогда не приходится вспоминать, что это getCell означает и как им пользоваться.
-					//
-					//     Кроме того, получаем дополнительный бонус.
-					//     При каждом вызове getCell (тут это от нас скрыто, но мы то знаем),
-					//     так вот, при каждом вызове вызывается getId, который пробегает циклом по
-					//     всем записям и ищет нужный Id. 
-					//     Чтобы получить 4 поля, мы пробелгаем 4 одинаковых цикла в getId и перестраиваем re.
-					//     В случае getWord, мы это будем делать только один раз.
-					// 4. И пожалуй стоит создать аналог getRecord, который возвращал бы массив String[] всех ячеек,
-					//    которые сохранены в записи. 
-					//    Тогда внутри класса Dictionary, для того чтобы построить слово Word,
-					//    нам придётся обращаться к Records не три раза, а один.
-					// 5. Это же отчасти касается других словарей: Languages и отчасти Settings.
-					//    Точнее, так получилось, что там уже сделано всё что нужно. 
-					//    Все низкоуровневые методы класса Records оказались перекрыты методами:
-					//    getLanguage(int) (хоть он и возвращает просто строку, но от него больше и не требуется, наш язык - это строка)
-					//    ещё один getLanguage(), getNumberOfWords(), getLastTiming() и т.д.
-					//    Это прекрасные примеры того, как мы завернули низкоуровневый Records
-					//    в более умные классы Languages и Settings.
-					//
-					//PS. Подобные комментарии помечаются словом TODO, обычно комментарии бывают короче, но не важно.
-					// Их легко искать поиском по слову TODO. Я ещё придумал добавлять к ним приоритет,
-					// чтобы различать критичные действия от просто пожеланий на будущее.
-					// Когда комментарий потерял актуальность (устарел или был выполнен), его следует удалить.
-					//
-			
-                    word.put("translation",dictionary.getCell(row, Dictionary.TRANSLATION));
-                    word.put("rating",Integer.parseInt(dictionary.getCell(row, Dictionary.RATING)));
-                    word.put("modified",Long.parseLong(dictionary.getCell(row, Dictionary.LAST_TIMING)));
+                    word.put("original",allWords.getOriginal(j));		
+                    word.put("translation",allWords.getTranslation(j));
+                    word.put("rating",allWords.getRating(j));
+                    word.put("modified",allWords.getLastTiming(j));
                     words.put(word);
                 }
                 dictionary.destroy();

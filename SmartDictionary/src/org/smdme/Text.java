@@ -1,3 +1,4 @@
+package org.smdme;
 
 public class Text {
     public final String EXIT = "Выход";
@@ -9,8 +10,8 @@ public class Text {
     public final String NEXT = "Продолжить";
     public final String SAVE = "Сохранить";
     public final String DELETE = "Удалить";
-    public final String ORDERING_1 = "Сорт. по 1 записи";
-    public final String ORDERING_2 = "Сорт. по 2 записи";
+    public final String ORDERING_1 = "Сортировать по первой записи";
+    public final String ORDERING_2 = "Сортировать по второй записи";
     public final String CANCEL = "Отмена";
     public final String START = "Пуск";
     public final String ADD_WORD = "Добавить новую пару";
@@ -33,7 +34,19 @@ public class Text {
     public final String GOOD = "Хорошо";
     public final String VERY_GOOD = "Отлично";
     public final String NUMBER_OF_WORDS = "Количество слов в игре:";
-    public final String TIMING_COMPLETE = "Синхронизация завершена";
-    public final String PLEASE_WAIT = "Подождите, идет";
+    public final String TIMING_IS_SUCCESSFUL = "Синхронизация прошла успешно";
+    public final String TIMING_FAILED = "Синхронизация провалилась";
+    public final String PLEASE_WAIT = "Подождите, идет синхронизация";
     public final String CHANGE = "Изменить";
+    public final String OPENING_A_CONNECTION = "Открытие соединения";
+    public final String SENDING_DATA = "Отправление данных";
+    public final String RECEIVE_DATA = "Прием данных";
+    public final String PROCESSING = "Обработка";
+    public final String ENTER_LOGIN = "Ввести логин";
+    public final String ENTER_PASSWORD = "Ввести пароль";
+    public final String ENTER_URL = "Ввести новый адрес";
+    public final String ENTER_NEW_LOGIN = "Введите новый логин";
+    public final String ENTER_NEW_PASSWORD = "Введите новый пароль";
+    public final String ENTER_NEW_URL = "Введите новый адрес";
+    public final String MAIN_MENU = "Главное меню";
 }

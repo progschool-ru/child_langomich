@@ -1,3 +1,5 @@
+package org.smdme;
+
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordStoreException;
@@ -65,7 +67,7 @@ public abstract class Records
             setRecord(str, id);
         }
 		
-	public String[] getFullRecord(int id, int columnsNumber)
+	protected String[] getFullRecord(int id, int columnsNumber)
 	{
 		String[] record = null;
 		if (getNumRecords() != 0)
@@ -85,7 +87,7 @@ public abstract class Records
 		}
 		return record;
 	}
-	public String[][] getAllFullRecords()
+	protected String[][] getAllFullRecords()
 	{
             String records[][] = null;
             if (getNumRecords() != 0)

@@ -1,3 +1,5 @@
+package org.smdme;
+
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Font;
@@ -5,7 +7,7 @@ import javax.microedition.lcdui.Image;
 
 public abstract class myForm extends Canvas
 {
-    protected Text text = new Text();
+    protected Text T = new Text();
     protected Graphics g;
 
     protected int width;
@@ -228,7 +230,7 @@ public abstract class myForm extends Canvas
             if(mainSelectedRow!=i && mainSelectedRow!=i+1)
                 g.drawLine(0, topY, width, topY);
             drawImage(paths[i],size-8, size-8, 4, topY+4);
-            String path = "/images/main/further.png";
+            String path = "org/images/main/further.png";
             drawImage(path,size/2, size/2, width-size/4*3, topY+size/4);
             MLT.drawMultStr(size, topY+(size-linesHeight)/2);
             topY = topY+size;
@@ -308,7 +310,7 @@ public abstract class myForm extends Canvas
         if(mainNumber == 0)
         {
             g.drawLine(0, topY, width, topY);
-            MLT.setText("Словарь пуст", width, size);
+            MLT.setText(T.EMPTY_DICTIONARY, width, size);
             MLT.drawMultStr(0, topY+fontHeight/2);
         }
         else

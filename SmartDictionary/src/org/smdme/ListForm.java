@@ -1,11 +1,13 @@
+package org.smdme;
+
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 
 public class ListForm extends myForm implements CommandListener
 {
-    private Command choice = new Command(text.CHOICE, Command.SCREEN, 1);
-    private Command back = new Command(text.BACK, Command.EXIT, 0);
+    private Command choice = new Command(T.CHOICE, Command.SCREEN, 1);
+    private Command back = new Command(T.BACK, Command.EXIT, 0);
 
     Dictionary dictionary;
 
@@ -106,11 +108,11 @@ public class ListForm extends myForm implements CommandListener
     }
     protected String getMainPath()
     {
-        return "images/main/dictionary.png";
+        return "/org/images/main/dictionary.png";
     }
     protected String getMainName()
     {
-        return text.DICTIONARY;
+        return T.DICTIONARY;
     }
     public void dieIsCast()
     {
@@ -132,9 +134,9 @@ public class ListForm extends myForm implements CommandListener
     {
         selectedRow = 1;
         String str[] = new String[3];
-        str[0]="Удалить";
-        str[1]="Сортировать по первой записи";
-        str[2]="Сортировать по второй записи";
+        str[0]=T.DELETE;
+        str[1]=T.ORDERING_1;
+        str[2]=T.ORDERING_2;
         smallMenuList = str;
         number = smallMenuList.length;
     }

@@ -1,12 +1,13 @@
+package org.smdme;
+
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 
-// TODO: (3. low) Убрать отсюда все надписи на русском.
 public class SettingsForm extends myForm implements CommandListener
 {
-    private Command choice = new Command(text.CHOICE, Command.SCREEN, 1);
-    private Command back = new Command(text.BACK, Command.EXIT, 0);
+    private Command choice = new Command(T.CHOICE, Command.SCREEN, 1);
+    private Command back = new Command(T.BACK, Command.EXIT, 0);
     private Language[] smallMenuLanguages;
 
     SmartDictionary sd;
@@ -101,23 +102,23 @@ public class SettingsForm extends myForm implements CommandListener
     protected String[] getList()
     {
         String list[] = new String[mainNumber];
-        list[0] = text.NUMBER_OF_WORDS+"  "+Integer.toString(sd.settings.getNumberOfWords());
+        list[0] = T.NUMBER_OF_WORDS+"  "+Integer.toString(sd.settings.getNumberOfWords());
 		
         Languages languages = new Languages();
         Language language = languages.getLanguageById(sd.settings.getLanguage());
         languages.destroy();
 
-        list[1] = text.LANGUAGE + "  " + (language == null ? null : language.getName());
-        list[2] = text.LOGIN+"  "+sd.settings.getLogin();
-        list[3] = text.URL+"  "+sd.settings.getURL();
-        list[4] = text.TIMING;
+        list[1] = T.LANGUAGE + "  " + (language == null ? null : language.getName());
+        list[2] = T.LOGIN+"  "+sd.settings.getLogin();
+        list[3] = T.URL+"  "+sd.settings.getURL();
+        list[4] = T.TIMING;
         return list;
     }
 	
     protected String[] getPaths()
     {
         String paths[] = new String[mainNumber];
-        String path = "/images/settings";
+        String path = "/org/images/settings";
         paths[0] = path+"/word.png";
         paths[1] = path+"/lang.png";
         paths[2] = path+"/login.png";
@@ -128,12 +129,12 @@ public class SettingsForm extends myForm implements CommandListener
 	
     protected String getMainPath()
     {
-        return "/images/main/settings.png";
+        return "/org/images/main/settings.png";
     }
 	
     protected String getMainName()
     {
-        return text.SETTINGS;
+        return T.SETTINGS;
     }
  
     private void smallMenuInit()
@@ -161,24 +162,24 @@ public class SettingsForm extends myForm implements CommandListener
             }
             else
                 smallMenuList = new String[1];
-            smallMenuList[i]= "Новый язык";
+            smallMenuList[i]= T.NEW_LANGUAGE;
         }
         else if(mainSelectedRow == 3)
         {
             smallMenuList = new String[2];
-            smallMenuList[0]="Ввести логин";
-            smallMenuList[1]="Ввести пароль";
+            smallMenuList[0]=T.ENTER_LOGIN;
+            smallMenuList[1]=T.ENTER_PASSWORD;
         }
         else if(mainSelectedRow == 5)
         {
             String str[]= new String[1];
-            str[0] = "Пуск";
+            str[0] = T.START;
             smallMenuList = str;
         }
         else
         {
             String str[]= new String[1];
-            str[0] = "Ввести новый адрес";
+            str[0] = T.ENTER_URL;
             smallMenuList = str;
         }
         number = smallMenuList.length; 
@@ -192,19 +193,19 @@ public class SettingsForm extends myForm implements CommandListener
         else if(mainSelectedRow == 2)
         {
             if(selectedRow == number)
-                sd.goToTheTextBox(text.NEW_LANGUAGE);
+                sd.goToTheTextBox(T.NEW_LANGUAGE);
             else
                 sd.settings.setLanguage(smallMenuLanguages[selectedRow-1].getId());
         }
         else if(mainSelectedRow == 3)
         {
             if(selectedRow == 1)
-                sd.goToTheTextBox("Введите новый логин");
+                sd.goToTheTextBox(T.ENTER_NEW_LOGIN);
             else
-                sd.goToTheTextBox("Введите новый пароль");
+                sd.goToTheTextBox(T.ENTER_NEW_PASSWORD);
         }
         else if(mainSelectedRow == 4)
-            sd.goToTheTextBox("Введите новый адрес");
+            sd.goToTheTextBox(T.ENTER_NEW_URL);
         else if(mainSelectedRow == 5)
             sd.goToTheTimingForm();         
     }

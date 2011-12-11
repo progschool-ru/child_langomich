@@ -1,3 +1,5 @@
+package org.smdme;
+
 import java.util.Date;
 
 public class Settings extends Records

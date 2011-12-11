@@ -1,3 +1,5 @@
+package org.smdme;
+
 public class Languages extends Records
 {
 	private final char ID_PREFIX = '_';

@@ -1,8 +1,8 @@
+package org.smdme;
+
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.*;
 
-//TODO: (1.high) Стоит перенести все классы в пакет.
-// например в org.smdmobile или в org.smdme (от слова javame).
 public class SmartDictionary extends MIDlet implements CommandListener
 {
         private Text text = new Text();
@@ -217,6 +217,7 @@ public class SmartDictionary extends MIDlet implements CommandListener
             try
             {
                  TimingForm timingForm = new TimingForm(new Timing(), completeTiming);
+                 timingForm.start();
                  timingForm.setCommandListener(this);
                  Display.getDisplay(this).setCurrent(timingForm);
             }

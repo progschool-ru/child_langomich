@@ -1,3 +1,5 @@
+package org.smdme;
+
 import javax.microedition.lcdui.Image;
 
 public class myImage {
