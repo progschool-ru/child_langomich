@@ -1,18 +1,11 @@
 ﻿{ 
   "name": "lang.omich",
-  "version": "0.7.2" ,
+  "version": "0.8.0" ,
   "homepage_url" : "http://lang.omich.net",
   "description": "Smart dictionary", 
   
-  "background_page": "background.html", 
   "options_page": "settings.html",	
 	
-	"content_scripts": [
-		{
-      "matches": ["http://*/*"],
-      "js": ["content_script.js"]
-    }
-	], 
  
   "permissions": [
     "tabs", "http://*/*", "https://*/*"

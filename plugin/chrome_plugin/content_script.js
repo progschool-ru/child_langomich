@@ -1,7 +1,10 @@
-﻿//отправляем на фоновую странцу выделеный текст по событию mouseup
-document.addEventListener("mouseup", function (b) {
-	chrome.extension.sendRequest({
-		message : "SendSelection",
-		text : "" + window.getSelection()
-		});
-}, true);
+﻿chrome.extension.onRequest.addListener(
+	function (req, sender,sendResponse) {
+		if(req.message == 'getSelected') {
+			var str = window.getSelection().toString();
+			if(str !== '') {
+					sendResponse({'text' : str});
+			}
+		}
+	}		
+);

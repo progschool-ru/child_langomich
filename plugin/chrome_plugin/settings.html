@@ -8,12 +8,14 @@
 	<body>
 	<script type="text/javascript" >
 	
-	function savePassword(success){
+	function savePassword(response){
+		var success = response.success;
 		localStorage["auth"] = success; 
 		if(success){
 			localStorage["login"] = login;
 			localStorage["password"] = password;
-			alert("Логин и пароль сохранены");
+			localStorage["languades"]  != "";
+			alert("Логин и пароль сохранены");		
 		}else{
 			localStorage["login"] = "";
 			localStorage["password"] = "";

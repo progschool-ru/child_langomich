@@ -2,90 +2,87 @@
 	<head>
 		<style  type="text/css">
 		body{
-			width: 381px;
+			width: 330px;
+			height: 66px;
 		}
 		#table{
 			display: none;
 		}
-		#input{
-			height: 81px;
+		#message{
 			vertical-align: middle;
-			text-align:	center;
-			display: table-cell;
+            text-align: center;
+            display: table-cell;
 		}
-		.content{
+		.save{
+			 text-align: right;
+		}
+		.Del{
+			display: inline;
+		}
+		.add{
+			text-align: right;
+			padding-right: 15px;
+			font-size : 13px;
+			color: blue;
+			text-decoration: underline;
+		}
+		.languages{
+			padding-right: 15px;
+			font-size : 13px;
+			color: blue;
+			text-decoration: underline;
 		}
 		</style>
 		<script src="jquery-1.7.min.js" type="text/javascript"></script>
 		<script src="lib.js" type="text/javascript"></script>
 		<script type="text/javascript">
-				var form = new Form('table');
-				
-				function add(){
-					sendAlert("Слово добавлено на сервер");
-				};		
-				//загружаем языки
+				//устанавливаем языки
 				function setLanguages(languages){
-					//а если нету языков ?
 					languages.languages.forEach(function(item){
-						$('select').append( $('<option value="'+item.id+'">'+item.name+'</option>'));
+						$('#languages').append( $('<option value="'+item.id+'">'+item.name+'</option>'));
 						}
-					)
+					)	
+					if(localStorage["languades"] != ""){
+							$("#languages :contains('"+localStorage["languades"] +"')").attr("selected", "selected");
+					}
+					
 					//убираем картинку с загрузкой и показываем форму
-					$('#input').remove();
+					$('#message').hide();
 					$('#table').show();
 				};
 				
-				//функция добавления слова на сервер
-				function addWordToServer(){
-					if($('#word0').attr('value') == ""){
-						sendAlert("Поле Слово пустое"); return;
-					}
-					if($('#translate0').attr('value') == ""){
-						sendAlert("Поле Перевод пустое"); return;
-					}
+				var injCallBack = function(){
+					chrome.tabs.getSelected(null, function(tab) {
+						chrome.tabs.sendRequest(tab.id, getRequest, getRequestResponseCallback)
+					});
+				}
 				
-					SMDServer.auth(function(success){});
-					Words.setLanguage($('#languages :selected').val(),$('#languages :selected').text());
-					Words.addWord($('#translate0').attr('value'), $('#word0').attr('value'));
-					SMDServer.sendWords(Words.getData(), add);
-					Words.clearWords();
+				var getRequest = {
+					'message': 'getSelected'
 				};
-
 				
-				chrome.extension.onRequest.addListener(	
-					function(request, sender, sendResponse){
-						
-						SMDServer.setAuthData(localStorage["login"],localStorage["password"]);
-						SMDServer.auth(function(success){});
-												
-						if(request.message == "SendNowText"){
-							form.addWords(request.NowText);
-						}
-						
-						form.createForm("addWordToServer");	
-						SMDServer.loadLanguages(setLanguages);
-						
-					}
-				);
+				var getRequestResponseCallback = function getRequestResponseCallback(response) {
+					$('.original:input')[0].value = response.text;
+				};
 				
-				
-				//при запуске popup об этом посылается сообщения на фоновую страницу
 				window.addEventListener("load", function(){
-					if(localStorage["auth"] =="true"){
-						$('#input').append('<span class="content">Загрузка языков</span>');
-						chrome.extension.sendRequest({message : "StartPopup"});
+					var form = new Form($('#table'));
+					SMDServer.setAuthData(localStorage["login"],localStorage["password"]);
+					SMDServer.loadLanguages(setLanguages);
+					if(localStorage["auth"] =="true"){	
+						$('#message').append('загрузка языков');
+						chrome.tabs.getSelected(null, function(tab) {
+							chrome.tabs.executeScript(tab.id,{file:'content_script.js',allFrames:true},injCallBack);
+						});
 					}else{
-						$('#input').append($('<span class="content">Введите <a href="settings.html" target="_blank"> настройки</a> для авторизации</span>'));
+						$('#message').append($('<span class="content">Введите <a href="settings.html" target="_blank"> настройки</a> для авторизации</span>'));
 					}			
 					
 				}, true)
 		</script>
 	</head>
 	<body>
-		<center>
 			<div id="table"></div>  
-			<div id="input"></div>
-		</center>
+			<div id="message"></div>
  	</body>
 <html>
