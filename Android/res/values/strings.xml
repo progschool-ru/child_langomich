@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LangOmich</string>
+    <string name="login">Login:</string>
+    <string name="password">Password:</string>
+    <string name="save">Save:</string>
+    <string name="exit">Exit</string>
+</resources>
