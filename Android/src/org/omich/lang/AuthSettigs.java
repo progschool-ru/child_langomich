@@ -2,41 +2,40 @@ package org.omich.lang;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import org.omich.lang.Constants;
 
 public class AuthSettigs {
 	
-	private final String login = "login";
-	private final String password = "password";
-	private final String clearString = "";
-	
-	private SharedPreferences settings;
-	
-	public AuthSettigs(String PREFER_NAME, Activity act){
-		settings = act.getSharedPreferences(PREFER_NAME,0);
+
+ 
+	private SharedPreferences settigs;
+
+	public AuthSettigs(Activity act, String PREFES_NAME){
+		settigs = act.getSharedPreferences(PREFES_NAME, 0);
 	}
 	
-	public boolean saveAuthData(String _login, String _password){
-		if((!_login.equals("")) && (!_password.equals(""))){
-			SharedPreferences.Editor editor = settings.edit();
-			editor.putString(login, _login);
-			editor.putString(password, _password);
-			editor.commit();
-		return true;
-		}else{
-			return false;
+	public boolean SaveAuthData(String login, String password){
+		if(!login.equals(Constants.EMPTY_STRING) && !password.equals(Constants.EMPTY_STRING)){
+			Editor edit = settigs.edit();
+			edit.putString(Constants.STR_LOGIN, login);
+			edit.putString(Constants.STR_PASSWORD, password);
+			edit.commit();
+			return true;
 		}
+		return false;
 	}
 	
-	public void clear(){
-		SharedPreferences.Editor editor = settings.edit();
-		editor.clear();
-		editor.commit();
-	}
 	public String getLogin(){
-		return settings.getString(login, clearString);
+		return settigs.getString(Constants.STR_LOGIN, Constants.EMPTY_STRING);
 	}
 	
 	public String getPassword(){
-		return settings.getString(password, clearString);
+		return settigs.getString(Constants.STR_PASSWORD, Constants.EMPTY_STRING);
+	}
+	
+	public void clear(){
+		settigs.edit().clear();
+		settigs.edit().commit();
 	}
 }
