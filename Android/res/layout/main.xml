@@ -56,4 +56,13 @@
         android:layout_alignRight="@+id/password"
         android:text="@string/exit" />
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="102dp"
+        android:layout_toRightOf="@+id/textView1"
+        android:text="View DB" />
+
 </RelativeLayout>

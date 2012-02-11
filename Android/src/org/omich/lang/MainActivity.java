@@ -17,6 +17,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private EditText editPassword;
     private Button next;
     private Button exit;
+    private Button statrTestActivity;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,10 +31,13 @@ public class MainActivity extends Activity implements OnClickListener {
         
         next = (Button) findViewById(R.id.nextButton);
         exit = (Button) findViewById(R.id.exitButton);
+        statrTestActivity = (Button) findViewById(R.id.button1);
+        
         
         editLogin.setText(settigs.getLogin());
         editPassword.setText(settigs.getPassword());
         
+        statrTestActivity.setOnClickListener(this);
         next.setOnClickListener(this);
         exit.setOnClickListener(this);
     }
@@ -54,6 +58,9 @@ public class MainActivity extends Activity implements OnClickListener {
     		case R.id.exitButton:
     			finish();
     			break;
+    		case R.id.button1:
+    			Intent intent1 = new Intent(MainActivity.this, TestActivity.class);
+    			startActivity(intent1);
     	}
     }
 }
