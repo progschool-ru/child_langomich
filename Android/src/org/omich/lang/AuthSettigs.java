@@ -15,8 +15,8 @@ public class AuthSettigs {
 		settigs = act.getSharedPreferences(PREFES_NAME, 0);
 	}
 	
-	public boolean SaveAuthData(String login, String password){
-		if(!login.equals(Constants.EMPTY_STRING) && !password.equals(Constants.EMPTY_STRING)){
+	public boolean saveAuthData(String login, String password){
+		if((!login.equals(Constants.EMPTY_STRING)) && (!password.equals(Constants.EMPTY_STRING))){
 			Editor edit = settigs.edit();
 			edit.putString(Constants.STR_LOGIN, login);
 			edit.putString(Constants.STR_PASSWORD, password);
@@ -35,7 +35,8 @@ public class AuthSettigs {
 	}
 	
 	public void clear(){
-		settigs.edit().clear();
-		settigs.edit().commit();
+		Editor edit = settigs.edit();
+		edit.clear();
+		edit.commit();
 	}
 }

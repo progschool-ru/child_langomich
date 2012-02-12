@@ -3,7 +3,7 @@
 	<name>MainTest</name>
 	<comment></comment>
 	<projects>
-		<project>Main</project>
+		<project>MainActivity</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

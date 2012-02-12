@@ -49,7 +49,7 @@ public class MainActivity extends Activity implements OnClickListener {
     			String login = editLogin.getText().toString();
     			String password = editPassword.getText().toString();
     			Intent intent = new Intent(MainActivity.this, WordsActivity.class);
-    			if(settigs.SaveAuthData(login, password)){
+    			if(settigs.saveAuthData(login, password)){
     				intent.putExtra(Constants.STR_LOGIN, login);
     				intent.putExtra(Constants.STR_PASSWORD, password );
     				startActivity(intent);

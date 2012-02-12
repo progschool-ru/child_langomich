@@ -31,7 +31,6 @@ public class AuthResParser {
 		return success;
 	}
 	
-	//пока не понимаю зачем нужны следующие методы, но все же
 	public String getLogin(){
 		return login;
 	}
