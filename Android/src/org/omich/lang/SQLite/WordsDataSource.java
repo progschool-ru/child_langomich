@@ -34,7 +34,7 @@ public class WordsDataSource {
 		ContentValues values = new ContentValues();
 		values.put(MySQLiteHelper.ORIGINAL, word.getOriginal());
 		values.put(MySQLiteHelper.TRANSLATION, word.getTranslation());
-		values.put(MySQLiteHelper.LANGUAGE, word.getLanguageName());
+		//values.put(MySQLiteHelper.LANGUAGE, word.getLanguageName());
 		long insertId = database.insert(MySQLiteHelper.TABLE_WORDS, null, values);
 		Cursor cursor = database.query(MySQLiteHelper.TABLE_WORDS, allColumns, MySQLiteHelper.WORD_ID + "="+ insertId, 
 				null, null, null, null);
@@ -43,8 +43,8 @@ public class WordsDataSource {
 	}
 	
 	public void deleteWord(Word word){
-		long id = word.getId();
-		database.delete(MySQLiteHelper.TABLE_WORDS, MySQLiteHelper.WORD_ID+"="+id, null);
+		//long id = word.getId();
+		//database.delete(MySQLiteHelper.TABLE_WORDS, MySQLiteHelper.WORD_ID+"="+id, null);
 	}
 	
 	public void deleteAllWords(){
@@ -66,11 +66,11 @@ public class WordsDataSource {
 	}
 	
 	private Word cursorToWord(Cursor cursor){
-		Word word = new Word();
+		/*Word word = new Word();
 		word.setId(cursor.getLong(0));
 		word.setOriginal(cursor.getString(1));
 		word.setTranslation(cursor.getString(2));
-		word.setLanguages(cursor.getString(3));
-		return word;
+		word.setLanguages(cursor.getString(3));*/
+		return null;
 	}
 }
