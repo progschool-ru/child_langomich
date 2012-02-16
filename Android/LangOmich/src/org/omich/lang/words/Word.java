@@ -1,64 +1,62 @@
 package org.omich.lang.words;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class Word {
 	
-	private static final String ORIGINAL_STR = "original";
-	private static final String TRANSLATION_STR = "translation";
-	
-	private long id;
 	private String original;
 	private String translation;
-	private String languageName;
+	private int rating;
+	private long modified;
 	
-	public Word(JSONObject jObject) throws JSONException{
-		original = jObject.getString(ORIGINAL_STR);
-		translation = jObject.getString(TRANSLATION_STR);
-		id = 0;
+	public Word(String original, String translation, int rating){
+		
+		this.original = original;
+		this.translation = translation;
+		this.rating = rating;
+		this.modified = 0;
 	}
 	
-	public Word(){
-		original = null;
-		translation = null;
-		id = 0;
+	public Word(String original, String translation, int rating, long modified){
+		
+		this.rating = rating;
+		this.original = original;
+		this.translation = translation;
+		this.modified = modified;
 	}
 	
-	public void setLanguages(String langName){
-		languageName = langName;
+	public String getOriginal(){
+		return original;
 	}
 	
 	public void setOriginal(String original){
 		this.original = original;
 	}
 	
-	public void setTranslation(String translation){
-		this.translation = translation;
-	}
-	
-	public void setId(long id){
-		this.id = id;
-	}
-	public String getOriginal(){
-		return original;
-	}
-	
 	public String getTranslation(){
 		return translation;
 	}
 	
-	public String getLanguageName(){
-		return languageName;
+	public void setTranslation(String translation){
+		this.translation = translation;
 	}
 	
-	public long getId(){
-		return id;
+	public int getRating(){
+		return rating;
+	}
+	
+	public void setRating(int rating){
+		this.rating = rating;
+	}
+	
+	public long getModified(){
+		return modified;
+	}
+	
+	public void setModified(long modified){
+		this.modified = modified;
 	}
 	
 	@Override
 	public String toString(){
-		return original+" "+translation+" "+languageName;
+		return original+" "+translation;
 	}
-	
 }
