@@ -2,9 +2,9 @@ package org.omich.lang.json;
 
 import java.util.List;
 
-import org.json.me.JSONArray;
-import org.json.me.JSONException;
-import org.json.me.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.omich.lang.words.Language;
 
 public class JSONParser {
@@ -40,7 +40,6 @@ public class JSONParser {
 		JSONObject jObject = new JSONObject(jString);
 		
 		boolean success = jObject.getBoolean(SUCCESS);
-		//нужно ли парсить остальные данные ?
 		return success;
 	}
 }

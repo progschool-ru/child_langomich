@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.json.me.JSONArray;
-import org.json.me.JSONException;
-import org.json.me.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.omich.lang.words.Language;
 import org.omich.lang.words.Word;
 
@@ -63,7 +63,7 @@ public class JSONLanguages {
 		
 		String name = jObject.getString(NAME);
 		String id = jObject.getString(ID);
-		List<Word> words = JSONWords.Parse(jObject.getJSONArray(WORDS));
+		List<Word> words = JSONWords.parse(jObject.getJSONArray(WORDS));
 		
 		Language language = new Language(name, id, words);
 		

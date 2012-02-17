@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.json.me.JSONArray;
-import org.json.me.JSONObject;
-import org.json.me.JSONException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONException;
 import org.omich.lang.words.Word;
 
 public class JSONWords {
@@ -68,12 +68,12 @@ public class JSONWords {
 		return str;
 	}
 	
-	public static List<Word> Parse(JSONArray jWords) throws JSONException{
+	public static List<Word> parse(JSONArray jWords) throws JSONException{
 		
 		List<Word> words = new ArrayList<Word>();
 		
 		for(int i = 0; i<jWords.length(); i++){
-			Word word = Parse(jWords.getJSONObject(i));
+			Word word = parseWord(jWords.getJSONObject(i));
 			words.add(word);
 		}
 		
@@ -81,7 +81,7 @@ public class JSONWords {
 	}
 	
 	
-	public static Word Parse(JSONObject jObject) throws JSONException{
+	public static Word parseWord(JSONObject jObject) throws JSONException{
 		
 		String original = jObject.getString(ORIGINAL);
 		String translation = jObject.getString(TRANSLATION);
