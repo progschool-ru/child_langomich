@@ -22,7 +22,7 @@ public class WordsTests extends AndroidTestCase {
 	}
 	
 	@Override
-	public void setUp() throws Exception{
+	public void setUp() {
 		testWord = new Word(ORIGINAL, TRANSLATION, RATING, MODIFIED);
 	}
 	
