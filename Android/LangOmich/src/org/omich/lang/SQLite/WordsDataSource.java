@@ -10,7 +10,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-
+/*
 public class WordsDataSource {
 	
 	private SQLiteDatabase database;
@@ -66,11 +66,12 @@ public class WordsDataSource {
 	}
 	
 	private Word cursorToWord(Cursor cursor){
-		/*Word word = new Word();
+		Word word = new Word();
 		word.setId(cursor.getLong(0));
 		word.setOriginal(cursor.getString(1));
 		word.setTranslation(cursor.getString(2));
-		word.setLanguages(cursor.getString(3));*/
+		word.setLanguages(cursor.getString(3));
 		return null;
 	}
 }
+*/

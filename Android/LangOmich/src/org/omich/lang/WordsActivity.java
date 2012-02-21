@@ -3,7 +3,6 @@ package org.omich.lang;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.omich.lang.SQLite.WordsDataSource;
 import org.omich.lang.httpClient.SmdClient;
 import org.omich.lang.json.JSONParser;
 import org.omich.lang.words.Language;
@@ -37,7 +36,7 @@ public class WordsActivity extends Activity  {
 	
 	private String error;
 	
-	WordsDataSource dataSource;
+	//WordsDataSource dataSource;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){

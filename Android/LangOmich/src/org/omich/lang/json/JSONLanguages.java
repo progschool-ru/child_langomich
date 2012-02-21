@@ -17,8 +17,21 @@ public class JSONLanguages {
 	private static final String ID = "id";
 	private static final String WORDS = "words";
 	
+	private List<Language> languages;
 	
-	public JSONArray toJSON(List<Language> languages) throws JSONException{
+	public JSONLanguages(){
+		languages = new ArrayList<Language>();
+	}
+	
+	public JSONLanguages(List<Language> languages){
+		this.languages = languages;
+	}
+	
+	public void put(Language language){
+		languages.add(language);
+	}
+	
+	public JSONArray toJSON() throws JSONException{
 		
 		JSONArray jArray = new JSONArray();
 		
@@ -46,20 +59,33 @@ public class JSONLanguages {
 		return languages;
 	}
 	
+	@Override
+	public String toString(){
+		
+		String str;
+			try{
+				str = toJSON().toString();
+			}catch(Exception e){
+				str = e.getMessage();
+			}
+		
+		return str;
+	}
+	
 	public static List<Language> parse(JSONArray jArray) throws JSONException{
 		
 		List<Language> languages = new ArrayList<Language>();
 		
 		for(int i=0; i<jArray.length(); i++){
 			
-			Language language = parse(jArray.getJSONObject(i));
+			Language language = parseLanguage(jArray.getJSONObject(i));
 			languages.add(language);
 		}
 		
 		return languages;
 	}
 	
-	private static Language parse(JSONObject jObject) throws JSONException {
+	private static Language parseLanguage(JSONObject jObject) throws JSONException {
 		
 		String name = jObject.getString(NAME);
 		String id = jObject.getString(ID);

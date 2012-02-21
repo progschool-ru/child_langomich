@@ -3,12 +3,18 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
+
     <ListView
         android:id="@+id/listView1"
         android:layout_width="fill_parent"
-        android:layout_height="425dp" >
-
+        android:layout_height="202dp" >
     </ListView>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="154dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.29"
+        android:text="TextView" />
 
 </LinearLayout>
