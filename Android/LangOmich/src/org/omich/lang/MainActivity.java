@@ -43,11 +43,14 @@ public class MainActivity extends Activity implements OnClickListener {
     }
     
     public void onClick(View g){
+    	
+    	String login = editLogin.getText().toString();
+		String password = editPassword.getText().toString();
+    	
     	switch(g.getId()){
     	
     		case R.id.nextButton:
-    			String login = editLogin.getText().toString();
-    			String password = editPassword.getText().toString();
+    			
     			Intent intent = new Intent(MainActivity.this, WordsActivity.class);
     			if(settigs.saveAuthData(login, password)){
     				intent.putExtra(Constants.STR_LOGIN, login);
@@ -60,6 +63,8 @@ public class MainActivity extends Activity implements OnClickListener {
     			break;
     		case R.id.button1:
     			Intent intent1 = new Intent(MainActivity.this, TestActivity.class);
+    			intent1.putExtra(Constants.STR_LOGIN, login);
+    			intent1.putExtra(Constants.STR_PASSWORD, password);
     			startActivity(intent1);
     	}
     }

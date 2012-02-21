@@ -39,9 +39,7 @@ public class SmdClient {
 		postRequest.setEntity(entity);
 		
 		HttpResponse response = httpClient.execute(postRequest);
-		
-		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-		
+				
 		return inputSreamToString(response.getEntity().getContent());
 	}
 	
@@ -49,7 +47,6 @@ public class SmdClient {
 		
 		HttpPost postRequest = new HttpPost("http://lang.omich.net/smdserver/servlet/getWords");
 		HttpResponse response = httpClient.execute(postRequest);
-		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 		
 		return inputSreamToString(response.getEntity().getContent());
 	}

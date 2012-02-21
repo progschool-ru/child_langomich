@@ -71,7 +71,7 @@ public class WordsActivity extends Activity  {
 				
 				String jString1 = JavaString.decode(smdClient.getWords());
 				
-				wordsList = JSONParser.parseLanguages(jString1, lastConnection);
+				wordsList = JSONParser.parseLanguages(jString1);
 				
 				aa = new ArrayAdapter<Language>(this, layoutID, wordsList);
 				viewRes.setAdapter(aa);
