@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.omich.lang.words.Language;
 
-import android.graphics.Paint.Join;
 
 public class JSONParser {
 	private static final String LANGUAGES = "languages";
