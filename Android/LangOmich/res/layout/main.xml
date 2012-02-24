@@ -2,67 +2,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <EditText
-        android:id="@+id/login"
-        android:layout_width="120dp"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="20dp" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/login"
-        android:text="@string/password" />
-
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="120dp"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/login"
-        android:layout_alignTop="@+id/textView2"
-        android:inputType="textPassword" />
-		 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/login"
-        android:layout_marginLeft="32dp"
-        android:text="@string/login" />
+    android:padding="20dip" >
 
-    <Button
-        android:id="@+id/nextButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/password"
-        android:layout_below="@+id/password"
-        android:layout_marginTop="32dp"
-        android:text="@string/next" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/exitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/nextButton"
-        android:layout_alignRight="@+id/password"
-        android:text="@string/exit" />
+        <Button
+            android:id="@+id/startTest"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/test" />
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="102dp"
-        android:layout_toRightOf="@+id/textView1"
-        android:text="View DB" />
+        <Button
+            android:id="@+id/addWord"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/addWords"/>
+
+        <Button
+            android:id="@+id/startDictionary"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Dictionary" />
+    </LinearLayout>
 
 </RelativeLayout>
