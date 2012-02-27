@@ -4,4 +4,9 @@
     <string name="test">Test</string>
     <string name="addWords">add Word</string>
     <string name="Dictionary">Dictionary</string>
+    
+    <string name="language_label">Словарь:</string>
+    <string name="words_number">Количество слов в тексте</string>
+    <string name="login_label"> Логин</string>
+    <string name="password_label"> Пароль</string>
 </resources>
