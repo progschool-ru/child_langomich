@@ -1,6 +1,7 @@
 package org.omich.lang;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,6 +35,8 @@ public class MainActivity extends Activity implements OnClickListener {
     	switch(g.getId()){
     		
     		case R.id.startTest:
+    				Intent intent = new Intent(this, SettingsActivity.class);
+    				startActivity(intent);
     			break;
     		case R.id.addWord:
     			break;

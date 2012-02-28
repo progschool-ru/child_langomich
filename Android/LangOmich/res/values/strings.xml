@@ -5,8 +5,14 @@
     <string name="addWords">add Word</string>
     <string name="Dictionary">Dictionary</string>
     
+    <string name="settigs">Настройки</string>
+    
     <string name="language_label">Словарь:</string>
-    <string name="words_number">Количество слов в тексте</string>
-    <string name="login_label"> Логин</string>
-    <string name="password_label"> Пароль</string>
+    <string name="words_number">Количество слов в тексте:</string>
+    <string name="login_label">Логин:</string>
+    <string name="password_label">Пароль:</string>
+    
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    
 </resources>

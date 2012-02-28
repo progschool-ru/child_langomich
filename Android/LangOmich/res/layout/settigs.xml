@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="30dip" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -11,13 +12,13 @@
         <TextView
             android:id="@+id/language_label"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:text="@string/language_label" />
 
         <TextView
             android:id="@+id/language"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:text="" />
 
         <ImageButton
@@ -35,17 +36,17 @@
         <TextView
             android:id="@+id/number_label"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:text="@string/words_number" />
 
         <TextView
             android:id="@+id/number"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:text="" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/number_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@android:drawable/btn_star" />
@@ -59,14 +60,14 @@
         <TextView
             android:id="@+id/login_label"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:text="@string/login_label" />
 
         <TextView
             android:id="@+id/login"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="" />
+            android:layout_height="fill_parent"
+            android:text="2112" />
 
     </LinearLayout>
 
@@ -77,13 +78,13 @@
         <TextView
             android:id="@+id/password_label"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:text="@string/password_label" />
 
         <TextView
             android:id="@+id/password"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:text="" />
 
     </LinearLayout>
