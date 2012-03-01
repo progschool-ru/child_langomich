@@ -2,17 +2,22 @@
 <resources>
     <string name="app_name">LangOmich</string>
     <string name="test">Test</string>
+    
     <string name="addWords">add Word</string>
     <string name="Dictionary">Dictionary</string>
-    
     <string name="settigs">Настройки</string>
     
     <string name="language_label">Словарь:</string>
-    <string name="words_number">Количество слов в тексте:</string>
+    <string name="words_number">Количество слов в тесте:</string>
+   
     <string name="login_label">Логин:</string>
+    <string name="input_login">Введите логин</string>
+    
     <string name="password_label">Пароль:</string>
+    <string name="input_password">Введите пароль</string> 
+    
+    <string name="look">показать</string>
     
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
-    
 </resources>

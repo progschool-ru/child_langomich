@@ -7,26 +7,31 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content" 
+        android:layout_marginBottom="20dip">
 
         <TextView
             android:id="@+id/language_label"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:text="@string/language_label" />
+            android:gravity="center_vertical|left"
+            android:text="@string/language_label" 
+            android:textSize="20sp"
+            android:textStyle="normal"/>
 
         <TextView
             android:id="@+id/language"
-            android:layout_width="wrap_content"
+            android:layout_width="102dp"
             android:layout_height="fill_parent"
-            android:text="" />
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:gravity="center" />
 
         <ImageButton
             android:id="@+id/select_language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@android:drawable/btn_star" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -35,58 +40,70 @@
 
         <TextView
             android:id="@+id/number_label"
-            android:layout_width="wrap_content"
+            android:layout_width="105dp"
             android:layout_height="fill_parent"
-            android:text="@string/words_number" />
+            android:layout_weight="0.20"
+            android:gravity="center_vertical|left"
+            android:text="@string/words_number"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/number"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:text="" />
+            android:layout_weight="0.70"
+            android:gravity="center"
+            android:text=""
+            android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/number_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center|right"
             android:src="@android:drawable/btn_star" />
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="53dp" >
 
         <TextView
             android:id="@+id/login_label"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
+            android:gravity="center_vertical|left"
+            android:textSize="20sp"
             android:text="@string/login_label" />
 
         <TextView
             android:id="@+id/login"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="2112" />
-
+            android:gravity="center"
+            android:text="@string/input_login" 
+            android:textSize="20sp"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_width="252dp"
+        android:layout_height="96dp" >
 
         <TextView
             android:id="@+id/password_label"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
+            android:gravity="center_vertical|left"
+            android:textSize="20sp"
             android:text="@string/password_label" />
 
         <TextView
             android:id="@+id/password"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="" />
-
+            android:gravity="center"
+            android:text="@string/input_password" 
+            android:textSize="20sp"/>
     </LinearLayout>
 
 </LinearLayout>

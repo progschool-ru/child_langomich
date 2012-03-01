@@ -1,17 +1,16 @@
 package org.omich.lang;
 
-import android.R.anim;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -38,10 +37,12 @@ public class SettingsActivity extends Activity implements OnClickListener{
 		
 		numberOfWords = (TextView) findViewById(R.id.number);
 		login = (TextView) findViewById(R.id.login);
+		password =(TextView) findViewById(R.id.password);
 		
 		ImageButton selectNumberButton = (ImageButton) findViewById(R.id.number_button);
 		selectNumberButton.setOnClickListener(this);
 		login.setOnClickListener(this);
+		password.setOnClickListener(this);
 		
 		
 	}
@@ -60,6 +61,9 @@ public class SettingsActivity extends Activity implements OnClickListener{
 				break;
 			case R.id.login:
 				showDialog(DIALOG_SET_LOGIN);
+				break;
+			case R.id.password:
+				showDialog(DIALOG_SET_PASSWORD);
 				break;
 		}
 	}
@@ -91,17 +95,21 @@ public class SettingsActivity extends Activity implements OnClickListener{
 				
 					LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 				
-					View layout = inflater.inflate(R.layout.dialog, null);
+					View layout = inflater.inflate(R.layout.login, null);
 				
 					bulder.setView(layout);
 				
-					TextView label = (TextView) layout.findViewById(R.id.message);
 					final EditText editLogin = (EditText) layout.findViewById(R.id.login_edit);
+					editLogin.setText(login.getText());
 					Button cancel = (Button) layout.findViewById(R.id.login_cancel);
 					Button ok = (Button) layout.findViewById(R.id.login_ok);
-				
-					label.setText(R.string.login_label);
-				
+					
+					editLogin.setOnClickListener( new OnClickListener() {
+						public void onClick(View v) {
+							((EditText) v).setText("");
+						}
+					});
+					
 					ok.setOnClickListener( new OnClickListener() {
 						public void onClick(View v) {
 							String l = editLogin.getText().toString();
@@ -119,8 +127,49 @@ public class SettingsActivity extends Activity implements OnClickListener{
 			
 			break;
 			
-			case DIALOG_SET_PASSWORD:
-						break;
+			case DIALOG_SET_PASSWORD:{
+				
+				
+				LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+				
+				View layout = inflater.inflate(R.layout.password, null);
+			
+				bulder.setView(layout);
+			
+				final EditText editPassword = (EditText) layout.findViewById(R.id.passwordEdit);
+				editPassword.setText(password.getText());
+				final CheckBox show = (CheckBox) layout.findViewById(R.id.show);
+				Button cancel = (Button) layout.findViewById(R.id.password_cancel);
+				Button ok = (Button) layout.findViewById(R.id.password_ok);
+				
+				show.setOnClickListener( new OnClickListener() {
+					public void onClick(View v) {
+						if(((CheckBox) v).isChecked()){
+							editPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+							
+						}else{
+							editPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+						}
+					}
+				});
+				
+				ok.setOnClickListener( new OnClickListener() {
+					public void onClick(View v) {
+						String l = editPassword.getText().toString();
+						password.setText(l);
+						dismissDialog(DIALOG_SET_PASSWORD);
+					}
+				});
+			
+				cancel.setOnClickListener(new OnClickListener() {
+					public void onClick(View v) {
+						dismissDialog(DIALOG_SET_PASSWORD);
+					}
+				});
+				
+			}
+					
+			break;
 		}
 		
 		return bulder.create();
