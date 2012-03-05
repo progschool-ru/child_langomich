@@ -3,29 +3,29 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="30dip" >
+    android:padding="20dip" >
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:layout_marginBottom="20dip">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dip" >
 
         <TextView
             android:id="@+id/language_label"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:gravity="center_vertical|left"
-            android:text="@string/language_label" 
+            android:text="@string/language_label"
             android:textSize="20sp"
-            android:textStyle="normal"/>
+            android:textStyle="normal" />
 
         <TextView
             android:id="@+id/language"
             android:layout_width="102dp"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:textSize="20sp"
-            android:gravity="center" />
+            android:layout_weight="1.04"
+            android:gravity="center"
+            android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/select_language"
@@ -86,7 +86,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="252dp"
+        android:layout_width="fill_parent"
         android:layout_height="96dp" >
 
         <TextView

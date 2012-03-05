@@ -23,6 +23,19 @@
             android:label="@string/settigs">
         </activity>
         
+        <activity 
+            android:name=".LoginDialogActivity"
+            android:label="@string/login_label"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+        
+        <activity 
+            android:name=".PasswordDialogActivity"
+            android:label="@string/password_label"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+        
+        
     </application>
 	
 </manifest>
