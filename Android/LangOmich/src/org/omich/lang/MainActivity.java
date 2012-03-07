@@ -1,13 +1,13 @@
 package org.omich.lang;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends FragmentActivity implements OnClickListener {
     /** Called when the activity is first created. */
    
 	
