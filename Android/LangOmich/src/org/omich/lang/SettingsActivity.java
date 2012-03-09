@@ -1,23 +1,24 @@
 package org.omich.lang;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.text.InputType;
-import android.view.LayoutInflater;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.Menu;
+import android.support.v4.view.MenuItem;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-public class SettingsActivity extends Activity implements OnClickListener{
+public class SettingsActivity extends FragmentActivity implements OnClickListener{
 	
 	private static final int DIALOG_SELECT_LANGUAGE = 0;
 	private static final int DIALOG_SET_NUMBER_OF_WORDS = 1;
@@ -88,6 +89,38 @@ public class SettingsActivity extends Activity implements OnClickListener{
 					break;
 			}
 		}
+	}
+	
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+    	  MenuItem item = menu.add(0, android.R.id.copy, 0, "Menu");
+
+          final int twentyDp = (int) (20 * getResources().getDisplayMetrics().density);
+
+          TypedArray a = getTheme().obtainStyledAttributes(R.styleable.SherlockTheme);
+          final int abHeight = a.getLayoutDimension(R.styleable.SherlockTheme_abHeight, LayoutParams.FILL_PARENT);
+          a.recycle();
+
+          LinearLayout l = new LinearLayout(this);
+          l.setPadding(twentyDp, 0, twentyDp, 0);
+
+          TextView tv = new TextView(this);
+          tv.setText("Sync");
+          tv.setGravity(Gravity.CENTER);
+          tv.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, abHeight));
+          l.addView(tv);
+
+          l.setOnClickListener(new View.OnClickListener() {
+            
+              public void onClick(View v) {
+            	 
+              }
+          });
+
+          item.setActionView(l);
+          item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+          return super.onCreateOptionsMenu(menu);
 	}
 	
 	protected Dialog onCreateDialog(int id){

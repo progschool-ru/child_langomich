@@ -12,7 +12,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" 
-            android:theme="@style/Theme.Sherlock.Light">
+            android:theme="@style/Theme.Sherlock">
                         <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,7 +21,8 @@
         
         <activity 
             android:name=".SettingsActivity"
-            android:label="@string/settigs">
+            android:label="@string/settigs"
+            android:theme="@style/Theme.Sherlock">
         </activity>
         
         <activity 
