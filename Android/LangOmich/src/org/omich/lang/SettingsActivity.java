@@ -2,6 +2,7 @@ package org.omich.lang;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -20,12 +21,15 @@ import android.widget.TextView;
 
 public class SettingsActivity extends FragmentActivity implements OnClickListener{
 	
+	public static final String SETTINGS_NAME = "langOmich_settings";
+	
 	private static final int DIALOG_SELECT_LANGUAGE = 0;
 	private static final int DIALOG_SET_NUMBER_OF_WORDS = 1;
 	
 	private static final int REQUEST_LOGIN = 2;
 	private static final int REQUEST_PASSWORD = 3; 
 
+	private static ProgressDialog dialog;
 	
 	private TextView language;
 	private TextView numberOfWords;
@@ -35,22 +39,38 @@ public class SettingsActivity extends FragmentActivity implements OnClickListene
 	private String login_s;
 	private String password_s;
 	
+	private LangOmichSettings lSettigs;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settigs);
 		
+		lSettigs = new LangOmichSettings(this, SETTINGS_NAME);
+		
 		numberOfWords = (TextView) findViewById(R.id.number);
+		int number = lSettigs.getNumberWords();
+		if(number != LangOmichSettings.DEFAULT_NUMBER_WORDS){
+			numberOfWords.setText(Integer.toString(number));
+		}
+	
 		login = (TextView) findViewById(R.id.login);
+		login_s = lSettigs.getLogin();
+		login.setText(login_s);
+		login.setOnClickListener(this);
+		
 		password =(TextView) findViewById(R.id.password);
+		password_s = lSettigs.getPassword();
+		password.setText(password_s);
+		password.setOnClickListener(this);
 		
 		ImageButton selectNumberButton = (ImageButton) findViewById(R.id.number_button);
 		selectNumberButton.setOnClickListener(this);
-		login.setOnClickListener(this);
-		password.setOnClickListener(this);
 		
 		login_s = login.getText().toString();
 		password_s = password.getText().toString();
+		
+		lSettigs.edit();
 	}
 	
 	@Override
@@ -76,15 +96,18 @@ public class SettingsActivity extends FragmentActivity implements OnClickListene
 	
 	@Override
 	protected void onActivityResult( int requesCode, int resultCode, Intent data){
+		
 		if( resultCode  ==  RESULT_OK){
 			
 			switch(requesCode){
 				case REQUEST_LOGIN:
 					login_s = data.getExtras().getString(LoginDialogActivity.LOGIN);
+					lSettigs.saveLogin(login_s);
 					login.setText(login_s);
 					break;
 				case REQUEST_PASSWORD:
 					password_s = data.getExtras().getString(PasswordDialogActivity.PASSWORD);
+					lSettigs.savePassword(password_s);
 					password.setText(password_s);
 					break;
 			}
@@ -113,7 +136,7 @@ public class SettingsActivity extends FragmentActivity implements OnClickListene
           l.setOnClickListener(new View.OnClickListener() {
             
               public void onClick(View v) {
-            	 
+            	showSyncProgressBar();
               }
           });
 
@@ -140,7 +163,8 @@ public class SettingsActivity extends FragmentActivity implements OnClickListene
 					
 					bulder.setItems(item, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
-							numberOfWords.setText(item[which]);
+								//numberOfWords.setText(item[which]);
+							saveNumberOfWords(which);
 						}
 					});
 				
@@ -153,18 +177,17 @@ public class SettingsActivity extends FragmentActivity implements OnClickListene
 	private void startLoginDialog(){
 		Intent loginIntent = new Intent(this, LoginDialogActivity.class);
 		 
-		 if(login_s != getResources().getString(R.string.input_login)){
+		 if(login_s != LangOmichSettings.DEFAULT_LOGIN){
 			loginIntent.putExtra(LoginDialogActivity.LOGIN, login_s); 
 		 }
 		 
 		 startActivityForResult(loginIntent, REQUEST_LOGIN);
 		
 	}
-	
 	private void startPasswordDialog(){
 		Intent passwordIntent = new Intent(this, PasswordDialogActivity.class);
 		
-		if(password_s != getResources().getString(R.string.input_password)){
+		if(password_s != LangOmichSettings.DEFAULT_PASSWORD){
 			passwordIntent.putExtra(PasswordDialogActivity.PASSWORD, password_s);
 		}
 		
@@ -172,5 +195,13 @@ public class SettingsActivity extends FragmentActivity implements OnClickListene
 		
 	}
 	
+	private void saveNumberOfWords(int number){
+		lSettigs.saveNumberWords(number+1);
+		numberOfWords.setText(Integer.toString(number+1));
+	}
+	
+	private void showSyncProgressBar(){
 
+		 dialog = ProgressDialog.show(this,"","Синхронизация"	);
+	}
 }
