@@ -2,34 +2,24 @@ package org.omich.lang;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-public class SettingsActivity extends FragmentActivity implements OnClickListener{
+public class SettingsActivity extends LangOmichActivity implements OnClickListener{
 	
-	public static final String SETTINGS_NAME = "langOmich_settings";
+	
 	
 	private static final int DIALOG_SELECT_LANGUAGE = 0;
 	private static final int DIALOG_SET_NUMBER_OF_WORDS = 1;
 	
 	private static final int REQUEST_LOGIN = 2;
 	private static final int REQUEST_PASSWORD = 3; 
-
-	private static ProgressDialog dialog;
 	
 	private TextView language;
 	private TextView numberOfWords;
@@ -39,14 +29,12 @@ public class SettingsActivity extends FragmentActivity implements OnClickListene
 	private String login_s;
 	private String password_s;
 	
-	private LangOmichSettings lSettigs;
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settigs);
 		
-		lSettigs = new LangOmichSettings(this, SETTINGS_NAME);
+		
 		
 		numberOfWords = (TextView) findViewById(R.id.number);
 		int number = lSettigs.getNumberWords();
@@ -114,38 +102,7 @@ public class SettingsActivity extends FragmentActivity implements OnClickListene
 		}
 	}
 	
-    @Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-    	  MenuItem item = menu.add(0, android.R.id.copy, 0, "Menu");
-
-          final int twentyDp = (int) (20 * getResources().getDisplayMetrics().density);
-
-          TypedArray a = getTheme().obtainStyledAttributes(R.styleable.SherlockTheme);
-          final int abHeight = a.getLayoutDimension(R.styleable.SherlockTheme_abHeight, LayoutParams.FILL_PARENT);
-          a.recycle();
-
-          LinearLayout l = new LinearLayout(this);
-          l.setPadding(twentyDp, 0, twentyDp, 0);
-
-          TextView tv = new TextView(this);
-          tv.setText("Sync");
-          tv.setGravity(Gravity.CENTER);
-          tv.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, abHeight));
-          l.addView(tv);
-
-          l.setOnClickListener(new View.OnClickListener() {
-            
-              public void onClick(View v) {
-            	showSyncProgressBar();
-              }
-          });
-
-          item.setActionView(l);
-          item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-          return super.onCreateOptionsMenu(menu);
-	}
-	
+    	
 	protected Dialog onCreateDialog(int id){
 
 		AlertDialog.Builder bulder = new AlertDialog.Builder(this);
@@ -200,8 +157,4 @@ public class SettingsActivity extends FragmentActivity implements OnClickListene
 		numberOfWords.setText(Integer.toString(number+1));
 	}
 	
-	private void showSyncProgressBar(){
-
-		 dialog = ProgressDialog.show(this,"","Синхронизация"	);
-	}
 }

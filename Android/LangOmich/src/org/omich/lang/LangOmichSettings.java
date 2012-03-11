@@ -6,8 +6,7 @@ import android.content.SharedPreferences;
 public class LangOmichSettings {
 	
 	private static final String EMPTY_STRING = "";
-	private static final int  INULL = 0;
-	private static final long LNULL = 0;
+	private static final long NULL = 0;
 	
 	public static final String LOGIN = "login";
 	public static final String DEFAULT_LOGIN = "Введите логин";
@@ -82,7 +81,7 @@ public class LangOmichSettings {
 	}
 	
 	public long getLastConnect(){
-		return settings.getLong(LAST_CONNECTION, LNULL);
+		return settings.getLong(LAST_CONNECTION, NULL);
 	}
 	
 	public void clear(){
