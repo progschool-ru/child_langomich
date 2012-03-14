@@ -1,4 +1,5 @@
 package org.omich.lang;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,6 +38,7 @@ public class MainActivity extends LangOmichActivity implements OnClickListener {
     		case R.id.addWord:
     			break;
     		case R.id.startDictionary:
+    			startActivity(new Intent(this, DictionaryActivity.class));
     			break;
     	}
     }

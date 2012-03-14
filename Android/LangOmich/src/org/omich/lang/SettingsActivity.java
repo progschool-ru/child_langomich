@@ -1,9 +1,18 @@
 package org.omich.lang;
 
+import org.omich.lang.httpClient.SmdClient;
+import org.omich.lang.json.JSONParser;
+
+import com.ccg.util.JavaString;
+
+import android.R.bool;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -97,6 +106,8 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 					password_s = data.getExtras().getString(PasswordDialogActivity.PASSWORD);
 					lSettigs.savePassword(password_s);
 					password.setText(password_s);
+					AsyncAuth auth = new AsyncAuth();
+					auth.execute(new Void [] {});
 					break;
 			}
 		}
@@ -157,4 +168,35 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 		numberOfWords.setText(Integer.toString(number+1));
 	}
 	
+	
+	private class AsyncAuth extends AsyncTask<Void, Void, Boolean>{
+		
+		@Override
+		protected Boolean doInBackground(Void... params){
+			SmdClient client = new SmdClient();
+			
+			boolean authres;
+			
+			try {
+				 String result = client.auth(login_s, password_s);
+				 String jString = JavaString.decode(result);
+				 authres = JSONParser.parseAuth(jString);
+			} catch (Exception e) {
+				authres = false;
+			}
+		
+			return authres;
+		}
+		
+		@Override
+		protected void onPostExecute(Boolean result){
+			if(result){
+				login.setTextColor(Color.GREEN);
+				password.setTextColor(Color.GREEN);
+			}else{
+				login.setTextColor(Color.RED);
+				password.setTextColor(Color.RED);
+			}
+		}
+	}
 }

@@ -1,6 +1,13 @@
 package org.omich.lang;
 
+import java.util.List;
+
+import org.omich.lang.SQLite.LanguagesData;
 import org.omich.lang.httpClient.SmdClient;
+import org.omich.lang.json.JSONParser;
+import org.omich.lang.words.Language;
+
+import com.ccg.util.JavaString;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -35,8 +42,8 @@ public class LangOmichActivity  extends FragmentActivity{
 	
 	private OnClickListener onSyncClick = new OnClickListener() {
 		public void onClick(View v) {
-			Synchronize sync = new Synchronize();
-			sync.execute(new Void[]{});
+		//	Synchronize sync = new Synchronize();
+		//	sync.execute(new Void[]{});
 		}
 	};
 	
@@ -90,6 +97,14 @@ public class LangOmichActivity  extends FragmentActivity{
     	settings = true;
     }
     
+    private class Auth extends AsyncTask<String, Void, Boolean>{
+    	
+    	@Override
+    	protected Boolean doInBackground(String... auth){
+    		return true;
+    	}
+    }
+    
     private class Synchronize extends AsyncTask<Void, Void, Void>{
     	
     	@Override
@@ -99,9 +114,16 @@ public class LangOmichActivity  extends FragmentActivity{
     	
     	@Override
     	protected Void doInBackground(Void... params){
-    		SmdClient clientЫ = new SmdClient();
+    		SmdClient client = new SmdClient();
     		try {
-				Ы
+    			String login = lSettigs.getLogin();
+    			String password = lSettigs.getPassword();
+    			
+    			client.auth(login, password);
+    			String words = JavaString.decode(client.getWords());
+    			List<Language> languages =   JSONParser.parseLanguages(words);
+    			
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
