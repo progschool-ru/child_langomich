@@ -11,7 +11,6 @@ import com.ccg.util.JavaString;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -20,7 +19,6 @@ import android.support.v4.view.MenuItem;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -33,6 +31,7 @@ public class LangOmichActivity  extends FragmentActivity{
 	protected LangOmichSettings lSettigs;
 	
 	private ProgressDialog dialog;
+	protected LanguagesData langData;
 	
 	private OnClickListener onSettingsClick = new OnClickListener(){
 		public void onClick(View v) {
@@ -42,8 +41,8 @@ public class LangOmichActivity  extends FragmentActivity{
 	
 	private OnClickListener onSyncClick = new OnClickListener() {
 		public void onClick(View v) {
-		//	Synchronize sync = new Synchronize();
-		//	sync.execute(new Void[]{});
+		Synchronize sync = new Synchronize();
+		sync.execute(new Void[]{});
 		}
 	};
 	
@@ -51,6 +50,7 @@ public class LangOmichActivity  extends FragmentActivity{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		lSettigs = new LangOmichSettings(this, SETTINGS_NAME);
+		langData = new LanguagesData(this);
 	}
 	
     @Override
@@ -58,10 +58,6 @@ public class LangOmichActivity  extends FragmentActivity{
     	  MenuItem item = menu.add(0, android.R.id.copy, 0, "Menu");
     	  
           final int twentyDp = (int) (20 * getResources().getDisplayMetrics().density);
-
-          TypedArray a = getTheme().obtainStyledAttributes(R.styleable.SherlockTheme);
-          final int abHeight = a.getLayoutDimension(R.styleable.SherlockTheme_abHeight, LayoutParams.FILL_PARENT);
-          a.recycle();
 
           LinearLayout l = new LinearLayout(this);
           l.setPadding(twentyDp, 0, twentyDp, 0);
@@ -122,7 +118,9 @@ public class LangOmichActivity  extends FragmentActivity{
     			client.auth(login, password);
     			String words = JavaString.decode(client.getWords());
     			List<Language> languages =   JSONParser.parseLanguages(words);
-    			
+    			langData.open();
+    			langData.createLanguages(languages);
+    			langData.close();
 				
 			} catch (Exception e) {
 				e.printStackTrace();

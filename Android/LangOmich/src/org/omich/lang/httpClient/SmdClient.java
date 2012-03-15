@@ -15,7 +15,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.omich.lang.Constants;
+import org.omich.lang.LangOmichSettings;
 
 public class SmdClient {
 	private HttpClient httpClient;
@@ -30,8 +30,8 @@ public class SmdClient {
 		
 		List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 		
-		postParameters.add(new BasicNameValuePair(Constants.STR_LOGIN, login));
-		postParameters.add(new BasicNameValuePair(Constants.STR_PASSWORD, password));
+		postParameters.add(new BasicNameValuePair(LangOmichSettings.LOGIN, login));
+		postParameters.add(new BasicNameValuePair(LangOmichSettings.PASSWORD, password));
 		
 		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParameters);
 		

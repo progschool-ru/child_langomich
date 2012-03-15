@@ -2,6 +2,7 @@ package org.omich.lang.SQLite;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.omich.lang.words.Language;
 
@@ -35,6 +36,16 @@ public class LanguagesData {
 		value.put(MySQLiteHelper.NAME, language.getName());
 
 		database.insert(MySQLiteHelper.LANGUAGES_TABLE, null, value);
+	}
+	
+	public void createLanguages(List<Language> languages){
+		
+		ListIterator<Language> iter = languages.listIterator();
+		
+		while(iter.hasNext()){
+			createLanguage(iter.next());
+		}
+		
 	}
 	
 	public List<Language> getAllLanguages(){
