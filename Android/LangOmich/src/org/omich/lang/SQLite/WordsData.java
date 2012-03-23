@@ -42,7 +42,7 @@ public class WordsData {
 		ContentValues value = new ContentValues();
 		value.put(MySQLiteHelper.ORIGINAL, word.getOriginal());
 		value.put(MySQLiteHelper.TRANSLATION, word.getTranslation());
-		value.put(MySQLiteHelper.LANGUAGE_ID, language.getId());
+		value.put(MySQLiteHelper.LANGUAGE_TEXT_ID, language.getId());
 		value.put(MySQLiteHelper.RATING, word.getRating());
 		value.put(MySQLiteHelper.MODIFIED,word.getModified());
 		
@@ -54,7 +54,7 @@ public class WordsData {
 		List<Word> words = new ArrayList<Word>();
 		
 		Cursor cursor = database.query(MySQLiteHelper.WORDS_TABLE,
-						wordColoms, MySQLiteHelper.LANGUAGE_ID + " = " + language.getId(),
+						wordColoms, MySQLiteHelper.LANGUAGE_TEXT_ID + " = " + language.getId(),
 						null, null, null, null);
 		
 		cursor.moveToFirst();

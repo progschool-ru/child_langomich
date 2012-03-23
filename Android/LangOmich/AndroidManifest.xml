@@ -38,9 +38,18 @@
         </activity>
         
         <activity 
+            android:name=".LanguageDialogActivity"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+        
+        <activity 
+            android:name=".WordsNumberActivity"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+        
+        <activity 
             android:name=".DictionaryActivity"
-            android:label="@string/dictionary_label"
-            android:theme="@style/Theme.Sherlock">
+            android:label="@string/dictionary_label">
         </activity>
         
         

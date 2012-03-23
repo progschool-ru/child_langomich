@@ -9,7 +9,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper  {
 	
 	public static final String WORDS_TABLE = "words";
 	
-
+	public static final String WORD_ID = "id";
 	public static final String ORIGINAL = "original";
 	public static final String TRANSLATION = "translation";
 	public static final String RATING = "rating";
@@ -17,8 +17,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper  {
 	
 	public static final String LANGUAGES_TABLE = "languages";
 	
+	public static final String LANGUAGE_ID = "id";
 	public static final String NAME = "name";
-	public static final String LANGUAGE_ID = "language_id";
+	public static final String LANGUAGE_TEXT_ID = "language_id";
 	
 	private static final String DATABASE_NAME = "langOmich.db";
 	private static final int DATABASE_VERSION = 1;
@@ -26,20 +27,20 @@ public class MySQLiteHelper extends SQLiteOpenHelper  {
 	
 	private static final String CREATE_LANGUAGES_TABLE = "CREATE TABLE "+ LANGUAGES_TABLE
 			+" ( "
-				+ LANGUAGE_ID +" TEXT NOT NULL, "
-				+ NAME  +" TEXT NOT NULL, " 
-				+" PRIMARY KEY ("+LANGUAGE_ID+")"
+				+ LANGUAGE_ID + "  integer primary key autoincrement, "
+				+ LANGUAGE_TEXT_ID +" text unique, "
+				+ NAME  +" text not null " 
 			+" )";
 	
 	private static final String CREATE_WORDS_TABLE = "CREATE TABLE " + WORDS_TABLE
 			+ "( "
-				+ ORIGINAL + " TEXT NOT NULL, "
-				+ TRANSLATION + " TEXT NOT NULL, "
-				+ LANGUAGE_ID + " TEXT NOT NULL, "
-				+ RATING +" INTEGER, "
-				+ MODIFIED + " INTEGER NOT NULL, "
-				+" PRIMARY KEY ("+LANGUAGE_ID+","+ ORIGINAL+") , "
-				+" FOREIGN KEY ("+LANGUAGE_ID+") REFERENCES "+LANGUAGES_TABLE+"("+LANGUAGE_ID+") ON DELETE CASCADE "
+				+ WORD_ID + "integer primary key autoincrement"
+				+ ORIGINAL + " text not null, "
+				+ TRANSLATION + " text not null, "
+				+ LANGUAGE_ID + " integer, "
+				+ RATING +" integer, "
+				+ MODIFIED + " integer, "
+				+" FOREIGN KEY ("+LANGUAGE_TEXT_ID+") REFERENCES "+LANGUAGES_TABLE+"("+LANGUAGE_TEXT_ID+") ON DELETE CASCADE "
 			+")";
 	
 	public MySQLiteHelper(Context context){

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,9 +41,9 @@ public class LangOmichActivity  extends FragmentActivity{
 	};
 	
 	private OnClickListener onSyncClick = new OnClickListener() {
-		public void onClick(View v) {
-		Synchronize sync = new Synchronize();
-		sync.execute(new Void[]{});
+		public void onClick(View v) {			
+			Synchronize sync = new Synchronize();
+			sync.execute(new Void[]{});
 		}
 	};
 	
@@ -115,20 +116,21 @@ public class LangOmichActivity  extends FragmentActivity{
     			String login = lSettigs.getLogin();
     			String password = lSettigs.getPassword();
     			
+    			Log.d("test", "синхронизация");
     			client.auth(login, password);
     			String words = JavaString.decode(client.getWords());
     			List<Language> languages =   JSONParser.parseLanguages(words);
-    			langData.open();
+    			
+    			langData.open(); 
     			langData.createLanguages(languages);
     			langData.close();
-				
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
     		return null;
     	}
     	
-    	@Override
     	protected void onCancelled(Void object){
     		dialog.dismiss();
     	}

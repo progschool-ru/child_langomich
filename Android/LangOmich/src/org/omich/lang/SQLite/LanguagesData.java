@@ -13,11 +13,13 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class LanguagesData {
 	
-	private String[] allLanguageColoms = { MySQLiteHelper.LANGUAGE_ID, MySQLiteHelper.NAME };
+	private String[] allLanguageColoms = { MySQLiteHelper.LANGUAGE_ID, MySQLiteHelper.LANGUAGE_TEXT_ID, MySQLiteHelper.NAME };
 	
-	SQLiteDatabase database;
-	MySQLiteHelper dbHelper;
+	private SQLiteDatabase database;
+	private MySQLiteHelper dbHelper;
 	
+	private Language currentLanguage;
+
 	public LanguagesData(Context context) {
 		dbHelper = new MySQLiteHelper(context);
 	}
@@ -29,13 +31,19 @@ public class LanguagesData {
 	public void close(){
 		database.close();
 	}
-	public void createLanguage(Language language){
+	
+	public void setCurrentLanguage(Language language){
+		currentLanguage = language;
+	}
+	
+	public long createLanguage(Language language){
+		
 		ContentValues value = new ContentValues();
 		
-		value.put(MySQLiteHelper.LANGUAGE_ID, language.getId());
+		value.put(MySQLiteHelper.LANGUAGE_TEXT_ID, language.getId());
 		value.put(MySQLiteHelper.NAME, language.getName());
 
-		database.insert(MySQLiteHelper.LANGUAGES_TABLE, null, value);
+		return database.insert(MySQLiteHelper.LANGUAGES_TABLE, null, value); 
 	}
 	
 	public void createLanguages(List<Language> languages){
@@ -48,24 +56,25 @@ public class LanguagesData {
 		
 	}
 	
-	public List<Language> getAllLanguages(){
+	public List<Language> getListAllLanguages(){
 		
 		List<Language> languages = new ArrayList<Language>();
 		
-		Cursor cursor = database.query(MySQLiteHelper.LANGUAGES_TABLE, 
-				allLanguageColoms, null, null, null, null, null);
-		
+		Cursor cursor = getCursorAllLanguage();
 		cursor.moveToFirst();
 		
-		while(cursor.isAfterLast()){
+		while(!cursor.isAfterLast()){
 			Language language = cusorToLanguage(cursor);
 			languages.add(language);
 			cursor.moveToNext();
 		}
 		
+		cursor.close();
+		
 		return languages;
 	}
 	
+	/*
 	public void deleteLanguage(Language language){
 		String language_id = language.getId();
 		
@@ -73,10 +82,18 @@ public class LanguagesData {
 				MySQLiteHelper.LANGUAGE_ID + " = " + language_id, null);
 	}
 	
-	private Language cusorToLanguage(Cursor cursor){
+	*/
+	
+	private Cursor getCursorAllLanguage(){
+		Cursor cursor = database.query(MySQLiteHelper.LANGUAGES_TABLE, 
+				allLanguageColoms, null, null, null, null, null);
 		
-		String languageId = cursor.getString(0);
-		String name = cursor.getString(1);
+		return cursor;
+	}
+	
+	private Language cusorToLanguage(Cursor cursor){
+		String languageId = cursor.getString(1);
+		String name = cursor.getString(2);
 		
 		return new Language(name, languageId, null);
 	}

@@ -11,9 +11,6 @@ import android.widget.EditText;
 
 public class PasswordDialogActivity  extends Activity implements OnClickListener{
 	
-	public static final String PASSWORD = "password";
-	
-	
 	private EditText passwordEdit;
 	
 	private CheckBox show;
@@ -33,7 +30,7 @@ public class PasswordDialogActivity  extends Activity implements OnClickListener
 		
 		passwordEdit = (EditText) findViewById(R.id.passwordEdit); 
 	
-		String password = getIntent().getStringExtra(PASSWORD);
+		String password = getIntent().getStringExtra(LangOmichSettings.PASSWORD);
 		passwordEdit.setText(password);
 		
 	}
@@ -53,7 +50,7 @@ public class PasswordDialogActivity  extends Activity implements OnClickListener
 		case R.id.password_ok:
 				Intent data = new Intent();
 				String password = passwordEdit.getText().toString();
-				data.putExtra(PASSWORD, password);
+				data.putExtra(LangOmichSettings.PASSWORD, password);
 				setResult(RESULT_OK, data );
 				finish();
 				break;

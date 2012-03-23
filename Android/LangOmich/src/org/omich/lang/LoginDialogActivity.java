@@ -8,9 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 public class LoginDialogActivity extends Activity implements OnClickListener {
-	
-	public static String LOGIN = "LOGIN";
-	
+
 	private EditText loginEdit;
 	 
 	
@@ -26,7 +24,7 @@ public class LoginDialogActivity extends Activity implements OnClickListener {
 		
 		loginEdit = (EditText) findViewById(R.id.loginEdit);
 		
-		String login = getIntent().getStringExtra(LOGIN);
+		String login = getIntent().getStringExtra(LangOmichSettings.LOGIN);
 		loginEdit.setText(login);
 	}
 	
@@ -44,7 +42,7 @@ public class LoginDialogActivity extends Activity implements OnClickListener {
 			case R.id.login_ok:
 				Intent data = new Intent();
 				String login = loginEdit.getText().toString();
-				data.putExtra(LOGIN, login);
+				data.putExtra(LangOmichSettings.LOGIN, login);
 				setResult(RESULT_OK, data);
 				finish();
 				break;
