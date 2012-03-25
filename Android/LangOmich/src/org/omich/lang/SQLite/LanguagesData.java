@@ -40,7 +40,7 @@ public class LanguagesData {
 		
 		ContentValues value = new ContentValues();
 		
-		value.put(MySQLiteHelper.LANGUAGE_TEXT_ID, language.getId());
+		value.put(MySQLiteHelper.LANGUAGE_TEXT_ID, language.getServerId());
 		value.put(MySQLiteHelper.NAME, language.getName());
 
 		return database.insert(MySQLiteHelper.LANGUAGES_TABLE, null, value); 
@@ -74,6 +74,18 @@ public class LanguagesData {
 		return languages;
 	}
 	
+	public boolean isEmpty(){
+		
+		long count = 0;
+		
+		Cursor cursor = getCursorAllLanguage();
+	
+		boolean empty = !cursor.moveToFirst();
+	
+		cursor.close();
+		
+		return empty;
+	}
 	/*
 	public void deleteLanguage(Language language){
 		String language_id = language.getId();
@@ -92,10 +104,11 @@ public class LanguagesData {
 	}
 	
 	private Language cusorToLanguage(Cursor cursor){
-		String languageId = cursor.getString(1);
+		int id = cursor.getInt(0);
+	//	String languageId = cursor.getString(1);
 		String name = cursor.getString(2);
 		
-		return new Language(name, languageId, null);
+		return new Language(name, id);
 	}
 	
 }

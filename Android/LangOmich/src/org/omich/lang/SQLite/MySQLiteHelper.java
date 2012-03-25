@@ -50,12 +50,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper  {
 	@Override
 	public void onCreate(SQLiteDatabase database){
 		database.execSQL(CREATE_LANGUAGES_TABLE);
-        database.execSQL(CREATE_WORDS_TABLE);
+        //database.execSQL(CREATE_WORDS_TABLE);
 	}
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-		db.execSQL("DROP TABLE IF EXISTS" + WORDS_TABLE);
+		//db.execSQL("DROP TABLE IF EXISTS" + WORDS_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS" + LANGUAGES_TABLE);
 		onCreate(db);
 	}

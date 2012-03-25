@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -29,6 +30,8 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 	
 	private String login_s;
 	private String password_s;
+	
+	ImageButton selectLanguages;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -55,14 +58,15 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 		password_s = lSettigs.getPassword();
 		password.setText(password_s);
 		password.setOnClickListener(this);
+		setInputType();
 		
 		ImageButton selectNumberButton = (ImageButton) findViewById(R.id.number_button);
 		selectNumberButton.setOnClickListener(this);
-		ImageButton selectLanguages = (ImageButton) findViewById(R.id.select_language);
+	    selectLanguages = (ImageButton) findViewById(R.id.select_language);
 		selectLanguages.setOnClickListener(this);
 		
-		login_s = login.getText().toString();
-		password_s = password.getText().toString();
+		updateLangButton();
+		checkAuthData();
 		
 		lSettigs.edit();
 	}
@@ -100,7 +104,7 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 				                                   
 				case REQUEST_LANGUAGES:
 					String language_s = data.getExtras().getString(LangOmichSettings.LANGUAGE_NAME);
-					String language_id = data.getExtras().getString(LangOmichSettings.LANGUAGE_ID);
+					int language_id = data.getExtras().getInt(LangOmichSettings.LANGUAGE_ID);
 					lSettigs.saveLanguage(language_s, language_id);
 					language.setText(language_s);
 					break;
@@ -115,14 +119,19 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 					login_s = data.getExtras().getString(LangOmichSettings.LOGIN);
 					lSettigs.saveLogin(login_s);
 					login.setText(login_s);
+					checkAuthData();
 					break;
 					
 				case REQUEST_PASSWORD:
 					password_s = data.getExtras().getString(LangOmichSettings.PASSWORD);
+					boolean show  = data.getExtras().getBoolean(LangOmichSettings.SHOW, LangOmichSettings.DEFAULT_SHOW);
+					lSettigs.saveShow(show);
 					lSettigs.savePassword(password_s);
 					password.setText(password_s);
-					AsyncAuth auth = new AsyncAuth();
-					auth.execute(new Void [] {});
+				
+						setInputType(); 
+						checkAuthData();
+				
 					break;
 				
 				
@@ -131,22 +140,18 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 	}
 	
 	private void startLoginDialog(){
-		Intent loginIntent = new Intent(this, LoginDialogActivity.class);
-		 
-		 if(login_s != LangOmichSettings.DEFAULT_LOGIN){
-			loginIntent.putExtra(LangOmichSettings.LOGIN, login_s); 
-		 }
-		 
-		 startActivityForResult(loginIntent, REQUEST_LOGIN);
 		
+		Intent loginIntent = new Intent(this, LoginDialogActivity.class);
+		loginIntent.putExtra(LangOmichSettings.LOGIN, login_s); 
+		startActivityForResult(loginIntent, REQUEST_LOGIN);
 	}
 	
 	private void startPasswordDialog(){
 		Intent passwordIntent = new Intent(this, PasswordDialogActivity.class);
 		
-		if(password_s != LangOmichSettings.DEFAULT_PASSWORD){
-			passwordIntent.putExtra(LangOmichSettings.PASSWORD, password_s);
-		}
+		passwordIntent.putExtra(LangOmichSettings.PASSWORD, password_s);
+		boolean show = lSettigs.getShow();
+		passwordIntent.putExtra(LangOmichSettings.SHOW, show);
 		
 		startActivityForResult(passwordIntent, REQUEST_PASSWORD);
 		
@@ -162,6 +167,45 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 		startActivityForResult(numberIntent, REQUEST_NUMBER_OF_WORDS);
 	}
 	
+	private void checkAuthData(){
+		if(login_s.equals(LangOmichSettings.DEFAULT_LOGIN) || password_s.equals(LangOmichSettings.DEFAULT_PASSWORD)){
+			login.setTextColor(Color.GRAY);
+			password.setTextColor(Color.GRAY);
+			return;
+		}
+		if(!isNetworkAvailable()){
+			login.setTextColor(Color.GRAY);
+			password.setTextColor(Color.GRAY);
+			return;
+		}
+		
+		AsyncAuth auth = new AsyncAuth();
+		auth.execute(new Void [] {});
+	}
+	
+	private void setInputType(){
+		if(!password_s.equals(LangOmichSettings.DEFAULT_PASSWORD)){
+			password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		}else{
+			password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+		}
+	}
+	
+	@Override
+	public void updateInterfaseAfteSync(){
+		super.updateInterfaseAfteSync();
+		updateLangButton();
+	}
+	
+	private void updateLangButton(){
+		langData.open();
+		if(langData.isEmpty()) {
+			selectLanguages.setEnabled(false);
+		}else{
+			selectLanguages.setEnabled(true);
+		}
+		langData.close();
+	}
 	private class AsyncAuth extends AsyncTask<Void, Void, Boolean>{
 		
 		@Override

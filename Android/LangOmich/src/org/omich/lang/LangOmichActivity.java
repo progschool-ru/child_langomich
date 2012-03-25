@@ -10,7 +10,10 @@ import org.omich.lang.words.Language;
 import com.ccg.util.JavaString;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -94,14 +97,15 @@ public class LangOmichActivity  extends FragmentActivity{
     	settings = true;
     }
     
-    private class Auth extends AsyncTask<String, Void, Boolean>{
-    	
-    	@Override
-    	protected Boolean doInBackground(String... auth){
-    		return true;
-    	}
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return  activeNetworkInfo != null;
     }
     
+    public void updateInterfaseAfteSync(){
+    	
+    }
     private class Synchronize extends AsyncTask<Void, Void, Void>{
     	
     	@Override
@@ -137,6 +141,7 @@ public class LangOmichActivity  extends FragmentActivity{
     	
     	@Override 
     	protected void onPostExecute(Void result){
+    		updateInterfaseAfteSync();
     		dialog.dismiss();
     	}
     	

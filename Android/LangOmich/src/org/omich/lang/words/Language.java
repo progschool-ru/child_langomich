@@ -5,15 +5,28 @@ import java.util.List;
 public class Language {
 	
 	private String name;
-	private String id;
+	private String server_id;
+	private int id;
 	
 	private List<Word> words;
 	
-	public Language(String name, String id, List<Word> words){
+	public Language(String name, String server_id, int id, List<Word> words){
 		
 		this.name = name;
+		this.server_id = server_id;
 		this.id = id;
 		this.words = words;
+	}
+	
+	public Language(String name, String server_id, List<Word> words){
+		this.name = name;
+		this.server_id = server_id;
+		this.words = words;
+	}
+	
+	public Language(String name, int id){
+		this.name = name;
+		this.id = id;
 	}
 	
 	public String getName(){
@@ -24,12 +37,15 @@ public class Language {
 		this.name = name;
 	}
 	
-	public String getId(){
+	public int getId(){
 		return id;
 	}
+	public String getServerId(){
+		return server_id;
+	}
 	
-	public void setId(String id){
-		this.id = id;
+	public void setServerId(String id){
+		this.server_id = id;
 	}
 	
 	public List<Word> getWords(){

@@ -13,6 +13,8 @@ public class LangOmichSettings {
 	
 	public static final String PASSWORD = "password";
 	public static final String DEFAULT_PASSWORD = "Введите пароль";
+	public static final String SHOW = "show";
+	public static final boolean DEFAULT_SHOW = false;
 	
 	public static final String LANGUAGE_ID = "language_id";
 	public static final String LANGUAGE_NAME = "language_name";
@@ -21,7 +23,7 @@ public class LangOmichSettings {
 	public static final int DEFAULT_NUMBER_WORDS = 0;
 	
 	public static final String LAST_CONNECTION = "last_conn";
- 
+	
 	private SharedPreferences settings;
 	private SharedPreferences.Editor edit;
 	
@@ -44,9 +46,9 @@ public class LangOmichSettings {
 		edit.commit();
 	}
 	
-	public void saveLanguage(String name, String id){
+	public void saveLanguage(String name, int id){
 		edit.putString(LANGUAGE_NAME, name);
-		edit.putString(LANGUAGE_ID, id);
+		edit.putInt(LANGUAGE_ID, id);
 		edit.commit();
 	}
 	
@@ -58,6 +60,10 @@ public class LangOmichSettings {
 	public void saveLastConnection(long last_conn){
 		edit.putLong(LAST_CONNECTION, last_conn);
 		edit.commit();
+	}
+	
+	public void saveShow(boolean show){
+		edit.putBoolean(SHOW, show);
 	}
 	
 	public String getLogin(){
@@ -72,8 +78,8 @@ public class LangOmichSettings {
 		return settings.getString(LANGUAGE_NAME, EMPTY_STRING);
 	}
 	
-	public String getLanguageId(){
-		return settings.getString(LANGUAGE_ID, EMPTY_STRING);
+	public int getLanguageId(){
+		return settings.getInt(LANGUAGE_ID, 0);
 	}
 	
 	public int getNumberWords(){
@@ -82,6 +88,10 @@ public class LangOmichSettings {
 	
 	public long getLastConnect(){
 		return settings.getLong(LAST_CONNECTION, NULL);
+	}
+	
+	public boolean getShow(){
+		return settings.getBoolean(SHOW, DEFAULT_SHOW);
 	}
 	
 	public void clear(){

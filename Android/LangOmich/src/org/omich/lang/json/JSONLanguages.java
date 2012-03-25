@@ -50,7 +50,7 @@ public class JSONLanguages {
 		
 		JSONObject languages = new JSONObject();
 		
-		languages.put(ID, lang.getId());
+		languages.put(ID, lang.getServerId());
 		languages.put(NAME, lang.getName());
 		
 		JSONWords word = new JSONWords(lang.getWords());

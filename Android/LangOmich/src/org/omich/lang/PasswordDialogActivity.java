@@ -31,8 +31,14 @@ public class PasswordDialogActivity  extends Activity implements OnClickListener
 		passwordEdit = (EditText) findViewById(R.id.passwordEdit); 
 	
 		String password = getIntent().getStringExtra(LangOmichSettings.PASSWORD);
-		passwordEdit.setText(password);
 		
+		if(!password.equals(LangOmichSettings.DEFAULT_PASSWORD)){
+			passwordEdit.setText(password);
+		}
+		
+		boolean isChecked = getIntent().getBooleanExtra(LangOmichSettings.SHOW, LangOmichSettings.DEFAULT_SHOW);
+		setInputType(isChecked);
+		show.setChecked(isChecked);
 	}
 	
 	@Override
@@ -50,19 +56,25 @@ public class PasswordDialogActivity  extends Activity implements OnClickListener
 		case R.id.password_ok:
 				Intent data = new Intent();
 				String password = passwordEdit.getText().toString();
+				if(password.equals("")) password = LangOmichSettings.DEFAULT_PASSWORD;
 				data.putExtra(LangOmichSettings.PASSWORD, password);
+				data.putExtra(LangOmichSettings.SHOW, show.isChecked());
 				setResult(RESULT_OK, data );
 				finish();
 				break;
 		case R.id.show:
-			if(show.isChecked()){
-				passwordEdit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-			}else{
-				
-				passwordEdit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-			}
+				setInputType(show.isChecked());
 			break;
 			
+		}
+	}
+	
+	private void setInputType(boolean chechked){
+		if(chechked){
+			passwordEdit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+		}else{
+			
+			passwordEdit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		}
 	}
 }

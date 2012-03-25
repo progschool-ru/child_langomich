@@ -25,7 +25,12 @@ public class LoginDialogActivity extends Activity implements OnClickListener {
 		loginEdit = (EditText) findViewById(R.id.loginEdit);
 		
 		String login = getIntent().getStringExtra(LangOmichSettings.LOGIN);
-		loginEdit.setText(login);
+		
+		
+		if(!login.equals(LangOmichSettings.DEFAULT_LOGIN)){
+			loginEdit.setText(login);
+		}
+		
 	}
 	
 	@Override
@@ -42,6 +47,7 @@ public class LoginDialogActivity extends Activity implements OnClickListener {
 			case R.id.login_ok:
 				Intent data = new Intent();
 				String login = loginEdit.getText().toString();
+				if(login.equals("")) login = LangOmichSettings.DEFAULT_LOGIN;
 				data.putExtra(LangOmichSettings.LOGIN, login);
 				setResult(RESULT_OK, data);
 				finish();
