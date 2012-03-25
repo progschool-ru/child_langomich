@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class LanguagesData {
 	
@@ -17,11 +18,11 @@ public class LanguagesData {
 	
 	private SQLiteDatabase database;
 	private MySQLiteHelper dbHelper;
+	private WordsData wordsData; 
 	
-	private Language currentLanguage;
-
 	public LanguagesData(Context context) {
 		dbHelper = new MySQLiteHelper(context);
+	
 	}
 	
 	public void open(){
@@ -32,22 +33,25 @@ public class LanguagesData {
 		database.close();
 	}
 	
-	public void setCurrentLanguage(Language language){
-		currentLanguage = language;
-	}
-	
 	public long createLanguage(Language language){
 		
 		ContentValues value = new ContentValues();
 		
 		value.put(MySQLiteHelper.LANGUAGE_TEXT_ID, language.getServerId());
 		value.put(MySQLiteHelper.NAME, language.getName());
-
-		return database.insert(MySQLiteHelper.LANGUAGES_TABLE, null, value); 
+		
+		long languageId = database.insert(MySQLiteHelper.LANGUAGES_TABLE, null, value);
+		
+		Log.d("words","create words for lang " + languageId);
+		
+		wordsData.setLanguage(languageId);
+		wordsData.createWords(language.getWords());
+		
+		return languageId; 
 	}
 	
 	public void createLanguages(List<Language> languages){
-		
+		wordsData = new WordsData(database);
 		ListIterator<Language> iter = languages.listIterator();
 		
 		while(iter.hasNext()){
@@ -75,8 +79,6 @@ public class LanguagesData {
 	}
 	
 	public boolean isEmpty(){
-		
-		long count = 0;
 		
 		Cursor cursor = getCursorAllLanguage();
 	

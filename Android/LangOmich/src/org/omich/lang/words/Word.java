@@ -2,6 +2,7 @@ package org.omich.lang.words;
 
 public class Word {
 	
+	private long id;
 	private String original;
 	private String translation;
 	private int rating;
@@ -15,6 +16,14 @@ public class Word {
 		this.modified = 0;
 	}
 	
+	public Word(long id, String original, String translation, int rating, long modified){
+		
+		this.id = id;
+		this.rating = rating;
+		this.original = original;
+		this.translation = translation;
+		this.modified = modified;
+	}
 	public Word(String original, String translation, int rating, long modified){
 		
 		this.rating = rating;
@@ -22,6 +31,7 @@ public class Word {
 		this.translation = translation;
 		this.modified = modified;
 	}
+	
 	
 	public String getOriginal(){
 		return original;
@@ -37,6 +47,14 @@ public class Word {
 	
 	public void setTranslation(String translation){
 		this.translation = translation;
+	}
+	
+	public long getId(){
+		return id;
+	}
+	
+	public void setId(long id){
+		this.id = id;
 	}
 	
 	public int getRating(){

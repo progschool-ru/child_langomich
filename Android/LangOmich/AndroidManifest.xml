@@ -50,8 +50,9 @@
         
         <activity 
             android:name=".DictionaryActivity"
-            android:label="@string/dictionary_label">
-        </activity>
+            android:label="@string/dictionary_label"
+			android:theme="@style/Theme.Sherlock">       
+		</activity>
         
         
         
