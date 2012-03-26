@@ -12,7 +12,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class WordsData {
 	
@@ -44,11 +43,17 @@ public class WordsData {
 	}
 	
 	public void createWords(List<Word> words){
-		
+		//TODO переименовать метод в sync
 		ListIterator<Word> iter = words.listIterator();
 		
 		while(iter.hasNext()){
-			createWord(iter.next());
+			Word word = iter.next();
+			String translation = word.getTranslation();
+			if(!translation.equals("")){
+				createWord(word);
+			}else{
+				//TODO: сделать после того как подчиню апишку на сервере
+			}
 		}
 		
 	}
@@ -60,18 +65,14 @@ public class WordsData {
 		value.put(MySQLiteHelper.TRANSLATION, word.getTranslation());
 		value.put(MySQLiteHelper.WORDS_LANGUAGE, languageId);
 		value.put(MySQLiteHelper.RATING, word.getRating());
-		value.put(MySQLiteHelper.MODIFIED,word.getModified());
+		value.put(MySQLiteHelper.MODIFIED, word.getModified());
 		
-		Log.d("words", word.getOriginal()+ " "+word.getTranslation()+" "+Integer.toString(word.getRating())+" "+Long.toString(word.getModified())+" "+languageId);
-		long id = database.insert(MySQLiteHelper.WORDS_TABLE, null, value);
-		Log.d("words", "words_id="+id);
-		return id;
+		return database.insert(MySQLiteHelper.WORDS_TABLE, null, value);
 	}
 	
 	public List<Word> getAllWords(){
 		
 		List<Word> words = new ArrayList<Word>();
-		
 		
 		Cursor cursor = database.query(MySQLiteHelper.WORDS_TABLE,
 						wordColoms, MySQLiteHelper.WORDS_LANGUAGE + " = " + languageId,
@@ -80,10 +81,7 @@ public class WordsData {
 		
 		cursor.moveToFirst();
 		
-		int index = 0;
-		
 		while(!cursor.isAfterLast()){
-			Log.d("words", Integer.toString(index++) );
 			Word word = cursortoWord(cursor);
 			words.add(word);
 			cursor.moveToNext();

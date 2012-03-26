@@ -14,7 +14,7 @@ import android.util.Log;
 
 public class LanguagesData {
 	
-	private String[] allLanguageColoms = { MySQLiteHelper.LANGUAGE_ID, MySQLiteHelper.LANGUAGE_TEXT_ID, MySQLiteHelper.NAME };
+	private String[] allLanguageColoms = { MySQLiteHelper.LANGUAGE_ID, MySQLiteHelper.LANGUAGE_SERVER_ID, MySQLiteHelper.NAME };
 	
 	private SQLiteDatabase database;
 	private MySQLiteHelper dbHelper;
@@ -34,28 +34,36 @@ public class LanguagesData {
 	}
 	
 	public long createLanguage(Language language){
-		
+
 		ContentValues value = new ContentValues();
 		
-		value.put(MySQLiteHelper.LANGUAGE_TEXT_ID, language.getServerId());
+		value.put(MySQLiteHelper.LANGUAGE_SERVER_ID, language.getServerId());
 		value.put(MySQLiteHelper.NAME, language.getName());
 		
-		long languageId = database.insert(MySQLiteHelper.LANGUAGES_TABLE, null, value);
-		
-		Log.d("words","create words for lang " + languageId);
-		
-		wordsData.setLanguage(languageId);
-		wordsData.createWords(language.getWords());
-		
-		return languageId; 
+		return database.insert(MySQLiteHelper.LANGUAGES_TABLE, null, value); 
 	}
 	
 	public void createLanguages(List<Language> languages){
+		//TODO переименовать метод в SyncLang
 		wordsData = new WordsData(database);
 		ListIterator<Language> iter = languages.listIterator();
 		
 		while(iter.hasNext()){
-			createLanguage(iter.next());
+		
+			Language language = iter.next();
+			
+			long languageId;
+			
+			Language find = getLanguage(language.getServerId());
+			if(find == null){
+				 languageId =  createLanguage(language);
+			}else{
+				languageId = find.getId();
+			}
+			
+			wordsData.setLanguage(languageId);
+			wordsData.createWords(language.getWords());
+			
 		}
 		
 	}
@@ -79,14 +87,26 @@ public class LanguagesData {
 	}
 	
 	public boolean isEmpty(){
-		
 		Cursor cursor = getCursorAllLanguage();
-	
 		boolean empty = !cursor.moveToFirst();
-	
 		cursor.close();
-		
 		return empty;
+	}
+	
+	public Language getLanguage(String server_id){
+		
+		String[] param = {server_id};
+		Cursor cursor = database.query(MySQLiteHelper.LANGUAGES_TABLE, 
+				allLanguageColoms, MySQLiteHelper.LANGUAGE_SERVER_ID +" =  ?",param,  
+				null, null, null);
+		
+		int count = cursor.getCount();
+		if(count == 0) return null;
+		cursor.moveToFirst();
+		
+		Language language = cusorToLanguage(cursor);
+		cursor.close();
+		return language;
 	}
 	/*
 	public void deleteLanguage(Language language){
@@ -107,10 +127,9 @@ public class LanguagesData {
 	
 	private Language cusorToLanguage(Cursor cursor){
 		int id = cursor.getInt(0);
-	//	String languageId = cursor.getString(1);
+		String serverId = cursor.getString(1);
 		String name = cursor.getString(2);
-		
-		return new Language(name, id);
+		return new Language(name, id, serverId);
 	}
 	
 }

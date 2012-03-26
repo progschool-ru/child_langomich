@@ -5,6 +5,7 @@ import java.util.List;
 import org.omich.lang.SQLite.LanguagesData;
 import org.omich.lang.httpClient.SmdClient;
 import org.omich.lang.json.JSONParser;
+import org.omich.lang.json.JSONWriter;
 import org.omich.lang.words.Language;
 
 import com.ccg.util.JavaString;
@@ -19,7 +20,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -120,15 +120,22 @@ public class LangOmichActivity  extends FragmentActivity{
     			String login = lSettigs.getLogin();
     			String password = lSettigs.getPassword();
     			
-    			Log.d("test", "синхронизация");
     			client.auth(login, password);
-    			String words = JavaString.decode(client.getWords());
-    			List<Language> languages =   JSONParser.parseLanguages(words);
     			
+    			long lastConnection = lSettigs.getLastConnect();
+    			
+    			String data = JSONWriter.toJSON(lastConnection, null);
+    			
+    			data = JavaString.encode(data);
+    			String words = JavaString.decode(client.addWords(data));
+    			List<Language> languages =   JSONParser.parseLanguages(words);
+    		
     			langData.open(); 
     			langData.createLanguages(languages);
     			langData.close();
-
+    			
+    			lastConnection = JSONParser.getLastConnection(words);
+    			lSettigs.saveLastConnection(lastConnection);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

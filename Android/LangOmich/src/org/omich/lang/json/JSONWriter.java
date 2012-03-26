@@ -16,9 +16,11 @@ public class JSONWriter {
 		
 		JSONObject jObject = new JSONObject();
 		jObject.put(LAST_CONNECTION, lastConnection);
-		JSONLanguages jLanguages = new JSONLanguages(languages);
-		jObject.put(LANGUAGES, jLanguages.toJSON());
 		
+		if(languages != null){
+			JSONLanguages jLanguages = new JSONLanguages(languages);
+			jObject.put(LANGUAGES, jLanguages.toJSON());
+		}
 		return jObject.toString();
 	
 	}

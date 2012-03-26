@@ -24,6 +24,12 @@ public class Language {
 		this.words = words;
 	}
 	
+	public Language(String name, int id, String server_id){
+		this.name = name;
+		this.id = id;
+		this.server_id = server_id;
+	}
+	
 	public Language(String name, int id){
 		this.name = name;
 		this.id = id;
