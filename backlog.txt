@@ -1,5 +1,16 @@
-﻿0) (Сергей - ?) HelloWorld
+﻿Напоминаю, приоритет 0 - это значит, сделать как можно скорее. Лучше, в ближайшие сутки.
 
+0) В файле  Android/LangOmich/project.properties в переменной 
+android.library.reference.1 должен стоять путь на что-то локальное.
+
+0) В файле	Android/LangOmichTest/.classpath 
+изменить строчку <classpathentry combineaccessrules="false" kind="src" path="/MainActivity"/> 
+на <classpathentry combineaccessrules="false" kind="src" path="/org.omich.lang"/>, 
+для этого нужно будет также переименовать проект в еклипсе.
+
+0) В файле LangOmichTest/src/org/omich/lang/LanguageTest.java есть отсылка на метод Language.setId, 
+а в классе Language такого метода нет. 
+Срочно исправить тесты, чтобы они компилировались и проходили.
 
 1) Cинхронизация
 (in progress) В экшн бар welcome activit добавляем кнопку синхронизации, 
@@ -8,6 +19,10 @@
     *)загрузка словоря с помошью метода add words и использование параметра lastconection(done)
 	*)Во время синхронизации появляется прогресс диалог(done)
 	*)Если нажали на кнопку "Назад" во время синхронизации, то синхронизация должна прекратиться.
+
+1) В файле Android/LangOmich/.classpath удалить пятую строку, где написано "com_actionbarsherlock", она вроде бы не нужна.
+
+1) Пакет тестов в манифесте изменить на org.omich.lang.test
 	
 2) Активити Dictionary со списком слов. Скроллинг, нормально оформленные элементы, использование ListView, BaseAdapter.
 (основное окно, надо подумать, какие элементы и как использова(ListView или что то еще)
