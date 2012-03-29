@@ -1,6 +1,6 @@
 package org.omich.lang;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 public class LangOmichSettings {
@@ -27,8 +27,8 @@ public class LangOmichSettings {
 	private SharedPreferences settings;
 	private SharedPreferences.Editor edit;
 	
-	public LangOmichSettings(Activity act, String PREFES_NAME){
-		settings = act.getSharedPreferences(PREFES_NAME, 0);
+	public LangOmichSettings(Context context, String PREFES_NAME){
+		settings = context.getSharedPreferences(PREFES_NAME, 0);
 	}
 	
 	

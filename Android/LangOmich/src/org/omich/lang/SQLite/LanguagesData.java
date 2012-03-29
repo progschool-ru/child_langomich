@@ -104,6 +104,7 @@ public class LanguagesData {
 		if(count == 0) return null;
 		cursor.moveToFirst();
 		
+		Log.d("test", cursor.toString());
 		Language language = cusorToLanguage(cursor);
 		cursor.close();
 		return language;

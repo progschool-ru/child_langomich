@@ -65,7 +65,6 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 	    selectLanguages = (ImageButton) findViewById(R.id.select_language);
 		selectLanguages.setOnClickListener(this);
 		
-		updateLangButton();
 		checkAuthData();
 		
 		lSettigs.edit();
@@ -167,6 +166,17 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 		startActivityForResult(numberIntent, REQUEST_NUMBER_OF_WORDS);
 	}
 	
+	@Override
+	protected void updateUIAfteAsyncAuth(Boolean result){
+		if(result){
+			login.setTextColor(Color.GREEN);
+			password.setTextColor(Color.GREEN);
+		}else{
+			login.setTextColor(Color.RED);
+			password.setTextColor(Color.RED);
+		}
+	}
+	
 	private void checkAuthData(){
 		if(login_s.equals(LangOmichSettings.DEFAULT_LOGIN) || password_s.equals(LangOmichSettings.DEFAULT_PASSWORD)){
 			login.setTextColor(Color.GRAY);
@@ -191,21 +201,6 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 		}
 	}
 	
-	@Override
-	public void updateInterfaseAfteSync(){
-		super.updateInterfaseAfteSync();
-		updateLangButton();
-	}
-	
-	private void updateLangButton(){
-		langData.open();
-		if(langData.isEmpty()) {
-			selectLanguages.setEnabled(false);
-		}else{
-			selectLanguages.setEnabled(true);
-		}
-		langData.close();
-	}
 	private class AsyncAuth extends AsyncTask<Void, Void, Boolean>{
 		
 		@Override
@@ -227,13 +222,8 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 		
 		@Override
 		protected void onPostExecute(Boolean result){
-			if(result){
-				login.setTextColor(Color.GREEN);
-				password.setTextColor(Color.GREEN);
-			}else{
-				login.setTextColor(Color.RED);
-				password.setTextColor(Color.RED);
-			}
+			
 		}
 	}
+	
 }

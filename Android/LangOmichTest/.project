@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>MainTest</name>
+	<name>LangOmichTest</name>
 	<comment></comment>
 	<projects>
-		<project>MainActivity</project>
+		<project>LangOmich</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -31,4 +31,26 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/org/omich/lang/test/AllTests.java</name>
+			<type>1</type>
+			<location>/home/archerigoli/Dropbox/Android/LangOmichTest/src/org/omich/lang/test/AllTests.java</location>
+		</link>
+		<link>
+			<name>src/org/omich/lang/test/JSONWordsTests.java</name>
+			<type>1</type>
+			<location>/home/archerigoli/Dropbox/Android/LangOmichTest/src/org/omich/lang/test/JSONWordsTests.java</location>
+		</link>
+		<link>
+			<name>src/org/omich/lang/test/LanguageTest.java</name>
+			<type>1</type>
+			<location>/home/archerigoli/Dropbox/Android/LangOmichTest/src/org/omich/lang/test/LanguageTest.java</location>
+		</link>
+		<link>
+			<name>src/org/omich/lang/test/WordsTests.java</name>
+			<type>1</type>
+			<location>/home/archerigoli/Dropbox/Android/LangOmichTest/src/org/omich/lang/test/WordsTests.java</location>
+		</link>
+	</linkedResources>
 </projectDescription>

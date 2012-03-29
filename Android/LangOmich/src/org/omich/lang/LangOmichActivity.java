@@ -1,16 +1,13 @@
 package org.omich.lang;
 
-import java.util.List;
 
 import org.omich.lang.SQLite.LanguagesData;
 import org.omich.lang.httpClient.SmdClient;
 import org.omich.lang.json.JSONParser;
-import org.omich.lang.json.JSONWriter;
-import org.omich.lang.words.Language;
 
 import com.ccg.util.JavaString;
 
-import android.app.ProgressDialog;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -23,6 +20,7 @@ import android.support.v4.view.MenuItem;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -34,8 +32,9 @@ public class LangOmichActivity  extends FragmentActivity{
 	
 	protected LangOmichSettings lSettigs;
 	
-	private ProgressDialog dialog;
 	protected LanguagesData langData;
+	
+	protected ImageButton syncButton;
 	
 	private OnClickListener onSettingsClick = new OnClickListener(){
 		public void onClick(View v) {
@@ -45,11 +44,14 @@ public class LangOmichActivity  extends FragmentActivity{
 	
 	private OnClickListener onSyncClick = new OnClickListener() {
 		public void onClick(View v) {			
-			Synchronize sync = new Synchronize();
-			sync.execute(new Void[]{});
+			startSuncServise();
 		}
 	};
 	
+	private void startSuncServise(){
+		Intent intent = new Intent(this, SyncService.class);
+		startService(intent);
+	}
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -66,18 +68,17 @@ public class LangOmichActivity  extends FragmentActivity{
           LinearLayout l = new LinearLayout(this);
           l.setPadding(twentyDp, 0, twentyDp, 0);
           
-          TextView sync = new TextView(this);
-          sync.setText("Sync");
-          sync.setGravity(Gravity.CENTER);
-          sync.setPadding(5, 0, 5, 0);
-          sync.setOnClickListener(onSyncClick);
-          l.addView(sync);
+          syncButton = new ImageButton(this);
+          syncButton.setPadding(5, 0, 5, 0);
+          syncButton.setOnClickListener(onSyncClick);
+          l.addView(syncButton);
           
           if(settings){
         	  TextView tv = new TextView(this);
         	  tv.setText("Settigs");
         	  tv.setGravity(Gravity.CENTER);
         	  tv.setOnClickListener(onSettingsClick);
+        	  tv.setEnabled(false);
         	  l.addView(tv);
           }
           
@@ -103,59 +104,46 @@ public class LangOmichActivity  extends FragmentActivity{
         return  activeNetworkInfo != null;
     }
     
-    public void updateInterfaseAfteSync(){
-    	
-    }
-    private class Synchronize extends AsyncTask<Void, Void, Void>{
-    	
-    	@Override
-    	protected void onPreExecute(){
-    		startProgressDialog();
+    protected void updataSuncButton(){
+    	if (isNetworkAvailable() ){
+    		syncButton.setEnabled(true);
+    	}else{
+    		syncButton.setEnabled(false);
     	}
+    
     	
-    	@Override
-    	protected Void doInBackground(Void... params){
-    		SmdClient client = new SmdClient();
-    		try {
-    			String login = lSettigs.getLogin();
-    			String password = lSettigs.getPassword();
-    			
-    			client.auth(login, password);
-    			
-    			long lastConnection = lSettigs.getLastConnect();
-    			
-    			String data = JSONWriter.toJSON(lastConnection, null);
-    			
-    			data = JavaString.encode(data);
-    			String words = JavaString.decode(client.addWords(data));
-    			List<Language> languages =   JSONParser.parseLanguages(words);
-    		
-    			langData.open(); 
-    			langData.createLanguages(languages);
-    			langData.close();
-    			
-    			lastConnection = JSONParser.getLastConnection(words);
-    			lSettigs.saveLastConnection(lastConnection);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-    		return null;
-    	}
-    	
-    	protected void onCancelled(Void object){
-    		dialog.dismiss();
-    	}
-    	
-    	@Override 
-    	protected void onPostExecute(Void result){
-    		updateInterfaseAfteSync();
-    		dialog.dismiss();
-    	}
-    	
-    	 
+		AsyncAuth auth = new AsyncAuth();
+		auth.execute(new Void [] {});
     }
     
-    private void startProgressDialog(){
-		dialog = ProgressDialog.show(this, "", "Синхронизация");
+    protected void  updateUIAfteAsyncAuth(Boolean result){
+    	syncButton.setEnabled(result);
     }
+    
+    protected class AsyncAuth extends AsyncTask<Void, Void, Boolean>{
+		
+		@Override
+		protected Boolean doInBackground(Void... params){
+			SmdClient client = new SmdClient();
+			
+			boolean authres;
+			
+			try {
+				String login_s = lSettigs.getLogin();
+				String password_s = lSettigs.getPassword();
+				String result = client.auth(login_s, password_s);
+				String jString = JavaString.decode(result);
+				authres = JSONParser.parseAuth(jString);
+			} catch (Exception e) {
+				authres = false;
+			}
+		
+			return authres;
+		}
+		
+		@Override
+		protected void onPostExecute(Boolean result){
+			updateUIAfteAsyncAuth(result);
+		}
+	}
 }
