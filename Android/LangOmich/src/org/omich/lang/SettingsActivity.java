@@ -2,6 +2,7 @@ package org.omich.lang;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -43,6 +44,8 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 			numberOfWords.setText(Integer.toString(number));
 		}
 	
+		
+		
 		login = (TextView) findViewById(R.id.login);
 		login_s = lSettigs.getLogin();
 		login.setText(login_s);
@@ -58,12 +61,17 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 		selectNumberButton.setOnClickListener(this);
 	    selectLanguages = (ImageButton) findViewById(R.id.select_language);
 		selectLanguages.setOnClickListener(this);
+		lSettigs.edit();
 		
 		checkAuthData();
 		
-		lSettigs.edit();
+		
 	}
 	
+	@Override
+	public void onResume(){
+		super.onResume();
+	}
 	@Override
 	public void onPause(){
 		super.onPause();
@@ -160,17 +168,7 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 		startActivityForResult(numberIntent, REQUEST_NUMBER_OF_WORDS);
 	}
 	
-	@Override
-	protected void updateUIAfteAsyncAuth(Boolean result){
-		super.updateUIAfteAsyncAuth(result);
-		if(result){
-			login.setTextColor(Color.GREEN);
-			password.setTextColor(Color.GREEN);
-		}else{
-			login.setTextColor(Color.RED);
-			password.setTextColor(Color.RED);
-		}
-	}
+	
 	
 	private void checkAuthData(){
 		if(login_s.equals(LangOmichSettings.DEFAULT_LOGIN) || password_s.equals(LangOmichSettings.DEFAULT_PASSWORD)){
@@ -196,5 +194,23 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 		}
 	}
 	
+	  private class AsyncAuth extends AsyncTask<Void, Void, Boolean>{
+			
+			@Override
+			protected Boolean doInBackground(Void... params){
+				return auth();
+			}
+			
+			@Override
+			protected void onPostExecute(Boolean result){
+				if(result){
+					login.setTextColor(Color.GREEN);
+					password.setTextColor(Color.GREEN);
+				}else{
+					login.setTextColor(Color.RED);
+					password.setTextColor(Color.RED);
+				}
+			}
+		}
 	
 }

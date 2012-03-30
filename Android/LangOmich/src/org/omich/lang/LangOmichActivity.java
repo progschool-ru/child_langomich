@@ -1,6 +1,5 @@
 package org.omich.lang;
 
-
 import org.omich.lang.SQLite.LanguagesData;
 import org.omich.lang.httpClient.SmdClient;
 import org.omich.lang.json.JSONParser;
@@ -10,6 +9,7 @@ import com.ccg.util.JavaString;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -17,12 +17,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class LangOmichActivity  extends FragmentActivity{
 	
@@ -34,7 +31,7 @@ public class LangOmichActivity  extends FragmentActivity{
 	
 	protected LanguagesData langData;
 	
-	protected ImageButton syncButton;
+	protected MyImageButton syncButton;
 	
 	private OnClickListener onSettingsClick = new OnClickListener(){
 		public void onClick(View v) {
@@ -57,7 +54,6 @@ public class LangOmichActivity  extends FragmentActivity{
 		super.onCreate(savedInstanceState);
 		lSettigs = new LangOmichSettings(this, SETTINGS_NAME);
 		langData = new LanguagesData(this);
-		
 	}
 	@Override
 	public void onResume(){
@@ -76,18 +72,23 @@ public class LangOmichActivity  extends FragmentActivity{
           LinearLayout l = new LinearLayout(this);
           l.setPadding(twentyDp, 0, twentyDp, 0);
           
-          syncButton = new ImageButton(this);
+          syncButton = new MyImageButton(this);
           syncButton.setPadding(5, 0, 5, 0);
-          syncButton.setOnClickListener(onSyncClick);
           updataSuncButton();
+          syncButton.setImageResources(R.drawable.ic_sunc_enable, R.drawable.ic_sunc_disable);
+          syncButton.setBackgroundColor(Color.BLACK);
+          syncButton.setOnClickListener(onSyncClick);
+          
+         
           l.addView(syncButton);
           
           if(settings){
-        	  TextView tv = new TextView(this);
-        	  tv.setText("Settigs");
-        	  tv.setGravity(Gravity.CENTER);
-        	  tv.setOnClickListener(onSettingsClick);
-        	  l.addView(tv);
+        	  MyImageButton settingsButton = new MyImageButton(this);
+        	  settingsButton.setBackgroundColor(Color.BLACK);
+        	  settingsButton.setEnabled(true);
+        	  settingsButton.setImageResources(R.drawable.ic_settings_enable, R.drawable.ic_settings_disable);
+        	  settingsButton.setOnClickListener(onSettingsClick);
+        	  l.addView(settingsButton);
           }
           
 
@@ -114,45 +115,45 @@ public class LangOmichActivity  extends FragmentActivity{
     
     protected void updataSuncButton(){
     	
-    	if (isNetworkAvailable() ){
-    		syncButton.setEnabled(true);
-    	}else{
+    	if (!isNetworkAvailable() ){
     		syncButton.setEnabled(false);
+    		return;
     	}
     
-    	
 		AsyncAuth auth = new AsyncAuth();
 		auth.execute(new Void [] {});
     }
     
-    protected void  updateUIAfteAsyncAuth(Boolean result){
-    	syncButton.setEnabled(result);
-    }
+ 
     
-    protected class AsyncAuth extends AsyncTask<Void, Void, Boolean>{
+    protected boolean auth(){
+    	SmdClient client = new SmdClient();
+		
+		boolean authres;
+		
+		try {
+			String login_s = lSettigs.getLogin();
+			String password_s = lSettigs.getPassword();
+			String result = client.auth(login_s, password_s);
+			String jString = JavaString.decode(result);
+			authres = JSONParser.parseAuth(jString);
+		} catch (Exception e) {
+			authres = false;
+		}
+	
+		return authres;
+    	
+    }
+    private class AsyncAuth extends AsyncTask<Void, Void, Boolean>{
 		
 		@Override
 		protected Boolean doInBackground(Void... params){
-			SmdClient client = new SmdClient();
-			
-			boolean authres;
-			
-			try {
-				String login_s = lSettigs.getLogin();
-				String password_s = lSettigs.getPassword();
-				String result = client.auth(login_s, password_s);
-				String jString = JavaString.decode(result);
-				authres = JSONParser.parseAuth(jString);
-			} catch (Exception e) {
-				authres = false;
-			}
-		
-			return authres;
+			return auth();
 		}
 		
 		@Override
 		protected void onPostExecute(Boolean result){
-			updateUIAfteAsyncAuth(result);
+			syncButton.setEnabled(result);
 		}
 	}
 }

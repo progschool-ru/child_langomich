@@ -2,17 +2,26 @@ package org.omich.lang;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 
 public class LangOmichSettings {
 	
 	private static final String EMPTY_STRING = "";
+	
+	private static final String COLOR = "color";
+	private static final int DEFAULT_COLOR = Color.GRAY;
+	
+	
+	private static final String ENABLED_SYNC_BUTTON = "enabled_sync_button";
+	private static final boolean DEFAULT_ENABLED_SYNC_BUTTON = false;
+	
 	private static final long NULL = 0;
 	
 	public static final String LOGIN = "login";
-	public static final String DEFAULT_LOGIN = "Р’РІРµРґРёС‚Рµ Р»РѕРіРёРЅ";
+	public static final String DEFAULT_LOGIN = "Введите логин";
 	
 	public static final String PASSWORD = "password";
-	public static final String DEFAULT_PASSWORD = "Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ";
+	public static final String DEFAULT_PASSWORD = "Введите пароль";
 	public static final String SHOW = "show";
 	public static final boolean DEFAULT_SHOW = false;
 	
@@ -26,6 +35,7 @@ public class LangOmichSettings {
 	
 	private SharedPreferences settings;
 	private SharedPreferences.Editor edit;
+	
 	
 	public LangOmichSettings(Context context, String PREFES_NAME){
 		settings = context.getSharedPreferences(PREFES_NAME, 0);
@@ -66,6 +76,13 @@ public class LangOmichSettings {
 		edit.putBoolean(SHOW, show);
 	}
 	
+	public void saveEnabledSyncButton(boolean enabled){
+		edit.putBoolean(ENABLED_SYNC_BUTTON, enabled);
+	}
+	
+	public void saveColor(int color){
+		edit.putInt(COLOR, color);
+	}
 	public String getLogin(){
 		return settings.getString(LOGIN, DEFAULT_LOGIN);
 	}
@@ -94,6 +111,13 @@ public class LangOmichSettings {
 		return settings.getBoolean(SHOW, DEFAULT_SHOW);
 	}
 	
+	public int getColor(){
+		return settings.getInt(COLOR, DEFAULT_COLOR);
+	}
+	
+	public boolean getEnabledSyncButton(){
+		return settings.getBoolean(ENABLED_SYNC_BUTTON, DEFAULT_ENABLED_SYNC_BUTTON);
+	}
 	public void clear(){
 		edit.clear();
 		edit.commit();

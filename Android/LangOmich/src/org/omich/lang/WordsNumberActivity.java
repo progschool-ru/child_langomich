@@ -9,7 +9,7 @@ import android.widget.ListView;
 
 public class WordsNumberActivity extends ListActivity{
 
-	String[] numbers = {"1","2","3","4","5","6"};
+	String[] numbers = {"3","5","10","15"};
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
