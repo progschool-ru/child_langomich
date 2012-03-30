@@ -1,16 +1,10 @@
-﻿Напоминаю, приоритет 0 - это значит, сделать как можно скорее. Лучше, в ближайшие сутки.
-
-0) В файле  Android/LangOmich/project.properties в переменной 
-android.library.reference.1 должен стоять путь на что-то локальное.(done)
-
-0) В файле	Android/LangOmichTest/.classpath 
-изменить строчку <classpathentry combineaccessrules="false" kind="src" path="/MainActivity"/> 
-на <classpathentry combineaccessrules="false" kind="src" path="/org.omich.lang"/>, 
-для этого нужно будет также переименовать проект в еклипсе.(done)
-
-0) В файле LangOmichTest/src/org/omich/lang/LanguageTest.java есть отсылка на метод Language.setId, 
+0)(reopened)(кстати, статусы лучше писать перед заголовком задачи) 
+В файле LangOmichTest/src/org/omich/lang/LanguageTest.java есть отсылка на метод Language.setId, 
 а в классе Language такого метода нет. 
-Срочно исправить тесты, чтобы они компилировались и проходили.(done)
+Срочно исправить тесты, чтобы они компилировались и проходили.
+!New: В файле Android/LangOmichTest/.project есть отсылки к /home/archerigoli/Dropbox. Нужно исправить на что-то локальное
+
+0) Убрать из репозитория содержимое папок bin и res от actionbarsherlock
 
 1) Cинхронизация
 (in progress) В экшн бар welcome activit добавляем кнопку синхронизации, 
@@ -52,10 +46,14 @@ android.library.reference.1 должен стоять путь на что-то 
 
 
 --done--
-Рефакторинг(done)
-	В структуру Language добовить поля id и server_id(старый id) и методы для  работы с ними(done)
-	В структуру Words добавить поле id и методы работы с ними(done)
-	Обновить классы бд с учетом новых полей
+0) В файле	Android/LangOmichTest/.classpath 
+изменить строчку <classpathentry combineaccessrules="false" kind="src" path="/MainActivity"/> 
+на <classpathentry combineaccessrules="false" kind="src" path="/org.omich.lang"/>, 
+для этого нужно будет также переименовать проект в еклипсе.
+
+0) В файле  Android/LangOmich/project.properties в переменной 
+android.library.reference.1 должен стоять путь на что-то локальное.(done)
+
 	
 1) [5h] Создание settings activity настроек
 (              
@@ -73,6 +71,10 @@ android.library.reference.1 должен стоять путь на что-то 
 				(done) alert для кол-во слов [1h] 
 				(done) alert для логина [1h] 
 			    (done) alert для пароля [1h]) 
+				Рефакторинг(done)
+					В структуру Language добовить поля id и server_id(старый id) и методы для  работы с ними(done)
+					В структуру Words добавить поле id и методы работы с ними(done)
+					Обновить классы бд с учетом новых полей
 
 (done)создать LangOmichActiviti в которой будет экшин бар, с кнопкой синхронизации(в дальнейшем мб добавится еще кнопки)
 другие активности создавать как наследник от этой ...
