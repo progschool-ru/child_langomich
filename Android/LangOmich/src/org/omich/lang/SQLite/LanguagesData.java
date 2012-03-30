@@ -10,8 +10,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
 public class LanguagesData {
 	
 	private String[] allLanguageColoms = { MySQLiteHelper.LANGUAGE_ID, MySQLiteHelper.LANGUAGE_SERVER_ID, MySQLiteHelper.NAME };
@@ -104,7 +102,6 @@ public class LanguagesData {
 		if(count == 0) return null;
 		cursor.moveToFirst();
 		
-		Log.d("test", cursor.toString());
 		Language language = cusorToLanguage(cursor);
 		cursor.close();
 		return language;

@@ -1,13 +1,7 @@
 package org.omich.lang;
 
-import org.omich.lang.httpClient.SmdClient;
-import org.omich.lang.json.JSONParser;
-
-import com.ccg.util.JavaString;
-
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -168,6 +162,7 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 	
 	@Override
 	protected void updateUIAfteAsyncAuth(Boolean result){
+		super.updateUIAfteAsyncAuth(result);
 		if(result){
 			login.setTextColor(Color.GREEN);
 			password.setTextColor(Color.GREEN);
@@ -201,29 +196,5 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 		}
 	}
 	
-	private class AsyncAuth extends AsyncTask<Void, Void, Boolean>{
-		
-		@Override
-		protected Boolean doInBackground(Void... params){
-			SmdClient client = new SmdClient();
-			
-			boolean authres;
-			
-			try {
-				 String result = client.auth(login_s, password_s);
-				 String jString = JavaString.decode(result);
-				 authres = JSONParser.parseAuth(jString);
-			} catch (Exception e) {
-				authres = false;
-			}
-		
-			return authres;
-		}
-		
-		@Override
-		protected void onPostExecute(Boolean result){
-			
-		}
-	}
 	
 }

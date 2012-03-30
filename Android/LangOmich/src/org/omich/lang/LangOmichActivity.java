@@ -57,6 +57,14 @@ public class LangOmichActivity  extends FragmentActivity{
 		super.onCreate(savedInstanceState);
 		lSettigs = new LangOmichSettings(this, SETTINGS_NAME);
 		langData = new LanguagesData(this);
+		
+	}
+	@Override
+	public void onResume(){
+		super.onResume();
+		if(syncButton != null){
+			 updataSuncButton();
+		}
 	}
 	
     @Override
@@ -71,6 +79,7 @@ public class LangOmichActivity  extends FragmentActivity{
           syncButton = new ImageButton(this);
           syncButton.setPadding(5, 0, 5, 0);
           syncButton.setOnClickListener(onSyncClick);
+          updataSuncButton();
           l.addView(syncButton);
           
           if(settings){
@@ -78,7 +87,6 @@ public class LangOmichActivity  extends FragmentActivity{
         	  tv.setText("Settigs");
         	  tv.setGravity(Gravity.CENTER);
         	  tv.setOnClickListener(onSettingsClick);
-        	  tv.setEnabled(false);
         	  l.addView(tv);
           }
           
@@ -105,6 +113,7 @@ public class LangOmichActivity  extends FragmentActivity{
     }
     
     protected void updataSuncButton(){
+    	
     	if (isNetworkAvailable() ){
     		syncButton.setEnabled(true);
     	}else{
