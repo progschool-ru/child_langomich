@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
@@ -32,6 +33,8 @@ public class LangOmichActivity  extends FragmentActivity{
 	protected LanguagesData langData;
 	
 	protected MyImageButton syncButton;
+	
+	private boolean enabled;
 	
 	private OnClickListener onSettingsClick = new OnClickListener(){
 		public void onClick(View v) {
@@ -54,13 +57,23 @@ public class LangOmichActivity  extends FragmentActivity{
 		super.onCreate(savedInstanceState);
 		lSettigs = new LangOmichSettings(this, SETTINGS_NAME);
 		langData = new LanguagesData(this);
+		lSettigs.edit();
 	}
+	
 	@Override
 	public void onResume(){
 		super.onResume();
 		if(syncButton != null){
 			 updataSuncButton();
 		}
+	}
+	
+	@Override
+	public void onStop(){
+		super.onStop();
+		Log.d("life", "set "+Boolean.toString(enabled));
+		lSettigs.saveEnabledSyncButton(enabled);
+		Log.d("life", "get test "+Boolean.toString(lSettigs.getEnabledSyncButton()));
 	}
 	
     @Override
@@ -74,6 +87,9 @@ public class LangOmichActivity  extends FragmentActivity{
           
           syncButton = new MyImageButton(this);
           syncButton.setPadding(5, 0, 5, 0);
+          enabled = lSettigs.getEnabledSyncButton();
+          Log.d("life", "set "+Boolean.toString(enabled));
+          syncButton.setEnabled(enabled);
           updataSuncButton();
           syncButton.setImageResources(R.drawable.ic_sunc_enable, R.drawable.ic_sunc_disable);
           syncButton.setBackgroundColor(Color.BLACK);
@@ -116,7 +132,8 @@ public class LangOmichActivity  extends FragmentActivity{
     protected void updataSuncButton(){
     	
     	if (!isNetworkAvailable() ){
-    		syncButton.setEnabled(false);
+    		enabled = false;
+    		syncButton.setEnabled(enabled);
     		return;
     	}
     
@@ -153,7 +170,8 @@ public class LangOmichActivity  extends FragmentActivity{
 		
 		@Override
 		protected void onPostExecute(Boolean result){
-			syncButton.setEnabled(result);
+			enabled = result;
+			syncButton.setEnabled(enabled);
 		}
 	}
 }

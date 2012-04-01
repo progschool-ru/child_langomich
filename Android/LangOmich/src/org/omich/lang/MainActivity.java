@@ -36,7 +36,7 @@ public class MainActivity extends LangOmichActivity implements OnClickListener {
     		case R.id.startTest:
     			break;
     		case R.id.addWord:
-    			
+    			startActivity(new Intent(this, TestActivity.class));
     			break;
     		case R.id.startDictionary:
     			startActivity(new Intent(this, DictionaryActivity.class));

@@ -1,4 +1,4 @@
-package org.omich.lang;
+п»їpackage org.omich.lang;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,10 +18,10 @@ public class LangOmichSettings {
 	private static final long NULL = 0;
 	
 	public static final String LOGIN = "login";
-	public static final String DEFAULT_LOGIN = "Введите логин";
+	public static final String DEFAULT_LOGIN = "Р’РІРµРґРёС‚Рµ Р»РѕРіРёРЅ";
 	
 	public static final String PASSWORD = "password";
-	public static final String DEFAULT_PASSWORD = "Введите пароль";
+	public static final String DEFAULT_PASSWORD = "Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ";
 	public static final String SHOW = "show";
 	public static final boolean DEFAULT_SHOW = false;
 	
@@ -74,14 +74,17 @@ public class LangOmichSettings {
 	
 	public void saveShow(boolean show){
 		edit.putBoolean(SHOW, show);
+		edit.commit();
 	}
 	
 	public void saveEnabledSyncButton(boolean enabled){
 		edit.putBoolean(ENABLED_SYNC_BUTTON, enabled);
+		edit.commit();
 	}
 	
 	public void saveColor(int color){
 		edit.putInt(COLOR, color);
+		edit.commit();
 	}
 	public String getLogin(){
 		return settings.getString(LOGIN, DEFAULT_LOGIN);

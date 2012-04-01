@@ -26,13 +26,13 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 	private String login_s;
 	private String password_s;
 	
+	private int color;
 	ImageButton selectLanguages;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settigs);
-		
 		
 		language = (TextView) findViewById(R.id.language);
 		String languages_s = lSettigs.getLanguageName();
@@ -45,14 +45,16 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 		}
 	
 		
-		
+		color = lSettigs.getColor();
 		login = (TextView) findViewById(R.id.login);
 		login_s = lSettigs.getLogin();
+		login.setTextColor(color);
 		login.setText(login_s);
 		login.setOnClickListener(this);
 		
 		password =(TextView) findViewById(R.id.password);
 		password_s = lSettigs.getPassword();
+		password.setTextColor(color);
 		password.setText(password_s);
 		password.setOnClickListener(this);
 		setInputType();
@@ -61,7 +63,7 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 		selectNumberButton.setOnClickListener(this);
 	    selectLanguages = (ImageButton) findViewById(R.id.select_language);
 		selectLanguages.setOnClickListener(this);
-		lSettigs.edit();
+		//lSettigs.edit();
 		
 		checkAuthData();
 		
@@ -69,12 +71,9 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 	}
 	
 	@Override
-	public void onResume(){
-		super.onResume();
-	}
-	@Override
-	public void onPause(){
-		super.onPause();
+	public void onStop(){
+		super.onStop();
+		lSettigs.saveColor(color);
 	}
 	
 	public void onClick(View v){
@@ -172,13 +171,15 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 	
 	private void checkAuthData(){
 		if(login_s.equals(LangOmichSettings.DEFAULT_LOGIN) || password_s.equals(LangOmichSettings.DEFAULT_PASSWORD)){
-			login.setTextColor(Color.GRAY);
-			password.setTextColor(Color.GRAY);
+			color  = Color.GRAY;
+			login.setTextColor(color);
+			password.setTextColor(color);
 			return;
 		}
 		if(!isNetworkAvailable()){
-			login.setTextColor(Color.GRAY);
-			password.setTextColor(Color.GRAY);
+			color  = Color.GRAY;
+			login.setTextColor(color);
+			password.setTextColor(color);
 			return;
 		}
 		
@@ -204,11 +205,13 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 			@Override
 			protected void onPostExecute(Boolean result){
 				if(result){
-					login.setTextColor(Color.GREEN);
-					password.setTextColor(Color.GREEN);
+					color = Color.GREEN;
+					login.setTextColor(color);
+					password.setTextColor(color);
 				}else{
-					login.setTextColor(Color.RED);
-					password.setTextColor(Color.RED);
+					color = Color.RED;
+					login.setTextColor(color);
+					password.setTextColor(color);
 				}
 			}
 		}
