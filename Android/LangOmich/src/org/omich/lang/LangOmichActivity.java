@@ -52,6 +52,7 @@ public class LangOmichActivity  extends FragmentActivity{
 		Intent intent = new Intent(this, SyncService.class);
 		startService(intent);
 	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);

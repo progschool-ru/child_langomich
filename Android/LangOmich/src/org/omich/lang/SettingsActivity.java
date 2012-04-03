@@ -63,7 +63,6 @@ public class SettingsActivity extends LangOmichActivity implements OnClickListen
 		selectNumberButton.setOnClickListener(this);
 	    selectLanguages = (ImageButton) findViewById(R.id.select_language);
 		selectLanguages.setOnClickListener(this);
-		//lSettigs.edit();
 		
 		checkAuthData();
 		
