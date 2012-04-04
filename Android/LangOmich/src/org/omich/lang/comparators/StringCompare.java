@@ -2,7 +2,10 @@ package org.omich.lang.comparators;
 
 public class StringCompare {
 		
-	static int compare(String lString, String rString){
+	public static int compare(String lString, String rString){
+		
+		String leftString  = lString.toLowerCase();
+		String rightString = rString.toLowerCase();
 		
 		int length = lString.length();
 		
@@ -10,9 +13,11 @@ public class StringCompare {
 			length = rString.length();
 		}
 		
+		if(leftString.equals(rightString)){return 0;}
+		
 		for(int i=0; i<length; i++){
-			if(lString.charAt(i) != rString.charAt(i)){
-				if(lString.charAt(i) < rString.charAt(i)){
+			if(leftString.charAt(i) != rightString.charAt(i)){
+				if(leftString.charAt(i) > rightString.charAt(i)){
 					return 1;
 				}
 				else{
@@ -20,6 +25,11 @@ public class StringCompare {
 				}
 			}
 		}
-		return 0;
+		
+		if(lString.length()>rString.length()){
+			return -1;
+		}else{
+			return 1;
+		}
 	}
 }
