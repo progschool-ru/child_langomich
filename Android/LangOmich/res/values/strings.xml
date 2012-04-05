@@ -15,4 +15,6 @@
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="dictionary_label">Словарь</string>
+    <string name="edit_word_label">Edit</string>
+    <string name="rating_label">Рейтинг:</string>
 </resources>

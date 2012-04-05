@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dip" >
+
+    <TableRow >
+    	<TextView
+        	android:id="@+id/textView1"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="@string/login_label" />
+
+    	<EditText
+    	    android:id="@+id/editOriginal"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content" >
+    	</EditText>
+
+	</TableRow>
+	<TableRow>
+    	<TextView
+        	android:id="@+id/textView2"
+       		android:layout_width="wrap_content"
+       		android:layout_height="wrap_content"
+        	android:text="@string/password_label" />
+
+    	<EditText
+    	    android:id="@+id/editTranslate"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content" />
+
+    	</TableRow>
+	
+	<TableRow>
+
+    	<TextView
+        	android:id="@+id/textView3"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="@string/rating_label" />
+
+    	<Spinner
+    	    android:id="@+id/editRating"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content" />
+
+	</TableRow>
+
+	<TableRow
+	    android:id="@+id/tableRow1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" >
+
+		<Button
+		    android:id="@+id/cancel"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/cancel" />
+
+		<Button
+		    android:id="@+id/ok"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/ok" />
+
+	</TableRow>
+
+</TableLayout>

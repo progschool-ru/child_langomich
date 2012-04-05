@@ -19,19 +19,19 @@
                 android:id="@+id/sort_by_original"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="by Original" />
 
             <Button
                 android:id="@+id/sort_by_translate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="by Translate" />
 
             <Button
                 android:id="@+id/sort_by_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="by Rating" />
         </TableRow>
     </TableLayout>
 

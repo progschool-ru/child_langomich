@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import org.omich.lang.SQLite.MySQLiteHelper;
 import org.omich.lang.SQLite.WordsData;
 import org.omich.lang.comparators.ComparatorOriginalDown;
 import org.omich.lang.comparators.ComparatorOriginalUp;
@@ -14,6 +15,7 @@ import org.omich.lang.comparators.comparatorTranslateUp;
 
 import org.omich.lang.words.Word;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -59,17 +61,20 @@ public class DictionaryActivity extends LangOmichActivity implements OnClickList
 		
 		myListView = (ListView) findViewById(R.id.listView1);
 		myData = new WordsData(this, lSettigs.getLanguageId());
+		
+		myListView.setOnItemLongClickListener(new OnWordClickListener());
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
 		myData.open();
 		List<Word> myList =  myData.getAllWords();
 		myData.close();
-		
 		myAdapter = new MyAdapter(this, myList);
 		myListView.setAdapter(myAdapter);
-		myListView.setSelection(1);
-		myListView.setOnItemLongClickListener(new OnWordClickListener());
-		//myListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		
 	}
-	
 	
 	public void onClick(View v){
 		switch(v.getId()){
@@ -112,7 +117,14 @@ public class DictionaryActivity extends LangOmichActivity implements OnClickList
 	private class OnWordClickListener implements OnItemLongClickListener{
 
 		public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long id) {
-			Log.d("test", "onitemLongclick");
+			Word word = myAdapter.getItem(position);
+				Intent intent = new Intent(getApplicationContext(), EditWordActivity.class);
+				intent.putExtra("lang_id",lSettigs.getLanguageId());
+				intent.putExtra(MySQLiteHelper.WORD_ID, word.getId());
+				intent.putExtra(MySQLiteHelper.ORIGINAL, word.getOriginal());
+				intent.putExtra(MySQLiteHelper.TRANSLATION, word.getTranslation());
+				intent.putExtra(MySQLiteHelper.RATING, word.getRating() );
+				startActivity(intent);
 			return false;
 		}	
 	}

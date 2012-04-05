@@ -51,4 +51,3 @@ public class MyAdapter extends ArrayAdapter<Word> {
         }
 
 }
-

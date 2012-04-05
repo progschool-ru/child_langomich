@@ -32,6 +32,10 @@ public class WordsData {
 		database = data;
 	}
 	
+	public WordsData(Context context){
+		dbHelper = new MySQLiteHelper(context);
+	}
+	
 	public void setLanguage(long languageId){
 		this.languageId = languageId;
 	}
@@ -61,15 +65,9 @@ public class WordsData {
 	
 	public long createWord(Word word){
 		
-		ContentValues value = new ContentValues();
-		value.put(MySQLiteHelper.ORIGINAL, word.getOriginal());
-		value.put(MySQLiteHelper.TRANSLATION, word.getTranslation());
-		value.put(MySQLiteHelper.WORDS_LANGUAGE, languageId);
-		value.put(MySQLiteHelper.RATING, word.getRating());
-		value.put(MySQLiteHelper.MODIFIED,word.getModified());
-		
-		
+		ContentValues value = wordToContentValues(word);
 		return database.insert(MySQLiteHelper.WORDS_TABLE, null, value);
+		
 	}
 	
 	public List<Word> getAllWords(){
@@ -94,6 +92,13 @@ public class WordsData {
 		return words;
 	}
 	
+	public void update(Word word){
+		
+		ContentValues value = wordToContentValues(word);
+		database.update(MySQLiteHelper.WORDS_TABLE, value, MySQLiteHelper.WORD_ID+"="+word.getId(), null);
+		
+	}
+	
 	public void deleteWord(Word word){
 		
 		database.delete(MySQLiteHelper.WORDS_TABLE,
@@ -110,4 +115,15 @@ public class WordsData {
 		return new Word(id, original, translation, rating, modified);
 	}
 	
+	private ContentValues wordToContentValues(Word word){
+		
+		ContentValues value = new ContentValues();
+		value.put(MySQLiteHelper.ORIGINAL, word.getOriginal());
+		value.put(MySQLiteHelper.TRANSLATION, word.getTranslation());
+		value.put(MySQLiteHelper.WORDS_LANGUAGE, languageId);
+		value.put(MySQLiteHelper.RATING, word.getRating());
+		value.put(MySQLiteHelper.MODIFIED,word.getModified());
+		
+		return value;
+	}
 }

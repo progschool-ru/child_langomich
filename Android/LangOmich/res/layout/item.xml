@@ -1,43 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<TableLayout 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="false"
+    android:focusable="false"
     android:stretchColumns="*">
-
-    <TableRow
-        android:id="@+id/tableRow1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-       >
-        
-         <TextView
+    
+    <TableRow >
+	  <TextView
         android:id="@+id/original"
-        android:layout_width="60dip"
-        android:layout_height="wrap_content"
-       android:layout_gravity="left"
-       android:paddingLeft="15dip"
-         />
-
-    <TextView
+       	android:layout_width="wrap_content"
+       	android:layout_height="wrap_content"/>
+	  
+	  <TextView
         android:id="@+id/translate"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-      android:layout_gravity="left"
-      android:paddingLeft="25dip"
-         />
-
-    <TextView
-        android:id="@+id/rating"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right" 
-        />
-
-    <CheckBox
-        android:id="@+id/selected"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"/>
-    </TableRow>
-   
-</TableLayout>
+        android:layout_height="wrap_content"/>
+	  
+	  <TextView
+        android:id="@+id/rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+	  
+	 <CheckBox
+        	android:id="@+id/selected"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:clickable="false"
+        	android:focusable="false"
+        	android:visibility="invisible"/>
+	 </TableRow>
+ </TableLayout>
+<LinearLayout 
+    		android:layout_width="fill_parent"
+    		android:layout_height="fill_parent">
+	 </LinearLayout>
+ </FrameLayout>
+<!--LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="#aaaaaa" 
+    android:clickable="true">
+
+        <TextView
+        	android:id="@+id/original"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"/>
+
+   		 <TextView
+        	android:id="@+id/translate"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"/>
+
+    	<TextView
+        	android:id="@+id/rating"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"/>
+
+    	<CheckBox
+        	android:id="@+id/selected"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"/>
+ </LinearLayout!-->
+
+
