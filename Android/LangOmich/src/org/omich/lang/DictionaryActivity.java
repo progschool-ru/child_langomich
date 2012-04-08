@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.omich.lang.SQLite.MySQLiteHelper;
 import org.omich.lang.SQLite.WordsData;
 import org.omich.lang.comparators.ComparatorOriginalDown;
@@ -12,6 +14,7 @@ import org.omich.lang.comparators.ComparatorRatingDown;
 import org.omich.lang.comparators.ComparatorRatingUp;
 import org.omich.lang.comparators.comparatorTranslateDown;
 import org.omich.lang.comparators.comparatorTranslateUp;
+import org.omich.lang.json.JSONWords;
 
 import org.omich.lang.words.Word;
 
@@ -31,6 +34,8 @@ import android.widget.Toast;
 
 public class DictionaryActivity extends LangOmichActivity implements OnClickListener{
 	
+	private static final int REQUEST_EDIT_WORDS = 0;
+	private int edit_pos;
 	
 	ListView myListView;
 	MyAdapter myAdapter;
@@ -62,17 +67,19 @@ public class DictionaryActivity extends LangOmichActivity implements OnClickList
 		myListView = (ListView) findViewById(R.id.listView1);
 		myData = new WordsData(this, lSettigs.getLanguageId());
 		
+		myData.open();
+		List<Word> myList =  myData.getAllWords();
+		myData.close();
+		myAdapter = new MyAdapter(this, myList);
+		myListView.setAdapter(myAdapter);
+		
 		myListView.setOnItemLongClickListener(new OnWordClickListener());
 	}
 	
 	@Override
 	public void onResume(){
 		super.onResume();
-		myData.open();
-		List<Word> myList =  myData.getAllWords();
-		myData.close();
-		myAdapter = new MyAdapter(this, myList);
-		myListView.setAdapter(myAdapter);
+	
 		
 	}
 	
@@ -117,15 +124,51 @@ public class DictionaryActivity extends LangOmichActivity implements OnClickList
 	private class OnWordClickListener implements OnItemLongClickListener{
 
 		public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long id) {
-			Word word = myAdapter.getItem(position);
+				
+				edit_pos = position;
+				Word word = myAdapter.getItem(position);
 				Intent intent = new Intent(getApplicationContext(), EditWordActivity.class);
+				
+				String data;
+				try {
+					data = JSONWords.wordToJSON(word).toString();
+					intent.putExtra("data", data);
+				} catch (JSONException e) {
+					//
+				}
+				
 				intent.putExtra("lang_id",lSettigs.getLanguageId());
 				intent.putExtra(MySQLiteHelper.WORD_ID, word.getId());
-				intent.putExtra(MySQLiteHelper.ORIGINAL, word.getOriginal());
-				intent.putExtra(MySQLiteHelper.TRANSLATION, word.getTranslation());
-				intent.putExtra(MySQLiteHelper.RATING, word.getRating() );
-				startActivity(intent);
+
+				startActivityForResult(intent, REQUEST_EDIT_WORDS);
 			return false;
 		}	
+	}
+	
+	@Override
+	protected void onActivityResult( int requesCode, int resultCode, Intent data){
+		
+		if(resultCode == RESULT_OK){
+			
+			switch(requesCode){
+				case REQUEST_EDIT_WORDS:
+					
+					String newWord = data.getExtras().getString("data");
+				    try {
+				    	
+				    	
+				    	Word word = JSONWords.parseWord(new JSONObject(newWord));
+				    	Word toDel = myAdapter.getItem(edit_pos); 
+				    	myAdapter.add(word);
+				    	myAdapter.remove(toDel);
+				    	myAdapter.notifyDataSetChanged();
+				    } catch (JSONException e) {
+				    	e.printStackTrace();
+				    }
+					
+				    break;
+			}
+		}
+		
 	}
 }

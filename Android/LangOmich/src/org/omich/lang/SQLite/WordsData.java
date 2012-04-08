@@ -74,9 +74,10 @@ public class WordsData {
 		
 		List<Word> words = new ArrayList<Word>();
 		
-		
+		//тут надо добавить условие перевод != пустой строке
 		Cursor cursor = database.query(MySQLiteHelper.WORDS_TABLE,
-						wordColoms, MySQLiteHelper.WORDS_LANGUAGE + " = " + languageId,
+						wordColoms, MySQLiteHelper.WORDS_LANGUAGE + " = " + languageId +
+						" and " + MySQLiteHelper.TRANSLATION + " not null  ",
 						null, null, null, null);
 		
 		
@@ -97,6 +98,11 @@ public class WordsData {
 		ContentValues value = wordToContentValues(word);
 		database.update(MySQLiteHelper.WORDS_TABLE, value, MySQLiteHelper.WORD_ID+"="+word.getId(), null);
 		
+	}
+	
+	public void toDel(Word word){
+		word.setTranslation(null);
+		update(word);
 	}
 	
 	public void deleteWord(Word word){

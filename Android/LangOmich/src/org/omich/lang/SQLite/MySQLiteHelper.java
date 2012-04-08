@@ -37,7 +37,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper  {
 			+ "( "
 				+ WORD_ID + " integer primary key autoincrement, "
 				+ ORIGINAL + " text not null, "
-				+ TRANSLATION + " text not null, "
+				+ TRANSLATION + " text, "
 				+ WORDS_LANGUAGE + " integer references "+LANGUAGES_TABLE+"("+LANGUAGE_ID+") on delete cascade, "
 				+ RATING +" integer, "
 				+ MODIFIED + " integer"

@@ -17,4 +17,6 @@
     <string name="dictionary_label">Словарь</string>
     <string name="edit_word_label">Edit</string>
     <string name="rating_label">Рейтинг:</string>
+    <string name="original_label">Оригинал</string>
+    <string name="translate_label">Перевод</string>
 </resources>
