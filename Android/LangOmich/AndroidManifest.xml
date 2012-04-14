@@ -57,7 +57,9 @@
             android:label="@string/dictionary_label">       
 		</activity>
         
-        
+        <activity android:name=".EditWordActivity"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
         
     </application>
 	

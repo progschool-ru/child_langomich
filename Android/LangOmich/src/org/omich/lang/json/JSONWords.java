@@ -95,7 +95,6 @@ public class JSONWords {
 			modified = 0;
 		}
 		
-		//Log.d("word", original);
 		Word word = new Word(original, translation, rating, modified);
 		
 		return word;

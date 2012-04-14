@@ -67,7 +67,6 @@ public class WordsData {
 		
 		ContentValues value = wordToContentValues(word);
 		return database.insert(MySQLiteHelper.WORDS_TABLE, null, value);
-		
 	}
 	
 	public List<Word> getAllWords(){
@@ -93,14 +92,23 @@ public class WordsData {
 		return words;
 	}
 	
+	public boolean originalIsFree(String original){
+		String[] param = { original };
+		Cursor cursor = database.query(MySQLiteHelper.WORDS_TABLE, wordColoms,
+				MySQLiteHelper.ORIGINAL + " = ? and "+MySQLiteHelper.TRANSLATION + " not "+ null, param , null, null, null, null);
+		
+		
+		return !cursor.moveToFirst();
+	}
+	
 	public void update(Word word){
 		
 		ContentValues value = wordToContentValues(word);
 		database.update(MySQLiteHelper.WORDS_TABLE, value, MySQLiteHelper.WORD_ID+"="+word.getId(), null);
-		
 	}
 	
 	public void toDel(Word word){
+		//TODO если копии слва нет на сервере то удалить,иначе занулить перевод
 		word.setTranslation(null);
 		update(word);
 	}
@@ -118,7 +126,7 @@ public class WordsData {
 		int rating = cursor.getInt(3);
 		long modified = cursor.getLong(4);
 		
-		return new Word(id, original, translation, rating, modified);
+		return null;// new Word(id, original, translation, rating, modified);
 	}
 	
 	private ContentValues wordToContentValues(Word word){

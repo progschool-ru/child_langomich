@@ -3,7 +3,7 @@
 	<name>LangOmichTest</name>
 	<comment></comment>
 	<projects>
-		<project>LangOmich</project>
+		<project>org.omich.lang</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -31,5 +31,4 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	
 </projectDescription>

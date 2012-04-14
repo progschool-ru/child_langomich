@@ -15,6 +15,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper  {
 	public static final String RATING = "rating";
 	public static final String MODIFIED = "modified";
 	public static final String WORDS_LANGUAGE = "languages_id";
+	public static final String WORD_IN_SERVER = "words_in_server";
+	
+	
 	
 	public static final String LANGUAGES_TABLE = "languages";
 	
@@ -40,7 +43,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper  {
 				+ TRANSLATION + " text, "
 				+ WORDS_LANGUAGE + " integer references "+LANGUAGES_TABLE+"("+LANGUAGE_ID+") on delete cascade, "
 				+ RATING +" integer, "
-				+ MODIFIED + " integer"
+				+ MODIFIED + " integer,"
+				+ WORD_IN_SERVER +"integer"
 			+")";
 	
 	public MySQLiteHelper(Context context){

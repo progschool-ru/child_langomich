@@ -113,13 +113,13 @@ public class EditWordActivity extends Activity implements OnClickListener{
 						return;
 					}
 				}else{
-					if(!translate.equals("")){
-					    myData.toDel(editable);
-						editable.setOriginal(original);
-						editable.setTranslation(translate);
-						editable.setRating(rating);
-							
-					    myData.createWord(editable);
+					if(!original.equals("") && myData.originalIsFree(original)){
+							myData.toDel(editable);
+							editable.setOriginal(original);
+							editable.setTranslation(translate);
+							editable.setRating(rating);
+								myData.createWord(editable);
+						
 					}else{
 						return;
 					}
