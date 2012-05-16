@@ -3,11 +3,16 @@ package org.omich.lang.words;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.ContentValues;
-import android.util.Log;
-
-public class Word implements IWord {
+public class Word {
 	
+	
+	private static final String ORIGINAL = "original";
+	private static final String TRANSLATION = "translation";
+	private static final String RATING = "rating";
+	private static final String MODIFIED = "modified";
+	
+	public static final int WORD_IS_NOT_LOAD_TO_SERVER = 0;
+	public static final int WORD_IS_LOAD_TO_SERVER = 1;
 	
 	private long id;
 	private String original;
@@ -121,21 +126,6 @@ public class Word implements IWord {
 		this.modified = modified;
 	}
 	
-
-	public ContentValues toContentValues(int language_id) {
-		
-		ContentValues contentValues = new ContentValues();
-		
-		contentValues.put(ORIGINAL, original);
-		contentValues.put(TRANSLATION, translation);
-		contentValues.put(RATING, rating);
-		contentValues.put(MODIFIED, modified);
-		contentValues.put(WORD_IN_SERVER, in_server);
-		contentValues.put(LANGUAGE_ID, language_id);
-		
-		return contentValues;
-	}
-	
 	//тут надо выбросить свое исключение
 	public JSONObject toJSON() throws JSONException{
 		
@@ -145,7 +135,6 @@ public class Word implements IWord {
 		jWord.put(RATING, rating);
 		jWord.put(MODIFIED, modified);
 		
-		Log.d("test", jWord.toString());
 		return jWord;
 	}
 	

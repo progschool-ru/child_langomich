@@ -2,7 +2,6 @@ package org.omich.lang.test.word;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.omich.lang.words.IWord;
 import org.omich.lang.words.Word;
 
 import android.test.AndroidTestCase;
@@ -30,7 +29,7 @@ public class WordTest extends AndroidTestCase{
 	public void testJSONParse1() throws JSONException{
 		
 		JSONObject jObject= new JSONObject(testData1);
-		IWord word = new Word(jObject);
+		Word word = new Word(jObject);
 		
 		assertEquals(word.getId(), id);
 		assertEquals(word.getOriginal(), original);
@@ -42,7 +41,7 @@ public class WordTest extends AndroidTestCase{
 	
 	public void testJSONParse2() throws JSONException{
 		JSONObject jObject= new JSONObject(testData2);
-		IWord word = new Word(jObject);
+		Word word = new Word(jObject);
 		
 		assertEquals(word.getId(), id);
 		assertEquals(word.getOriginal(), original);
@@ -53,11 +52,11 @@ public class WordTest extends AndroidTestCase{
 	}
 	
 	public void testToJSON() throws JSONException{
-		IWord word = new Word(id, original, translation, rating, modified2, int_in_server);
+		Word word = new Word(id, original, translation, rating, modified2, int_in_server);
 		String newData = word.toJSON().toString();
 		
 		JSONObject newJObject = new JSONObject(newData);
-		IWord newWord= new Word(newJObject);
+		Word newWord= new Word(newJObject);
 		
 		assertEquals(newWord.getId(), id);
 		assertEquals(newWord.getOriginal(), original);

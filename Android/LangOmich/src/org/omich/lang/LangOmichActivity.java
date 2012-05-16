@@ -1,6 +1,5 @@
 package org.omich.lang;
 
-import org.omich.lang.SQLite.LanguagesData;
 import org.omich.lang.httpClient.SmdClient;
 import org.omich.lang.json.JSONParser;
 
@@ -17,7 +16,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
@@ -25,16 +23,16 @@ import android.widget.LinearLayout;
 public class LangOmichActivity  extends FragmentActivity{
 	
 	protected static final String SETTINGS_NAME = "langOmich_settings";
-	
+	 
 	protected boolean settings = false;
 	
 	protected LangOmichSettings lSettigs;
 	
-	protected LanguagesData langData;
+	//protected LanguagesData langData;
 	
 	protected MyImageButton syncButton;
-	
-	private boolean enabled;
+	protected MyImageButton settingsButton;
+	protected boolean enabled;
 	
 	private OnClickListener onSettingsClick = new OnClickListener(){
 		public void onClick(View v) {
@@ -57,7 +55,7 @@ public class LangOmichActivity  extends FragmentActivity{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		lSettigs = new LangOmichSettings(this, SETTINGS_NAME);
-		langData = new LanguagesData(this);
+		// langData = new LanguagesData(this);
 		lSettigs.edit();
 	}
 	
@@ -72,15 +70,19 @@ public class LangOmichActivity  extends FragmentActivity{
 	@Override
 	public void onStop(){
 		super.onStop();
-		Log.d("life", "set "+Boolean.toString(enabled));
 		lSettigs.saveEnabledSyncButton(enabled);
-		Log.d("life", "get test "+Boolean.toString(lSettigs.getEnabledSyncButton()));
 	}
 	
     @Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu){
+    		createOptionMenu(menu);
+          return super.onCreateOptionsMenu(menu);
+	}
+    
+    protected LinearLayout createOptionMenu(Menu menu){
     	  MenuItem item = menu.add(0, android.R.id.copy, 0, "Menu");
     	  
+    		 
           final int twentyDp = (int) (20 * getResources().getDisplayMetrics().density);
 
           LinearLayout l = new LinearLayout(this);
@@ -89,18 +91,17 @@ public class LangOmichActivity  extends FragmentActivity{
           syncButton = new MyImageButton(this);
           syncButton.setPadding(5, 0, 5, 0);
           enabled = lSettigs.getEnabledSyncButton();
-          Log.d("life", "set "+Boolean.toString(enabled));
           syncButton.setEnabled(enabled);
           updataSuncButton();
           syncButton.setImageResources(R.drawable.ic_sunc_enable, R.drawable.ic_sunc_disable);
           syncButton.setBackgroundColor(Color.BLACK);
-          syncButton.setOnClickListener(onSyncClick);
+          //syncButton.setOnClickListener(onSyncClick);
           
          
           l.addView(syncButton);
           
           if(settings){
-        	  MyImageButton settingsButton = new MyImageButton(this);
+        	  settingsButton = new MyImageButton(this);
         	  settingsButton.setBackgroundColor(Color.BLACK);
         	  settingsButton.setEnabled(true);
         	  settingsButton.setImageResources(R.drawable.ic_settings_enable, R.drawable.ic_settings_disable);
@@ -108,12 +109,12 @@ public class LangOmichActivity  extends FragmentActivity{
         	  l.addView(settingsButton);
           }
           
-
           item.setActionView(l);
           item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
           
-          return super.onCreateOptionsMenu(menu);
-	}
+          return l;
+    	
+    }
     
     private  void startSettigs(){
     	Intent intent = new Intent(this, SettingsActivity.class);

@@ -19,4 +19,31 @@
     <string name="rating_label">Рейтинг:</string>
     <string name="original_label">Оригинал</string>
     <string name="translate_label">Перевод</string>
+    
+    
+    <string name="editW_label">Редактор записи:</string>
+    <string name="editW_nothing_change">Ничего небыло изменено</string>
+    <string name="editW_save">Сохранить</string>
+    <string name="editW_cancel">Отмена</string>
+    
+    
+    <string name="createL_label">Новый словарь</string>
+    <string name="createL_enter_name">Введите язык словаря:</string>
+    <string name="createL_empty_string">Вы ввели пустую строку</string>
+    <string name="createL_in_base">Словарь с таким языком уже есть</string>
+    <string name="createL_create">Создать</string>
+    <string name="createL_cancel">Отмена</string>
+    
+    <string name="createW_label">Добавить новое слово</string>
+   	<string name="createW_added_ok">Слово успешно добавлено</string>
+    <string name="createW_create">Создать</string>
+  	<string name="createW_cancel">Отмена</string>
+  	  
+    <string name="original">Оригинал:</string>
+    <string name="translation">Перевод:</string>
+    <string name="rating">Рейтинг:</string> 
+    <string name="error_empty_original">Поле оригинал пустое</string>
+    <string name="error_empty_translation">Поле перевод пустое</string>
+    <string name="error_in_base">Такое слово есть в словаре</string>
+    
 </resources>

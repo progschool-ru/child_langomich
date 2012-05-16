@@ -1,9 +1,9 @@
 package org.omich.lang.SQLite;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.omich.lang.words.IWord;
-import org.omich.lang.words.Word;
+import org.omich.lang.words.Language;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,21 +11,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class WordsStorage implements IWordsStorage{
-
-	MySQLiteHelper myHelper;
+	
+	public static final int FIND_BY_ID = 0;
+	public static final int FIND_BY_SERVER_ID = 1;
+	public static final int FIND_BY_NAME = 2;
+	
+	
 	SQLiteDatabase wordsStorage;
+	MySQLiteHelper myHelper;
 	
-	private String[] WordColumn = {IWord.WORD_ID, IWord.ORIGINAL, IWord.TRANSLATION, IWord.RATING, IWord.MODIFIED, IWord.WORD_IN_SERVER};
+	String[] langugeColoms = { MySQLiteHelper.LANGUAGE_ID, MySQLiteHelper.LANGUAGE_SERVER_ID, MySQLiteHelper.NAME};
 	
-	int language_id;
-	
-	public WordsStorage(Context context, int language_id){
+	public WordsStorage(Context context){
 		myHelper = new MySQLiteHelper(context);
-		this.language_id = language_id;
-	}
-	
-	public WordsStorage(SQLiteDatabase wordsStorage, int language_id){
-		this.wordsStorage = wordsStorage;
 	}
 	
 	public void open(){
@@ -36,42 +34,112 @@ public class WordsStorage implements IWordsStorage{
 		wordsStorage.close();
 	}
 	
-	public List<IWord> getWords() {
+	public List<Language> getLatestUserWords(long lastSySnc) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<IWord> getLatestUserWords(long lastSync) {
+	public List<Language> getLanguages() {
+		
+		List<Language> languages = new ArrayList<Language>();
+		
+		Cursor cursor = wordsStorage.query(MySQLiteHelper.LANGUAGES_TABLE, langugeColoms, MySQLiteHelper.NAME+" not null", null, null, null, null);
+		
+		cursor.moveToFirst();
+		
+		while(!cursor.isAfterLast()){
+			Language language = cursorToLanguage(cursor);
+			languages.add(language);
+			cursor.moveToNext();
+		}
+		
+		cursor.close();
+		return languages;
+	}
+
+	public IQueryLanguage getQueryLanguage(int languageId) {
+		
+		Language language = new Language(languageId, null, null, null);
+		
+		language = findLanguage(language, FIND_BY_ID);
+		if (language != null){
+			return new QueryLanguage(wordsStorage, language);
+		}else{
+			return null;
+		}
+	}
+
+	private Language cursorToLanguage(Cursor cursor){
+		
+		int id = cursor.getInt(0);
+		String server_id = cursor.getString(1);
+		String name = cursor.getString(2);
+		
+		return new Language(id, server_id, name, null);
+	}
+
+	public void createOrUpdate(List<Language> languages) {
+		
+	}
+	
+	private Language findLanguage(Language language, int find){
+		
+		Cursor cursor = null;
+		
+		switch(find){
+			case FIND_BY_ID:
+				cursor = wordsStorage.query(MySQLiteHelper.LANGUAGES_TABLE, langugeColoms,
+						MySQLiteHelper.LANGUAGE_ID+" = "+language.getId(), null, null, null, null);
+				break;
+			case FIND_BY_SERVER_ID:
+				String[] serverId = { language.getServerId() };
+				cursor = wordsStorage.query(MySQLiteHelper.LANGUAGES_TABLE, langugeColoms,
+						MySQLiteHelper.LANGUAGE_SERVER_ID+" = ?", serverId, null, null, null);
+				break;
+			case FIND_BY_NAME:
+				String[] name = { language.getName() };
+				cursor = wordsStorage.query(MySQLiteHelper.LANGUAGES_TABLE, langugeColoms,
+						MySQLiteHelper.NAME+" = ?", name, null, null, null);
+				break;
+		}
+		
+		if(cursor.moveToFirst()){
+			return cursorToLanguage(cursor);
+		}
+		
 		return null;
 	}
 
-	public boolean setWords(List<IWord> words) {
-		return false;
-	}
-	
-	public void createOrUpdate(IWord word){
+	public long create(Language language) {
 		
-	
-	}
-	
-	private long createWord(IWord word){
-		ContentValues values = word.toContentValues(language_id);
-		return wordsStorage.insert(MySQLiteHelper.WORDS_TABLE, null, values);
-	}
-	
-	private void updateWord(IWord word){
-		ContentValues values = word.toContentValues(language_id);
-		wordsStorage.update(MySQLiteHelper.WORDS_TABLE, values, IWord.LANGUAGE_ID+" = "+word.getId(), null);
-	}
-	
-	private IWord cursorToWord(Cursor cursor){
-	
-		long id = cursor.getLong(0);
-		String original = cursor.getString(1);
-		String translation = cursor.getString(2);
-		int rating = cursor.getInt(3);
-		long modified = cursor.getLong(4);
-		int in_server = cursor.getInt(5);
+		Language in_db = findLanguage(language, 2); 
 		
-		return new Word(id, original, translation, rating, modified, in_server);
+		if(in_db == null){ 
+			ContentValues contentValue = languagetoContentValue(language);
+			 return wordsStorage.insert(MySQLiteHelper.LANGUAGES_TABLE, null, contentValue);
+			
+		}
+		
+		return -1;
+	}
+
+	public void synchronization(List<Language> languages) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private ContentValues languagetoContentValue(Language language){
+		
+		ContentValues contentValues = new ContentValues();
+		
+		if(language.getServerId() == null){
+			contentValues.put(MySQLiteHelper.LANGUAGE_SERVER_ID, "");
+		}else{
+			contentValues.put(MySQLiteHelper.LANGUAGE_SERVER_ID, language.getServerId());
+		}
+		
+		contentValues.put(MySQLiteHelper.NAME, language.getName());
+		
+		return contentValues;
 	}
 }

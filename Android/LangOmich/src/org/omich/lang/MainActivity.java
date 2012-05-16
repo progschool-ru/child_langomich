@@ -34,9 +34,10 @@ public class MainActivity extends LangOmichActivity implements OnClickListener {
     	switch(g.getId()){
     		
     		case R.id.startTest:
+    			startActivity(new Intent(this, ViewDBActivity.class));
     			break;
     		case R.id.addWord:
-    			startActivity(new Intent(this, TestActivity.class));
+    			startActivity(new Intent(this, CreateWordActivity.class));
     			break;
     		case R.id.startDictionary:
     			startActivity(new Intent(this, DictionaryActivity.class));

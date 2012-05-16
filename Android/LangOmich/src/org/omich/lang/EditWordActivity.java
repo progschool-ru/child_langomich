@@ -1,15 +1,16 @@
 package org.omich.lang;
 import java.util.Date;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.omich.lang.SQLite.IQueryLanguage;
+import org.omich.lang.SQLite.IQueryWords;
+import org.omich.lang.SQLite.IWordsStorage;
 import org.omich.lang.SQLite.MySQLiteHelper;
-import org.omich.lang.SQLite.WordsData;
-import org.omich.lang.json.JSONWords;
+import org.omich.lang.SQLite.WordsStorage;
 import org.omich.lang.words.Word;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 
 public class EditWordActivity extends Activity implements OnClickListener{
@@ -28,6 +30,7 @@ public class EditWordActivity extends Activity implements OnClickListener{
 	Button cancelButton;
 	Button saveButton;
 	
+	TextView error_report;
 	int language_id;
 	
 	Word editable;
@@ -41,32 +44,38 @@ public class EditWordActivity extends Activity implements OnClickListener{
 		
 	
 		
-		long word_id = intent.getLongExtra(MySQLiteHelper.WORD_ID, -1);	
-		String data = intent.getStringExtra("data");
+		long id = intent.getLongExtra(MySQLiteHelper.WORD_ID, -1);	
+		String original = intent.getStringExtra(MySQLiteHelper.ORIGINAL);
+		String translation = intent.getStringExtra(MySQLiteHelper.TRANSLATION);
+		int rating = intent.getIntExtra(MySQLiteHelper.RATING, 0);
+		long modified = intent.getLongExtra(MySQLiteHelper.MODIFIED, 0);
+		boolean in_server = intent.getBooleanExtra(MySQLiteHelper.WORD_IN_SERVER, false);
 		
-		try {
-			editable = JSONWords.parseWord(new JSONObject(data));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		int inServer = 0;
+		if(in_server) inServer = -1;
 		
-		language_id = intent.getIntExtra("lang_id", -1);
+		editable = new Word(id, original, translation, rating, modified, inServer);
 		
-		editable.setId(word_id);
+		language_id = intent.getIntExtra(MySQLiteHelper.LANGUAGE_ID, -1);
 		
-		editOriginal = (EditText) findViewById(R.id.editOriginal);
-		editTranslate = (EditText) findViewById(R.id.editTranslate);
-		editRating = (Spinner) findViewById(R.id.editRating);
+	
 		
-		Integer[] array = {0,1,2,3,4,5,6,7,8,9,10};
-		ArrayAdapter<Integer> ratingAdapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, array);
+		editOriginal = (EditText) findViewById(R.id.editW_tEdit_original);
+		editTranslate = (EditText) findViewById(R.id.editW_tEdit_translation);
+		editRating = (Spinner) findViewById(R.id.editW_spinner_rating);
+		
+		error_report = (TextView) findViewById(R.id.editW_tView_error_report);
+		error_report.setTextColor(Color.RED);
+		
+		Integer[] ratings = {0,1,2,3,4,5,6,7,8,9};
+		ArrayAdapter<Integer> ratingAdapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, ratings);
 		editRating.setAdapter(ratingAdapter);
 		
 		editRating.setSelection(editable.getRating());
 		
-		cancelButton = (Button) findViewById(R.id.cancel);
+		cancelButton = (Button) findViewById(R.id.editW_button_cancel);
 		cancelButton.setOnClickListener(this);
-		saveButton = (Button) findViewById(R.id.ok);
+		saveButton = (Button) findViewById(R.id.editW_button_save);
 		saveButton.setOnClickListener(this);
 		
 		editOriginal.setText(editable.getOriginal());
@@ -78,65 +87,84 @@ public class EditWordActivity extends Activity implements OnClickListener{
 		
 		
 		switch(v.getId()){
-			case R.id.cancel:
+			case R.id.editW_button_cancel:
 				
 				setResult(RESULT_CANCELED);
 				finish();
 				
 				break;
-			case R.id.ok:
+			case R.id.editW_button_save:
 				
-				String original = editOriginal.getText().toString();
-				String translate = editTranslate.getText().toString();
+				String original = editOriginal.getText().toString().trim();
+				String translate = editTranslate.getText().toString().trim();
 				int rating = editRating.getSelectedItemPosition();
 				
 				editable.setModified(new Date().getTime());
 				
-				boolean  isChange = false;
+				boolean isEmpty = false;
 				
-				boolean resetWord = original.equals(editable.getOriginal());
+				error_report.setText(null);
 				
-				if( rating != editable.getRating()) isChange = true;
-				if(  !translate.equals(editable.getTranslation()) && !translate.equals("")) isChange = true;
+				if(original.isEmpty()){
+					error_report.append(getString(R.string.error_empty_original));
+					error_report.append("\n");
+					isEmpty = true;
+				}
 				
-
-				WordsData myData = new WordsData(this, language_id);
+				if(translate.isEmpty()){
+					error_report.append(getString(R.string.error_empty_translation));
+					error_report.append("\n");
+					isEmpty = true;
+				}
 				
-				myData.open();
+				IWordsStorage wordsStorage = new WordsStorage(this);
+				wordsStorage.open();
+				IQueryLanguage queryLanguage = wordsStorage.getQueryLanguage(language_id);
+				IQueryWords queryWords = queryLanguage.getQueryWords();
 				
-				if( resetWord ){
-					if(isChange){
-						editable.setTranslation(translate);
-						editable.setRating(rating);	
-						myData.update(editable);
-					}else{
-						return;
-					}
-				}else{
-					if(!original.equals("") && myData.originalIsFree(original)){
-							myData.toDel(editable);
-							editable.setOriginal(original);
+				if(!isEmpty){
+					
+					boolean resetWord = original.equals(editable.getOriginal());
+					boolean isChange = false;
+					if(!translate.equals(editable.getTranslation())) isChange = true;
+					if( editable.getRating() != rating ) isChange = true;
+					
+					
+					if(resetWord){
+						if(isChange){
 							editable.setTranslation(translate);
 							editable.setRating(rating);
-								myData.createWord(editable);
-						
+							queryWords.updateWord(editable, IQueryWords.FIND_BY_ID);
+						}else{
+							error_report.setText(getText(R.string.editW_nothing_change));
+							return;
+						}
 					}else{
-						return;
+						editable.setOriginal(original);
+						editable.setTranslation(translate);
+						editable.setRating(rating);
+						
+						long id = queryWords.updateWord(editable, IQueryWords.UPDATE_BY_ORIGINAL);
+							if(id == -1){
+								error_report.setText(getText(R.string.error_in_base));
+							return;
+							}else{
+								editable.setId(id);
+							}
 					}
-				}
-				
-				myData.close();
 					
+				}else{
+					return;
+				}
+				wordsStorage.close();
 				Intent result = new Intent();
 				 
-			
-				try {
-					String	newData = JSONWords.wordToJSON(editable).toString();
-					result.putExtra("data", newData);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				
+				result.putExtra(MySQLiteHelper.WORD_ID, editable.getId());
+				result.putExtra(MySQLiteHelper.ORIGINAL, editable.getOriginal());
+				result.putExtra(MySQLiteHelper.TRANSLATION, editable.getTranslation());
+				result.putExtra(MySQLiteHelper.RATING, editable.getRating());
+				result.putExtra(MySQLiteHelper.MODIFIED, editable.getModified());
+				result.putExtra(MySQLiteHelper.WORD_IN_SERVER, editable.getInServer());
 				
 				setResult(RESULT_OK, result);
 				

@@ -1,7 +1,8 @@
 package org.omich.lang;
 import java.util.List;
 
-import org.omich.lang.SQLite.LanguagesData;
+import org.omich.lang.SQLite.IWordsStorage;
+import org.omich.lang.SQLite.WordsStorage;
 import org.omich.lang.words.Language;
 
 import android.app.ListActivity;
@@ -18,17 +19,13 @@ public class LanguageDialogActivity extends ListActivity{
 	    public void onCreate(Bundle icicle) {
 	        super.onCreate(icicle);
 	        
-	        LanguagesData myData;
-	        
-	        myData = new LanguagesData(this);
-			myData.open();
-			List<Language> myList = myData.getListAllLanguages();
-			
-			myData.close();
-	        
-	        ListAdapter adapter = new ArrayAdapter<Language>(this,
-	                android.R.layout.simple_list_item_1, myList);
-	        setListAdapter(adapter);
+	    IWordsStorage wordsStorage = new WordsStorage(this);
+	    wordsStorage.open();
+	    List<Language> myList = wordsStorage.getLanguages();
+	    wordsStorage.close();
+		ListAdapter adapter = new ArrayAdapter<Language>(this,
+	               android.R.layout.simple_list_item_1, myList);
+	    setListAdapter(adapter);
 	    }
 
 	    @Override

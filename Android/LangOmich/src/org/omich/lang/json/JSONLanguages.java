@@ -91,7 +91,7 @@ public class JSONLanguages {
 		String id = jObject.getString(ID);
 		List<Word> words = JSONWords.parse(jObject.getJSONArray(WORDS));
 		
-		Language language = new Language(name, id, words);
+		Language language = null; //new Language(name, id, words);
 		
 		return language;
 	}

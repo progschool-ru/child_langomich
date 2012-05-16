@@ -9,7 +9,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper  {
 	
 	public static final String WORDS_TABLE = "words";
 	
-	public static final String WORD_ID = "id";
+	public static final String WORD_ID = "word_id";
 	public static final String ORIGINAL = "original";
 	public static final String TRANSLATION = "translation";
 	public static final String RATING = "rating";
@@ -21,9 +21,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper  {
 	
 	public static final String LANGUAGES_TABLE = "languages";
 	
-	public static final String LANGUAGE_ID = "id";
+	public static final String LANGUAGE_ID = "language_id";
 	public static final String NAME = "name";
-	public static final String LANGUAGE_SERVER_ID = "language_id";
+	public static final String LANGUAGE_SERVER_ID = "language_server_id";
 	
 	private static final String DATABASE_NAME = "langOmich.db";
 	private static final int DATABASE_VERSION = 1;
@@ -32,8 +32,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper  {
 	private static final String CREATE_LANGUAGES_TABLE = "CREATE TABLE "+ LANGUAGES_TABLE
 			+" ( "
 				+ LANGUAGE_ID + "  integer primary key autoincrement, "
-				+ LANGUAGE_SERVER_ID +" text unique, "
-				+ NAME  +" text not null " 
+				+ LANGUAGE_SERVER_ID +" text, "
+				+ NAME  +" text" 
 			+" )";
 	
 	private static final String CREATE_WORDS_TABLE = "CREATE TABLE " + WORDS_TABLE
@@ -44,8 +44,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper  {
 				+ WORDS_LANGUAGE + " integer references "+LANGUAGES_TABLE+"("+LANGUAGE_ID+") on delete cascade, "
 				+ RATING +" integer, "
 				+ MODIFIED + " integer,"
-				+ WORD_IN_SERVER +"integer"
+				+ WORD_IN_SERVER +" integer "
 			+")";
+	
 	
 	public MySQLiteHelper(Context context){
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);

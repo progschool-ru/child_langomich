@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".TestActivity"></activity>
+
         <service android:name=".SyncService">
          </service>
         
@@ -54,13 +54,28 @@
         
         <activity 
             android:name=".DictionaryActivity"
-            android:label="@string/dictionary_label">       
+            android:label="@string/dictionary_label"
+            android:theme="@style/Theme.Sherlock">       
 		</activity>
         
         <activity android:name=".EditWordActivity"
-            android:theme="@android:style/Theme.Dialog">
+          		  android:label="@string/editW_label"
+          		  android:theme="@android:style/Theme.Dialog">
         </activity>
         
+        <activity android:name=".CreateWordFastDialogActivity"
+               		android:label="@string/createW_label"
+            		android:theme="@android:style/Theme.Dialog">
+        </activity>
+        <activity android:name=".ViewDBActivity"/>
+        
+        <activity android:name=".CreateWordActivity"
+            		android:label="@string/createW_label"/>
+        
+        <activity android:name=".CreateLanguageDialogActivity"
+            		android:label="@string/createL_label"
+            		android:theme="@android:style/Theme.Dialog"/>
+  
     </application>
 	
 </manifest>
