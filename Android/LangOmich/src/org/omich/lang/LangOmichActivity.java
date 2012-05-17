@@ -1,11 +1,6 @@
 package org.omich.lang;
 
 import org.omich.lang.httpClient.SmdClient;
-import org.omich.lang.json.JSONParser;
-
-import com.ccg.util.JavaString;
-
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -27,8 +22,6 @@ public class LangOmichActivity  extends FragmentActivity{
 	protected boolean settings = false;
 	
 	protected LangOmichSettings lSettigs;
-	
-	//protected LanguagesData langData;
 	
 	protected MyImageButton syncButton;
 	protected MyImageButton settingsButton;
@@ -55,7 +48,6 @@ public class LangOmichActivity  extends FragmentActivity{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		lSettigs = new LangOmichSettings(this, SETTINGS_NAME);
-		// langData = new LanguagesData(this);
 		lSettigs.edit();
 	}
 	
@@ -95,7 +87,7 @@ public class LangOmichActivity  extends FragmentActivity{
           updataSuncButton();
           syncButton.setImageResources(R.drawable.ic_sunc_enable, R.drawable.ic_sunc_disable);
           syncButton.setBackgroundColor(Color.BLACK);
-          //syncButton.setOnClickListener(onSyncClick);
+          syncButton.setOnClickListener(onSyncClick);
           
          
           l.addView(syncButton);
@@ -153,9 +145,8 @@ public class LangOmichActivity  extends FragmentActivity{
 		try {
 			String login_s = lSettigs.getLogin();
 			String password_s = lSettigs.getPassword();
-			String result = client.auth(login_s, password_s);
-			String jString = JavaString.decode(result);
-			authres = JSONParser.parseAuth(jString);
+			authres = client.auth(login_s, password_s);
+		 
 		} catch (Exception e) {
 			authres = false;
 		}
@@ -163,6 +154,7 @@ public class LangOmichActivity  extends FragmentActivity{
 		return authres;
     	
     }
+    
     private class AsyncAuth extends AsyncTask<Void, Void, Boolean>{
 		
 		@Override

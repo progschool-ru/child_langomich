@@ -13,7 +13,7 @@ public interface ILanguage {
 	public static final String LANGUAGE_SERVER_ID = "id";
 	public static final String WORDS = "words";
 	
-	public List<IWord> getWors();
+	public List<IWord> getWords();
 	public int getId();
 	public String getName();
 	public String getServerId();

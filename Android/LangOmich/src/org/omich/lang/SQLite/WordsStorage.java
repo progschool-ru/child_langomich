@@ -2,6 +2,7 @@ package org.omich.lang.SQLite;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.omich.lang.words.Language;
 
@@ -9,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class WordsStorage implements IWordsStorage{
 	
@@ -115,8 +117,7 @@ public class WordsStorage implements IWordsStorage{
 		Language in_db = findLanguage(language, 2); 
 		
 		if(in_db == null){ 
-			ContentValues contentValue = languagetoContentValue(language);
-			 return wordsStorage.insert(MySQLiteHelper.LANGUAGES_TABLE, null, contentValue);
+			return _create(language);
 			
 		}
 		
@@ -124,20 +125,72 @@ public class WordsStorage implements IWordsStorage{
 	}
 
 	public void synchronization(List<Language> languages) {
-		// TODO Auto-generated method stub
 		
+		ListIterator<Language> iter = languages.listIterator();
+		
+		while(iter.hasNext()){
+			
+			Language currentLanguage = iter.next();
+			
+			Log.d("test", currentLanguage.toString());
+			
+			Language inBase = findLanguage(currentLanguage, FIND_BY_SERVER_ID);
+			
+			if(inBase != null){
+					
+				IQueryLanguage queryLanguage = new QueryLanguage(wordsStorage, inBase);
+				IQueryWords queryWords = queryLanguage.getQueryWords();
+					
+				String currentLanguageName = currentLanguage.getName();
+					
+				if(currentLanguageName.isEmpty()){
+					queryLanguage.delete();
+				}else{
+					queryLanguage.updateName(currentLanguageName);
+					queryWords.updateWords(currentLanguage.getWords());
+				}
+				
+			}else{
+				
+				inBase = findLanguage(currentLanguage, FIND_BY_NAME);
+				
+				if(inBase != null){
+					
+					IQueryLanguage queryLanguage = new QueryLanguage(wordsStorage, inBase);
+					
+					String server_id = inBase.getServerId();
+					
+					IQueryWords queryWords = queryLanguage.getQueryWords();
+					
+					if(server_id == null){
+						queryLanguage.updateServerId(currentLanguage.getServerId());
+					}
+					
+					queryWords.updateWords(currentLanguage.getWords());
+					
+				}else{
+					int id = (int) _create(currentLanguage);
+					currentLanguage.setId(id);
+					
+					IQueryLanguage queryLanguage = new QueryLanguage(wordsStorage, inBase);
+					IQueryWords queryWords = queryLanguage.getQueryWords();
+					queryWords.createWords(currentLanguage.getWords());
+				}
+				
+			}
+		}
+		
+	}
+	
+	private long _create(Language language){
+		 ContentValues contentValue = languagetoContentValue(language);
+		 return wordsStorage.insert(MySQLiteHelper.LANGUAGES_TABLE, null, contentValue);
 	}
 	
 	private ContentValues languagetoContentValue(Language language){
 		
 		ContentValues contentValues = new ContentValues();
-		
-		if(language.getServerId() == null){
-			contentValues.put(MySQLiteHelper.LANGUAGE_SERVER_ID, "");
-		}else{
-			contentValues.put(MySQLiteHelper.LANGUAGE_SERVER_ID, language.getServerId());
-		}
-		
+		contentValues.put(MySQLiteHelper.LANGUAGE_SERVER_ID, language.getServerId());
 		contentValues.put(MySQLiteHelper.NAME, language.getName());
 		
 		return contentValues;

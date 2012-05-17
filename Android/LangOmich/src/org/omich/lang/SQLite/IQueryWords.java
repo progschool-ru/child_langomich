@@ -16,7 +16,9 @@ public interface IQueryWords {
 	public List<Word> getWords();
 	public Word findWord(Word word, int findMode);
 	public long createWord(Word word);
+	public void createWords(List<Word> words);
 	public long updateWord(Word word, int updateMode);
+	public void updateWords(List<Word> words);
 	public void deleteWord(Word word);
 	public void deleteWords(List<Word> word);
 }

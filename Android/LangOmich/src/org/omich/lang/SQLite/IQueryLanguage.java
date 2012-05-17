@@ -6,5 +6,7 @@ public interface IQueryLanguage {
 	
 	public Language getLanguage();
 	public IQueryWords getQueryWords();
-
+	public void updateServerId(String serverId);
+	public void updateName(String name);
+	public void delete();
 }

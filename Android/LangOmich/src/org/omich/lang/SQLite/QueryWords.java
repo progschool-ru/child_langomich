@@ -96,7 +96,15 @@ public class QueryWords implements IQueryWords{
 		
 		return res;
 	}
-
+	
+	public void createWords(List<Word> words) {
+		ListIterator<Word> iter = words.listIterator();
+		
+		while(iter.hasNext()){
+			createWord(iter.next());
+		}
+	}
+	
 	public void deleteWord(Word word) {
 		if(word.getInServer()){
 			toDel(word);
@@ -147,5 +155,32 @@ public class QueryWords implements IQueryWords{
 			deleteWord(iter.next());
 		}
 	}
+
+	public void updateWords(List<Word> words) {
+	
+		ListIterator<Word> iter = words.listIterator();
+		
+		while(iter.hasNext()){
+			
+			Word currentWord = iter.next();
+			Word in_base = findWord(currentWord, FIND_BY_ID);
+			
+			if(in_base == null){
+				createWord(currentWord);
+			}else{
+				String translation = currentWord.getTranslation();
+				
+				if(translation.isEmpty()){
+					delWord(in_base);
+				}else{
+					long id = in_base.getId();
+					currentWord.setId(id);
+					updateWord(currentWord, UPDATE_BY_ID);
+				}
+			}
+		}
+	}
+
+	
 	
 }

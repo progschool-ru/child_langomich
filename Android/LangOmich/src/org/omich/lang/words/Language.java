@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 public class Language{
 	
 	public static final String LANGUAGE_ID = "language_id";
@@ -29,10 +30,9 @@ public class Language{
 	}
 	
 	public Language(JSONObject jLanguage) throws JSONException{
-		
 		this.id = -1;
 		this.server_id = jLanguage.getString(LANGUAGE_SERVER_ID);
-		this.name =jLanguage.getString(name);
+		this.name = jLanguage.getString(NAME);
 		parseWords(jLanguage.getJSONArray(WORDS));
 	}
 	
@@ -71,10 +71,6 @@ public class Language{
 	@Override
 	public String toString(){
 		return name;
-	}
-
-	public List<Word> getWors() {
-		return words;
 	}
 
 	public JSONObject toJSON() throws JSONException {
