@@ -5,9 +5,13 @@
 		<meta charset="utf8"/>
 		<link rel="stylesheet" href="design/smdMain.css"/>
 		<script src="js/lib/jquery-1.6.2.js"></script>
-		<script src="js/org.omich/Helper.js"></script>
+		<script src="js/lib/org.ejohn.class.js"></script>
+		<script src="js/org.omich/org.omich.js"></script>
+		<script src="js/org.omich.lang/Env.js"></script>
+		<script src="js/org.omich.lang/App.js"></script>
+		<script src="js/org.omich.lang/ModuleTabsPanel.js"></script>
 	</head>
-	<body>
+	<body onload="org.omich.lang.App.onLoad()">
 		<div class="header">
 			<a href="words" class="header-logo"></a>
 			<div id="org-omich-lang-tabsPanel">
