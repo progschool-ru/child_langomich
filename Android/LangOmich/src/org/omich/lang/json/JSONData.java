@@ -11,7 +11,6 @@ import org.omich.lang.words.Language;
 
 public class JSONData {
 	
-	
 	private static final String LANGUAGES = "languages";
 	private static final String SUCCESS = "success";
 	private static final String LAST_CONNECTION = "lastConnection";
@@ -20,17 +19,14 @@ public class JSONData {
 	private boolean sucsess;
 	private List<Language> languages = new ArrayList<Language>();
 	
-	private JSONObject jObject;
-	
 	public JSONData(){
 		sucsess = false;
-		jObject = new JSONObject();
 	}
 	
 	
 	public JSONData(String jString) throws JSONException{
 		
-		jObject = new JSONObject(jString);
+		JSONObject jObject = new JSONObject(jString);
 		
 		sucsess = jObject.getBoolean(SUCCESS);
 		
@@ -71,17 +67,21 @@ public class JSONData {
 	@Override
 	public String toString(){
 		
+		JSONObject jObject = new JSONObject();
+		
 		JSONArray jLanguage = new JSONArray();
 		
 		ListIterator<Language> iter = languages.listIterator();
 		
+		
 		try {
+			
 			while(iter.hasNext()){
 				jLanguage.put(iter.next().toJSON());
-		}
+			}
 		
-		jObject.put(LANGUAGES, jLanguage);
-		jObject.put(LAST_CONNECTION, lastconnect);
+			jObject.put(LANGUAGES, jLanguage);
+			jObject.put(LAST_CONNECTION, lastconnect);
 		
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

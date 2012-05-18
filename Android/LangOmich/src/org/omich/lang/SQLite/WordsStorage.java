@@ -10,7 +10,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class WordsStorage implements IWordsStorage{
 	
@@ -37,8 +36,31 @@ public class WordsStorage implements IWordsStorage{
 	}
 	
 	public List<Language> getLatestUserWords(long lastSySnc) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Language> sending = new ArrayList<Language>();
+		List<Language> buffer = getLanguages();
+		
+		ListIterator<Language> iter = buffer.listIterator();
+		
+		while(iter.hasNext()){	
+			
+			Language currentLanguage = iter.next();
+			
+			if(currentLanguage.getName() == null){
+				sending.add(currentLanguage);
+			}else{
+				IQueryLanguage queryLanguage = getQueryLanguage(currentLanguage.getId());
+				IQueryWords queryWords = queryLanguage.getQueryWords();
+				
+				currentLanguage.setWords(queryWords.getLatestUserWords(lastSySnc));
+				
+				if(!currentLanguage.getWords().isEmpty()){
+					sending.add(currentLanguage);
+				}
+			}
+		}
+		
+		return sending;
 	}
 
 	public List<Language> getLanguages() {
@@ -131,8 +153,6 @@ public class WordsStorage implements IWordsStorage{
 		while(iter.hasNext()){
 			
 			Language currentLanguage = iter.next();
-			
-			Log.d("test", currentLanguage.toString());
 			
 			Language inBase = findLanguage(currentLanguage, FIND_BY_SERVER_ID);
 			

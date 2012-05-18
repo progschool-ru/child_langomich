@@ -42,6 +42,25 @@ public class QueryWords implements IQueryWords{
 		return words;
 	}
 
+	public List<Word> getLatestUserWords(long lastSySnc) {
+		
+		List<Word> words = new ArrayList<Word>();
+		
+		Cursor cursor = database.query(MySQLiteHelper.WORDS_TABLE, columns, 
+				MySQLiteHelper.WORDS_LANGUAGE+" = "+languageId+" and "+MySQLiteHelper.MODIFIED +" >= "+lastSySnc, 
+				null, null, null, null);
+		
+		cursor.moveToFirst();
+		
+		while(!cursor.isAfterLast()){
+			Word word = CursorToWord(cursor);
+			words.add(word);
+			cursor.moveToNext();
+		}
+		
+		return words;
+	}
+	
 	public Word findWord(Word word, int findMode) {
 		
 		Cursor cursor;
@@ -127,6 +146,7 @@ public class QueryWords implements IQueryWords{
 		long id = cursor.getLong(0);
 		String original  = cursor.getString(1);
 		String translation = cursor.getString(2);
+		if(translation == null) translation = "";
 		int rating = cursor.getInt(3);
 		long modified = cursor.getLong(4);
 		int in_server = cursor.getInt(5);
@@ -181,6 +201,7 @@ public class QueryWords implements IQueryWords{
 		}
 	}
 
+	
 	
 	
 }

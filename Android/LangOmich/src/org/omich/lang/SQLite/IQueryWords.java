@@ -14,6 +14,7 @@ public interface IQueryWords {
 	public final int UPDATE_BY_ORIGINAL = 1;
 	
 	public List<Word> getWords();
+	public List<Word> getLatestUserWords(long lastSySnc);
 	public Word findWord(Word word, int findMode);
 	public long createWord(Word word);
 	public void createWords(List<Word> words);
