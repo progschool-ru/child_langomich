@@ -28,7 +28,10 @@
 					pageId: "about",
 					authType: ns.AuthTypes.DOESNT_MATTER
 				}],
-				onTabClick: function(evt){scope.selectPage(evt.pageId);}
+				onTabClick: function(evt)
+				{
+					scope._pageController.activatePage(evt.pageId);
+				}
 			});
 			
 			var $contentPanel = $("#org-omich-lang-contentPanel");
@@ -58,18 +61,16 @@
 							message: "It's the best site in the world"
 						}
 					}],
+				onPageChanged: function (evt)
+				{
+					scope._tabsPanel.setSelectedPageId(evt.pageId);
+				} 
 			});
-			
-			this.selectPage("login");
-			
-			ns.ServerApi.callIsLoggedIn(function(result){log(result)});
-		},
-		
-		selectPage: function (pageId)
-		{
-			window.location.hash = pageId;
-			this._tabsPanel.setSelectedPageId(pageId);
-			this._pageController.activatePage(pageId);
+
+			ns.ServerApi.callIsLoggedIn(function(result)
+			{
+				scope._pageController.activatePage("login");
+			});
 		}
 	});
 	
