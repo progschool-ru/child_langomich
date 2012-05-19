@@ -14,7 +14,7 @@
 		{
 			var scope = this;
 			var $tabsPanel = $("#org-omich-lang-tabsPanel");
-			this._modTabsPanel = new ns.ModuleTabsPanel($tabsPanel, {
+			this._tabsPanel = new ns.ModuleTabsPanel($tabsPanel, {
 				tabs:[{
 					title: "Login",
 					pageId: "login",
@@ -28,13 +28,46 @@
 					pageId: "about",
 					authType: ns.AuthTypes.DOESNT_MATTER
 				}],
-				onTabClick: function(evt){scope.selectPage(evt);}
+				onTabClick: function(evt){scope.selectPage(evt.pageId);}
 			});
+			
+			var $contentPanel = $("#org-omich-lang-contentPanel");
+			this._pageController = new ns.PageController($contentPanel, {
+				pages:[{
+						pageId: "login",
+						title: "Login",
+						authType: ns.AuthTypes.NO_AUTH,
+						contentPanelConstructor: ns.MessagePanel,
+						contentPanelSettings: {
+							message: "Welcome to LangOmich"
+						}
+					},{
+						pageId: "register",
+						title: "Register",
+						authType: ns.AuthTypes.NO_AUTH,
+						contentPanelConstructor: ns.MessagePanel,
+						contentPanelSettings: {
+							message: "Try it yourself"
+						}
+					},{
+						pageId: "about",
+						title: "About",
+						authType: ns.AuthTypes.DOESNT_MATTER,
+						contentPanelConstructor: ns.MessagePanel,
+						contentPanelSettings: {
+							message: "It's the best site in the world"
+						}
+					}],
+			});
+			
+			this.selectPage("login");
 		},
 		
-		selectPage: function (evt)
+		selectPage: function (pageId)
 		{
-			window.location.hash = evt.pageId;
+			window.location.hash = pageId;
+			this._tabsPanel.setSelectedPageId(pageId);
+			this._pageController.activatePage(pageId);
 		}
 	});
 	

@@ -1,10 +1,12 @@
 org = {};
 org.omich = {
+	Class: Class,
+
 	ns: function (namespace, parent)
 	{
 		var prevIndex = 0;
 		var nextIndex = namespace.indexOf(".", 0);
-		var parent = parent || window;
+		parent = parent || window;
 
 		do
 		{
@@ -19,12 +21,6 @@ org.omich = {
 		return parent;
 	},
 	
-	nsSelf: function (namespace)
-	{
-		return this.ns(namespace, this);
-	},
-	
-	log: function (value) {console.log(value);},
-
-	Class: Class,
+	nsSelf: function (namespace) {return org.omich.ns(namespace, this);},
+	log: function (value) {console.log(value);}
 }

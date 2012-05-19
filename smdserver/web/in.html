@@ -12,7 +12,9 @@
 		<!-- App   //-->
 		<script src="js/org.omich.lang/Env.js"></script>
 		<script src="js/org.omich.lang/App.js"></script>
+		<script src="js/org.omich.lang/PageController.js"></script>
 		<script src="js/org.omich.lang/ModuleTabsPanel.js"></script>
+		<script src="js/org.omich.lang/MessagePanel.js"></script>
 	</head>
 	<body onload="org.omich.lang.App.onLoad()">
 		<div class="header">
@@ -27,23 +29,7 @@
 		</div>
 		<div class="main">
 			<div class="content">
-	<form method="post" action="../login?redirect=page%2Fwords">
-		<table>
-			<tr>
-				<th>Логин:</th>
-				<td><input type="text" size="30" name="login"></td>
-			</tr>
-			<tr>
-				<th>Пароль:</th>
-				<td><input  type="password" size="30" name="password"></td>
-			</tr>
-			<tr>
-				<th>&nbsp;</th>
-				<td class="submitTD"><input type="submit" value="Вход"></td>
-			</tr>
-		</table>
-	</form>
-
+				<div id="org-omich-lang-contentPanel"></div>
 			</div>
 		</div>
 		<div class="footer">
