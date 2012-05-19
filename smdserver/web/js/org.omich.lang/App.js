@@ -63,8 +63,14 @@
 
 			ns.ServerApi.callIsLoggedIn(function(result)
 			{
-				scope._pageController.updateIsLoggedIn(result);
+				scope.updateIsLoggedIn(result);
 			});
+		},
+		
+		updateIsLoggedIn: function (isLoggedIn)
+		{
+			this._pageController.updateIsLoggedIn(isLoggedIn);
+			this._tabsPanel.updateIsLoggedIn(isLoggedIn);
 		}
 	});
 	

@@ -36,6 +36,17 @@
 		for(var i = 0; i < scope._tabs.length; ++i)
 		{
 			var $li = scope._tabs[i].$li;
+			
+			if(ns.AuthSettings.isCorresponding(scope._tabs[i].settings.authType,
+						scope._isLoggedIn))
+			{
+				$li.css("display", "block");
+			}
+			else
+			{
+				$li.css("display", "none");
+			}
+			
 			if(scope._tabs[i].settings.pageId == scope._selectedPageId)
 			{
 				if($li.children("span").length == 0)
@@ -73,6 +84,7 @@
 	ns.ModuleTabsPanel = org.omich.Class.extend({
 		init: function ($div, settings)
 		{
+			this._isLoggedIn = false;
 			this._dispatcher = new ns.EventDispatcher(this);
 			this._$div = $div;
 			this._tabs = [];
@@ -87,6 +99,12 @@
 		setSelectedPageId: function (pageId)
 		{
 			this._selectedPageId = pageId;
+			updateTabs(this);
+		},
+		
+		updateIsLoggedIn: function (isLoggedIn)
+		{
+			this._isLoggedIn = isLoggedIn;
 			updateTabs(this);
 		}
 	});
