@@ -6,6 +6,7 @@ import java.util.Map;
 import org.smdserver.actionssystem.IActionsFactory;
 import org.smdserver.actionssystem.SmdServlet;
 import org.smdserver.auth.ConfirmRegistrationAction;
+import org.smdserver.auth.IsLoggedInAction;
 import org.smdserver.auth.LoginAction;
 import org.smdserver.auth.LogoutAction;
 import org.smdserver.auth.RefuseRegistrationAction;
@@ -40,6 +41,7 @@ public class MainServlet extends SmdServlet
 		map.put("getWords", GetWordsAction.class);
 		map.put("getLanguages", GetLanguagesAction.class);
 		map.put("deleteWords", DeleteWordsAction.class);
+		map.put("isLoggedIn", IsLoggedInAction.class);
 		map.put("login", LoginAction.class);
 		map.put("logout", LogoutAction.class);
 		map.put("mobileLogin", LoginAction.class);
