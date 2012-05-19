@@ -1,6 +1,7 @@
 (function ()
 {
 	var ns = org.omich.nsSelf("lang");
+	var log = org.omich.log;
 	
 	ns.AuthTypes = {
 		AUTH: 0,
@@ -11,8 +12,10 @@
 	ns.App = org.omich.Class.extend({
 		init: function ()
 		{
+			var scope = this;
 			var $tabsPanel = $("#org-omich-lang-tabsPanel");
-			this._modTabsPanel = new ns.ModuleTabsPanel($tabsPanel, {tabs:[{
+			this._modTabsPanel = new ns.ModuleTabsPanel($tabsPanel, {
+				tabs:[{
 					title: "Login",
 					pageId: "login",
 					authType: ns.AuthTypes.NO_AUTH
@@ -24,8 +27,14 @@
 					title: "About",
 					pageId: "about",
 					authType: ns.AuthTypes.DOESNT_MATTER
-				}
-			]});
+				}],
+				onTabClick: function(evt){scope.selectPage(evt);}
+			});
+		},
+		
+		selectPage: function (evt)
+		{
+			window.location.hash = evt.pageId;
 		}
 	});
 	

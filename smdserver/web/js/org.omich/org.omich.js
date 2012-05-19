@@ -23,6 +23,8 @@ org.omich = {
 	{
 		return this.ns(namespace, this);
 	},
+	
+	log: function (value) {console.log(value);},
 
 	Class: Class,
 }
