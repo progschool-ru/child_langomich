@@ -61,6 +61,8 @@
 			});
 			
 			this.selectPage("login");
+			
+			ns.ServerApi.callIsLoggedIn(function(result){log(result)});
 		},
 		
 		selectPage: function (pageId)
