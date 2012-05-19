@@ -2,6 +2,28 @@
 {
 	var ns = org.omich.nsSelf("lang");
 	var EVT_PAGE_CHANGED = "pageChanged";
+	
+	var checkAuth = function (scope, pageId)
+	{
+		var ps = scope._settings.pages;
+		var anotherPageId;
+		for(var i = 0; i < ps.length; ++i)
+		{
+			if(ns.AuthSettings.isCorresponding(ps[i].authType, scope._isLoggedIn))
+			{
+				if (ps[i].pageId == pageId)
+				{
+					return pageId;
+				}
+				else if(!anotherPageId)
+				{
+					anotherPageId = ps[i].pageId;
+				}
+			}
+		}
+		
+		return anotherPageId;
+	}
 
 	ns.PageController = org.omich.Class.extend({
 		init: function ($div, settings)
@@ -19,11 +41,14 @@
 		updateIsLoggedIn: function (isLoggedIn)
 		{
 			this._isLoggedIn = isLoggedIn;
+			this.activatePage();
 		},
 		
 		activatePage: function (pageId)
 		{
-			pageId = pageId || this._pageId;
+			pageId = pageId || this._pageId;	
+			pageId = checkAuth(this, pageId);
+			
 			this._$div.empty();
 
 			window.location.hash = pageId;
@@ -49,6 +74,6 @@
 			
 			this._pageId = pageId;
 			this._dispatcher.dispatchEvent(EVT_PAGE_CHANGED, {pageId:pageId, target: this});
-		}
+		},
 	});
 })();

@@ -3,12 +3,6 @@
 	var ns = org.omich.nsSelf("lang");
 	var log = org.omich.log;
 	
-	ns.AuthTypes = {
-		AUTH: 0,
-		NO_AUTH: 1,
-		DOESNT_MATTER: 2
-	};
-	
 	ns.App = org.omich.Class.extend({
 		init: function ()
 		{
@@ -18,15 +12,15 @@
 				tabs:[{
 					title: "Login",
 					pageId: "login",
-					authType: ns.AuthTypes.NO_AUTH
+					authType: ns.AuthSettings.TYPE_NO_AUTH
 				},{
 					title: "Register",
 					pageId: "register",
-					authType: ns.AuthTypes.NO_AUTH
+					authType: ns.AuthSettings.TYPE_NO_AUTH
 				},{
 					title: "About",
 					pageId: "about",
-					authType: ns.AuthTypes.DOESNT_MATTER
+					authType: ns.AuthSettings.TYPE_DOESNT_MATTER
 				}],
 				onTabClick: function(evt)
 				{
@@ -39,7 +33,7 @@
 				pages:[{
 						pageId: "login",
 						title: "Login",
-						authType: ns.AuthTypes.NO_AUTH,
+						authType: ns.AuthSettings.TYPE_NO_AUTH,
 						contentPanelConstructor: ns.MessagePanel,
 						contentPanelSettings: {
 							message: "Welcome to LangOmich"
@@ -47,7 +41,7 @@
 					},{
 						pageId: "register",
 						title: "Register",
-						authType: ns.AuthTypes.NO_AUTH,
+						authType: ns.AuthSettings.TYPE_NO_AUTH,
 						contentPanelConstructor: ns.MessagePanel,
 						contentPanelSettings: {
 							message: "Try it yourself"
@@ -55,7 +49,7 @@
 					},{
 						pageId: "about",
 						title: "About",
-						authType: ns.AuthTypes.DOESNT_MATTER,
+						authType: ns.AuthSettings.TYPE_DOESNT_MATTER,
 						contentPanelConstructor: ns.MessagePanel,
 						contentPanelSettings: {
 							message: "It's the best site in the world"
@@ -69,7 +63,7 @@
 
 			ns.ServerApi.callIsLoggedIn(function(result)
 			{
-				scope._pageController.activatePage("login");
+				scope._pageController.updateIsLoggedIn(result);
 			});
 		}
 	});
