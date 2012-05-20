@@ -37,6 +37,7 @@
 			
 			var login = form.login.value;
 			var password = form.password.value;
+			form.password.value = "";
 			ns.ServerApi.callLogin(login, password,
 				function (isLoggedIn)
 				{
