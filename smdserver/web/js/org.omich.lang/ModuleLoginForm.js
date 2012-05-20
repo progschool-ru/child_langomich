@@ -1,8 +1,11 @@
 (function ()
 {
 	var ns = org.omich.nsSelf("lang");
+	var log = org.omich.log;
 	
-	var appendInputField = function($table, text, inputSettings, tdClass)
+	var EVT_LOGGED_IN = "loggedIn";
+	
+	var appendInputField = function ($table, text, inputSettings, tdClass)
 	{
 		var $input = $("<input/>");
 		for(var key in inputSettings)
@@ -19,20 +22,62 @@
 		var $tr = $("<tr/>").append($th).append($td);
 		
 		$table.append($tr);
+	};
+	
+	var handleSubmitFailure = function (scope)
+	{
+		scope._$messageDiv.append("Can't login. Try again");
+	};
+	
+	var handleSubmit = function (scope, form)
+	{
+		try
+		{
+			scope._$messageDiv.empty();
+			
+			var login = form.login.value;
+			var password = form.password.value;
+			ns.ServerApi.callLogin(login, password,
+				function (isLoggedIn)
+				{
+					if(isLoggedIn)
+					{
+						scope._dispatcher.dispatchEvent(EVT_LOGGED_IN, {target:this});
+					}
+					else
+					{
+						handleSubmitFailure(scope);
+					}
+				});
+		}
+		catch(e)
+		{
+			log(e);
+			handleSubmitFailure(scope);
+		}
+		return false;
 	}
 
 	ns.ModuleLoginForm = ns.ModuleAbstract.extend({
-		init: function ()
+		init: function (settings)
 		{
+			var scope = this;
+
 			var $form = $("<form/>");
+			this._$messageDiv = $("<div/>");
+			$form.append(this._$messageDiv);
 			var $table = $("<table/>");
 			$form.append($table);
 			
 			appendInputField($table, "Login", {type: "text", size: "30", name: "login"});
 			appendInputField($table, "Password", {type: "password", size: "30", name: "password"});
 			appendInputField($table, "&nbsp;", {type: "submit", value: "Submit"}, "submitTD");
-			
+			$form.submit(function (){return handleSubmit(scope, this)});
 			this._$form = $form;
+			
+			
+			this._dispatcher = new ns.EventDispatcher(scope);
+			this._dispatcher.addListener(EVT_LOGGED_IN, settings.onLogin);
 		},
 
 		appendTo: function ($div)

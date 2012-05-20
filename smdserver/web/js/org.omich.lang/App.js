@@ -22,7 +22,7 @@
 					pageId: "about",
 					authType: ns.AuthSettings.TYPE_DOESNT_MATTER
 				}],
-				onTabClick: function(evt)
+				onTabClick: function (evt)
 				{
 					scope._pageController.activatePage(evt.pageId);
 				}
@@ -36,7 +36,7 @@
 						authType: ns.AuthSettings.TYPE_NO_AUTH,
 						contentPanelConstructor: ns.ModuleLoginForm,
 						contentPanelSettings: {
-							message: "Welcome to LangOmich"
+							onLogin: function (){scope.updateIsLoggedIn(true);}
 						}
 					},{
 						pageId: "register",
@@ -61,7 +61,7 @@
 				} 
 			});
 
-			ns.ServerApi.callIsLoggedIn(function(result)
+			ns.ServerApi.callIsLoggedIn(function (result)
 			{
 				scope.updateIsLoggedIn(result);
 			});

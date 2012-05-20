@@ -5,6 +5,7 @@
 	
 	var PREFIX = "/smdserver/servlet/";
 	var ACTION_IS_LOGGED_IN = "isLoggedIn";
+	var ACTION_LOGIN       = "login";
 	
 	var callRequest = function (action, data, onSuccess, onError)
 	{
@@ -22,13 +23,25 @@
 		callIsLoggedIn: function (onResult)
 		{
 			callRequest(ACTION_IS_LOGGED_IN, null,
-				function(event, textStatus, response)
+				function (event, textStatus, response)
 				{
 					var prepared = unescapeFromJavaString(response.responseText.trim());
 					var obj = JSON.parse(prepared);
 					onResult(obj.isLoggedIn);
 				}, 
-				function(){onResult(false);});
+				function (){onResult(false);});
+		},
+		
+		callLogin: function (login, password, onResult)
+		{
+			callRequest(ACTION_LOGIN, {login: login, password: password},
+				function (event, textStatus, response)
+				{
+					var prepared = unescapeFromJavaString(response.responseText.trim());
+					var obj = JSON.parse(prepared);
+					onResult(obj.success);
+				},
+				function (){onResult(false);});
 		}
 	};
 })();
