@@ -1,6 +1,7 @@
 package org.omich.lang.SQLite;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -120,12 +121,18 @@ public class QueryWords implements IQueryWords{
 		ListIterator<Word> iter = words.listIterator();
 		
 		while(iter.hasNext()){
-			createWord(iter.next());
+			Word currentWord = iter.next();
+			
+			if(!currentWord.getTranslation().isEmpty()){
+				createWord(currentWord);
+			}
+			
 		}
 	}
 	
 	public void deleteWord(Word word) {
 		if(word.getInServer()){
+			word.setModified(new Date().getTime());
 			toDel(word);
 		}else{
 			delWord(word);
@@ -200,8 +207,4 @@ public class QueryWords implements IQueryWords{
 			}
 		}
 	}
-
-	
-	
-	
 }

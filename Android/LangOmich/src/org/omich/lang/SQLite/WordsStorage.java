@@ -157,7 +157,7 @@ public class WordsStorage implements IWordsStorage{
 			Language inBase = findLanguage(currentLanguage, FIND_BY_SERVER_ID);
 			
 			if(inBase != null){
-					
+	
 				IQueryLanguage queryLanguage = new QueryLanguage(wordsStorage, inBase);
 				IQueryWords queryWords = queryLanguage.getQueryWords();
 					
@@ -171,11 +171,9 @@ public class WordsStorage implements IWordsStorage{
 				}
 				
 			}else{
-				
 				inBase = findLanguage(currentLanguage, FIND_BY_NAME);
 				
 				if(inBase != null){
-					
 					IQueryLanguage queryLanguage = new QueryLanguage(wordsStorage, inBase);
 					
 					String server_id = inBase.getServerId();
@@ -192,7 +190,7 @@ public class WordsStorage implements IWordsStorage{
 					int id = (int) _create(currentLanguage);
 					currentLanguage.setId(id);
 					
-					IQueryLanguage queryLanguage = new QueryLanguage(wordsStorage, inBase);
+					IQueryLanguage queryLanguage = new QueryLanguage(wordsStorage, currentLanguage);
 					IQueryWords queryWords = queryLanguage.getQueryWords();
 					queryWords.createWords(currentLanguage.getWords());
 				}
