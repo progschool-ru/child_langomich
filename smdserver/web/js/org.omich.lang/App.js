@@ -65,7 +65,9 @@
 			});
 			
 			this._$userPanel = $("#org-omich-lang-userPanel");
-			this._userPanel = new ns.ModuleUserPanel(this._$userPanel);
+			this._userPanel = new ns.ModuleUserPanel({
+					onLogout:function (){scope.updateIsLoggedIn(false);}
+				}, this._$userPanel);
 			
 			scope.updateIsLoggedIn(false);
 

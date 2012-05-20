@@ -5,7 +5,8 @@
 	
 	var PREFIX = "/smdserver/servlet/";
 	var ACTION_IS_LOGGED_IN = "isLoggedIn";
-	var ACTION_LOGIN       = "login";
+	var ACTION_LOGIN        = "login";
+	var ACTION_LOGOUT       = "logout";
 	
 	var callRequest = function (action, data, onSuccess, onError)
 	{
@@ -34,7 +35,19 @@
 		
 		callLogin: function (login, password, onResult)
 		{
-			callRequest(ACTION_LOGIN, {login: login, password: password},
+			callRequest(ACTION_LOGOUT, {login: login, password: password},
+				function (event, textStatus, response)
+				{
+					var prepared = unescapeFromJavaString(response.responseText.trim());
+					var obj = JSON.parse(prepared);
+					onResult(obj.success);
+				},
+				function (){onResult(false);});
+		},
+		
+		callLogout: function (onResult)
+		{
+			callRequest(ACTION_LOGOUT, null,
 				function (event, textStatus, response)
 				{
 					var prepared = unescapeFromJavaString(response.responseText.trim());

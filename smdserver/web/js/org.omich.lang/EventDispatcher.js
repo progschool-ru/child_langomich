@@ -50,7 +50,10 @@ ns.EventDispatcher = org.omich.Class.extend({
 		var arr = this._listeners[idEvent];
 		if(arr)
 		{
-			event.currenTarget = this._target || event.target;
+			if(event)
+			{
+				event.currenTarget = this._target || event.target;
+			}
 			arr.forEach(function (elem)
 			{
 				elem(event);
