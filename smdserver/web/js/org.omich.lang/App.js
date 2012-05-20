@@ -34,7 +34,7 @@
 						pageId: "login",
 						title: "Login",
 						authType: ns.AuthSettings.TYPE_NO_AUTH,
-						contentPanelConstructor: ns.MessagePanel,
+						contentPanelConstructor: ns.ModuleLoginForm,
 						contentPanelSettings: {
 							message: "Welcome to LangOmich"
 						}
@@ -42,7 +42,7 @@
 						pageId: "register",
 						title: "Register",
 						authType: ns.AuthSettings.TYPE_NO_AUTH,
-						contentPanelConstructor: ns.MessagePanel,
+						contentPanelConstructor: ns.ModuleMessagePanel,
 						contentPanelSettings: {
 							message: "Try it yourself"
 						}
@@ -50,7 +50,7 @@
 						pageId: "about",
 						title: "About",
 						authType: ns.AuthSettings.TYPE_DOESNT_MATTER,
-						contentPanelConstructor: ns.MessagePanel,
+						contentPanelConstructor: ns.ModuleMessagePanel,
 						contentPanelSettings: {
 							message: "It's the best site in the world"
 						}

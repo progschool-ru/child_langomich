@@ -2,7 +2,7 @@
 {
 	var ns = org.omich.nsSelf("lang");
 
-	ns.MessagePanel = org.omich.Class.extend({
+	ns.ModuleMessagePanel = ns.ModuleAbstract.extend({
 		init: function (settings)
 		{
 			this._message = settings.message;
