@@ -2,9 +2,11 @@
 {
 	var ns = org.omich.nsSelf("lang");
 
-	ns.ModuleUserPanel = org.omich.Class.extend({
-		init: function ($div, settings)
+	ns.ModuleUserPanel = ns.ModuleAbstract.extend({
+		init: function ($div)
 		{
+			this._super(null);
+
 			var $liProfile = $("<li/>");
 			$liProfile.addClass("header-user-profile");
 			var $aProfile = $("<a/>");
@@ -24,7 +26,17 @@
 			$ul.append($liProfile);
 			$ul.append($liLogout);
 			
-			$div.append($ul);
+			this._$ul = $ul;
+			
+			if($div)
+			{
+				this.appendTo($div);
+			}
+		},
+		
+		appendTo: function ($div)
+		{
+			$div.append(this._$ul);
 		}
 	});
 })();

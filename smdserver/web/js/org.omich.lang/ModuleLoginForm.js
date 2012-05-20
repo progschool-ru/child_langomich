@@ -59,9 +59,9 @@
 	}
 
 	ns.ModuleLoginForm = ns.ModuleAbstract.extend({
-		init: function (settings)
+		init: function (settings, $div)
 		{
-			var scope = this;
+			this._super(settings);
 
 			var $form = $("<form/>");
 			this._$messageDiv = $("<div/>");
@@ -75,8 +75,13 @@
 			this._$form = $form;
 			
 			
-			this._dispatcher = new ns.EventDispatcher(scope);
+			this._dispatcher = new ns.EventDispatcher(this);
 			this._dispatcher.addListener(EVT_LOGGED_IN, settings.onLogin);
+			
+			if($div)
+			{
+				this.appendTo($div);
+			}
 		},
 
 		appendTo: function ($div)

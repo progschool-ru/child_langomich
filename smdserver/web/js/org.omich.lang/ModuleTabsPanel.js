@@ -81,17 +81,28 @@
 		}
 	}
 	
-	ns.ModuleTabsPanel = org.omich.Class.extend({
-		init: function ($div, settings)
+	ns.ModuleTabsPanel = ns.ModuleAbstract.extend({
+		init: function (settings, $div)
 		{
+			this._super(settings);
+
 			this._isLoggedIn = false;
 			this._dispatcher = new ns.EventDispatcher(this);
-			this._$div = $div;
-			this._tabs = [];
-			initTabs(this, settings.tabs, $div);
-			updateTabs(this);
-			
+			this._settings = settings;
+
 			this._dispatcher.addListener(EVT_TAB_CLICKED, settings.onTabClick);
+
+			if($div)
+			{
+				this.appendTo($div);
+			}
+		},
+		
+		appendTo: function ($div)
+		{
+			this._tabs = [];
+			initTabs(this, this._settings.tabs, $div);
+			updateTabs(this);
 		},
 
 		getDispatcher: function () {return this._dispatcher;},

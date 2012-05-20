@@ -8,7 +8,7 @@
 		{
 			var scope = this;
 			var $tabsPanel = $("#org-omich-lang-tabsPanel");
-			this._tabsPanel = new ns.ModuleTabsPanel($tabsPanel, {
+			this._tabsPanel = new ns.ModuleTabsPanel( {
 				tabs:[{
 					title: "Login",
 					pageId: "login",
@@ -26,7 +26,7 @@
 				{
 					scope._pageController.activatePage(evt.pageId);
 				}
-			});
+			}, $tabsPanel);
 			
 			var $contentPanel = $("#org-omich-lang-contentPanel");
 			this._pageController = new ns.PageController($contentPanel, {
