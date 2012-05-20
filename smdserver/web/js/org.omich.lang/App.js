@@ -36,7 +36,10 @@
 						authType: ns.AuthSettings.TYPE_NO_AUTH,
 						contentPanelConstructor: ns.ModuleLoginForm,
 						contentPanelSettings: {
-							onLogin: function (){scope.updateIsLoggedIn(true);}
+							onLogin: function ()
+							{
+								scope.updateIsLoggedIn(true);
+							}
 						}
 					},{
 						pageId: "register",
@@ -60,6 +63,11 @@
 					scope._tabsPanel.setSelectedPageId(evt.pageId);
 				} 
 			});
+			
+			this._$userPanel = $("#org-omich-lang-userPanel");
+			this._userPanel = new ns.ModuleUserPanel(this._$userPanel);
+			
+			scope.updateIsLoggedIn(false);
 
 			ns.ServerApi.callIsLoggedIn(function (result)
 			{
@@ -71,6 +79,8 @@
 		{
 			this._pageController.updateIsLoggedIn(isLoggedIn);
 			this._tabsPanel.updateIsLoggedIn(isLoggedIn);
+
+			this._$userPanel.css("display", isLoggedIn ? "block" : "none");
 		}
 	});
 	

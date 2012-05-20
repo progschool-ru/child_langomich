@@ -72,7 +72,6 @@
 			appendInputField($table, "Login", {type: "text", size: "30", name: "login"});
 			appendInputField($table, "Password", {type: "password", size: "30", name: "password"});
 			appendInputField($table, "&nbsp;", {type: "submit", value: "Submit"}, "submitTD");
-			$form.submit(function (){return handleSubmit(scope, this)});
 			this._$form = $form;
 			
 			
@@ -82,6 +81,8 @@
 
 		appendTo: function ($div)
 		{
+			var scope = this;
+			this._$form.submit(function (){return handleSubmit(scope, this)});
 			$div.append(this._$form);
 		},
 
