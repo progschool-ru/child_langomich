@@ -15,5 +15,5 @@ public interface IWordsStorage {
 	public List<Language> getLanguages();
 	public IQueryLanguage getQueryLanguage(int languageId);
 	public long create(Language language);
-	public void synchronization(List<Language> languages);
+	public void synchronization(List<Language> newLanguages, List<Language> oldLanguage);
 }

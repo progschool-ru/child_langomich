@@ -207,4 +207,17 @@ public class QueryWords implements IQueryWords{
 			}
 		}
 	}
+
+	public void setInServer(List<Word> words) {
+		
+		ListIterator<Word> iter = words.listIterator();
+		
+		while(iter.hasNext()){
+			
+			Word currentWord = iter.next();
+			currentWord.setInServer(Word.WORD_IS_LOAD_TO_SERVER);
+			updateWord(currentWord, UPDATE_BY_ID);
+		}
+		
+	}
 }

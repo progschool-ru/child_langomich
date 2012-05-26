@@ -146,9 +146,12 @@ public class WordsStorage implements IWordsStorage{
 		return -1;
 	}
 
-	public void synchronization(List<Language> languages) {
+	public void synchronization(List<Language> newLanguages, List<Language> oldLanguage) {
 		
-		ListIterator<Language> iter = languages.listIterator();
+		//после отправки удаленных слов на сервер удаляем их отсюда
+		wordsStorage.delete(MySQLiteHelper.WORDS_TABLE, MySQLiteHelper.TRANSLATION+" = null", null);
+		
+		ListIterator<Language> iter = newLanguages.listIterator();
 		
 		while(iter.hasNext()){
 			
@@ -196,6 +199,15 @@ public class WordsStorage implements IWordsStorage{
 				}
 				
 			}
+		}
+		
+		//отправленым словам ставим word_in_server = 1
+		iter = oldLanguage.listIterator();
+		while(iter.hasNext()){
+			Language currentLanguage = iter.next();
+			IQueryLanguage queryLanguage = new QueryLanguage(wordsStorage, currentLanguage);
+			IQueryWords queryWords = queryLanguage.getQueryWords();
+			queryWords.setInServer(currentLanguage.getWords());
 		}
 		
 	}
