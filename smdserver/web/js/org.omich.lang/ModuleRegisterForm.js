@@ -10,7 +10,6 @@
 	var SUBMIT_CONTAINER_CLASS = "submitTD";
 	
 	var MESSAGE_URL  = "smd://page/message";
-	var REGISTER_URL = "smd://action/register";
 	
 	var EMAIL_REGEX = "[a-z0-9._%-]+@[a-z0-9.-]+\\.[a-z]{2,4}";
 	var LOGIN_REGEX = "^[a-zA-Z][\\w-]+";
@@ -67,36 +66,20 @@
 		return createPair(label, aboutArea, description);		
 	};
 	
-	var handleAnswer = function(scope, answer)
+	var handleAnswer = function(scope, success, key)
 	{
-		log(answer);
+		log(success);
+		log(key);
 //		var url = scope.serverModule.getUrl(this.MESSAGE_URL);
 //		location = url + "?key=" + answer.key;
 	};
 	
 	var handleSubmit = function(scope, form)
 	{
-		try
-		{
-			log("submit");
-//			jQuery.ajax(REGISTER_URL,
-//				{
-//					async : true,
-//					context : scope,
-//					data : {
-//						login:    form.login.value,
-//						password: form.password.value,
-//						email:    form.email.value,
-//						about:    form.about.value
-//					},
-//					success : function(answer){handleAnswer(scope, answer)},
-//					error : function(answer)
-//					{
-//						alert(answer.message);
-//					}
-//				});
-		}
-		catch(e){log(e);}
+		ns.ServerApi.callRegister(form.login.value, form.password.value,
+			form.email.value, form.about.value, 
+			function(success, key){handleAnswer(scope, success, key);});
+
 		return false;
 	};
 	

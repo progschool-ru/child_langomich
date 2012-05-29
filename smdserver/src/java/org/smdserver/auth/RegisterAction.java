@@ -51,7 +51,7 @@ public class RegisterAction extends SmdAction
 			else
 			{
 				success = false;
-				setAnswerMessage("Registration request wasn't created"); //TODO: (3.low) Move to locale;
+				setAnswerMessage("Registration request was not created"); //TODO: (3.low) Move to locale;
 			}							
 		}
 		else

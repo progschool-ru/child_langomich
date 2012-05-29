@@ -45,7 +45,7 @@
 						pageId: "register",
 						title: "Register",
 						authType: ns.AuthSettings.TYPE_NO_AUTH,
-						contentPanelConstructor: ns.ModuleMessagePanel,
+						contentPanelConstructor: ns.ModuleRegisterForm,
 						contentPanelSettings: {
 							message: "Try it yourself"
 						}

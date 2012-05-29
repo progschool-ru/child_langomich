@@ -44,7 +44,7 @@ public class ConfirmRegistrationAction extends SmdAction
 			
 			if(!wasNotified)
 			{
-				setAnswerMessage("Notification wasn't sent");
+				setAnswerMessage("Notification was not sent");
 			}
 			
 			setAnswerParam(ActionParams.KEY, AnswerKey.REGISTER_ACCOUNT_WAS_CREATED.getKey());
