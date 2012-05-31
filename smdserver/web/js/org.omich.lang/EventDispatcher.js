@@ -3,9 +3,8 @@
 var ns = org.omich.nsSelf("lang");
 	
 ns.EventDispatcher = org.omich.Class.extend({
-	init: function (target)
+	init: function ()
 	{
-		this._target = target;
 		this.addEventListener = this.addListener;
 	},
 
@@ -50,10 +49,6 @@ ns.EventDispatcher = org.omich.Class.extend({
 		var arr = this._listeners[idEvent];
 		if(arr)
 		{
-			if(event)
-			{
-				event.currenTarget = this._target || event.target;
-			}
 			arr.forEach(function (elem)
 			{
 				elem(event);

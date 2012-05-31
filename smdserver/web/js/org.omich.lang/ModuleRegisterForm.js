@@ -3,14 +3,13 @@
 	var ns = org.omich.nsSelf("lang");
 	var log = org.omich.log;
 	
+	var EVT_SHOWKEY = "showKey";
 	
 	var TEXT_INPUT_CLASS  = "b-register_input";
 	var AREA_CLASS        = "b-register_area";
 	var DESCRIPTION_CLASS = "b-register_description";
 	var SUBMIT_CONTAINER_CLASS = "submitTD";
-	
-	var MESSAGE_URL  = "smd://page/message";
-	
+
 	var EMAIL_REGEX = "[a-z0-9._%-]+@[a-z0-9.-]+\\.[a-z]{2,4}";
 	var LOGIN_REGEX = "^[a-zA-Z][\\w-]+";
 	
@@ -67,11 +66,15 @@
 	};
 	
 	var handleAnswer = function(scope, success, key)
-	{
-		log(success);
-		log(key);
-//		var url = scope.serverModule.getUrl(this.MESSAGE_URL);
-//		location = url + "?key=" + answer.key;
+	{		
+		if(key)
+		{
+			scope._dispatcher.dispatchEvent(EVT_SHOWKEY, key);
+		}
+		else
+		{
+			alert("Error!");
+		}
 	};
 	
 	var handleSubmit = function(scope, form)
@@ -110,6 +113,9 @@
 		init: function (settings, $div)
 		{
 			this._super(settings);
+			
+			this._dispatcher = new ns.EventDispatcher(this);
+			this._dispatcher.addListener(EVT_SHOWKEY, settings.onRegisterAnswer);
 			
 			if($div)
 			{

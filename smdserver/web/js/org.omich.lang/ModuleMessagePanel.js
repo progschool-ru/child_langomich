@@ -6,16 +6,23 @@
 		init: function (settings, $div)
 		{
 			this._super(settings);
+			this._$messageDiv = $("<div/>");
+			
+			if(!settings || !settings.message)
+				return;
 
-			this._message = settings.message;
+			this._$messageDiv.append(settings.message);
+
 			if($div)
 			{
 				this.appendTo($div);
 			}
 		},
-		appendTo: function ($div)
+		appendTo: function ($div){$div.append(this._$messageDiv);},
+		setMessage: function (message)
 		{
-			$div.append(this._message);
+			this._$messageDiv.empty();
+			this._$messageDiv.append(message);
 		},
 		refresh: function (){}
 	});

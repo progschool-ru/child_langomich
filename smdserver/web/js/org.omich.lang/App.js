@@ -3,6 +3,11 @@
 	var ns = org.omich.nsSelf("lang");
 	var log = org.omich.log;
 	
+	var PID_MESSAGE  = "message";
+	var PID_LOGIN    = "login";
+	var PID_REGISTER = "register";
+	var PID_ABOUT    = "about";
+	
 	ns.App = org.omich.Class.extend({
 		init: function ()
 		{
@@ -11,15 +16,15 @@
 			this._tabsPanel = new ns.ModuleTabsPanel( {
 				tabs:[{
 					title: "Login",
-					pageId: "login",
+					pageId: PID_LOGIN,
 					authType: ns.AuthSettings.TYPE_NO_AUTH
 				},{
 					title: "Register",
-					pageId: "register",
+					pageId: PID_REGISTER,
 					authType: ns.AuthSettings.TYPE_NO_AUTH
 				},{
 					title: "About",
-					pageId: "about",
+					pageId: PID_ABOUT,
 					authType: ns.AuthSettings.TYPE_DOESNT_MATTER
 				}],
 				onTabClick: function (evt)
@@ -31,7 +36,7 @@
 			var $contentPanel = $("#org-omich-lang-contentPanel");
 			this._pageController = new ns.PageController($contentPanel, {
 				pages:[{
-						pageId: "login",
+						pageId: PID_LOGIN,
 						title: "Login",
 						authType: ns.AuthSettings.TYPE_NO_AUTH,
 						contentPanelConstructor: ns.ModuleLoginForm,
@@ -42,21 +47,30 @@
 							}
 						}
 					},{
-						pageId: "register",
+						pageId: PID_REGISTER,
 						title: "Register",
 						authType: ns.AuthSettings.TYPE_NO_AUTH,
 						contentPanelConstructor: ns.ModuleRegisterForm,
 						contentPanelSettings: {
-							message: "Try it yourself"
+							onRegisterAnswer: function (key)
+							{
+								scope.showMessagePage(key);
+								scope.refreshIsLoggedIn();
+							}
 						}
 					},{
-						pageId: "about",
+						pageId: PID_ABOUT,
 						title: "About",
 						authType: ns.AuthSettings.TYPE_DOESNT_MATTER,
 						contentPanelConstructor: ns.ModuleMessagePanel,
 						contentPanelSettings: {
 							message: "It's the best site in the world"
 						}
+					},{
+						pageId: PID_MESSAGE,
+						title: "Messages",
+						authType: ns.AuthSettings.TYPE_DOESNT_MATTER,
+						contentPanelConstructor: ns.ModuleMessagePanel
 					}],
 				onPageChanged: function (evt)
 				{
@@ -71,6 +85,12 @@
 			
 			scope.updateIsLoggedIn(false);
 
+			this.refreshIsLoggedIn();
+		},
+		
+		refreshIsLoggedIn: function ()
+		{
+			var scope = this;
 			ns.ServerApi.callIsLoggedIn(function (result)
 			{
 				scope.updateIsLoggedIn(result);
@@ -83,6 +103,12 @@
 			this._tabsPanel.updateIsLoggedIn(isLoggedIn);
 
 			this._$userPanel.css("display", isLoggedIn ? "block" : "none");
+		},
+		
+		showMessagePage: function (key)
+		{
+			this._pageController.getPageById(PID_MESSAGE).setMessage(key);
+			this._pageController.activatePage(PID_MESSAGE);
 		}
 	});
 	

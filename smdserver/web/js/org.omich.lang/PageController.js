@@ -44,6 +44,24 @@
 			this.activatePage();
 		},
 		
+		getPageById: function (pageId)
+		{
+			if(!this._pages[pageId])
+			{
+				for(var i = 0; i < this._settings.pages.length; ++i)
+				{
+					var ps = this._settings.pages[i];
+					if(ps.pageId == pageId)
+					{
+						this._pages[pageId] = new ps.contentPanelConstructor(ps.contentPanelSettings);
+						break;
+					}
+				}
+			}
+
+			return this._pages[pageId];
+		},
+		
 		activatePage: function (pageId)
 		{
 			pageId = pageId || this._pageId;	
