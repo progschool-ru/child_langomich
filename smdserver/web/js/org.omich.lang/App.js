@@ -3,10 +3,12 @@
 	var ns = org.omich.nsSelf("lang");
 	var log = org.omich.log;
 	
-	var PID_MESSAGE  = "message";
-	var PID_LOGIN    = "login";
-	var PID_REGISTER = "register";
 	var PID_ABOUT    = "about";
+	var PID_LOGIN    = "login";
+	var PID_MESSAGE  = "message";
+	var PID_REGISTER = "register";
+	var PID_WORDS    = "words";
+	
 	
 	ns.App = org.omich.Class.extend({
 		init: function ()
@@ -22,6 +24,10 @@
 					title: "Register",
 					pageId: PID_REGISTER,
 					authType: ns.AuthSettings.TYPE_NO_AUTH
+				},{
+					title: "Words",
+					pageId: PID_WORDS,
+					authType: ns.AuthSettings.TYPE_AUTH
 				},{
 					title: "About",
 					pageId: PID_ABOUT,
@@ -66,6 +72,11 @@
 						contentPanelSettings: {
 							message: "It's the best site in the world"
 						}
+					},{
+						pageId: PID_WORDS,
+						title: "Words",
+						authType: ns.AuthSettings.TYPE_AUTH,
+						contentPanelConstructor: ns.ModuleWordsPanel
 					},{
 						pageId: PID_MESSAGE,
 						title: "Messages",

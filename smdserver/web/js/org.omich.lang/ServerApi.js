@@ -4,6 +4,7 @@
 	var unescapeFromJavaString = org.omich.Unicode.quickUnescapeFromUtf16;
 	
 	var PREFIX = "/smdserver/servlet/";
+	var ACTION_GET_WORDS    = "getWords";
 	var ACTION_IS_LOGGED_IN = "isLoggedIn";
 	var ACTION_LOGIN        = "login";
 	var ACTION_LOGOUT       = "logout";
@@ -76,6 +77,26 @@
 					catch(e)
 					{
 						log(e)
+						onResult(false);
+					}
+				},
+				function (){onResult(false);});
+		},
+		
+		callGetWords: function (onResult)
+		{
+			callRequest(ACTION_GET_WORDS, null,
+				function (event, textStatus, response)
+				{
+					try
+					{
+						var prepared = unescapeFromJavaString(response.responseText.trim());
+						var obj = JSON.parse(prepared);
+						onResult(obj.success ? obj.languages : false);
+					}
+					catch (e)
+					{
+						log(e);
 						onResult(false);
 					}
 				},
