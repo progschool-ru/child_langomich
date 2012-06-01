@@ -26,11 +26,12 @@
 	}
 
 	ns.PageController = org.omich.Class.extend({
-		init: function ($div, settings)
+		init: function ($contentDiv, $sideDiv, settings)
 		{
 			this._pages = {};
 			this._settings = settings;
-			this._$div = $div;
+			this._$div = $contentDiv;
+			this._$sideDiv = $sideDiv;
 			this._dispatcher = new ns.EventDispatcher(this);
 			this._dispatcher.addListener(EVT_PAGE_CHANGED, settings.onPageChanged);
 			this._isLoggedIn = false;
@@ -53,7 +54,7 @@
 					var ps = this._settings.pages[i];
 					if(ps.pageId == pageId)
 					{
-						this._pages[pageId] = new ps.contentPanelConstructor(ps.contentPanelSettings);
+						this._pages[pageId] = new ns.Page(ps);
 						break;
 					}
 				}
@@ -68,12 +69,13 @@
 			pageId = checkAuth(this, pageId);
 			
 			this._$div.empty();
+			this._$sideDiv.empty();
 
 			window.location.hash = pageId;
 
 			if(this._pages[pageId])
 			{
-				this._pages[pageId].appendTo(this._$div);
+				this._pages[pageId].appendTo(this._$div, this._$sideDiv);
 			}
 			else
 			{
@@ -82,8 +84,8 @@
 					var ps = this._settings.pages[i]
 					if(ps.pageId == pageId)
 					{
-						this._pages[pageId] = new ps.contentPanelConstructor(ps.contentPanelSettings);
-						this._pages[pageId].appendTo(this._$div);
+						this._pages[pageId] = new ns.Page(ps);
+						this._pages[pageId].appendTo(this._$div, this._$sideDiv);
 						break;
 					}
 				}

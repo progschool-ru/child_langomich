@@ -39,8 +39,10 @@
 				}
 			}, $tabsPanel);
 			
-			var $contentPanel = $("#org-omich-lang-contentPanel");
-			this._pageController = new ns.PageController($contentPanel, {
+			var $contentDiv = $("#org-omich-lang-contentPanel");
+			var $sideDiv = $("#org-omich-lang-sidePanel");
+			this._pageController = new ns.PageController($contentDiv, $sideDiv,
+			{
 				pages:[{
 						pageId: PID_LOGIN,
 						title: "Login",
@@ -68,7 +70,8 @@
 						pageId: PID_WORDS,
 						title: "Words",
 						authType: ns.AuthSettings.TYPE_AUTH,
-						contentPanelConstructor: ns.ModuleWordsPanel
+						contentPanelConstructor: ns.ModuleWordsPanel,
+						sidePanelConstructor: ns.ModuleAddWordsPanel
 					},{
 						pageId: PID_ABOUT,
 						title: "About",
@@ -118,7 +121,7 @@
 		
 		showMessagePage: function (key)
 		{
-			this._pageController.getPageById(PID_MESSAGE).setMessage(key);
+			this._pageController.getPageById(PID_MESSAGE).getContentPanel().setMessage(key);
 			this._pageController.activatePage(PID_MESSAGE);
 		}
 	});
