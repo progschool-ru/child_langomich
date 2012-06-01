@@ -93,7 +93,7 @@
 					{
 						var prepared = unescapeFromJavaString(response.responseText.trim());
 						var obj = JSON.parse(prepared);
-						onResult(obj.success ? obj.languages : false);
+						onResult(obj.success ? obj : false);
 					}
 					catch (e)
 					{

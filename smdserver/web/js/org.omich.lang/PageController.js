@@ -74,7 +74,6 @@
 			if(this._pages[pageId])
 			{
 				this._pages[pageId].appendTo(this._$div);
-				this._pages[pageId].refresh();
 			}
 			else
 			{
