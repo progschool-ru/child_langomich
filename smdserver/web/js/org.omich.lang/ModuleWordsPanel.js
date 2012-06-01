@@ -43,6 +43,10 @@
 					{
 						$tr.show();
 					}
+					else
+					{
+						$tr.remove();
+					}
 				});
 		});
 
