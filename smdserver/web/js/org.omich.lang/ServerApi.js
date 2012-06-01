@@ -1,6 +1,7 @@
 (function ()
 {
-	var ns = org.omich.nsSelf("lang");	
+	var ns = org.omich.nsSelf("lang");
+	var log = org.omich.log;
 	var unescapeFromJavaString = org.omich.Unicode.quickUnescapeFromUtf16;
 	
 	var PREFIX = "/smdserver/servlet/";

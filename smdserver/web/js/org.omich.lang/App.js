@@ -65,6 +65,11 @@
 							}
 						}
 					},{
+						pageId: PID_WORDS,
+						title: "Words",
+						authType: ns.AuthSettings.TYPE_AUTH,
+						contentPanelConstructor: ns.ModuleWordsPanel
+					},{
 						pageId: PID_ABOUT,
 						title: "About",
 						authType: ns.AuthSettings.TYPE_DOESNT_MATTER,
@@ -72,11 +77,6 @@
 						contentPanelSettings: {
 							message: "It's the best site in the world"
 						}
-					},{
-						pageId: PID_WORDS,
-						title: "Words",
-						authType: ns.AuthSettings.TYPE_AUTH,
-						contentPanelConstructor: ns.ModuleWordsPanel
 					},{
 						pageId: PID_MESSAGE,
 						title: "Messages",
