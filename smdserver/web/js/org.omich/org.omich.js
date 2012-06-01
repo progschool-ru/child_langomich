@@ -22,5 +22,5 @@ org.omich = {
 	},
 	
 	nsSelf: function (namespace) {return org.omich.ns(namespace, this);},
-	log: function (value) {console.log(value);}
+	log: function (value) {console.log(value);},
 }

@@ -18,14 +18,14 @@ ns.Unicode = {
 		for (var i = 0; i < uni.length; i++)
 		{
 			var v = uni.charCodeAt(i);
-			lit = lit + this.StringToUni16._uni2j(v);
+			lit = lit + ns.Unicode.StringToUni16._uni2j(v);
 		}
 		return lit;
 	},
 
 	unescapeFromUtf16 : function (value)
 	{
-		var converter = new this.UniToString.Converter(value, 4);
+		var converter = new ns.Unicode.UniToString.Converter(value, 4);
 		return converter.parse();
 	},
 

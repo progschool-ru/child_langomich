@@ -2,9 +2,12 @@
 {
 	var ns = org.omich.nsSelf("lang");
 	var log = org.omich.log;
+	var isArray = jQuery.isArray;
 	var unescapeFromJavaString = org.omich.Unicode.quickUnescapeFromUtf16;
+	var escapeToJavaString = org.omich.Unicode.escapeToUtf16;
 	
 	var PREFIX = "/smdserver/servlet/";
+	var ACTION_DELETE_WORDS    = "deleteWords";
 	var ACTION_GET_WORDS    = "getWords";
 	var ACTION_IS_LOGGED_IN = "isLoggedIn";
 	var ACTION_LOGIN        = "login";
@@ -21,7 +24,13 @@
 			success: onSuccess,
 			error: onError
 		});
-	}
+	};
+	
+	var parseJson = function (response)
+	{
+		var prepared = unescapeFromJavaString(response.responseText.trim());
+		return JSON.parse(prepared);
+	};
 
 	ns.ServerApi = {
 		callIsLoggedIn: function (onResult)
@@ -31,8 +40,7 @@
 				{
 					try
 					{
-						var prepared = unescapeFromJavaString(response.responseText.trim());
-						var obj = JSON.parse(prepared);
+						var obj = parseJson(response);
 						onResult(obj.isLoggedIn);
 					}
 					catch (e)
@@ -51,8 +59,7 @@
 				{
 					try
 					{
-						var prepared = unescapeFromJavaString(response.responseText.trim());
-						var obj = JSON.parse(prepared);
+						var obj = parseJson(response);
 						onResult(obj.success);
 					}
 					catch (e)
@@ -71,8 +78,7 @@
 				{
 					try
 					{
-						var prepared = unescapeFromJavaString(response.responseText.trim());
-						var obj = JSON.parse(prepared);
+						var obj = parseJson(response);
 						onResult(obj.success);
 					}
 					catch(e)
@@ -84,6 +90,23 @@
 				function (){onResult(false);});
 		},
 		
+		callDeleteWords: function (wordForeign, languageId, onResult)
+		{
+			var wordsParam = isArray(wordForeign) ? wordForeign : [wordForeign];
+			var strWordsParam = escapeToJavaString(JSON.stringify(wordsParam));
+			
+			callRequest(ACTION_DELETE_WORDS, {words:strWordsParam, languageId:languageId},
+					function(event, textStatus, response)
+					{
+						var obj = parseJson(response);
+						onResult(obj.success);
+					},
+					function(e)
+					{
+						onResult(false);
+					})
+		},
+		
 		callGetWords: function (onResult)
 		{
 			callRequest(ACTION_GET_WORDS, null,
@@ -91,8 +114,7 @@
 				{
 					try
 					{
-						var prepared = unescapeFromJavaString(response.responseText.trim());
-						var obj = JSON.parse(prepared);
+						var obj = parseJson(response);
 						onResult(obj.success ? obj : false);
 					}
 					catch (e)
@@ -116,8 +138,7 @@
 				{
 					try
 					{
-						var prepared = unescapeFromJavaString(response.responseText.trim());
-						var obj = JSON.parse(prepared);
+						var obj = parseJson(response);
 						onResult(obj.success, obj.key);
 					}
 					catch (e)

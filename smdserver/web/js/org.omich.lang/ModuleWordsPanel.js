@@ -16,22 +16,35 @@
 			.append(create$Th().append("Вес"));
 	};
 	
-	var appendWord = function ($table, word, language)
+	var appendWord = function ($table, word, languageName, languageId)
 	{
 		var $tr = $("<tr/>");
 		$table.append($tr);	
 		$tr.append($("<td/>").append(word.foreign))
 			.append($("<td/>").append(word.nativ))
-			.append($("<td/>").append(language))
+			.append($("<td/>").append(languageName))
 			.append($("<td/>").append(word.rating));
 			
 		var $delTd = $("<td/>");$tr.append($delTd);
 		var $delA = $("<a/>");$delTd.append($delA)
 		$delA.addClass("words-delete").append("delete");
-
-		var deleteHref="../deleteWords?languageId=47ae64ed-c67c-4d8f-ac08-fdeb7db0621b&words=[%22привет%22]&redirect=page%2Fwords"
+		var deleteHref="#deleteWords?languageId=" + languageId 
+			+ "&words=[%22" + word.foreign + "%22]";
 		$delA.attr("href", deleteHref);
+		$delA.click(function(event){event.preventDefault();});
 
+		$delTd.click(function(event)
+		{
+			$tr.hide();
+			ns.ServerApi.callDeleteWords(word.foreign, languageId,
+				function(success)
+				{
+					if(!success)
+					{
+						$tr.show();
+					}
+				});
+		});
 
 		$table.org_omich_lang_isEven = !$table.org_omich_lang_isEven;
 		$tr.addClass($table.org_omich_lang_isEven ? "even" : "odd");
@@ -45,7 +58,9 @@
 			for(var j = 0; j < lan.words.length; ++j)
 			{
 				var w = lan.words[j];
-				appendWord($table, {foreign:w.original, nativ: w.translation, rating:w.rating}, lan.name);
+				appendWord($table, 
+					{foreign:w.original, nativ: w.translation, rating:w.rating}, 
+					lan.name, lan.id);
 			}
 		}
 	};
