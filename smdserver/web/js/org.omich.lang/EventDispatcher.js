@@ -6,6 +6,7 @@ ns.EventDispatcher = org.omich.Class.extend({
 	init: function ()
 	{
 		this.addEventListener = this.addListener;
+		this._listeners = {};
 	},
 
 	addListener: function (idEvent, onEvent)
@@ -36,7 +37,7 @@ ns.EventDispatcher = org.omich.Class.extend({
 	{
 		if(idEvent)
 		{
-			this._listeners[idEvent] = undefinded;
+			delete this._listeners[idEvent];
 		}
 		else
 		{

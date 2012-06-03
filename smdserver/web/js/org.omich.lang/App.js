@@ -83,10 +83,8 @@
 						pageId: PID_ABOUT,
 						title: "About",
 						authType: ns.AuthSettings.TYPE_DOESNT_MATTER,
-						contentPanelConstructor: ns.ModuleMessagePanel,
-						contentPanelSettings: {
-							message: "It's the best site in the world"
-						}
+						contentPanelConstructor: ns.ModuleIFramePanel,
+						contentPanelSettings: {src: "about.html"}
 					},{
 						pageId: PID_MESSAGE,
 						title: "Messages",

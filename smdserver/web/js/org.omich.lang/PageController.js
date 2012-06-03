@@ -2,6 +2,7 @@
 {
 	var ns = org.omich.nsSelf("lang");
 	var EVT_PAGE_CHANGED = "pageChanged";
+	var EVT_DIV_RESIZED = "resized";
 	
 	var checkAuth = function (scope, pageId)
 	{
@@ -35,6 +36,13 @@
 			this._dispatcher = new ns.EventDispatcher(this);
 			this._dispatcher.addListener(EVT_PAGE_CHANGED, settings.onPageChanged);
 			this._isLoggedIn = false;
+			
+			var scope = this;
+			this._$div.getDispatcher = function(){return scope._dispatcher;}
+			$(window).resize(function()
+			{
+				scope._dispatcher.dispatchEvent(EVT_DIV_RESIZED);
+			});
 		},
 
 		getDispatcher: function () {return this._dispatcher;},
@@ -70,6 +78,7 @@
 			
 			this._$div.empty();
 			this._$sideDiv.empty();
+			this._dispatcher.removeListeners(EVT_DIV_RESIZED);
 
 			window.location.hash = pageId;
 
