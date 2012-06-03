@@ -130,6 +130,14 @@
 			));
 
 			appendPair(this, $wordsFieldset);
+			
+			this._$wordsFieldset = $wordsFieldset;
+		},
+		
+		refreshFields: function ()
+		{
+			this._$wordsFieldset.empty();
+			appendPair(this, this._$wordsFieldset);
 		}
 	});
 })();

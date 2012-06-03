@@ -101,6 +101,7 @@
 						scope._resetLanguages();
 					}
 				}
+				scope._words.refreshFields();
 			});
 		}
 		catch(e)
@@ -216,7 +217,7 @@
 			return $("<div/>").addClass(BUTTON_CONTAINER_CLASS);
 		}
 
-		new ns.ModuleAddWordsPanel.Words(//this.api, 
+		scope._words = new ns.ModuleAddWordsPanel.Words(//this.api, 
 						$form, createButtonContainer,
 						INPUT_NAME_FOREIGN,
 						INPUT_NAME_NATIV,
