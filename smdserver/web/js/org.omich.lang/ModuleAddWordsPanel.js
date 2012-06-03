@@ -79,7 +79,8 @@
 					words:words
 				}]
 		};
-		return this.api.escapeToJavaString(JSON.stringify(data));
+		//return this.api.escapeToJavaString(JSON.stringify(data));
+		return data;
 	};
 	
 	var sendRequest = function(data)
@@ -105,7 +106,11 @@
 		try
 		{
 			var data = getDataValue(scope, form);
-			sendRequest(data);
+			//sendRequest(data);
+			ns.ServerApi.callAddWords(data, function(success)
+			{
+				log(success);
+			});
 		}
 		catch(e)
 		{

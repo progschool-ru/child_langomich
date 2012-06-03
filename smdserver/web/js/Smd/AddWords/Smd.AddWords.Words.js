@@ -82,8 +82,8 @@ Smd.AddWords.Words.prototype = {
 		pair.div.append(pair.inputOriginal);
 		pair.div.append(pair.inputTranslation);
 		pair.div.addClass(this.PAIR_DIV_CLASS);
-		pair.inputOriginal.addClass(this.INPUT_ORIGINAL_CLASS);
-		pair.inputTranslation.addClass(this.INPUT_TRANSLATION_CLASS);
+		pair.inputOriginal.addClass(this.INPUT_FOREIGN_CLASS);
+		pair.inputTranslation.addClass(this.INPUT_NATIVE_CLASS);
 		pair.inputOriginal.addClass(this.PAIR_INPUT_CLASS);
 		pair.inputTranslation.addClass(this.PAIR_INPUT_CLASS);
 

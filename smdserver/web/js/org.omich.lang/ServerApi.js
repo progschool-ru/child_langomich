@@ -7,7 +7,8 @@
 	var escapeToJavaString = org.omich.Unicode.escapeToUtf16;
 	
 	var PREFIX = "/smdserver/servlet/";
-	var ACTION_DELETE_WORDS    = "deleteWords";
+	var ACTION_ADD_WORDS    = "addWords";
+	var ACTION_DELETE_WORDS = "deleteWords";
 	var ACTION_GET_WORDS    = "getWords";
 	var ACTION_IS_LOGGED_IN = "isLoggedIn";
 	var ACTION_LOGIN        = "login";
@@ -96,6 +97,22 @@
 			var strWordsParam = escapeToJavaString(JSON.stringify(wordsParam));
 			
 			callRequest(ACTION_DELETE_WORDS, {words:strWordsParam, languageId:languageId},
+					function(event, textStatus, response)
+					{
+						var obj = parseJson(response);
+						onResult(obj.success);
+					},
+					function(e)
+					{
+						onResult(false);
+					})
+		},
+		
+		callAddWords: function (data, onResult)
+		{
+			var dataStr = escapeToJavaString(JSON.stringify(data));
+
+			callRequest(ACTION_ADD_WORDS, {data: dataStr},
 					function(event, textStatus, response)
 					{
 						var obj = parseJson(response);

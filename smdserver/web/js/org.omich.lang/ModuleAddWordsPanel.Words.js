@@ -5,10 +5,10 @@
 	
 	var ANIMATION_SPEED         = "fast";
 	var ALINK_CLASS             = ns.ModuleAddWordsPanel.ALINK_CLASS;
-	var BUTTON_CONTAINER_CLASS  = ns.ModuleAddWordsPanel.BUTTON_CONTAINER_CLASS;
+//	var BUTTON_CONTAINER_CLASS  = ns.ModuleAddWordsPanel.BUTTON_CONTAINER_CLASS;
 	var ICON_BUTTON_CLASS       = "b-addWords_icon-button";
-	var INPUT_ORIGINAL_CLASS    = "b-addWords_text-input-original";
-	var INPUT_TRANSLATION_CLASS = "b-addWords_text-input-translation";
+	var INPUT_FOREIGN_CLASS     = "b-addWords_text-input-original";
+	var INPUT_NATIVE_CLASS      = "b-addWords_text-input-translation";
 	var LESS_BUTTON_CLASS       = "b-addWords_less-button";
 	var LESS_BUTTON_LABEL       = "Less";
 	var MORE_BUTTON_CLASS       = "b-addWords_more-button";
@@ -62,8 +62,8 @@
 			}
 			else
 			{
-				pair.$inputOriginal.attr("value", "");
-				pair.$inputTranslation.attr("value", "");
+				pair.$inputForeign.attr("value", "");
+				pair.$inputNativ.attr("value", "");
 			}
 		});
 	};
@@ -72,20 +72,20 @@
 	{
 		var pair = {
 			$div : $("<div/>"),
-			$inputOriginal    : $("<input type='text'/>"),
-			$inputTranslation : $("<input type='text'/>")
+			$inputForeign    : $("<input type='text'/>"),
+			$inputNativ : $("<input type='text'/>")
 		};
 		appendLessButton(scope, pair);
-		pair.$div.append(pair.$inputOriginal);
-		pair.$div.append(pair.$inputTranslation);
+		pair.$div.append(pair.$inputForeign);
+		pair.$div.append(pair.$inputNativ);
 		pair.$div.addClass(PAIR_DIV_CLASS);
-		pair.$inputOriginal.addClass(INPUT_ORIGINAL_CLASS);
-		pair.$inputTranslation.addClass(INPUT_TRANSLATION_CLASS);
-		pair.$inputOriginal.addClass(PAIR_INPUT_CLASS);
-		pair.$inputTranslation.addClass(PAIR_INPUT_CLASS);
+		pair.$inputForeign.addClass(INPUT_FOREIGN_CLASS);
+		pair.$inputNativ.addClass(INPUT_NATIVE_CLASS);
+		pair.$inputForeign.addClass(PAIR_INPUT_CLASS);
+		pair.$inputNativ.addClass(PAIR_INPUT_CLASS);
 
-		pair.$inputOriginal.attr("name", scope._original);
-		pair.$inputTranslation.attr("name", scope._translation);
+		pair.$inputForeign.attr("name", scope._original);
+		pair.$inputNativ.attr("name", scope._translation);
 		return pair;
 	};
 	
