@@ -16,7 +16,7 @@
 			.append(create$Th().append("Вес"));
 	};
 	
-	var appendWord = function ($table, word, languageName, languageId)
+	var appendWord = function ($table, model, word, languageName, languageId)
 	{
 		var $tr = $("<tr/>");
 		$table.append($tr);	
@@ -46,6 +46,7 @@
 					else
 					{
 						$tr.remove();
+						model.removeWord(languageId, word.foreign);
 					}
 				});
 		});
@@ -53,26 +54,55 @@
 		$table.org_omich_lang_isEven = !$table.org_omich_lang_isEven;
 		$tr.addClass($table.org_omich_lang_isEven ? "even" : "odd");
 	};
-	
-	var appendLanguages = function ($table, languages)
+
+	var appendLanguages = function ($table, model)
 	{
-		for(var i = 0; i < languages.length; ++i)
+		model.iterateEachWord( function (lan, w)
 		{
-			var lan = languages[i];
+				appendWord($table, model,
+					{foreign:w.original, nativ: w.translation, rating:w.rating}, 
+					lan.name, lan.id);
+		});
+	};
+	
+	var handleLanguagesReset = function (scope)
+	{
+		var $table = scope._$table;
+		appendLanguages($table, scope._model);
+	};
+	
+	var handleAddedWords = function (scope, event)
+	{
+		for(var i = 0; i < event.length; ++i)
+		{
+			var lan = event[i];
 			for(var j = 0; j < lan.words.length; ++j)
 			{
 				var w = lan.words[j];
-				appendWord($table, 
+				appendWord(scope._$table, scope._model,
 					{foreign:w.original, nativ: w.translation, rating:w.rating}, 
 					lan.name, lan.id);
 			}
 		}
-	};
+	}
 
 	ns.ModuleWordsPanel = ns.ModuleAbstract.extend({
 		init: function (settings, $div)
 		{
 			this._super(settings);
+			var scope = this;
+			
+			var m = settings.model
+			this._model = m;
+			m.getDispatcher().addListener(m.EVT_LANGUAGES_RESET, 
+				function (){handleLanguagesReset(scope)});
+			m.getDispatcher().addListener(m.EVT_WORD_ADDED,
+				function (event)
+				{
+					handleAddedWords(scope, event);
+				}
+			);
+			
 			this._$table = $("<table/>").addClass("words");
 			this.refresh();
 
@@ -84,13 +114,14 @@
 		appendTo: function ($div){$div.append(this._$table);},
 		refresh: function ()
 		{
+			var scope = this;
 			var $table = this._$table;
 			$table.empty();
 			appendTableHeader($table);
 
 			ns.ServerApi.callGetWords(function(result)
 			{
-				appendLanguages($table, result.languages);
+				scope._model.resetLanguages(result.languages);
 			});
 		}
 	});

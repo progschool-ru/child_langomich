@@ -34,7 +34,7 @@
 		else
 		{
 			languageId = form.language.value;
-			languageName = scope._languages[languageId];
+			languageName = scope._model.getLanguageInfoById(languageId).name;
 		}
 
 		var words = [];
@@ -79,26 +79,7 @@
 					words:words
 				}]
 		};
-		//return this.api.escapeToJavaString(JSON.stringify(data));
 		return data;
-	};
-	
-	var sendRequest = function(data)
-	{
-		jQuery.ajax("smd://action/addWords",
-			{
-				async : true,
-				context : this,
-				data : {data:data},
-				success : function()
-				{
-					document.location.reload();
-				},
-				error : function(answer)
-				{
-					alert("Error during request: " + answer.message);
-				}
-			});		
 	};
 
 	var handleSubmit = function (scope, form)
@@ -106,10 +87,20 @@
 		try
 		{
 			var data = getDataValue(scope, form);
-			//sendRequest(data);
 			ns.ServerApi.callAddWords(data, function(success)
 			{
-				log(success);
+				for(var i = 0; i < data.languages.length; ++i)
+				{
+					var lan = data.languages[i];
+					if(lan.id)
+					{
+						scope._model.addWord(lan.id, lan.words);
+					}
+					else
+					{
+						scope._resetLanguages();
+					}
+				}
 			});
 		}
 		catch(e)
@@ -125,11 +116,6 @@
 		submit.addClass(SUBMIT_BUTTON_CLASS);
 		submit.attr("value", SUBMIT_BUTTON_LABEL);
 		return submit;
-	};
-	
-	var getLanguages = function ()
-	{
-		return [{name:"en", id:"enId"}];
 	};
 	
 	var callOfSpeed = function(element, func, speed, callback)
@@ -157,10 +143,8 @@
 		callOfSpeed(showElem, showElem.show, speed, fun);
 	};
 	
-	var createLanguages = function (scope)
+	var fillLanguagesBox = function ($combobox, model)
 	{
-		var $combobox = $("<div/>");
-
 		var $comboboxS = $("<div/>");
 		$comboboxS.addClass(LANGUAGE_CONTAINER_CLASS);
 		$combobox.append($comboboxS);
@@ -168,19 +152,16 @@
 		var $select = $("<select/>");
 		$select.attr("name", "language");
 		$select.addClass(LANGUAGE_INPUT_CLASS);
-		var languages = getLanguages();
 
-		scope._languages = {};
-		for(var i in languages)
+		model.iterateEachLanguage(function(lan)
 		{
-			var name = languages[i].name;
-			var id = languages[i].id;
+			var name = lan.name;
+			var id = lan.id;
 			var $option = $("<option/>");
 			$option.attr("value", id);
 			$option.append(name);
 			$select.append($option);
-			scope._languages[id] = name;
-		}
+		});
 		$comboboxS.append($select);
 
 		var $newLangButton = $("<div/>");
@@ -188,7 +169,6 @@
 		$newLangButton.addClass(ALINK_CLASS);
 		$newLangButton.addClass(LANGUAGE_BUTTON_CLASS);
 		$comboboxS.append($newLangButton);
-
 
 		var $comboboxN = $("<div/>");
 		$comboboxN.addClass(LANGUAGE_CONTAINER_CLASS);
@@ -216,19 +196,15 @@
 			$newLangInput.attr("value", "");
 			switchElements($comboboxN, $comboboxS, null, function(){$select.focus();});
 		})
-
-		return $combobox;
-	};
+	}
 	
 	var createForm = function (scope)
 	{
 		var $form = $("<form/>");
-//		$form.attr("method", "POST");
-//		var action = this.serverModule.getUrl("smd://action/addWords");
-//		var redirect = encodeURIComponent(this.api.getCurrentLocation());
-//		$form.attr("action", action + "?redirect=" + redirect);
 
-		$form.append(createLanguages(scope));
+		scope._$languagesBox = $("<div/>");
+		fillLanguagesBox(scope._$languagesBox, scope._model);
+		$form.append(scope._$languagesBox);
 
 		$form.submit(function(){return handleSubmit(scope, this)});
 
@@ -252,11 +228,25 @@
 
 		return $form;
 	};
+	
+	var rebuildLanguages = function (scope)
+	{
+		scope._$languagesBox.empty();
+		fillLanguagesBox(scope._$languagesBox, scope._model);
+	};
 
 	ns.ModuleAddWordsPanel = ns.ModuleAbstract.extend({
 		init: function (settings, $div)
 		{
 			this._super(settings);
+			var scope = this;
+			var m = settings.model;
+			this._resetLanguages = settings && settings.onResetLanguages;
+			this._model = m;
+			var rlFun = function(){rebuildLanguages(scope);};
+			m.getDispatcher().addListener(m.EVT_LANGUAGES_RESET, rlFun);
+			m.getDispatcher().addListener(m.EVT_LANGUAGE_ADDED, rlFun);
+			m.getDispatcher().addListener(m.EVT_LANGUAGES_RESET, rlFun);
 			
 			this._$form = createForm(this);
 

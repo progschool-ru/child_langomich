@@ -14,6 +14,8 @@
 		init: function ()
 		{
 			var scope = this;
+			this._model = new ns.ModelWords();
+			
 			var $tabsPanel = $("#org-omich-lang-tabsPanel");
 			this._tabsPanel = new ns.ModuleTabsPanel( {
 				tabs:[{
@@ -71,7 +73,12 @@
 						title: "Words",
 						authType: ns.AuthSettings.TYPE_AUTH,
 						contentPanelConstructor: ns.ModuleWordsPanel,
-						sidePanelConstructor: ns.ModuleAddWordsPanel
+						contentPanelSettings: {model: this._model},
+						sidePanelConstructor: ns.ModuleAddWordsPanel,
+						sidePanelSettings: {
+							model: this._model,
+							onResetLanguages: function(){scope.updateWordsPanel()}
+						}
 					},{
 						pageId: PID_ABOUT,
 						title: "About",
@@ -123,6 +130,11 @@
 		{
 			this._pageController.getPageById(PID_MESSAGE).getContentPanel().setMessage(key);
 			this._pageController.activatePage(PID_MESSAGE);
+		},
+		
+		updateWordsPanel: function (key)
+		{
+			this._pageController.getPageById(PID_WORDS).getContentPanel().refresh();
 		}
 	});
 	

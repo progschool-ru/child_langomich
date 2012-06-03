@@ -4,13 +4,9 @@
 	
 	var appendSidePanel = function (panel, $div)
 	{
-		var $toolbar = $("<div/>").addClass("toolbar");
 		var $menu = $("<div/>").addClass("toolbar-menu");
-		
 		panel.appendTo($menu);
-		
-		$toolbar.append($menu);
-		$div.append($toolbar);
+		$div.append($menu);
 	};
 
 	ns.Page = org.omich.Class.extend({
