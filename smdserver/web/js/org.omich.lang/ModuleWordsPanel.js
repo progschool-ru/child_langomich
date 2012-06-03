@@ -102,16 +102,28 @@
 					handleAddedWords(scope, event);
 				}
 			);
-			
-			this._$table = $("<table/>").addClass("words");
-			this.refresh();
 
 			if($div)
 			{
 				this.appendTo($div);
 			}
 		},
-		appendTo: function ($div){$div.append(this._$table);},
+		appendTo: function ($div)
+		{
+			var $wasTable = this._$table;
+				
+			this._$table = $("<table/>").addClass("words");
+			$div.append(this._$table);
+			
+			if(!$wasTable)
+			{
+				this.refresh();
+			}
+			else
+			{
+				appendLanguages(this._$table, this._model);
+			}
+		},
 		refresh: function ()
 		{
 			var scope = this;

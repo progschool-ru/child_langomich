@@ -122,12 +122,11 @@
 			$element.append($wordsFieldset);
 
 			var scope = this;
-			$element.append(createButtonContainerFunction().append(
-					createMoreButton(this, function()
+			this._$moreButton = createMoreButton(this, function()
 					{
 						appendPair(scope, $wordsFieldset);
-					})
-			));
+					});
+			$element.append(createButtonContainerFunction().append(this._$moreButton));
 
 			appendPair(this, $wordsFieldset);
 			
@@ -138,6 +137,18 @@
 		{
 			this._$wordsFieldset.empty();
 			appendPair(this, this._$wordsFieldset);
+		},
+		
+		refreshButtons: function ()
+		{
+			var scope = this;
+
+			this._$moreButton.click(function()
+					{
+						appendPair(scope, scope._$wordsFieldset);
+					});
+					
+			this.refreshFields();
 		}
 	});
 })();

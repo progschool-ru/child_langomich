@@ -240,16 +240,14 @@
 		init: function (settings, $div)
 		{
 			this._super(settings);
-			var scope = this;
-			var m = settings.model;
 			this._resetLanguages = settings && settings.onResetLanguages;
-			this._model = m;
+			var m = settings.model;
+			var scope = this;
 			var rlFun = function(){rebuildLanguages(scope);};
 			m.getDispatcher().addListener(m.EVT_LANGUAGES_RESET, rlFun);
 			m.getDispatcher().addListener(m.EVT_LANGUAGE_ADDED, rlFun);
 			m.getDispatcher().addListener(m.EVT_LANGUAGES_RESET, rlFun);
-			
-			this._$form = createForm(this);
+			this._model = m;
 
 			if($div)
 			{
@@ -258,6 +256,7 @@
 		},
 		appendTo: function ($div)
 		{
+			this._$form = createForm(this);
 			$div.append(this._$form);
 		},
 		refresh: function (){},
