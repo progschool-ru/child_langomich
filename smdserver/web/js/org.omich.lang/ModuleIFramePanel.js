@@ -41,6 +41,11 @@
 				$iframe.css("height", clientHeight + 50 + "px");
 				var scrollHeight = $iframe[0].contentWindow.document.body.scrollHeight;
 				$iframe.css("height", scrollHeight + 5 + "px");
+				
+				if($iframe.height() < $iframe[0].contentWindow.document.body.scrollHeight)
+				{
+					setTimeout(fixSize, 100);
+				}
 			}
 		}
 		
