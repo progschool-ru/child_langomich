@@ -8,6 +8,7 @@
 	var PID_ABOUT    = "about";
 	var PID_LOGIN    = "login";
 	var PID_MESSAGE  = "message";
+	var PID_PROFILE  = "profile";
 	var PID_REGISTER = "register";
 	var PID_WORDS    = "words";
 	
@@ -95,6 +96,11 @@
 						title: "Messages",
 						authType: ns.AuthSettings.TYPE_DOESNT_MATTER,
 						contentPanelConstructor: ns.ModuleMessagePanel
+					},{
+						pageId: PID_PROFILE,
+						title: "Profile",
+						authType: ns.AuthSettings.TYPE_AUTH,
+						contentPanelConstructor: ns.ModuleProfileForm
 					}],
 				onPageChanged: function (evt)
 				{
@@ -104,7 +110,11 @@
 			
 			this._$userPanel = $("#org-omich-lang-userPanel");
 			this._userPanel = new ns.ModuleUserPanel({
-					onLogout:function (){scope.updateIsLoggedIn(false);}
+					onLogout:function (){scope.updateIsLoggedIn(false);},
+					onProfile:function ()
+					{
+						scope._pageController.activatePage(PID_PROFILE);
+					}
 				}, this._$userPanel);
 			
 			scope.updateIsLoggedIn(false);

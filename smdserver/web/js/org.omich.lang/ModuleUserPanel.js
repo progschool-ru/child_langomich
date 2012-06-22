@@ -4,6 +4,7 @@
 	var log = org.omich.log;
 	
 	var EVT_LOGOUT = "logout";
+	var EVT_PROFILE = "profile";
 	
 	var handleLogout = function (scope)
 	{
@@ -19,12 +20,18 @@
 			}
 		});
 	};
+	
+	var handleProfileClick = function (scope)
+	{
+		scope._dispatcher.dispatchEvent(EVT_PROFILE, {});
+	}
 
 	ns.ModuleUserPanel = ns.ModuleAbstract.extend({
 		init: function (settings, $div)
 		{
 			this._dispatcher = new ns.EventDispatcher(this);
 			this._dispatcher.addListener(EVT_LOGOUT, settings.onLogout);
+			this._dispatcher.addListener(EVT_PROFILE, settings.onProfile);
 			
 			if($div)
 			{
@@ -52,8 +59,10 @@
 			var $aProfile = $("<a/>");
 			$aProfile.attr("href", "profile");
 			$aProfile.append(this._login);
+			$aProfile.click(function(event){event.preventDefault();});
 			this._$aProfile = $aProfile;
 			$liProfile.append($aProfile);
+			$liProfile.click(function(){handleProfileClick(scope);});
 			
 			var $liLogout = $("<li/>");
 			$liLogout.addClass("header-user-logout");
