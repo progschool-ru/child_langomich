@@ -27,11 +27,11 @@
 					title: "Login",
 					pageId: PID_LOGIN,
 					authType: ns.AuthSettings.TYPE_NO_AUTH
-				},{
+				},/*{
 					title: "Register",
 					pageId: PID_REGISTER,
 					authType: ns.AuthSettings.TYPE_NO_AUTH
-				},{
+				},*/{
 					title: "Words",
 					pageId: PID_WORDS,
 					authType: ns.AuthSettings.TYPE_AUTH
@@ -62,7 +62,7 @@
 								scope.updateIsLoggedIn(true, login);
 							}
 						}
-					},{
+					},/*{
 						pageId: PID_REGISTER,
 						title: "Register",
 						authType: ns.AuthSettings.TYPE_NO_AUTH,
@@ -74,7 +74,7 @@
 								scope.refreshIsLoggedIn();
 							}
 						}
-					},{
+					},*/{
 						pageId: PID_WORDS,
 						title: "Words",
 						authType: ns.AuthSettings.TYPE_AUTH,
