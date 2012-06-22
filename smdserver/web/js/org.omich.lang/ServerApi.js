@@ -61,7 +61,7 @@
 					try
 					{
 						var obj = parseJson(response);
-						onResult(obj.success);
+						onResult(obj.success, login);
 					}
 					catch (e)
 					{

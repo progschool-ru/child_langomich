@@ -39,11 +39,11 @@
 			var password = form.password.value;
 			form.password.value = "";
 			ns.ServerApi.callLogin(login, password,
-				function (isLoggedIn)
+				function (isLoggedIn, login)
 				{
 					if(isLoggedIn)
 					{
-						scope._dispatcher.dispatchEvent(EVT_LOGGED_IN, {target:this});
+						scope._dispatcher.dispatchEvent(EVT_LOGGED_IN, login);
 					}
 					else
 					{

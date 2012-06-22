@@ -32,6 +32,16 @@
 			}
 		},
 		
+		setLogin: function (login)
+		{
+			this._login = login;
+			if(this._$aProfile)
+			{
+				this._$aProfile.empty();
+				this._$aProfile.append(login);
+			}
+		},
+
 		appendTo: function ($div)
 		{
 			this._super(null);
@@ -41,7 +51,8 @@
 			$liProfile.addClass("header-user-profile");
 			var $aProfile = $("<a/>");
 			$aProfile.attr("href", "profile");
-			$aProfile.append("userName");
+			$aProfile.append(this._login);
+			this._$aProfile = $aProfile;
 			$liProfile.append($aProfile);
 			
 			var $liLogout = $("<li/>");

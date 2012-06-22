@@ -2,12 +2,16 @@
 {
 	var ns = org.omich.nsSelf("lang");
 	var log = org.omich.log;
+	var getCookie = org.omich.getCookie;
+	var setCookie = org.omich.setCookie;
 	
 	var PID_ABOUT    = "about";
 	var PID_LOGIN    = "login";
 	var PID_MESSAGE  = "message";
 	var PID_REGISTER = "register";
 	var PID_WORDS    = "words";
+	
+	var COOKIE_LOGIN = "login";
 	
 	
 	ns.App = org.omich.Class.extend({
@@ -51,9 +55,10 @@
 						authType: ns.AuthSettings.TYPE_NO_AUTH,
 						contentPanelConstructor: ns.ModuleLoginForm,
 						contentPanelSettings: {
-							onLogin: function ()
+							onLogin: function (login)
 							{
-								scope.updateIsLoggedIn(true);
+								setCookie(COOKIE_LOGIN, login)
+								scope.updateIsLoggedIn(true, login);
 							}
 						}
 					},{
@@ -112,15 +117,16 @@
 			var scope = this;
 			ns.ServerApi.callIsLoggedIn(function (result)
 			{
-				scope.updateIsLoggedIn(result);
+				scope.updateIsLoggedIn(result, getCookie(COOKIE_LOGIN));
 			});
 		},
 		
-		updateIsLoggedIn: function (isLoggedIn)
+		updateIsLoggedIn: function (isLoggedIn, login)
 		{
 			this._pageController.updateIsLoggedIn(isLoggedIn);
 			this._tabsPanel.updateIsLoggedIn(isLoggedIn);
 
+			this._userPanel.setLogin(isLoggedIn ? login : "");
 			this._$userPanel.css("display", isLoggedIn ? "block" : "none");
 		},
 		
