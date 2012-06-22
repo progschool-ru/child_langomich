@@ -3,7 +3,7 @@
 	var ns = org.omich.nsSelf("lang");
 	var log = org.omich.log;
 	
-	var createForm = function ()
+	var createForm = function (scope)
 	{
 		var $table = $("<table/>");
 		var $tr = $("<tr/>");
@@ -31,13 +31,34 @@
 		$tr.append($td);
 		
 		var $form = $("<form/>");
+		scope._$messageDiv = $("<div/>");
+		$form.append(scope._$messageDiv);
 		$form.append($table);
 		return $form;
 	}
 	
 	var handleSubmit = function (scope, form)
 	{
-		console.log(form);
+		try
+		{
+			scope._$messageDiv.empty();
+
+			var password = form.password.value;
+			form.password.value = "";
+
+			ns.ServerApi.callSetPassword(password,
+					function (success)
+					{
+						if(!success)
+						{
+							scope._$messageDiv.append("Something wrong");
+						}
+					});
+		}
+		catch(e)
+		{
+			log(e);
+		}
 		return false;
 	}
 
@@ -45,7 +66,7 @@
 		init: function (settings, $div)
 		{
 			this._super(settings);
-			this._$form = createForm();
+			this._$form = createForm(this);
 			
 			if($div)
 			{

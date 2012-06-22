@@ -14,6 +14,7 @@
 	var ACTION_LOGIN        = "login";
 	var ACTION_LOGOUT       = "logout";
 	var ACTION_REGISTER     = "register";
+	var ACTION_SET_PASSWORD = "setPassword";
 	
 	var callRequest = function (action, data, onSuccess, onError)
 	{
@@ -133,6 +134,26 @@
 					{
 						var obj = parseJson(response);
 						onResult(obj.success ? obj : false);
+					}
+					catch (e)
+					{
+						log(e);
+						onResult(false);
+					}
+				},
+				function (){onResult(false);});
+		},
+		
+		callSetPassword: function (password, onResult)
+		{
+			callRequest(ACTION_SET_PASSWORD,
+				{password: password},
+				function (event, textStatus, response)
+				{
+					try
+					{
+						var obj = parseJson(response);
+						onResult(obj.success);
 					}
 					catch (e)
 					{
