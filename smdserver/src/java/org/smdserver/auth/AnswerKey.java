@@ -1,7 +1,5 @@
 package org.smdserver.auth;
 
-import org.smdserver.jsp.Messages;
-
 enum AnswerKey 
 {
 	NULL_KEY(null),

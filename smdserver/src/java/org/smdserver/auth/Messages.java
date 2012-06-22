@@ -1,4 +1,4 @@
-package org.smdserver.jsp;
+package org.smdserver.auth;
 
 public class Messages 
 {

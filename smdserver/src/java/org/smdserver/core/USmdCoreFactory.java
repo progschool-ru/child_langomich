@@ -10,8 +10,8 @@ import org.smdserver.auth.RegisterConfig;
 import org.smdserver.db.DBConfig;
 import org.smdserver.db.IDBConfig;
 import org.smdserver.db.ISmdDB;
-import org.smdserver.jsp.IJSPConfig;
-import org.smdserver.jsp.JSPConfig;
+//import org.smdserver.jsp.IJSPConfig;
+//import org.smdserver.jsp.JSPConfig;
 import org.smdserver.mail.IMailConfig;
 import org.smdserver.mail.IMailman;
 import org.smdserver.mail.MailConfig;
@@ -93,10 +93,10 @@ class USmdCoreFactory implements ISmdCoreFactory
 		}
 	}
 	
-	public IJSPConfig createJSPConfig()
-	{
-		return new JSPConfig(rb, basePath, localeRBFile);
-	}
+//	public IJSPConfig createJSPConfig()
+//	{
+//		return new JSPConfig(rb, basePath, localeRBFile);
+//	}
 	
 	public ICoreConfig createCoreConfig()
 	{

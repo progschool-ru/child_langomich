@@ -4,8 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.smdserver.actionssystem.ActionParams;
-import org.smdserver.jsp.Messages;
-import org.smdserver.jsp.SmdUrl;
+//import org.smdserver.jsp.SmdUrl;
 import org.smdserver.mail.IMailman;
 import org.smdserver.users.UserEx;
 
@@ -72,54 +71,56 @@ class URegistrationMailer
 	private boolean sendConfirmationMessage(UserEx user, String to,
 			                                String template, String subject)
 	{
-		subject = constructSubject(subject, user.getUserId());
-		
-		Map<String, Object> confirmParams = new HashMap<String,Object>();
-		confirmParams.put(ActionParams.KEY, Messages.REGISTER_ACCOUNT_WAS_CREATED);
-		SmdUrl confirmRedirect = new SmdUrl("page", "message", null, confirmParams);
-		
-		Map<String, Object> refuseParams = new HashMap<String,Object>();
-		refuseParams.put(ActionParams.KEY, Messages.REGISTER_REQUEST_REFUSED);
-		SmdUrl refuseRedirect = new SmdUrl("page", "message", null, refuseParams);		
-
-		
-		Map<String, Object> mainConfirmParams = new HashMap<String, Object>();
-		mainConfirmParams.put(ActionParams.USER_ID, user.getUserId());
-		mainConfirmParams.put(ActionParams.REDIRECT_SUCCESS, confirmRedirect.getURL());
-		
-		Map<String, Object> mainRefuseParams = new HashMap<String, Object>();
-		mainRefuseParams.put(ActionParams.USER_ID, user.getUserId());
-		mainRefuseParams.put(ActionParams.REDIRECT_SUCCESS, refuseRedirect.getURL());
-
-		SmdUrl confirmUrl = new SmdUrl("action", "confirmRegistration", null, mainConfirmParams);
-		String confirmLink = serverString + confirmUrl.getURL();
-		
-		SmdUrl refuseUrl = new SmdUrl("action", "refuseRegistration", null, mainRefuseParams);
-		String refuseLink = serverString + refuseUrl.getURL();
-		
-		String message = String.format(template, user.getLogin(), 
-				                                 confirmLink, refuseLink,
-												 user.getUserId(),
-												 user.getEmail(),
-												 user.getAbout());
-		
-		return mailman.send(subject, message, to);
+//		subject = constructSubject(subject, user.getUserId());
+//		
+//		Map<String, Object> confirmParams = new HashMap<String,Object>();
+//		confirmParams.put(ActionParams.KEY, Messages.REGISTER_ACCOUNT_WAS_CREATED);
+//		SmdUrl confirmRedirect = new SmdUrl("page", "message", null, confirmParams);
+//		
+//		Map<String, Object> refuseParams = new HashMap<String,Object>();
+//		refuseParams.put(ActionParams.KEY, Messages.REGISTER_REQUEST_REFUSED);
+//		SmdUrl refuseRedirect = new SmdUrl("page", "message", null, refuseParams);		
+//
+//		
+//		Map<String, Object> mainConfirmParams = new HashMap<String, Object>();
+//		mainConfirmParams.put(ActionParams.USER_ID, user.getUserId());
+//		mainConfirmParams.put(ActionParams.REDIRECT_SUCCESS, confirmRedirect.getURL());
+//		
+//		Map<String, Object> mainRefuseParams = new HashMap<String, Object>();
+//		mainRefuseParams.put(ActionParams.USER_ID, user.getUserId());
+//		mainRefuseParams.put(ActionParams.REDIRECT_SUCCESS, refuseRedirect.getURL());
+//
+//		SmdUrl confirmUrl = new SmdUrl("action", "confirmRegistration", null, mainConfirmParams);
+//		String confirmLink = serverString + confirmUrl.getURL();
+//		
+//		SmdUrl refuseUrl = new SmdUrl("action", "refuseRegistration", null, mainRefuseParams);
+//		String refuseLink = serverString + refuseUrl.getURL();
+//		
+//		String message = String.format(template, user.getLogin(), 
+//				                                 confirmLink, refuseLink,
+//												 user.getUserId(),
+//												 user.getEmail(),
+//												 user.getAbout());
+//		
+//		return mailman.send(subject, message, to);
+		return true;
 	}
 	
 	private boolean sendNotifiactionAboutConfirmation(UserEx user, String to,
 			                                String template, String subject)
 	{
-		subject = constructSubject(subject, user.getUserId());
-		
-		SmdUrl loginUrl = new SmdUrl("page", "login");
-		String loginLink = serverString + loginUrl.getURL();
-		
-		String message = String.format(template, user.getLogin(),
-												 user.getUserId(),
-												 user.getEmail(),
-												 user.getAbout(),
-												 loginLink);
-		return mailman.send(subject, message, to);
+//		subject = constructSubject(subject, user.getUserId());
+//		
+//		SmdUrl loginUrl = new SmdUrl("page", "login");
+//		String loginLink = serverString + loginUrl.getURL();
+//		
+//		String message = String.format(template, user.getLogin(),
+//												 user.getUserId(),
+//												 user.getEmail(),
+//												 user.getAbout(),
+//												 loginLink);
+//		return mailman.send(subject, message, to);
+		return true;
 	}
 	
 	private String constructSubject(String subject, String userId)

@@ -10,25 +10,8 @@
             30
         </session-timeout>
     </session-config>
-    <!-- Запрещаем доступ к файлам конфигурации -->
-    <jsp-config>
-        <jsp-property-group>
-            <display-name>allPages</display-name>
-            <url-pattern>/index.jsp</url-pattern>
-            <url-pattern>/WEB-INF/templates/about.jsp</url-pattern>
-            <url-pattern>/WEB-INF/templates/empty.jsp</url-pattern>
-            <url-pattern>/WEB-INF/templates/login.jsp</url-pattern>
-            <url-pattern>/WEB-INF/templates/main.jsp</url-pattern>
-            <url-pattern>/WEB-INF/templates/mainjs.jsp</url-pattern>
-            <url-pattern>/WEB-INF/templates/maintenance.jsp</url-pattern>
-            <url-pattern>/WEB-INF/templates/message.jsp</url-pattern>
-            <url-pattern>/WEB-INF/templates/profile.jsp</url-pattern>
-            <url-pattern>/WEB-INF/templates/register.jsp</url-pattern>
-            <url-pattern>/WEB-INF/templates/words.jsp</url-pattern>
-            <page-encoding>UTF-8</page-encoding>
-            <trim-directive-whitespaces>true</trim-directive-whitespaces>
-        </jsp-property-group>
-    </jsp-config>
+
+	<!-- Запрещаем доступ к файлам конфигурации -->
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>HTTP-Protected-Resource-1</web-resource-name>
@@ -56,14 +39,5 @@
     <servlet-mapping>
         <servlet-name>smd</servlet-name>
         <url-pattern>/servlet/*</url-pattern>
-    </servlet-mapping>
-    <!-- Pages servlet. -->
-    <servlet>
-        <servlet-name>pages</servlet-name>
-        <servlet-class>org.smdserver.jsp.PagesServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>pages</servlet-name>
-        <url-pattern>/servlet/page/*</url-pattern>
     </servlet-mapping>
 </web-app>

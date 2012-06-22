@@ -1,1 +1,1 @@
-<% response.sendRedirect("servlet/page/words"); %>
+<% response.sendRedirect("in.html"); %>

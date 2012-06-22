@@ -7,7 +7,7 @@ import org.smdserver.db.DbException;
 import org.smdserver.db.IDBConfig;
 import org.smdserver.db.ISmdDB;
 import org.smdserver.db.SmdDB;
-import org.smdserver.jsp.SmdUrl;
+//import org.smdserver.jsp.SmdUrl;
 import org.smdserver.core.small.ComplexSmdLogger;
 import org.smdserver.core.small.ISmdLogger;
 
@@ -75,7 +75,7 @@ class USmdCore implements ISmdCore
 		f.setDB(db);
 		factory = f;
 		
-		SmdUrl.initParams(f.createJSPConfig(), logger);
+//		SmdUrl.initParams(f.createJSPConfig(), logger);
 
 	}
 
