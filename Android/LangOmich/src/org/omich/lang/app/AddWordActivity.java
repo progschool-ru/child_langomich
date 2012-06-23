@@ -2,32 +2,26 @@ package org.omich.lang.app;
 
 import org.omich.lang.R;
 import org.omich.lang.apptool.activity.AppActivity;
-import org.omich.lang.apptool.events.Listeners.IListener;
 import org.omich.tool.log.Log;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 
-public class TempActivity extends AppActivity
+public class AddWordActivity extends AppActivity
 {
 	//==== live cycle =========================================================
 	@Override
 	protected void onCreate (Bundle b)
 	{
 		super.onCreate(b);
-		setContentView(R.layout.app_screen_temp);
+		setContentView(R.layout.app_dialog_addword);
+		getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 	}
+	
 	//==== events =============================================================
-	public void onAddWord (View v)
+	public void onAddButton (View v)
 	{
-		getForResultStarter().startForResult(new Intent(this, AddWordActivity.class),
-				new IListener<Intent>()
-				{
-					public void handle(Intent value)
-					{
-						Log.d("Addded?");
-					}
-				});
+		Log.d("onAddButton");
 	}
 }

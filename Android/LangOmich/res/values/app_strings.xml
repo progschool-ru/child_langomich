@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialogAddWordMain_Title">Add Word</string>
+    <string name="dialogAddWordMain_Add">Add</string>
+    <string name="dialogAddWordMain_Foreign">Foreign</string>
+    <string name="dialogAddWordMain_Native">Native</string>
+</resources>

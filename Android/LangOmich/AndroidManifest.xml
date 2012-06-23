@@ -19,6 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".app.AddWordActivity"
+            android:label="@string/dialogAddWordMain_Title"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
         
         
         
