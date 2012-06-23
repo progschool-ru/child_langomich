@@ -1,0 +1,31 @@
+org.omich
+	lang
+		lang.app
+			lang.app.db
+		lang.apptools
+				
+		lang.comparators
+		lang.httpClient
+		lang.json
+		lang.SQLite
+		lang.words
+
+
+	tools
+		tools.bcop
+		tools.log			
+			ByteArrayLoggable       - good
+			ILog                    - good
+			ILoggable               - good
+			ILogMsgCreator          - good
+			Level                   - good
+			Log                     - good
+			LogUtil                        - расфигачить его по использующим его классам (кроме методов работы с Throwable)
+			StackTraceLoggable      - good
+			StdLog                  - good
+			StdLogMsgCreator        - good
+
+
+
+
+

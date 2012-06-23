@@ -1,4 +1,4 @@
-package org.omich.lang.apptool.log;
+package org.omich.tool.log;
 
 public class StdLog implements ILog
 {
