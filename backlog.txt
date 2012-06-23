@@ -1,3 +1,33 @@
+org.omich
+	lang
+		lang.app
+			lang.app.db
+		lang.apptools
+			lang.apptools.log
+				ByteArrayLoggable       - good
+				ILog                    - good
+				ILoggable               - good
+				ILogMsgCreator          - good
+				Level                   - good
+                Log                     - good
+				LogUtil                        - расфигачить его по использующим его классам (кроме методов работы с Throwable)
+				StackTraceLoggable      - good
+				StdLog                  - good
+				StdLogMsgCreator        - good
+				
+		lang.comparators
+		lang.httpClient
+		lang.json
+		lang.SQLite
+		lang.words
+
+
+
+
+
+
+
+
 (done)[Bug]При синхронизации, а именно при отправлении новых и модифицированных слов созданых на устройстве на сервер, не отмечалось что эти слова имеются на сервере  
 (done)[Bug]При синхронизации, не удалялись слова с устройства, после отправки их на сервер.
 !!! Важно. !!!
