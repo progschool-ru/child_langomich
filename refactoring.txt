@@ -9,10 +9,19 @@ org.omich
 		lang.json
 		lang.SQLite
 		lang.words
-
-
 	tools
 		tools.bcop
+			BcConnector             - good
+			BcEventHelper           - good
+			BcService               - good
+			BcTaskException         - good
+			BcTaskHelper            - good
+			BcTypeTaskManager       - good
+			ErrorParcelable         - good
+			IBcConnector            - good
+			IBcTask                 - good
+			ICancelledInfo          - good
+			ParcException           - good
 		tools.log			
 			ByteArrayLoggable       - good
 			ILog                    - good
@@ -24,8 +33,5 @@ org.omich
 			StackTraceLoggable      - good
 			StdLog                  - good
 			StdLogMsgCreator        - good
-
-
-
 
 
