@@ -1,5 +1,6 @@
-package org.omich.lang.app;
+package org.omich.lang.app.words;
 
+import org.omich.lang.app.BundleFields;
 import org.omich.lang.app.db.DbWStorage;
 import org.omich.lang.apptool.events.Listeners.IListenerInt;
 import org.omich.tool.bcops.IBcTask;

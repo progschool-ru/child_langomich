@@ -1,4 +1,4 @@
-package org.omich.lang.app;
+package org.omich.lang.app.words;
 
 import org.omich.lang.R;
 import org.omich.lang.app.words.WordsListAdapter;
