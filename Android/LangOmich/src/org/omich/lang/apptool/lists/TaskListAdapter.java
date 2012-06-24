@@ -24,6 +24,19 @@ abstract public class TaskListAdapter<Item extends Parcelable> extends ListAdapt
 		mConn = conn;
 	}
 	
+	@Override
+	public void destroy ()
+	{
+		if(mLoadItemsTaskId != null)
+		{
+			mConn.unsubscribeTask(mLoadItemsTaskId);
+			mConn.cancelTask(mLoadItemsTaskId);
+			mLoadItemsTaskId = null;
+		}
+		mConn = null;
+		super.destroy();
+	}
+	
 	//==== protected interface ===============================================
 	abstract protected Class<? extends IBcTask> getLoadItemsTaskClass ();
 	abstract protected Intent createLoadItemsIntent ();

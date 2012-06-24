@@ -19,7 +19,7 @@ public class ForResultStarter implements IForResultStarter
 		mActivity = activity;
 	}
 	
-	public void recycle ()
+	public void destroy ()
 	{
 		//Благодаря методу recycle мы избавляем себя от риска, 
 		// вызвать что-то в Activity, после того, как нас попросили отключиться.

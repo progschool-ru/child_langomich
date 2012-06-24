@@ -28,7 +28,7 @@ public class AppActivity extends Activity
 		@Override
 		protected void onDestroy ()
 		{
-			mForResultStarter.recycle();
+			mForResultStarter.destroy();
 			mForResultStarter = null;
 			super.onDestroy();
 		}

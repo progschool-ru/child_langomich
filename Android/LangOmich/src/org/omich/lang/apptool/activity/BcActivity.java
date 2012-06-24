@@ -20,7 +20,7 @@ public class BcActivity extends AppActivity
 	@Override
 	protected void onDestroy ()
 	{
-		mBcConnector.recycle();
+		mBcConnector.destroy();
 		mBcConnector = null;
 		super.onDestroy();
 	}

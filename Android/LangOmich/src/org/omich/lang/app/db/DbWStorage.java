@@ -20,7 +20,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		super.setDb(mDb);
 	}
 	
-	public void recycle ()
+	public void destroy ()
 	{
 		mDb.close();
 		mDb = null;

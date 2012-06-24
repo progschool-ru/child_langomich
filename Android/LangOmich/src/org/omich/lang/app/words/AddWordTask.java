@@ -48,7 +48,7 @@ public class AddWordTask implements IBcTask
 			mBcToaster.showToast(mTaskSuccessText);
 		}
 
-		mDb.recycle();
+		mDb.destroy();
 		return null;
 	}
 

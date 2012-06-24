@@ -13,6 +13,7 @@ abstract public class ListAdapter<Item> extends BaseAdapter
 {
 	private Context mContext;
 	private List<Item> mItems = new ArrayList<Item>();
+	private boolean mIsDestroyed;
 	
 	protected ListAdapter (Context context)
 	{
@@ -21,14 +22,25 @@ abstract public class ListAdapter<Item> extends BaseAdapter
 
 	//==== public interface ===================================================
 	abstract public void reloadItems ();
+	
+	public void destroy ()
+	{
+		cleanItems();
+		mItems = null;
+		mContext = null;
+		mIsDestroyed = true;
+	}
 
 	//==== protected interface ================================================
-	abstract protected void recycleItem (int position, Item item);
+	abstract protected void destroyItem (int position, Item item);
 	abstract protected int getItemViewResId ();
 	abstract protected void fillViewByData (View view, int position, Item item);
 
 	protected void setItems (List<Item> items)
 	{
+		if(mIsDestroyed)
+			return;
+
 		cleanItems ();
 		mItems = items;
 		notifyDataSetChanged();
@@ -59,7 +71,7 @@ abstract public class ListAdapter<Item> extends BaseAdapter
 		int size = mItems.size();
 		for(int i = 0; i < size; ++i)
 		{
-			recycleItem(i, mItems.get(i));
+			destroyItem(i, mItems.get(i));
 		}
 		mItems.clear();
 	}

@@ -20,7 +20,7 @@ public class BcConnector implements IBcConnector
 
 	public BcConnector (Context context) {mContext = context;}
 
-	public void recycle ()
+	public void destroy ()
 	{
 		LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(mContext);
 		Set<Map.Entry<String, TaskReceiver>> set = mMap.entrySet();

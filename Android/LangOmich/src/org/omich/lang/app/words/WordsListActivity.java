@@ -10,6 +10,7 @@ import android.widget.Spinner;
 
 public class WordsListActivity extends BcActivity
 {
+	@SuppressWarnings("unused")
 	private boolean mIsDestroyed;
 	
 	private WordsListAdapter mWordsAdapter;
@@ -39,6 +40,11 @@ public class WordsListActivity extends BcActivity
 	@Override
 	protected void onDestroy ()
 	{
+		mWordsAdapter.destroy();
+		mWordsAdapter = null;
+		mDictsAdapter.destroy();
+		mDictsAdapter = null;
+
 		mIsDestroyed = true;
 		super.onDestroy();
 	}

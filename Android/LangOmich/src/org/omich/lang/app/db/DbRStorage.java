@@ -16,7 +16,7 @@ public class DbRStorage extends DbBaseRStorage
 		super.setDb(mDb);
 	}
 	
-	public void recycle ()
+	public void destroy ()
 	{
 		mDb.close();
 		mDb = null;

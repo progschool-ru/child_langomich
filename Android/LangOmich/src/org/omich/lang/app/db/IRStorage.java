@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface IRStorage
 {
-	void recycle();
+	void destroy();
 
 	List<Word> getWords ();
 	List<Dict> getDicts ();

@@ -37,7 +37,7 @@ public class WordsListAdapter extends TaskListAdapter<Word>
 	
 	//==== ListAdapter ========================================================
 	@Override
-	protected void recycleItem (int position, Word item) {}
+	protected void destroyItem (int position, Word item) {}
 	@Override
 	protected int getItemViewResId () {return R.layout.app_item_wordslist;}
 
@@ -65,7 +65,7 @@ public class WordsListAdapter extends TaskListAdapter<Word>
 			ArrayList<Word> words = new ArrayList<Word>(mDb.getWords());
 			Bundle result = new Bundle();
 			result.putParcelableArrayList(BundleFields.WORDS_LIST, words);
-			mDb.recycle();
+			mDb.destroy();
 			return result;
 		}
 	}

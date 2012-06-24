@@ -37,7 +37,7 @@ public class DictsListAdapter extends TaskListAdapter<Dict>
 
 	//==== ListAdapter ========================================================
 	@Override
-	protected void recycleItem (int position, Dict item) {}
+	protected void destroyItem (int position, Dict item) {}
 	@Override
 	protected int getItemViewResId () {return R.layout.app_item_wordslist;}
 
@@ -66,7 +66,7 @@ public class DictsListAdapter extends TaskListAdapter<Dict>
 			ArrayList<Dict> dicts = new ArrayList<Dict>(mDb.getDicts());
 			Bundle result = new Bundle();
 			result.putParcelableArrayList(BundleFields.DICTS_LIST, dicts);
-			mDb.recycle();
+			mDb.destroy();
 			return result;
 		}
 	}
