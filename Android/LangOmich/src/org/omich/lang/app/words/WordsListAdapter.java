@@ -5,7 +5,8 @@ import java.util.List;
 
 import org.omich.lang.R;
 import org.omich.lang.app.BundleFields;
-import org.omich.lang.app.db.DbWStorage;
+import org.omich.lang.app.db.DbCreator;
+import org.omich.lang.app.db.IRStorage;
 import org.omich.lang.app.db.Word;
 import org.omich.lang.apptool.events.Listeners.IListener;
 import org.omich.lang.apptool.events.Listeners.IListenerInt;
@@ -87,11 +88,11 @@ public class WordsListAdapter extends BaseAdapter
 	{
 		public static Intent createIntent () {return new Intent();}
 
-		private DbWStorage mDb;
+		private IRStorage mDb;
 
 		public void init(Bundle extras, Context context, IBcToaster bcToaster)
 		{
-			mDb = new DbWStorage(context);
+			mDb = DbCreator.createReadable(context);
 		}
 
 		public Bundle execute(IListenerInt ph, ICancelledInfo ci)

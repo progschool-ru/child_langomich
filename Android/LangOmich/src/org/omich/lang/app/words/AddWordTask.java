@@ -1,7 +1,8 @@
 package org.omich.lang.app.words;
 
 import org.omich.lang.app.BundleFields;
-import org.omich.lang.app.db.DbWStorage;
+import org.omich.lang.app.db.DbCreator;
+import org.omich.lang.app.db.IWStorage;
 import org.omich.lang.apptool.events.Listeners.IListenerInt;
 import org.omich.tool.bcops.IBcTask;
 import org.omich.tool.bcops.IBcToaster;
@@ -27,7 +28,7 @@ public class AddWordTask implements IBcTask
 	private String mForeign;
 	private String mNativ;
 	private String mTaskSuccessText;
-	private DbWStorage mDb;
+	private IWStorage mDb;
 
 	public void init(Bundle extras, Context context, IBcToaster bcToaster)
 	{
@@ -35,7 +36,7 @@ public class AddWordTask implements IBcTask
 		mForeign = extras.getString(BundleFields.WORD_FOREIGN);
 		mNativ = extras.getString(BundleFields.WORD_NATIV);
 		mTaskSuccessText = extras.getString(BundleFields.TASK_SUCCESS_TEXT);
-		mDb = new DbWStorage(context);
+		mDb = DbCreator.createWritable(context);
 	}
 
 	public Bundle execute(IListenerInt ph, ICancelledInfo ci)

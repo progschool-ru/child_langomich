@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import static org.omich.lang.app.db.SQLiteHelper.*;
 
-abstract public class DbBaseRStorage implements IRStorage, IDbStorage
+abstract public class DbBaseRStorage implements IRStorage
 {
 	private SQLiteDatabase mDb;
 	private ICancelledInfo mCi;
