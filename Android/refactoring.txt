@@ -27,7 +27,8 @@ org.omich
 			db
 				DbHelper            - good
 			lists
-				LostAdapter              - recycle
+				ListAdapter              - recycle
+				TaskListAdapter          - recycle
 				
 		lang.comparators
 		lang.httpClient

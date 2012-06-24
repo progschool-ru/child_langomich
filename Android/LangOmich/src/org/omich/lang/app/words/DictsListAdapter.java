@@ -1,18 +1,14 @@
 package org.omich.lang.app.words;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.omich.lang.R;
 import org.omich.lang.app.BundleFields;
 import org.omich.lang.app.db.DbCreator;
 import org.omich.lang.app.db.Dict;
 import org.omich.lang.app.db.IRStorage;
-import org.omich.lang.apptool.events.Listeners.IListener;
 import org.omich.lang.apptool.events.Listeners.IListenerInt;
-import org.omich.lang.apptool.lists.ListAdapter;
-import org.omich.tool.bcops.BcEventHelper;
-import org.omich.tool.bcops.BcService;
+import org.omich.lang.apptool.lists.TaskListAdapter;
 import org.omich.tool.bcops.IBcConnector;
 import org.omich.tool.bcops.IBcTask;
 import org.omich.tool.bcops.IBcToaster;
@@ -24,17 +20,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-public class DictsListAdapter extends ListAdapter<Dict>
-{
-	private IBcConnector mConn;
-	private String mLoadWordsTaskId;
-	
+public class DictsListAdapter extends TaskListAdapter<Dict>
+{	
 	public DictsListAdapter (Context context, IBcConnector conn)
 	{
-		super(context);
-		mConn = conn;
+		super(context, conn);
 	}
 	
+	//==== TaskListAdapter ===================================================
+	@Override
+	protected Class<? extends IBcTask> getLoadItemsTaskClass (){return LoadDictsTask.class;}
+	@Override
+	public Intent createLoadItemsIntent (){return LoadDictsTask.createIntent();}
+	@Override
+	protected String getListBundleField (){return BundleFields.DICTS_LIST;}
+
 	//==== ListAdapter ========================================================
 	@Override
 	protected void recycleItem (int position, Dict item) {}
@@ -45,33 +45,8 @@ public class DictsListAdapter extends ListAdapter<Dict>
 	protected void fillViewByData (View view, int position, Dict item)
 	{
 		TextView tv = (TextView)view.findViewById(R.id.item_wordslist_text);
+		tv.setTextColor(0xff000000);
 		tv.setText(item.name);
-	}
-
-	@Override
-	public void reloadItems ()
-	{
-		if(mLoadWordsTaskId != null)
-			return;
-
-		IBcConnector conn = mConn;
-		conn.startTask(BcService.class, LoadDictsTask.class, 
-				LoadDictsTask.createIntent(), new IListener<Intent>()
-				{
-					public void handle(Intent value)
-					{
-						BcEventHelper.parseEvent(value, null, null, new IListener<Bundle>()
-						{
-							public void handle (Bundle b)
-							{
-								mLoadWordsTaskId = null;
-			
-								List<Dict> dicts = b.<Dict>getParcelableArrayList(BundleFields.DICTS_LIST);							
-								setItems(dicts);
-							}
-						}, null, null);
-					}
-				});
 	}
 	
 	//=========================================================================
