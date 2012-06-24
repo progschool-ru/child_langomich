@@ -1,6 +1,6 @@
 package org.omich.lang.app;
 
-import org.omich.lang.app.db.Db;
+import org.omich.lang.app.db.DbWStorage;
 import org.omich.lang.apptool.events.Listeners.IListenerInt;
 import org.omich.tool.bcops.IBcTask;
 import org.omich.tool.bcops.IBcToaster;
@@ -27,7 +27,7 @@ public class AddWordTask implements IBcTask
 	private String mForeign;
 	private String mNativ;
 	private String mTaskSuccessText;
-	private Db mDb;
+	private DbWStorage mDb;
 
 	public void init(Bundle extras, Context context, IBcToaster bcToaster)
 	{
@@ -36,18 +36,19 @@ public class AddWordTask implements IBcTask
 		mForeign = extras.getString(BundleFields.WORD_FOREIGN);
 		mNativ = extras.getString(BundleFields.WORD_NATIV);
 		mTaskSuccessText = extras.getString(BundleFields.TASK_SUCCESS_TEXT);
-		mDb = new Db();
+		mDb = new DbWStorage(context);
 	}
 
 	public Bundle execute(IListenerInt ph, ICancelledInfo ci)
 	{
-		mDb.addWord(mNativ, mForeign, 0);
+		mDb.addWord(mNativ, mForeign);
 		
 		if(mTaskSuccessText != null)
 		{	
 			mBcToaster.showToast(mTaskSuccessText);
-//			Toast.makeText(mContext.getApplicationContext(), mTaskSuccessText, Toast.LENGTH_SHORT).show();
 		}
+
+		mDb.recycle();
 		return null;
 	}
 

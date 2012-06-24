@@ -7,8 +7,14 @@ org.omich
 			TempActivity                  - грохнуть нафиг
 			WordsListActivity             - перепереть в lang.app.words. доделать (прежде всего onDestroy())
 
-			lang.app.db
-				Db                  ???   - прежде всего, внедрить SQLite, а там подумать.
+			lang.app.db                  - обдумать разделение на R и W. Пока всё выглядит громоздко.
+				DbBaseRStorage       -
+				DbRStorage			     - не нравится мне такое же включение ключей, как в DbWStorage. Повторение кода.
+				DbWStorage           - 
+				IDbStorage               - может убрать из названия Db и сделать родителем для IRStoragе, или даже просто занести метод recycle в IRStorage.
+				IRStorage            - 
+				IWStorage            -
+				SQLiteHelper         - 
 				Word                ???   - Может быть отделить Word от Parcelable по наследникам?
 			lang.app.words
 				WordsListAdapter          - доделать (нехватает проверок и дестроуктора), вынести типовую часть в базовый адаптер
@@ -16,6 +22,8 @@ org.omich
 			activity
 				BcActivity          - good
 				ForResultStarter    - good
+			db
+				DbHelper            - good
 				
 		lang.comparators
 		lang.httpClient

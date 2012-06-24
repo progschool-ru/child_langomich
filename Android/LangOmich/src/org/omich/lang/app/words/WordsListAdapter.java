@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.omich.lang.R;
 import org.omich.lang.app.BundleFields;
-import org.omich.lang.app.db.Db;
+import org.omich.lang.app.db.DbWStorage;
 import org.omich.lang.app.db.Word;
 import org.omich.lang.apptool.events.Listeners.IListener;
 import org.omich.lang.apptool.events.Listeners.IListenerInt;
@@ -35,8 +35,6 @@ public class WordsListAdapter extends BaseAdapter
 	public WordsListAdapter (Context context)
 	{
 		mContext = context;
-		mWords.add(new Word("привет", "hi", 0));
-		mWords.add(new Word("пока", "bye", 0));
 	}
 	
 	public void reloadWords (IBcConnector conn)
@@ -89,11 +87,11 @@ public class WordsListAdapter extends BaseAdapter
 	{
 		public static Intent createIntent () {return new Intent();}
 
-		private Db mDb;
+		private DbWStorage mDb;
 
 		public void init(Bundle extras, Context context, IBcToaster bcToaster)
 		{
-			mDb = new Db();
+			mDb = new DbWStorage(context);
 		}
 
 		public Bundle execute(IListenerInt ph, ICancelledInfo ci)
@@ -101,6 +99,7 @@ public class WordsListAdapter extends BaseAdapter
 			ArrayList<Word> words = new ArrayList<Word>(mDb.getWords());
 			Bundle result = new Bundle();
 			result.putParcelableArrayList(BundleFields.WORDS_LIST, words);
+			mDb.recycle();
 			return result;
 		}
 	}
