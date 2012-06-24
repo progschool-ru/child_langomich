@@ -1,6 +1,11 @@
 package org.omich.lang;
 
 import org.omich.lang.httpClient.SmdClient;
+
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,14 +13,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 
-public class LangOmichActivity  extends FragmentActivity{
+public class LangOmichActivity  extends SherlockActivity{
 	
 	protected static final String SETTINGS_NAME = "langOmich_settings";
 	 
