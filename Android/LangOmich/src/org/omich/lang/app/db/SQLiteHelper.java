@@ -79,7 +79,6 @@ public class SQLiteHelper extends SQLiteOpenHelper
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(DictsCols.NAME, "default");
-		long result = db.insert(TNAME_DICTS, null, cv);
-		Log.d(result);
+		db.insert(TNAME_DICTS, null, cv);
 	}
 }
