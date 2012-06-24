@@ -22,7 +22,6 @@ public class AddWordTask implements IBcTask
 		return intent;
 	}
 
-//	private Context mContext;
 	private IBcToaster mBcToaster;
 	private String mForeign;
 	private String mNativ;
@@ -31,7 +30,6 @@ public class AddWordTask implements IBcTask
 
 	public void init(Bundle extras, Context context, IBcToaster bcToaster)
 	{
-//		mContext = context;
 		mBcToaster = bcToaster;
 		mForeign = extras.getString(BundleFields.WORD_FOREIGN);
 		mNativ = extras.getString(BundleFields.WORD_NATIV);
@@ -41,9 +39,9 @@ public class AddWordTask implements IBcTask
 
 	public Bundle execute(IListenerInt ph, ICancelledInfo ci)
 	{
-		mDb.addWord(mNativ, mForeign);
+		long wordId = mDb.addWord(mNativ, mForeign);
 		
-		if(mTaskSuccessText != null)
+		if(mTaskSuccessText != null && wordId != -1)
 		{	
 			mBcToaster.showToast(mTaskSuccessText);
 		}

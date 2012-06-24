@@ -41,7 +41,7 @@ org.omich
 			BcTypeTaskManager       - good
 			ErrorParcelable         - good
 			IBcConnector            - good
-			IBcTask                 - good
+			IBcTask                      - в init передавать объект BcTaskEnv, объединяющий в себя передаваемые параметры, из execute лишние параметры убрать.
 			IBcToaster              - good
 			ICancelledInfo          - good
 			ParcException           - good
