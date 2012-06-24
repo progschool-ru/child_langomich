@@ -4,9 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.omich.lang.R;
+import org.omich.lang.app.BundleFields;
+import org.omich.lang.app.db.Db;
 import org.omich.lang.app.db.Word;
+import org.omich.lang.apptool.events.Listeners.IListener;
+import org.omich.lang.apptool.events.Listeners.IListenerInt;
+import org.omich.tool.bcops.BcEventHelper;
+import org.omich.tool.bcops.BcService;
+import org.omich.tool.bcops.IBcConnector;
+import org.omich.tool.bcops.IBcTask;
+import org.omich.tool.bcops.IBcToaster;
+import org.omich.tool.bcops.ICancelledInfo;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +30,7 @@ public class WordsListAdapter extends BaseAdapter
 	private Context mContext;
 
 	private List<Word> mWords = new ArrayList<Word>();
+	private String mLoadWordsTaskId;
 	
 	public WordsListAdapter (Context context)
 	{
@@ -25,7 +38,32 @@ public class WordsListAdapter extends BaseAdapter
 		mWords.add(new Word("привет", "hi", 0));
 		mWords.add(new Word("пока", "bye", 0));
 	}
+	
+	public void reloadWords (IBcConnector conn)
+	{
+		if(mLoadWordsTaskId != null)
+			return;
 
+		conn.startTask(BcService.class, LoadWordsTask.class, 
+				LoadWordsTask.createIntent(), new IListener<Intent>()
+				{
+					public void handle(Intent value)
+					{
+						BcEventHelper.parseEvent(value, null, null, new IListener<Bundle>()
+						{
+							public void handle (Bundle b)
+							{
+								mLoadWordsTaskId = null;
+			
+								mWords = b.<Word>getParcelableArrayList(BundleFields.WORDS_LIST);							
+								notifyDataSetChanged();
+							}
+						}, null, null);
+					}
+				});
+	}
+
+	//==== BaseAdapter ========================================================
 	public int getCount () {return mWords.size();}
 	public Object getItem (int arg0)	{return mWords.get(arg0);}
 	public long getItemId (int position) {return position;}
@@ -44,5 +82,26 @@ public class WordsListAdapter extends BaseAdapter
 		tv.setText(mWords.get(position).nativ);
 
 		return v;
+	}
+	
+	//=========================================================================
+	public static class LoadWordsTask implements IBcTask
+	{
+		public static Intent createIntent () {return new Intent();}
+
+		private Db mDb;
+
+		public void init(Bundle extras, Context context, IBcToaster bcToaster)
+		{
+			mDb = new Db();
+		}
+
+		public Bundle execute(IListenerInt ph, ICancelledInfo ci)
+		{
+			ArrayList<Word> words = new ArrayList<Word>(mDb.getWords());
+			Bundle result = new Bundle();
+			result.putParcelableArrayList(BundleFields.WORDS_LIST, words);
+			return result;
+		}
 	}
 }

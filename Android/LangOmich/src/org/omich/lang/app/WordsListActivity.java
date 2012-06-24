@@ -10,6 +10,8 @@ import android.widget.ListView;
 public class WordsListActivity extends BcActivity
 {
 	private boolean mIsDestroyed;
+	
+	private WordsListAdapter mAdapter;
 
 	//==== live cycle =========================================================
 	@Override
@@ -18,8 +20,11 @@ public class WordsListActivity extends BcActivity
 		super.onCreate(b);
 		setContentView(R.layout.app_screen_wordslist);
 		
+		mAdapter = new WordsListAdapter(this);
+		mAdapter.reloadWords(getBcConnector());
+		
 		ListView lv = (ListView)findViewById(R.id.wordslist_list);
-		lv.setAdapter(new WordsListAdapter(this));
+		lv.setAdapter(mAdapter);
 	}
 	
 	@Override
