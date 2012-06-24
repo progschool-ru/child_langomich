@@ -5,4 +5,5 @@ import java.util.List;
 public interface IRStorage
 {
 	List<Word> getWords ();
+	List<Dict> getDicts ();
 }

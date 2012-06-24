@@ -6,12 +6,14 @@ import org.omich.lang.apptool.activity.BcActivity;
 
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 public class WordsListActivity extends BcActivity
 {
 	private boolean mIsDestroyed;
 	
-	private WordsListAdapter mAdapter;
+	private WordsListAdapter mWordsAdapter;
+	private DictsListAdapter mDictsAdapter;
 
 	//==== live cycle =========================================================
 	@Override
@@ -20,11 +22,18 @@ public class WordsListActivity extends BcActivity
 		super.onCreate(b);
 		setContentView(R.layout.app_screen_wordslist);
 		
-		mAdapter = new WordsListAdapter(this);
-		mAdapter.reloadWords(getBcConnector());
+		mWordsAdapter = new WordsListAdapter(this);
+		mWordsAdapter.reloadWords(getBcConnector());
+		
+		mDictsAdapter = new DictsListAdapter(this);
+		mDictsAdapter.reloadDicts(getBcConnector());
+		
+		Spinner sp = new Spinner(this);
+		sp.setAdapter(mDictsAdapter);
 		
 		ListView lv = (ListView)findViewById(R.id.wordslist_list);
-		lv.setAdapter(mAdapter);
+		lv.addHeaderView(sp);
+		lv.setAdapter(mWordsAdapter);
 	}
 	
 	@Override

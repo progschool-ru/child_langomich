@@ -1,22 +1,24 @@
 org.omich
 	lang
 		lang.app                         - перепереть словесные активити в отдельный namespace
-			AddWordActivity               - делать проверки на валидность полей и отображать ошибки.
-			AddWordTask                   - скорее всего надо будет дополнить полями и непременно надо будет обрабатывать ошибки
 			BundleFields            - good
 			TempActivity                  - грохнуть нафиг
-			WordsListActivity             - перепереть в lang.app.words. доделать (прежде всего onDestroy())
 
 			lang.app.db                  - обдумать разделение на R и W. Пока всё выглядит громоздко.
 				DbBaseRStorage       -
 				DbRStorage			     - не нравится мне такое же включение ключей, как в DbWStorage. Повторение кода.
 				DbWStorage           - 
+				Dict                     - также как Word.
 				IDbStorage               - может убрать из названия Db и сделать родителем для IRStoragе, или даже просто занести метод recycle в IRStorage.
 				IRStorage            - 
 				IWStorage            -
 				SQLiteHelper         - 
 				Word                ???   - Может быть отделить Word от Parcelable по наследникам?
 			lang.app.words
+				AddWordActivity               - делать проверки на валидность полей и отображать ошибки.
+				AddWordTask                   - скорее всего надо будет дополнить полями и непременно надо будет обрабатывать ошибки
+				DictsListAdapter          - отрефакторить, чтобы Dicts.. и Words.. адаптеры были наследниками общего класса
+				WordsListActivity             - перепереть в lang.app.words. доделать (прежде всего onDestroy())
 				WordsListAdapter          - доделать (нехватает проверок и дестроуктора), вынести типовую часть в базовый адаптер
 		lang.apptools
 			activity
