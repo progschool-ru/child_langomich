@@ -1,8 +1,16 @@
 org.omich
 	lang
 		lang.app
+			AddWordActivity               - делать проверки на валидность полей и отображать ошибки.
+			AddWordTask                   - скорее всего надо будет дополнить полями и непременно надо будет обрабатывать ошибки
+			BundleFields            - good
+
 			lang.app.db
+				Db                  ???   - прежде всего, внедрить SQLite, а там подумать.
 		lang.apptools
+			activity
+				BcActivity          - good
+				ForResultStarter    - good
 				
 		lang.comparators
 		lang.httpClient
@@ -16,10 +24,12 @@ org.omich
 			BcService               - good
 			BcTaskException         - good
 			BcTaskHelper            - good
+			BcToaster               - good
 			BcTypeTaskManager       - good
 			ErrorParcelable         - good
 			IBcConnector            - good
 			IBcTask                 - good
+			IBcToaster              - good
 			ICancelledInfo          - good
 			ParcException           - good
 		tools.log			
@@ -29,7 +39,7 @@ org.omich
 			ILogMsgCreator          - good
 			Level                   - good
 			Log                     - good
-			LogUtil                        - расфигачить его по использующим его классам (кроме методов работы с Throwable)
+			LogUtil                 - good
 			StackTraceLoggable      - good
 			StdLog                  - good
 			StdLogMsgCreator        - good

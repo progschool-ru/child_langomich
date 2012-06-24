@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 
@@ -30,6 +31,7 @@ public class BcService extends IntentService
 	public static final String BF_OP_TYPE_ID       = "BcService.opTypeId";
 	public static final String BF_PROGRESS_DATA    = "BcService.progressData";
 	public static final String BF_RESULT           = "BcService.result";
+	public static final String BF_SUCCESS          = "BcService.success";
 
 	private static final BcTypeTaskManager msBcTypeTaskManager = new BcTypeTaskManager();
 	
@@ -41,6 +43,7 @@ public class BcService extends IntentService
 	//========================================================================
 	private PH mPh;
 	private BR mBr;
+	private Handler mMainThreadHandler;
 	
 	private String mCurrentOpId;
 	private boolean mIsCurrentCancelled;
@@ -64,7 +67,7 @@ public class BcService extends IntentService
 		try
 		{
 			IBcTask task = cl.newInstance();
-			task.init(intent.getExtras(), this);
+			task.init(intent.getExtras(), this, new BcToaster(this, mMainThreadHandler));
 			return task;
 		}
 		catch (IllegalAccessException e)
@@ -84,6 +87,7 @@ public class BcService extends IntentService
 	{
 		super.onCreate();
 		registerLocalReceiver();
+		mMainThreadHandler = new Handler();
 	}
 	
 	@Override

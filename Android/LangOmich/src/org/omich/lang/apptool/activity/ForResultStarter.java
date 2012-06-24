@@ -10,7 +10,7 @@ import android.content.Intent;
 
 public class ForResultStarter implements IForResultStarter
 {
-	private static Activity mActivity;
+	private Activity mActivity;
 	private List<IListener<Intent>> mHandlers = new ArrayList<IListener<Intent>>();
 	
 	public ForResultStarter (Activity activity)

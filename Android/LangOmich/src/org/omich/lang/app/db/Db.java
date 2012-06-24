@@ -7,12 +7,12 @@ public class Db
 {
 	private List<Word> mWords = new ArrayList<Word>();
 
-	void addWord (String nativ, String foreign, long languageId)
+	public void addWord (String nativ, String foreign, long languageId)
 	{
 		mWords.add(new Word(nativ, foreign, 0));
 	}
 	
-	List<Word> getWords ()
+	public List<Word> getWords ()
 	{
 		List<Word> answer = new ArrayList<Word>();
 		

@@ -9,13 +9,15 @@
         android:layout_height="wrap_content"
         android:text="@string/dialogAddWordMain_Native"/>
     <EditText
+        android:id="@+id/addword_nativEdit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
-    <TextView 
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dialogAddWordMain_Foreign"/>
     <EditText 
+        android:id="@+id/addword_foreignEdit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
     <Button 

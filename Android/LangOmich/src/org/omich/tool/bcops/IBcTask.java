@@ -7,6 +7,6 @@ import android.os.Bundle;
 
 public interface IBcTask
 {
-	void init (Bundle extras, Context context);
+	void init (Bundle extras, Context context, IBcToaster bcToaster);
 	Bundle execute (IListenerInt ph, ICancelledInfo ci) throws Exception;
 }
