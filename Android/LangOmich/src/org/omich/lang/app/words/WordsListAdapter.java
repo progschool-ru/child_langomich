@@ -10,6 +10,7 @@ import org.omich.lang.app.db.IRStorage;
 import org.omich.lang.app.db.Word;
 import org.omich.lang.apptool.events.Listeners.IListener;
 import org.omich.lang.apptool.events.Listeners.IListenerInt;
+import org.omich.lang.apptool.lists.ListAdapter;
 import org.omich.tool.bcops.BcEventHelper;
 import org.omich.tool.bcops.BcService;
 import org.omich.tool.bcops.IBcConnector;
@@ -20,29 +21,40 @@ import org.omich.tool.bcops.ICancelledInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class WordsListAdapter extends BaseAdapter
+public class WordsListAdapter extends ListAdapter<Word>
 {
-	private Context mContext;
-
-	private List<Word> mWords = new ArrayList<Word>();
+	private IBcConnector mConn;
 	private String mLoadWordsTaskId;
 	
-	public WordsListAdapter (Context context)
+	public WordsListAdapter (Context context, IBcConnector conn)
 	{
-		mContext = context;
+		super(context);
+		mConn = conn;
 	}
 	
-	public void reloadWords (IBcConnector conn)
+	//==== ListAdapter ========================================================
+	@Override
+	protected void recycleItem (int position, Word item) {}
+	@Override
+	protected int getItemViewResId () {return R.layout.app_item_wordslist;}
+
+	@Override
+	protected void fillViewByData (View view, int position, Word item)
+	{
+		TextView tv = (TextView)view.findViewById(R.id.item_wordslist_text);
+		tv.setText(item.nativ);
+	}
+
+	@Override
+	public void reloadItems ()
 	{
 		if(mLoadWordsTaskId != null)
 			return;
 
+		IBcConnector conn = mConn;
 		conn.startTask(BcService.class, LoadWordsTask.class, 
 				LoadWordsTask.createIntent(), new IListener<Intent>()
 				{
@@ -54,33 +66,12 @@ public class WordsListAdapter extends BaseAdapter
 							{
 								mLoadWordsTaskId = null;
 			
-								mWords = b.<Word>getParcelableArrayList(BundleFields.WORDS_LIST);							
-								notifyDataSetChanged();
+								List<Word> words = b.<Word>getParcelableArrayList(BundleFields.WORDS_LIST);							
+								setItems(words);
 							}
 						}, null, null);
 					}
 				});
-	}
-
-	//==== BaseAdapter ========================================================
-	public int getCount () {return mWords.size();}
-	public Object getItem (int arg0)	{return mWords.get(arg0);}
-	public long getItemId (int position) {return position;}
-
-	public View getView(int position, View convertView, ViewGroup parent)
-	{
-		View v = convertView;
-		
-		if(v == null)
-		{
-			LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.app_item_wordslist, null);
-		}
-		
-		TextView tv = (TextView)v.findViewById(R.id.item_wordslist_text);
-		tv.setText(mWords.get(position).nativ);
-
-		return v;
 	}
 	
 	//=========================================================================

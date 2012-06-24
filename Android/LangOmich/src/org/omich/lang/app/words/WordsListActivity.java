@@ -22,11 +22,11 @@ public class WordsListActivity extends BcActivity
 		super.onCreate(b);
 		setContentView(R.layout.app_screen_wordslist);
 		
-		mWordsAdapter = new WordsListAdapter(this);
-		mWordsAdapter.reloadWords(getBcConnector());
+		mWordsAdapter = new WordsListAdapter(this, getBcConnector());
+		mWordsAdapter.reloadItems();
 		
-		mDictsAdapter = new DictsListAdapter(this);
-		mDictsAdapter.reloadDicts(getBcConnector());
+		mDictsAdapter = new DictsListAdapter(this, getBcConnector());
+		mDictsAdapter.reloadItems();
 		
 		Spinner sp = new Spinner(this);
 		sp.setAdapter(mDictsAdapter);

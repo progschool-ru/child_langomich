@@ -17,15 +17,17 @@ org.omich
 			lang.app.words
 				AddWordActivity               - делать проверки на валидность полей и отображать ошибки.
 				AddWordTask                   - скорее всего надо будет дополнить полями и непременно надо будет обрабатывать ошибки
-				DictsListAdapter          - отрефакторить, чтобы Dicts.. и Words.. адаптеры были наследниками общего класса
-				WordsListActivity             - перепереть в lang.app.words. доделать (прежде всего onDestroy())
-				WordsListAdapter          - доделать (нехватает проверок и дестроуктора), вынести типовую часть в базовый адаптер
+				DictsListAdapter          - recycle
+				WordsListActivity         - доделать (прежде всего onDestroy())
+				WordsListAdapter          - доделать (нехватает проверок и дестроуктора)
 		lang.apptools
 			activity
 				BcActivity          - good
 				ForResultStarter    - good
 			db
 				DbHelper            - good
+			lists
+				LostAdapter              - recycle
 				
 		lang.comparators
 		lang.httpClient
