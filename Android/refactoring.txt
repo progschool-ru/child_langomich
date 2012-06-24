@@ -1,12 +1,16 @@
 org.omich
 	lang
-		lang.app
+		lang.app                         - перепереть словесные активити в отдельный namespace
 			AddWordActivity               - делать проверки на валидность полей и отображать ошибки.
 			AddWordTask                   - скорее всего надо будет дополнить полями и непременно надо будет обрабатывать ошибки
 			BundleFields            - good
+			TempActivity                  - грохнуть нафиг
+			WordsListActivity             - перепереть в lang.app.words. доделать
 
 			lang.app.db
 				Db                  ???   - прежде всего, внедрить SQLite, а там подумать.
+			lang.app.words
+				WordsListAdapter          - доделать, вынести типовую часть в базовый адаптер
 		lang.apptools
 			activity
 				BcActivity          - good

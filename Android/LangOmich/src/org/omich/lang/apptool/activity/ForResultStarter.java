@@ -11,7 +11,8 @@ import android.content.Intent;
 public class ForResultStarter implements IForResultStarter
 {
 	private Activity mActivity;
-	private List<IListener<Intent>> mHandlers = new ArrayList<IListener<Intent>>();
+	private List<IListener<Intent>> mHandlers = new ArrayList<IListener<Intent>>();	
+	private IListener<Intent> mEmptyHandler = new IListener<Intent>() {public void handle(Intent intent){}};
 	
 	public ForResultStarter (Activity activity)
 	{
@@ -45,6 +46,11 @@ public class ForResultStarter implements IForResultStarter
 	{
 		if(mActivity == null)
 			return;
+		
+		if(handler == null)
+		{
+			handler = mEmptyHandler;
+		}
 
 		int reqCode = -1;
 

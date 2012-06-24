@@ -2,8 +2,6 @@ package org.omich.lang.app;
 
 import org.omich.lang.R;
 import org.omich.lang.apptool.activity.AppActivity;
-import org.omich.lang.apptool.events.Listeners.IListener;
-import org.omich.tool.log.Log;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,13 +19,11 @@ public class TempActivity extends AppActivity
 	//==== events =============================================================
 	public void onAddWord (View v)
 	{
-		getForResultStarter().startForResult(new Intent(this, AddWordActivity.class),
-				new IListener<Intent>()
-				{
-					public void handle(Intent value)
-					{
-						Log.d("Addded?");
-					}
-				});
+		getForResultStarter().startForResult(new Intent(this, AddWordActivity.class), null);
+	}
+	
+	public void onShowWords (View v)
+	{
+		getForResultStarter().startForResult(new Intent(this, WordsListActivity.class), null);
 	}
 }
