@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.omich.lang.apptool.events.Listeners.IListenerInt;
+import org.omich.tool.bcops.IBcTask.BcTaskEnv;
 import org.omich.tool.log.Log;
 
 import android.app.IntentService;
@@ -67,7 +68,14 @@ public class BcService extends IntentService
 		try
 		{
 			IBcTask task = cl.newInstance();
-			task.init(intent.getExtras(), this, new BcToaster(this, mMainThreadHandler));
+			//task.init(, this, new BcToaster(this, mMainThreadHandler));
+			task.init(new BcTaskEnv(
+							intent.getExtras(), 
+							this, 
+							new BcToaster(this, mMainThreadHandler), 
+							mPh, 
+							mPh
+						));
 			return task;
 		}
 		catch (IllegalAccessException e)
@@ -118,7 +126,7 @@ public class BcService extends IntentService
 		{
 			try
 			{
-				result = task.execute(mPh, mPh);
+				result = task.execute();
 			}
 			catch (ParcException e)
 			{

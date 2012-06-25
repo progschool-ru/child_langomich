@@ -3,12 +3,8 @@ package org.omich.lang.app.words;
 import org.omich.lang.app.BundleFields;
 import org.omich.lang.app.db.DbCreator;
 import org.omich.lang.app.db.IWStorage;
-import org.omich.lang.apptool.events.Listeners.IListenerInt;
 import org.omich.tool.bcops.IBcTask;
 import org.omich.tool.bcops.IBcToaster;
-import org.omich.tool.bcops.ICancelledInfo;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -30,16 +26,16 @@ public class AddWordTask implements IBcTask
 	private String mTaskSuccessText;
 	private IWStorage mDb;
 
-	public void init(Bundle extras, Context context, IBcToaster bcToaster)
+	public void init(BcTaskEnv env)
 	{
-		mBcToaster = bcToaster;
-		mForeign = extras.getString(BundleFields.WORD_FOREIGN);
-		mNativ = extras.getString(BundleFields.WORD_NATIV);
-		mTaskSuccessText = extras.getString(BundleFields.TASK_SUCCESS_TEXT);
-		mDb = DbCreator.createWritable(context);
+		mBcToaster = env.bcToaster;
+		mForeign = env.extras.getString(BundleFields.WORD_FOREIGN);
+		mNativ = env.extras.getString(BundleFields.WORD_NATIV);
+		mTaskSuccessText = env.extras.getString(BundleFields.TASK_SUCCESS_TEXT);
+		mDb = DbCreator.createWritable(env.context);
 	}
 
-	public Bundle execute(IListenerInt ph, ICancelledInfo ci)
+	public Bundle execute()
 	{
 		long wordId = mDb.addWord(mNativ, mForeign);
 		

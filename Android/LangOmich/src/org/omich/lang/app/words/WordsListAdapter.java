@@ -7,12 +7,9 @@ import org.omich.lang.app.BundleFields;
 import org.omich.lang.app.db.DbCreator;
 import org.omich.lang.app.db.IRStorage;
 import org.omich.lang.app.db.Word;
-import org.omich.lang.apptool.events.Listeners.IListenerInt;
 import org.omich.lang.apptool.lists.TaskListAdapter;
 import org.omich.tool.bcops.IBcConnector;
 import org.omich.tool.bcops.IBcTask;
-import org.omich.tool.bcops.IBcToaster;
-import org.omich.tool.bcops.ICancelledInfo;
 
 import android.content.Context;
 import android.content.Intent;
@@ -55,12 +52,12 @@ public class WordsListAdapter extends TaskListAdapter<Word>
 
 		private IRStorage mDb;
 
-		public void init(Bundle extras, Context context, IBcToaster bcToaster)
+		public void init(BcTaskEnv env)
 		{
-			mDb = DbCreator.createReadable(context);
+			mDb = DbCreator.createReadable(env.context);
 		}
 
-		public Bundle execute(IListenerInt ph, ICancelledInfo ci)
+		public Bundle execute()
 		{
 			ArrayList<Word> words = new ArrayList<Word>(mDb.getWords());
 			Bundle result = new Bundle();
