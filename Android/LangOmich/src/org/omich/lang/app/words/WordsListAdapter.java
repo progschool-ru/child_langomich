@@ -41,10 +41,14 @@ public class WordsListAdapter extends TaskListAdapter<Word>
 	@Override
 	protected void fillViewByData (View view, int position, Word item)
 	{
-		TextView tv = (TextView)view.findViewById(R.id.item_wordslist_text);
-		tv.setText(item.nativ);
+		TextView tvn = (TextView)view.findViewById(R.id.item_wordslist_text_nativ);
+		tvn.setText(item.nativ);
+		TextView tvf = (TextView)view.findViewById(R.id.item_wordslist_text_foreign);
+		tvf.setText(item.foreign);
+		System.out.println(item.rating);
+		TextView tvr = (TextView)view.findViewById(R.id.item_wordslist_text_rating);
+		tvr.setText(Integer.toString(item.rating));
 	}
-
 	//=========================================================================
 	public static class LoadWordsTask implements IBcTask
 	{

@@ -36,12 +36,12 @@ public class DictsListAdapter extends TaskListAdapter<Dict>
 	@Override
 	protected void destroyItem (int position, Dict item) {}
 	@Override
-	protected int getItemViewResId () {return R.layout.app_item_wordslist;}
+	protected int getItemViewResId () {return R.layout.app_item_dictslist;}
 
 	@Override
 	protected void fillViewByData (View view, int position, Dict item)
 	{
-		TextView tv = (TextView)view.findViewById(R.id.item_wordslist_text);
+		TextView tv = (TextView)view.findViewById(R.id.item_dictslist_text);
 		tv.setTextColor(0xff000000);
 		tv.setText(item.name);
 	}
