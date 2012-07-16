@@ -1,6 +1,6 @@
 package org.omich.lang.apptool.activity;
 
-import org.omich.lang.apptool.events.Listeners.IListener;
+import org.omich.tool.events.Listeners.IListener;
 
 import android.content.Intent;
 

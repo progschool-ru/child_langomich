@@ -1,8 +1,8 @@
 package org.omich.tool.bcops;
 
-import org.omich.lang.apptool.events.Listeners.IListener;
-import org.omich.lang.apptool.events.Listeners.IListenerInt;
-import org.omich.lang.apptool.events.Listeners.IListenerVoid;
+import org.omich.tool.events.Listeners.IListener;
+import org.omich.tool.events.Listeners.IListenerInt;
+import org.omich.tool.events.Listeners.IListenerVoid;
 
 import android.content.Intent;
 import android.os.Bundle;

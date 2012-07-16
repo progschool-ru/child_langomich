@@ -4,8 +4,8 @@ import org.omich.lang.R;
 import org.omich.lang.app.BundleFields;
 import org.omich.lang.app.db.Word;
 import org.omich.lang.apptool.activity.BcActivity;
-import org.omich.lang.apptool.events.Listeners.IListener;
 import org.omich.tool.bcops.IBcConnector;
+import org.omich.tool.events.Listeners.IListener;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package org.omich.lang.apptool.events;
+package org.omich.tool.events;
 
 //import com.ltst.tools.events.IEventDispatcher;
 

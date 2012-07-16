@@ -1,6 +1,6 @@
 package org.omich.lang.apptool.db;
 
-import org.omich.lang.apptool.events.Listeners.IListener;
+import org.omich.tool.events.Listeners.IListener;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
