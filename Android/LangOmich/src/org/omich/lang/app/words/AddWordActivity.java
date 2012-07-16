@@ -3,8 +3,6 @@ package org.omich.lang.app.words;
 import org.omich.lang.R;
 import org.omich.lang.apptool.activity.BcActivity;
 import org.omich.lang.apptool.events.Listeners.IListener;
-import org.omich.tool.bcops.BcEventHelper;
-import org.omich.tool.bcops.BcService;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -50,20 +48,16 @@ public class AddWordActivity extends BcActivity
 		String toast = getResources().getString(R.string.dialogAddWordMain_Added);
 
 		Intent intent = AddWordTask.createIntent(nativ, foreign, toast);
-		mAddWordTaskId = getBcConnector().startTask(BcService.class, AddWordTask.class, intent,
-				new IListener<Intent>()
+		mAddWordTaskId = getBcConnector().startTypicalTask(AddWordTask.class, intent, new IListener<Bundle>()
+			{
+				public void handle (Bundle bundle)
 				{
-					public void handle (Intent intent)
-					{
-						if(mIsDestroyed)
-							return;
-
-						BcEventHelper.parseEvent(intent, null, null, new IListener<Bundle>()
-						{
-							public void handle (Bundle bundle){mAddWordTaskId = null;}
-						}, null, null);
-					}
-				});
+					if(mIsDestroyed)
+						return;
+	
+					mAddWordTaskId = null;
+				}
+			});
 		finish();
 	}
 }

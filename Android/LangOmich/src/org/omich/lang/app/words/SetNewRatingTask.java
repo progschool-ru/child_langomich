@@ -1,20 +1,14 @@
 
 	package org.omich.lang.app.words;
 
-	import java.util.ArrayList;
-
 	import org.omich.lang.app.BundleFields;
 	import org.omich.lang.app.db.DbCreator;
-	import org.omich.lang.app.db.IRStorage;
-import org.omich.lang.app.db.IWStorage;
-	import org.omich.lang.app.db.Word;
+	import org.omich.lang.app.db.IWStorage;
 	import org.omich.tool.bcops.IBcTask;
-import org.omich.tool.bcops.IBcToaster;
-import org.omich.tool.bcops.IBcTask.BcTaskEnv;
-
+	import org.omich.tool.bcops.IBcToaster;
 
 	import android.content.Intent;
-import android.os.Bundle;
+	import android.os.Bundle;
 
 	public class SetNewRatingTask implements IBcTask
 	{
@@ -52,5 +46,4 @@ import android.os.Bundle;
 			mDb.destroy();
 			return null;
 		}
-
 	}

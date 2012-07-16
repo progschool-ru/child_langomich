@@ -3,8 +3,6 @@ package org.omich.lang.apptool.lists;
 import java.util.List;
 
 import org.omich.lang.apptool.events.Listeners.IListener;
-import org.omich.tool.bcops.BcEventHelper;
-import org.omich.tool.bcops.BcService;
 import org.omich.tool.bcops.IBcConnector;
 import org.omich.tool.bcops.IBcTask;
 
@@ -50,12 +48,7 @@ abstract public class TaskListAdapter<Item extends Parcelable> extends ListAdapt
 			return;
 
 		IBcConnector conn = mConn;
-		conn.startTask(BcService.class, getLoadItemsTaskClass(), 
-				createLoadItemsIntent(), new IListener<Intent>()
-				{
-					public void handle(Intent value)
-					{
-						BcEventHelper.parseEvent(value, null, null, new IListener<Bundle>()
+		mLoadItemsTaskId = conn.startTypicalTask(getLoadItemsTaskClass(), createLoadItemsIntent(), new IListener<Bundle>()
 						{
 							public void handle (Bundle b)
 							{
@@ -64,8 +57,6 @@ abstract public class TaskListAdapter<Item extends Parcelable> extends ListAdapt
 								List<Item> dicts = b.<Item>getParcelableArrayList(getListBundleField());							
 								setItems(dicts);	
 							}
-						}, null, null);
-					}
-				});	
+						});
 	}
 }
