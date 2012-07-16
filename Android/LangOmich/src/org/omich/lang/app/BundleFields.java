@@ -18,4 +18,5 @@ public class BundleFields
 	public static final String WORD_FOREIGN        = "wordForeign";
 	public static final String WORD_NATIV          = "wordNativ";
 	public static final String WORDS_LIST          = "wordsList";
+	public static final String WORD				   = "word";
 }

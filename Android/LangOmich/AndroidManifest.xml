@@ -27,6 +27,11 @@
             android:theme="@android:style/Theme.Dialog">
         </activity>
         <activity
+            android:name=".app.words.GameActivity"
+            android:label="GameActivity"
+            android:theme="@style/Theme.Sherlock">
+        </activity>
+        <activity
             android:name=".app.words.WordsListActivity"
             android:label="@string/dialogAddWordMain_Title"
             android:theme="@style/Theme.Sherlock">

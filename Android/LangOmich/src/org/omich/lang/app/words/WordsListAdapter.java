@@ -36,7 +36,7 @@ public class WordsListAdapter extends TaskListAdapter<Word>
 	@Override
 	protected void destroyItem (int position, Word item) {}
 	@Override
-	protected int getItemViewResId () {return R.layout.app_item_wordslist;}
+	protected int getItemViewResId (int position) {return R.layout.app_item_wordslist;}
 
 	@Override
 	protected void fillViewByData (View view, int position, Word item)
@@ -45,7 +45,6 @@ public class WordsListAdapter extends TaskListAdapter<Word>
 		tvn.setText(item.nativ);
 		TextView tvf = (TextView)view.findViewById(R.id.item_wordslist_text_foreign);
 		tvf.setText(item.foreign);
-		System.out.println(item.rating);
 		TextView tvr = (TextView)view.findViewById(R.id.item_wordslist_text_rating);
 		tvr.setText(Integer.toString(item.rating));
 	}

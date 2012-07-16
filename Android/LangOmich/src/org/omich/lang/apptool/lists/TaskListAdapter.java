@@ -62,10 +62,10 @@ abstract public class TaskListAdapter<Item extends Parcelable> extends ListAdapt
 								mLoadItemsTaskId = null;
 			
 								List<Item> dicts = b.<Item>getParcelableArrayList(getListBundleField());							
-								setItems(dicts);
+								setItems(dicts);	
 							}
 						}, null, null);
 					}
-				});
+				});	
 	}
 }

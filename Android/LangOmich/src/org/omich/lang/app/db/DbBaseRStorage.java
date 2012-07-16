@@ -56,7 +56,7 @@ abstract public class DbBaseRStorage implements IRStorage
 	public List<Word> getWords ()
 	{
 		Cursor cursor = mDb.query(TNAME_WORDS, 
-				new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING}, 
+				new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.ID}, 
 				null, null, null, null, null);
 
 		final List<Word> answer = new ArrayList<Word>();
@@ -65,7 +65,7 @@ abstract public class DbBaseRStorage implements IRStorage
 		{
 			public void handle(Cursor cursor)
 			{
-				Word word = new Word(cursor.getString(0), cursor.getString(1), cursor.getInt(2));
+				Word word = new Word(cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getLong(3));
 				answer.add(word);
 			}
 		});

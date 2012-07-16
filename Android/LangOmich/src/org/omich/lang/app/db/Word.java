@@ -14,9 +14,11 @@ public class Word implements Parcelable
 	public String nativ;
 	public String foreign;
 	public int rating;
+	public long id;
 	
 	public Word (String n, String f, int r){nativ = n; foreign = f; rating = r;}
-
+	public Word (String n, String f, int r, long i){nativ = n; foreign = f; rating = r; id = i;}
+	
 	public Word (Parcel source)
 	{
 		nativ = source.readString();

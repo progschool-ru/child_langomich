@@ -30,10 +30,9 @@ abstract public class ListAdapter<Item> extends BaseAdapter
 		mContext = null;
 		mIsDestroyed = true;
 	}
-
 	//==== protected interface ================================================
 	abstract protected void destroyItem (int position, Item item);
-	abstract protected int getItemViewResId ();
+	abstract protected int getItemViewResId (int position);
 	abstract protected void fillViewByData (View view, int position, Item item);
 
 	protected void setItems (List<Item> items)
@@ -58,7 +57,7 @@ abstract public class ListAdapter<Item> extends BaseAdapter
 		if(v == null)
 		{
 			LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(getItemViewResId(), null);
+			v = vi.inflate(getItemViewResId(position), null);
 		}
 
 		fillViewByData(v, position, mItems.get(position));

@@ -5,6 +5,9 @@ import org.omich.lang.app.words.WordsListAdapter;
 import org.omich.lang.apptool.activity.BcActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -35,6 +38,12 @@ public class WordsListActivity extends BcActivity
 		ListView lv = (ListView)findViewById(R.id.wordslist_list);
 		lv.addHeaderView(sp);
 		lv.setAdapter(mWordsAdapter);
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
+			{
+//				Word word = (Word)mWordsAdapter.getItem(position-1);
+			}
+		});
 	}
 	
 	@Override
