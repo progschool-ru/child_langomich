@@ -16,6 +16,8 @@ public class BundleFields
 	public static final String TASK_ERROR_TEXT     = "taskErrorText";
 	public static final String TASK_SUCCESS_TEXT   = "taskSuccessText";
 	public static final String WORD_FOREIGN        = "wordForeign";
+	public static final String WORD_ID			   = "wordId";
+	public static final String WORD_RATING		   = "wordRating";
 	public static final String WORD_NATIV          = "wordNativ";
 	public static final String WORDS_LIST          = "wordsList";
 	public static final String WORD				   = "word";

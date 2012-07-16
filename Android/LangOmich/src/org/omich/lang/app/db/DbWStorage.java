@@ -45,4 +45,11 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		values.put(WordsCols.DICT_ID, dictId);
 		return mDb.insert(TNAME_WORDS, null, values);
 	}
+	public void setRating (long id, int rating)
+	{		
+		ContentValues values = new ContentValues();		
+		values.put(WordsCols.RATING, rating);
+		String where = "_id=" + id;
+		mDb.update(TNAME_WORDS, values, where, null);
+	}
 }
