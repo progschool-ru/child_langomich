@@ -31,7 +31,12 @@ public class Log
 	{
 		log(source, msg, er, Level.E);
 	}
-	
+
+	public static void e (Class<?> source, String msg, ILoggable er)
+	{
+		log(source, msg, er, Level.E);
+	}
+
 	public static void e (Class<?> source, Throwable er)
 	{
 		log(source, er, Level.E);
@@ -112,13 +117,13 @@ public class Log
 		msLog.log(m, level);
 	}
 	
-//	private static void log (String msg, ILoggable er, Level level)
-//	{
-//		msg = LogUtil.getNotNullMessage(msg);
-//		String m = String.format(TPL_ME, msg, msLmc.getMsg(er, level));
-//		msLog.log(m, level);
-//	}
-	
+	private static void log (Class<?> cl, String msg, ILoggable er, Level level)
+	{
+		msg = LogUtil.getNotNullMessage(msg);
+		String m = String.format(TPL_ME, msg, msLmc.getMsg(er, level));
+		msLog.log(m, level);
+	}
+
 	private static void log (Class<?> cl, ILoggable er, Level level)
 	{
 		String m = String.format(TPL_CM, getClassMsg(cl), msLmc.getMsg(er, level));

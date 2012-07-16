@@ -1,16 +1,27 @@
 package org.omich.tool.bcops;
 
+import org.omich.tool.log.ILoggable;
+import org.omich.tool.log.LogUtil;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class ErrorParcelable implements Parcelable
+public class ErrorParcelable implements Parcelable, ILoggable
 {
 	public static class TraceElem
 	{
+		private static final String FMT = "%s (%s:%d)";
+
 		String className;
 		String fileName;
 		int lineNumber;
 		String methodName;
+
+		@Override
+		public String toString ()
+		{
+			return String.format(FMT, methodName, className, lineNumber);
+		}
 	}
 	
 	public static final Parcelable.Creator<ErrorParcelable> CREATOR
@@ -93,5 +104,33 @@ public class ErrorParcelable implements Parcelable
 			dest.writeInt(te.lineNumber);
 			dest.writeString(te.methodName);
 		}
+	}
+
+	//==== ILoggable =========================================================
+	public String getShortLogMessage()
+	{
+		return simpleName + ": " + LogUtil.getNotNullMessage(message);
+	}
+
+	public String getFullLogMessage()
+	{               
+		return simpleName + ": " 
+			+ LogUtil.getNotNullMessage(message) + "\n" 
+			+ getStackTraceMsg();
+	}
+
+	//========================================================================
+	private String getStackTraceMsg ()
+	{
+		if(trace == null)
+		return "";
+		
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < 10 && i < trace.length; ++i)
+		{
+			sb.append(trace[i].toString());
+			sb.append(trace);
+		}
+		return sb.toString();
 	}
 }

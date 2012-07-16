@@ -2,9 +2,10 @@ package org.omich.tool.log;
 
 public class StdLog implements ILog
 {
+	public static final String LOG_ID = StdLog.class.getName();
 	private String mLogId;
 	
-	public StdLog (){this(StdLog.class.getName());}
+	public StdLog (){this(LOG_ID);}
 	public StdLog (String logId){mLogId = logId;}
 	
 	public void log (String msg, Level level)

@@ -11,6 +11,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 
 public class BcConnector implements IBcConnector
@@ -52,6 +53,13 @@ public class BcConnector implements IBcConnector
 		mContext.startService(intent);
 		
 		return opId;
+	}
+	
+	public String startTypicalTask (Class<? extends IBcTask> taskClass,
+			Intent intent,
+			IListener<Bundle> finishHandler)
+	{
+		return startTask (BcService.class, taskClass, intent, new TypicalTaskHandler(finishHandler));
 	}
 	
 	public void cancelTask (String opId)
@@ -112,6 +120,21 @@ public class BcConnector implements IBcConnector
 			}
 			
 			mHandler.handle(intent);
+		}
+	}
+	
+	private static class TypicalTaskHandler implements IListener<Intent>
+	{
+		private IListener<Bundle> mFinishHandler;
+		
+		public TypicalTaskHandler (IListener<Bundle> finishHandler)
+		{
+			mFinishHandler = finishHandler;
+		}
+
+		public void handle (Intent intent)
+		{
+			BcEventHelper.parseEvent(intent, null, null, mFinishHandler, null, null);
 		}
 	}
 }
