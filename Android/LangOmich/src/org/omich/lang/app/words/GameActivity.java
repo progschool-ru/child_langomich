@@ -44,8 +44,8 @@ public class GameActivity extends BcActivity
 		bt2 = (Button)findViewById(R.id.button_2);
 		tvn.setText("");
 		tvf.setText("");
-		bt1.setText("Знаю");
-		bt2.setText("Не знаю");
+		bt1.setText("Р—РЅР°СЋ");
+		bt2.setText("РќРµ Р·РЅР°СЋ");
 		OnClickListener l =  new OnClickListener(){
 			public void onClick(View v) 
 			{
@@ -54,50 +54,28 @@ public class GameActivity extends BcActivity
 					case R.id.button_1:
 						if(currentScreen == GAME)
 						{
-							tvf.setText(word.foreign);
-							bt1.setText("Верно");
-							bt2.setText("Я ошибся");
-							currentScreen = I_KNOW;
+							setScreen(I_KNOW);
 						}
-						else if(currentScreen == I_KNOW) // повышение рейтинга
+						else if(currentScreen == I_KNOW)
 						{
-							ratingUpgrade();
-							tvn.setText("");
-							tvf.setText("");
-							getWord();
-							bt1.setText("Знаю");
-							bt2.setText("Не знаю");
-							currentScreen = GAME;	
+							upgradeRating();
+							setScreen(GAME);
 						}
-						else if(currentScreen == I_DONT_KNOW) // понижение рейтинга
+						else if(currentScreen == I_DONT_KNOW)
 						{
-							ratingDowngrade();
-							tvn.setText("");
-							tvf.setText("");
-							getWord();
-							bt1.setText("Знаю");
-							bt2.setText("Не знаю");
-							bt2.setVisibility(View.VISIBLE);
-							currentScreen = GAME;
+							downgradeRating();
+							setScreen(GAME);
 						}
 						break;
 				    case R.id.button_2:
 						if(currentScreen == GAME)
 						{
-							tvf.setText(word.foreign);
-							bt1.setText("Продолжить");
-							bt2.setVisibility(View.INVISIBLE);
-							currentScreen = I_DONT_KNOW;
+							setScreen(I_DONT_KNOW);
 						}
-						else if(currentScreen == I_KNOW)// понижение рейтинга
+						else if(currentScreen == I_KNOW)
 						{
-							ratingDowngrade();
-							tvn.setText("");
-							tvf.setText("");
-							getWord();
-							bt1.setText("Знаю");
-							bt2.setText("Не знаю");
-							currentScreen = GAME;	
+							downgradeRating();
+							setScreen(GAME);
 						}
 				    	break;
 				}
@@ -128,17 +106,44 @@ public class GameActivity extends BcActivity
 	}
 	
 	//=========================================================================
-	private void ratingUpgrade()
+	private void setScreen(int screen)
+	{
+		if(screen == GAME)
+		{
+			tvn.setText("");
+			tvf.setText("");
+			getWord();
+			bt1.setText("Р—РЅР°СЋ");
+			bt2.setText("РќРµ Р·РЅР°СЋ");
+			bt2.setVisibility(View.VISIBLE);
+			currentScreen = GAME;		
+		}
+		else if(screen == I_KNOW)
+		{
+			tvf.setText(word.foreign);
+			bt1.setText("Р’РµСЂРЅРѕ");
+			bt2.setText("РћС€РёР±СЃСЏ");
+			currentScreen = I_KNOW;	
+		}
+		else if(screen == I_DONT_KNOW)
+		{
+			tvf.setText(word.foreign);
+			bt1.setText("РџСЂРѕРґРѕР»Р¶РёС‚СЊ");
+			bt2.setVisibility(View.INVISIBLE);
+			currentScreen = I_DONT_KNOW;
+		}		
+	}
+	private void upgradeRating()
 	{
 		int rating;
-		if(word.rating<10)
+		if(word.rating<9)
 			rating = word.rating + 1;
 		else
-			rating = 10;
+			rating = 9;
 		setNewRating(word.id, rating);
 	}
 
-	private void ratingDowngrade()
+	private void downgradeRating()
 	{
 		int rating;
 		if(word.rating>2)
@@ -154,7 +159,7 @@ public class GameActivity extends BcActivity
 			return;
 
 		IBcConnector conn = getBcConnector();
-		conn.startTypicalTask(GetWordTask.class, new Intent(), new IListener<Bundle>()
+		conn.startTypicalTask(GetRandomWordTask.class, new Intent(), new IListener<Bundle>()
 						{
 							public void handle (Bundle b)
 							{

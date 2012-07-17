@@ -7,5 +7,6 @@ public interface IRStorage
 	void destroy();
 
 	List<Word> getWords ();
+	Word getRandomWord ();
 	List<Dict> getDicts ();
 }

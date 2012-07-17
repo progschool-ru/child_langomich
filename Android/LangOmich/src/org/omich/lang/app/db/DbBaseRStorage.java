@@ -2,7 +2,9 @@ package org.omich.lang.app.db;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import org.omich.lang.app.db.SQLiteHelper.DictsCols;
 import org.omich.lang.apptool.db.DbHelper;
 import org.omich.lang.apptool.db.DbHelper.CursorIterator;
 import org.omich.tool.bcops.ICancelledInfo;
@@ -52,12 +54,16 @@ abstract public class DbBaseRStorage implements IRStorage
 		
 		return answer;
 	}
-
+	
 	public List<Word> getWords ()
+	{
+		return getWords(null);
+	}
+	public List<Word> getWords (String where)
 	{
 		Cursor cursor = mDb.query(TNAME_WORDS, 
 				new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.ID}, 
-				null, null, null, null, null);
+				where, null, null, null, null);
 
 		final List<Word> answer = new ArrayList<Word>();
 		
@@ -72,4 +78,27 @@ abstract public class DbBaseRStorage implements IRStorage
 		
 		return answer;
 	}
+	public Word getRandomWord ()
+	{		
+		int r = 0;
+		String query = "SELECT count(*), "+WordsCols.RATING+" FROM "+TNAME_WORDS+" GROUP BY "+WordsCols.RATING; 
+		Cursor cursor = mDb.rawQuery(query, null);
+		int size[] = new int[10];
+		int max[] = new int[10];	
+		for(int i = 0; i < 10;i++) { max[i] = 0;size[i] = 0;}
+		while(cursor.moveToNext())
+		{
+			int i = cursor.getInt(1);
+			size[i] = cursor.getInt(0);
+			r = r + 10 - i;
+			max[i] = r;
+		}
+		int random = new Random().nextInt(r);
+		for(int i = 9; i >= 0;i--)
+			if(random < max[i])
+				r = i;
+		random = new Random().nextInt(size[r]);
+		String where = WordsCols.RATING + "=" + r;		
+		return (Word)getWords(where).get(random);
+	}	
 }
