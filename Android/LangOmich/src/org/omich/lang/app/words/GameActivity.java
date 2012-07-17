@@ -42,10 +42,6 @@ public class GameActivity extends BcActivity
 		tvf = (TextView)findViewById(R.id.item_wordslist_text_foreign);
 		bt1 = (Button)findViewById(R.id.button_1);
 		bt2 = (Button)findViewById(R.id.button_2);
-		tvn.setText("");
-		tvf.setText("");
-		bt1.setText("Знаю");
-		bt2.setText("Не знаю");
 		OnClickListener l =  new OnClickListener(){
 			public void onClick(View v) 
 			{
@@ -83,7 +79,7 @@ public class GameActivity extends BcActivity
 		};
 		bt1.setOnClickListener(l);
 		bt2.setOnClickListener(l);
-		getWord();
+		setScreen(GAME);
 	}
 
 	@Override
@@ -113,22 +109,22 @@ public class GameActivity extends BcActivity
 			tvn.setText("");
 			tvf.setText("");
 			getWord();
-			bt1.setText("Знаю");
-			bt2.setText("Не знаю");
+			bt1.setText(getString(R.string.i_know));
+			bt2.setText(getString(R.string.i_dont_know));
 			bt2.setVisibility(View.VISIBLE);
 			currentScreen = GAME;		
 		}
 		else if(screen == I_KNOW)
 		{
 			tvf.setText(word.foreign);
-			bt1.setText("Верно");
-			bt2.setText("Ошибся");
+			bt1.setText(getString(R.string.isTrue));
+			bt2.setText(getString(R.string.isFalse));
 			currentScreen = I_KNOW;	
 		}
 		else if(screen == I_DONT_KNOW)
 		{
 			tvf.setText(word.foreign);
-			bt1.setText("Продолжить");
+			bt1.setText(getString(R.string.next));
 			bt2.setVisibility(View.INVISIBLE);
 			currentScreen = I_DONT_KNOW;
 		}		

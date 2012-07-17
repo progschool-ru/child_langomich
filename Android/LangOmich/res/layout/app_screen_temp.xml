@@ -20,5 +20,9 @@
         android:layout_height="wrap_content"
         android:text="Show Words"
         android:onClick="onShowWords"/>
-
+    <Button 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:onClick="onSettings"/>
 </LinearLayout>

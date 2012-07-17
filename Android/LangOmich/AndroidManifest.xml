@@ -28,7 +28,7 @@
         </activity>
         <activity
             android:name=".app.words.GameActivity"
-            android:label="GameActivity"
+            android:label="@string/settigs"
             android:theme="@style/Theme.Sherlock">
         </activity>
         <activity
@@ -36,7 +36,10 @@
             android:label="@string/dialogAddWordMain_Title"
             android:theme="@style/Theme.Sherlock">
         </activity>
-        
+  		<activity android:name=".app.SettingsActivity"
+			android:label="@string/settigs"
+			android:theme="@style/Theme.Sherlock">
+		</activity>	      
         
         
         

@@ -33,4 +33,8 @@ public class TempActivity extends AppActivity
 	{
 		getForResultStarter().startForResult(new Intent(this, GameActivity.class), null);
 	}
+	public void onSettings (View v)
+	{
+		getForResultStarter().startForResult(new Intent(this, SettingsActivity.class), null);
+	}	
 }
