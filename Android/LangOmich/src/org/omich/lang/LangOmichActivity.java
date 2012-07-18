@@ -111,7 +111,7 @@ public class LangOmichActivity  extends SherlockActivity{
     }
     
     private  void startSettigs(){
-    	Intent intent = new Intent(this, SettingsActivity.class);
+    	Intent intent = new Intent(this, SettingsActivity_d.class);
 		startActivity(intent);
 	}
     

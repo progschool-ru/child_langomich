@@ -21,4 +21,7 @@ public class BundleFields
 	public static final String WORD_NATIV          = "wordNativ";
 	public static final String WORDS_LIST          = "wordsList";
 	public static final String WORD				   = "word";
+	public static final String ACCOUNT_LOGIN       = "accountLogin";
+	public static final String ACCOUNT_PASSWORD	   = "accountPassword";
+	public static final String CORRECT_ACCOUNT	   = "correctAccount";
 }

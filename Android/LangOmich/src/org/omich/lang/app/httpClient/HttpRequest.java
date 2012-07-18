@@ -1,4 +1,4 @@
-package org.omich.lang.httpClient;
+package org.omich.lang.app.httpClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,14 +20,15 @@ import org.omich.lang.LangOmichSettings;
 public class HttpRequest {
 	
 	private static final String LOGIN = "http://lang.omich.net/smdserver/servlet/login";
+	private static final String IS_LOGGED_IN  = "http://lang.omich.net/smdserver/servlet/isLoggedIn";
 	private static final String GET_WORDS = "http://lang.omich.net/smdserver/servlet/getWords"; 
 	private static final String ADD_WORDS = "http://lang.omich.net/smdserver/servlet/addWords";
 	private HttpClient httpClient;
 	
-	public HttpRequest()
-	{
+	public HttpRequest(){
 		httpClient = new DefaultHttpClient();
 	}
+	
 	public String auth(String login, String password) throws Exception{
 		
 		HttpPost postRequest = new HttpPost(LOGIN);
@@ -45,7 +46,15 @@ public class HttpRequest {
 				
 		return inputSreamToString(response.getEntity().getContent());
 	}
-	
+	public String isLoggedIn() throws Exception
+	{
+		
+		HttpPost postRequest = new HttpPost(IS_LOGGED_IN);
+		
+		HttpResponse response = httpClient.execute(postRequest);
+				
+		return inputSreamToString(response.getEntity().getContent());
+	}	
 	public String getWords()throws Exception{
 		
 		HttpPost postRequest = new HttpPost(GET_WORDS);

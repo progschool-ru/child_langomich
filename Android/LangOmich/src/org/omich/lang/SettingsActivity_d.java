@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 
-public class SettingsActivity extends LangOmichActivity implements OnClickListener{
+public class SettingsActivity_d extends LangOmichActivity implements OnClickListener{
 	
 	private static final int REQUEST_LANGUAGES = 0;
 	private static final int REQUEST_NUMBER_OF_WORDS = 1;

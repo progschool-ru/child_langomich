@@ -47,33 +47,34 @@ public class GameActivity extends BcActivity
 			{
 				switch (v.getId())
 				{
-					case R.id.button_1:
-						if(currentScreen == GAME)
+					case R.id.button_1:				
+						switch (currentScreen)
 						{
-							setScreen(I_KNOW);
-						}
-						else if(currentScreen == I_KNOW)
-						{
-							upgradeRating();
-							setScreen(GAME);
-						}
-						else if(currentScreen == I_DONT_KNOW)
-						{
-							downgradeRating();
-							setScreen(GAME);
+							case GAME:
+								setScreen(I_KNOW);
+								break;
+							case I_KNOW:
+								upgradeRating();
+								setScreen(GAME);
+								break;
+							case I_DONT_KNOW:
+								downgradeRating();
+								setScreen(GAME);
+								break;
 						}
 						break;
 				    case R.id.button_2:
-						if(currentScreen == GAME)
+						switch (currentScreen)
 						{
-							setScreen(I_DONT_KNOW);
+							case GAME:
+								setScreen(I_DONT_KNOW);
+								break;
+							case I_KNOW:
+								downgradeRating();
+								setScreen(GAME);	
+								break;
 						}
-						else if(currentScreen == I_KNOW)
-						{
-							downgradeRating();
-							setScreen(GAME);
-						}
-				    	break;
+						break;
 				}
 			}
 		};

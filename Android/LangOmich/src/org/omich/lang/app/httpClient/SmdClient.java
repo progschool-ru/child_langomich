@@ -1,9 +1,10 @@
-package org.omich.lang.httpClient;
+package org.omich.lang.app.httpClient;
 
 import java.util.List;
 
-import org.omich.lang.json.JSONAuthData;
-import org.omich.lang.json.JSONData;
+import org.json.JSONObject;
+import org.omich.lang.app.json.JSONAuthData;
+import org.omich.lang.app.json.JSONData;
 import org.omich.lang.words.Language;
 
 import android.util.Log;
@@ -19,10 +20,10 @@ public class SmdClient {
 	private String login;
 	private String password;
 	
-	public SmdClient()
-	{
+	public SmdClient(){
 		request = new HttpRequest();
 	}
+	
 	public boolean auth(String login, String password) throws Exception {
 		
 		this.login = login;
@@ -30,7 +31,15 @@ public class SmdClient {
 		
 		return _auth(login, password);
 	}
-	
+	public boolean isLoggedIn() throws Exception
+	{
+		
+		String result = request.isLoggedIn(); 
+		result = JavaString.decode(result);
+		JSONObject jObject= new JSONObject(result);
+		
+		return jObject.getBoolean("isLoggedIn");		
+	}	
 	public List<Language> getWords() throws Exception{
 		
 		List<Language> languages = null;

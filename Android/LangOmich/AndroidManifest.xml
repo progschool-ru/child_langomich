@@ -40,7 +40,11 @@
 			android:label="@string/settigs"
 			android:theme="@style/Theme.Sherlock">
 		</activity>	      
-        
+        <activity
+            android:name=".app.NewAccountActivity"
+            android:label="Учетная запись"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>        
         
         
         <!-- activity
@@ -58,7 +62,7 @@
          </service>
         
         <activity 
-            android:name=".SettingsActivity"
+            android:name=".SettingsActivity_d"
             android:label="@string/settigs"
             android:theme="@style/Theme.Sherlock">
         </activity>
