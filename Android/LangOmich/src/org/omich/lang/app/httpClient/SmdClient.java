@@ -2,6 +2,8 @@ package org.omich.lang.app.httpClient;
 
 import java.util.List;
 
+import org.apache.http.Header;
+import org.apache.http.message.BasicHeader;
 import org.json.JSONObject;
 import org.omich.lang.app.json.JSONAuthData;
 import org.omich.lang.app.json.JSONData;
@@ -20,10 +22,22 @@ public class SmdClient {
 	private String login;
 	private String password;
 	
-	public SmdClient(){
+	public SmdClient()
+	{
 		request = new HttpRequest();
 	}
-	
+	public String getCookie()
+	{
+		if(request.getCookie()!= null)
+			return request.getCookie().getValue();
+		else
+			return null;
+	}
+	public void setCookie(String value)
+	{
+		Header h = new BasicHeader("Cookie",value);
+		request.setCookie(h);
+	}	
 	public boolean auth(String login, String password) throws Exception {
 		
 		this.login = login;
@@ -32,8 +46,7 @@ public class SmdClient {
 		return _auth(login, password);
 	}
 	public boolean isLoggedIn() throws Exception
-	{
-		
+	{		
 		String result = request.isLoggedIn(); 
 		result = JavaString.decode(result);
 		JSONObject jObject= new JSONObject(result);

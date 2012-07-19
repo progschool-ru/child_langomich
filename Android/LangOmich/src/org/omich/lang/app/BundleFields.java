@@ -24,4 +24,5 @@ public class BundleFields
 	public static final String ACCOUNT_LOGIN       = "accountLogin";
 	public static final String ACCOUNT_PASSWORD	   = "accountPassword";
 	public static final String CORRECT_ACCOUNT	   = "correctAccount";
+	public static final String COOKIE	   		   = "cookie";
 }

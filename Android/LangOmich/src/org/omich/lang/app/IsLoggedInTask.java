@@ -7,40 +7,37 @@ import org.omich.tool.bcops.IBcToaster;
 
 import android.content.Intent;
 import android.os.Bundle;
-public class TheCorrectAccountTask implements IBcTask
+public class IsLoggedInTask implements IBcTask
 	{
-		public static Intent createIntent (String login, String password)
+		public static Intent createIntent (String cookie)
 		{
 			Intent intent = new Intent();
-			intent.putExtra(BundleFields.ACCOUNT_LOGIN, login);
-			intent.putExtra(BundleFields.ACCOUNT_PASSWORD, password);
+			intent.putExtra(BundleFields.COOKIE, cookie);
 			return intent;
 		}
 		private IBcToaster mBcToaster;
 		private String mTaskSuccessText;
-		private String mLogin;
-		private String mPassword;
+		private String mCookie;
 
 		public void init(BcTaskEnv env)
 		{
 			mBcToaster = env.bcToaster;
-			mLogin = env.extras.getString(BundleFields.ACCOUNT_LOGIN);
-			mPassword = env.extras.getString(BundleFields.ACCOUNT_PASSWORD);
+			mCookie = env.extras.getString(BundleFields.COOKIE);
 			mTaskSuccessText = env.extras.getString(BundleFields.TASK_SUCCESS_TEXT);
 		}
 
 		public Bundle execute()
 		{
-			boolean correctAccount = false;
+			boolean isLoggedIn = false;
 			Bundle result = new Bundle();
-			SmdClient hr = new SmdClient();		
+			SmdClient hr = new SmdClient();	
 			try
 			{
-				correctAccount = hr.auth(mLogin, mPassword);
-				result.putString(BundleFields.COOKIE, hr.getCookie());	
+				hr.setCookie(mCookie);
+				isLoggedIn = hr.isLoggedIn();	
 			}			
 			catch(Exception e){}
-			result.putBoolean(BundleFields.CORRECT_ACCOUNT, correctAccount);
+			result.putBoolean(BundleFields.CORRECT_ACCOUNT, isLoggedIn);
 			return result;
 		}
 	}

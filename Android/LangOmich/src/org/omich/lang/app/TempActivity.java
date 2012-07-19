@@ -11,6 +11,7 @@ import org.omich.tool.events.Listeners.IListener;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -36,8 +37,8 @@ public class TempActivity extends AppActivity implements OnSharedPreferenceChang
 		sp.registerOnSharedPreferenceChangeListener(this);	
 		tvl = (TextView)findViewById(R.id.item_temp_text_login);
 		tvl.setText(sp.getString("login", ""));
-		tvl.setTextColor(Color.WHITE);
-		theCorrectAccount();		
+		tvl.setTextColor(Color.WHITE);		
+		isLoggedIn();
 	}
 	@Override
 	protected void onDestroy ()
@@ -52,9 +53,14 @@ public class TempActivity extends AppActivity implements OnSharedPreferenceChang
 	}	
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
 	{
-		tvl.setText(sp.getString("login", ""));
-		tvl.setTextColor(Color.WHITE);
-		theCorrectAccount();
+		if(key.equals("login"))
+		{		
+			tvl.setText(sp.getString("login", ""));
+			if(sp.getString("cookie", "").equals(""))
+				tvl.setTextColor(Color.RED);
+			else
+				tvl.setTextColor(Color.GREEN);
+		}
 	}		
 	//==== events =============================================================
 	public void onAddWord (View v)
@@ -91,10 +97,46 @@ public class TempActivity extends AppActivity implements OnSharedPreferenceChang
 				
 						mTheCorrectAccountTaskId = null;
 						
+						Editor ed = sp.edit();
+						if(bundle.getBoolean(BundleFields.CORRECT_ACCOUNT))	
+						{
+							tvl.setTextColor(Color.GREEN);
+						    ed.putString("cookie", bundle.getString(BundleFields.COOKIE));														
+						}
+						else
+						{
+							tvl.setTextColor(Color.RED);
+						    ed.putString("cookie", "");	
+						}
+						ed.commit();
+					}
+				});
+	}	
+	private void isLoggedIn()
+	{
+		if(mTheCorrectAccountTaskId != null)
+			return;
+		if(sp.getString("cookie", "").equals(""))
+		{
+			theCorrectAccount();
+			return;
+		}
+		Intent intent = IsLoggedInTask.createIntent(sp.getString("cookie", ""));
+		mTheCorrectAccountTaskId = mBcConnector.startTypicalTask(IsLoggedInTask.class, 
+				intent, 
+				new IListener<Bundle>()
+				{
+					public void handle (Bundle bundle)
+					{
+						if(mIsDestroyed)
+							return;
+				
+						mTheCorrectAccountTaskId = null;
+						
 						if(bundle.getBoolean(BundleFields.CORRECT_ACCOUNT))	
 							tvl.setTextColor(Color.GREEN);
 						else
-							tvl.setTextColor(Color.RED);
+							theCorrectAccount();
 					}
 				});
 	}		

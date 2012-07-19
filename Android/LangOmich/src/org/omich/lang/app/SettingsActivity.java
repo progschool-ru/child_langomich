@@ -6,6 +6,7 @@ import org.omich.tool.events.Listeners.IListener;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -45,9 +46,12 @@ public class SettingsActivity extends BcActivity implements OnSharedPreferenceCh
 	}	
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
 	{
-		tvl.setText(sp.getString("login", ""));
-		tvl.setTextColor(Color.WHITE);
-		theCorrectAccount();
+		if(key.equals("login"))
+		{
+			tvl.setText(sp.getString("login", ""));
+			tvl.setTextColor(Color.WHITE);
+			theCorrectAccount();
+		}
 	}	
 	public void onNewAccount (View v)
 	{
@@ -71,9 +75,16 @@ public class SettingsActivity extends BcActivity implements OnSharedPreferenceCh
 						mTheCorrectAccountTaskId = null;
 						
 						if(bundle.getBoolean(BundleFields.CORRECT_ACCOUNT))	
+						{
 							tvl.setTextColor(Color.GREEN);
+						    Editor ed = sp.edit();
+						    ed.putString("cookie", bundle.getString(BundleFields.COOKIE));
+						    ed.commit();		
+						}
 						else
 							tvl.setTextColor(Color.RED);
+						
+
 					}
 				});
 	}	

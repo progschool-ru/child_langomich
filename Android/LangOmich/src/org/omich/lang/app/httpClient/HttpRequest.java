@@ -7,15 +7,24 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 import org.omich.lang.LangOmichSettings;
+
+import android.preference.PreferenceManager;
 
 public class HttpRequest {
 	
@@ -24,11 +33,19 @@ public class HttpRequest {
 	private static final String GET_WORDS = "http://lang.omich.net/smdserver/servlet/getWords"; 
 	private static final String ADD_WORDS = "http://lang.omich.net/smdserver/servlet/addWords";
 	private HttpClient httpClient;
-	
-	public HttpRequest(){
+	private Header h;
+	public HttpRequest()
+	{
 		httpClient = new DefaultHttpClient();
 	}
-	
+	public Header getCookie()
+	{
+		return h;
+	}
+	public void setCookie(Header h)
+	{
+		this.h = h;
+	}	
 	public String auth(String login, String password) throws Exception{
 		
 		HttpPost postRequest = new HttpPost(LOGIN);
@@ -43,16 +60,18 @@ public class HttpRequest {
 		postRequest.setEntity(entity);
 		
 		HttpResponse response = httpClient.execute(postRequest);
-				
+		System.out.print("response "+response);
+		h = response.getFirstHeader("Set-Cookie");
+
 		return inputSreamToString(response.getEntity().getContent());
 	}
 	public String isLoggedIn() throws Exception
 	{
 		
 		HttpPost postRequest = new HttpPost(IS_LOGGED_IN);
-		
+	
+		postRequest.setHeader(h);		
 		HttpResponse response = httpClient.execute(postRequest);
-				
 		return inputSreamToString(response.getEntity().getContent());
 	}	
 	public String getWords()throws Exception{
