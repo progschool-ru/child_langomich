@@ -2,8 +2,10 @@ package org.omich.lang.app.words;
 
 import org.omich.lang.R;
 import org.omich.lang.app.words.WordsListAdapter;
-import org.omich.lang.apptool.activity.BcActivity;
+import org.omich.lang.apptool.activity.ABActivity;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,7 +13,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-public class WordsListActivity extends BcActivity
+public class WordsListActivity extends ABActivity implements OnSharedPreferenceChangeListener
 {
 	@SuppressWarnings("unused")
 	private boolean mIsDestroyed;
@@ -24,7 +26,7 @@ public class WordsListActivity extends BcActivity
 	protected void onCreate (Bundle b)
 	{
 		super.onCreate(b);
-		setContentView(R.layout.app_screen_wordslist);
+		setContentView(R.layout.app_screen_wordslist);	
 		
 		mWordsAdapter = new WordsListAdapter(this, getBcConnector());
 		mWordsAdapter.reloadItems();
@@ -44,8 +46,17 @@ public class WordsListActivity extends BcActivity
 //				Word word = (Word)mWordsAdapter.getItem(position-1);
 			}
 		});
-	}
-	
+	}	
+	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
+	{
+		if(key.equals("isTiming"))
+		{
+			  if(sp.getBoolean("isTiming", false))
+				  itemTiming.setIcon(R.drawable.ic_sunc_enable);
+			  else
+				  itemTiming.setIcon(R.drawable.ic_sunc_disable);			
+		}
+	}		
 	@Override
 	protected void onDestroy ()
 	{

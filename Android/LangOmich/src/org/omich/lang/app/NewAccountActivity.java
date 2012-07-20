@@ -3,7 +3,6 @@ package org.omich.lang.app;
 import org.omich.lang.R;
 import org.omich.lang.apptool.activity.AppActivity;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;

@@ -1,7 +1,7 @@
 package org.omich.lang.app;
 
 import org.omich.lang.R;
-import org.omich.lang.apptool.activity.BcActivity;
+import org.omich.lang.apptool.activity.ABActivity;
 import org.omich.tool.events.Listeners.IListener;
 
 import android.content.Intent;
@@ -10,13 +10,12 @@ import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+
 import android.view.View;
 import android.widget.TextView;
 
-public class SettingsActivity extends BcActivity implements OnSharedPreferenceChangeListener
+public class SettingsActivity extends ABActivity implements OnSharedPreferenceChangeListener
 {
-	private SharedPreferences sp;
 	private TextView tvl;
 	private String mTheCorrectAccountTaskId;
 	private boolean mIsDestroyed;
@@ -24,8 +23,7 @@ public class SettingsActivity extends BcActivity implements OnSharedPreferenceCh
 	protected void onCreate (Bundle b)
 	{
 		super.onCreate(b);
-		setContentView(R.layout.app_screen_settings);
-		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		setContentView(R.layout.app_screen_settings);		
 		sp.registerOnSharedPreferenceChangeListener(this);	
 		tvl = (TextView)findViewById(R.id.item_settings_text_login);
 		tvl.setText(sp.getString("login", ""));
@@ -51,6 +49,13 @@ public class SettingsActivity extends BcActivity implements OnSharedPreferenceCh
 			tvl.setText(sp.getString("login", ""));
 			tvl.setTextColor(Color.WHITE);
 			theCorrectAccount();
+		}	
+		else if(key.equals("isTiming"))
+		{
+			  if(sp.getBoolean("isTiming", false))
+				  itemTiming.setIcon(R.drawable.ic_sunc_enable);
+			  else
+				  itemTiming.setIcon(R.drawable.ic_sunc_disable);			
 		}
 	}	
 	public void onNewAccount (View v)

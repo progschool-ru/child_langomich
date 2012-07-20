@@ -93,12 +93,17 @@ abstract public class DbBaseRStorage implements IRStorage
 			r = r + 10 - i;
 			max[i] = r;
 		}
-		int random = new Random().nextInt(r);
-		for(int i = 9; i >= 0;i--)
-			if(random < max[i])
-				r = i;
-		random = new Random().nextInt(size[r]);
-		String where = WordsCols.RATING + "=" + r;		
-		return (Word)getWords(where).get(random);
+		if(r!=0)
+		{
+			int random = new Random().nextInt(r);
+			for(int i = 9; i >= 0;i--)
+				if(random < max[i])
+					r = i;
+			random = new Random().nextInt(size[r]);
+			String where = WordsCols.RATING + "=" + r;		
+			return (Word)getWords(where).get(random);
+		}
+		else
+			return new Word("Словарь пуст", "Dictionary is empty", 0, -1);
 	}	
 }

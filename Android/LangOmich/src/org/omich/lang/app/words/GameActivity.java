@@ -3,19 +3,20 @@ package org.omich.lang.app.words;
 import org.omich.lang.R;
 import org.omich.lang.app.BundleFields;
 import org.omich.lang.app.db.Word;
-import org.omich.lang.apptool.activity.BcActivity;
+import org.omich.lang.apptool.activity.ABActivity;
 import org.omich.tool.bcops.IBcConnector;
 import org.omich.tool.events.Listeners.IListener;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-
-public class GameActivity extends BcActivity
+public class GameActivity extends ABActivity implements OnSharedPreferenceChangeListener
 {
 	private static final int GAME = 1;
 	private static final int I_KNOW = 2;
@@ -82,7 +83,16 @@ public class GameActivity extends BcActivity
 		bt2.setOnClickListener(l);
 		setScreen(GAME);
 	}
-
+	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
+	{
+		if(key.equals("isTiming"))
+		{
+			  if(sp.getBoolean("isTiming", false))
+				  itemTiming.setIcon(R.drawable.ic_sunc_enable);
+			  else
+				  itemTiming.setIcon(R.drawable.ic_sunc_disable);			
+		}
+	}	
 	@Override
 	protected void onDestroy ()
 	{

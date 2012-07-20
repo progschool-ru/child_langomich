@@ -4,25 +4,20 @@ import org.omich.lang.R;
 import org.omich.lang.app.words.AddWordActivity;
 import org.omich.lang.app.words.GameActivity;
 import org.omich.lang.app.words.WordsListActivity;
-import org.omich.lang.apptool.activity.AppActivity;
-import org.omich.tool.bcops.BcConnector;
+import org.omich.lang.apptool.activity.ABActivity;
 import org.omich.tool.events.Listeners.IListener;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
 
-public class TempActivity extends AppActivity implements OnSharedPreferenceChangeListener
+public class TempActivity extends ABActivity implements OnSharedPreferenceChangeListener
 {
-	private SharedPreferences sp;	
-	private BcConnector mBcConnector;
 	private String mTheCorrectAccountTaskId;
 	private boolean mIsDestroyed;	
 	private TextView tvl;
@@ -32,20 +27,18 @@ public class TempActivity extends AppActivity implements OnSharedPreferenceChang
 	{
 		super.onCreate(b);
 		setContentView(R.layout.app_screen_temp);
-		mBcConnector = new BcConnector(this);
-		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		sp.registerOnSharedPreferenceChangeListener(this);	
 		tvl = (TextView)findViewById(R.id.item_temp_text_login);
 		tvl.setText(sp.getString("login", ""));
 		tvl.setTextColor(Color.WHITE);		
 		isLoggedIn();
-	}
+	}	
 	@Override
 	protected void onDestroy ()
 	{
 		if(mTheCorrectAccountTaskId != null)
 		{
-			mBcConnector.unsubscribeTask(mTheCorrectAccountTaskId);
+			getBcConnector().unsubscribeTask(mTheCorrectAccountTaskId);
 			mTheCorrectAccountTaskId = null;
 		}
 		mIsDestroyed = true;		
@@ -53,13 +46,20 @@ public class TempActivity extends AppActivity implements OnSharedPreferenceChang
 	}	
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
 	{
-		if(key.equals("login"))
+		if(key.equals("cookie"))
 		{		
 			tvl.setText(sp.getString("login", ""));
 			if(sp.getString("cookie", "").equals(""))
 				tvl.setTextColor(Color.RED);
 			else
 				tvl.setTextColor(Color.GREEN);
+		}
+		else if(key.equals("isTiming"))
+		{
+			  if(sp.getBoolean("isTiming", false))
+				  itemTiming.setIcon(R.drawable.ic_sunc_enable);
+			  else
+				  itemTiming.setIcon(R.drawable.ic_sunc_disable);			
 		}
 	}		
 	//==== events =============================================================
@@ -86,7 +86,7 @@ public class TempActivity extends AppActivity implements OnSharedPreferenceChang
 			return;
 
 		Intent intent = TheCorrectAccountTask.createIntent(sp.getString("login", ""),sp.getString("password", ""));
-		mTheCorrectAccountTaskId = mBcConnector.startTypicalTask(TheCorrectAccountTask.class, 
+		mTheCorrectAccountTaskId = getBcConnector().startTypicalTask(TheCorrectAccountTask.class, 
 				intent, 
 				new IListener<Bundle>()
 				{
@@ -122,7 +122,7 @@ public class TempActivity extends AppActivity implements OnSharedPreferenceChang
 			return;
 		}
 		Intent intent = IsLoggedInTask.createIntent(sp.getString("cookie", ""));
-		mTheCorrectAccountTaskId = mBcConnector.startTypicalTask(IsLoggedInTask.class, 
+		mTheCorrectAccountTaskId = getBcConnector().startTypicalTask(IsLoggedInTask.class, 
 				intent, 
 				new IListener<Bundle>()
 				{

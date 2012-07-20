@@ -3,7 +3,6 @@ package org.omich.lang.app;
 import org.omich.lang.app.BundleFields;
 import org.omich.lang.app.httpClient.SmdClient;
 import org.omich.tool.bcops.IBcTask;
-import org.omich.tool.bcops.IBcToaster;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,15 +14,11 @@ public class IsLoggedInTask implements IBcTask
 			intent.putExtra(BundleFields.COOKIE, cookie);
 			return intent;
 		}
-		private IBcToaster mBcToaster;
-		private String mTaskSuccessText;
 		private String mCookie;
 
 		public void init(BcTaskEnv env)
 		{
-			mBcToaster = env.bcToaster;
 			mCookie = env.extras.getString(BundleFields.COOKIE);
-			mTaskSuccessText = env.extras.getString(BundleFields.TASK_SUCCESS_TEXT);
 		}
 
 		public Bundle execute()

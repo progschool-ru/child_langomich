@@ -36,13 +36,12 @@
 
 		public Bundle execute()
 		{
-			mDb.setRating(mId, mRating);
-			
+			if(mId != -1)
+				mDb.setRating(mId, mRating);			
 			if(mTaskSuccessText != null && mId != -1)
 			{	
 				mBcToaster.showToast(mTaskSuccessText);
 			}
-
 			mDb.destroy();
 			return null;
 		}
