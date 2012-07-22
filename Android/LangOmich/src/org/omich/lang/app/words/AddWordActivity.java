@@ -5,7 +5,9 @@ import org.omich.lang.apptool.activity.BcActivity;
 import org.omich.tool.events.Listeners.IListener;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
@@ -15,13 +17,15 @@ public class AddWordActivity extends BcActivity
 	private String mAddWordTaskId;
 	
 	private boolean mIsDestroyed;
-
+	
+	protected SharedPreferences sp;
 	//==== live cycle =========================================================
 	@Override
 	protected void onCreate (Bundle b)
 	{
 		super.onCreate(b);
 		setContentView(R.layout.app_dialog_addword);
+		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 	}
 	
@@ -47,7 +51,7 @@ public class AddWordActivity extends BcActivity
 		String foreign = ((EditText)findViewById(R.id.addword_foreignEdit)).getText().toString();
 		String toast = getResources().getString(R.string.dialogAddWordMain_Added);
 
-		Intent intent = AddWordTask.createIntent(nativ, foreign, toast);
+		Intent intent = AddWordTask.createIntent(nativ, foreign,sp.getLong("dictId", -1), toast);
 		mAddWordTaskId = getBcConnector().startTypicalTask(AddWordTask.class, intent, new IListener<Bundle>()
 			{
 				public void handle (Bundle bundle)

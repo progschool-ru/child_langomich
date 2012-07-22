@@ -19,7 +19,7 @@ import android.widget.TextView;
 public class TempActivity extends ABActivity implements OnSharedPreferenceChangeListener
 {
 	private String mTheCorrectAccountTaskId;
-	private boolean mIsDestroyed;	
+	private String mIsLoggedInTaskId;	
 	private TextView tvl;
 	//==== live cycle =========================================================
 	@Override
@@ -41,7 +41,11 @@ public class TempActivity extends ABActivity implements OnSharedPreferenceChange
 			getBcConnector().unsubscribeTask(mTheCorrectAccountTaskId);
 			mTheCorrectAccountTaskId = null;
 		}
-		mIsDestroyed = true;		
+		if(mTheCorrectAccountTaskId != null)
+		{
+			getBcConnector().unsubscribeTask(mTheCorrectAccountTaskId);
+			mTheCorrectAccountTaskId = null;
+		}		
 		super.onDestroy();
 	}	
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
@@ -56,10 +60,10 @@ public class TempActivity extends ABActivity implements OnSharedPreferenceChange
 		}
 		else if(key.equals("isTiming"))
 		{
-			  if(sp.getBoolean("isTiming", false))
-				  itemTiming.setIcon(R.drawable.ic_sunc_enable);
-			  else
-				  itemTiming.setIcon(R.drawable.ic_sunc_disable);			
+			if(sp.getBoolean("isTiming", false))
+				itemTiming.setIcon(R.drawable.ic_sunc_enable);
+			else
+				itemTiming.setIcon(R.drawable.ic_sunc_disable);			
 		}
 	}		
 	//==== events =============================================================
@@ -114,7 +118,7 @@ public class TempActivity extends ABActivity implements OnSharedPreferenceChange
 	}	
 	private void isLoggedIn()
 	{
-		if(mTheCorrectAccountTaskId != null)
+		if(mIsLoggedInTaskId != null)
 			return;
 		if(sp.getString("cookie", "").equals(""))
 		{
@@ -122,7 +126,7 @@ public class TempActivity extends ABActivity implements OnSharedPreferenceChange
 			return;
 		}
 		Intent intent = IsLoggedInTask.createIntent(sp.getString("cookie", ""));
-		mTheCorrectAccountTaskId = getBcConnector().startTypicalTask(IsLoggedInTask.class, 
+		mIsLoggedInTaskId = getBcConnector().startTypicalTask(IsLoggedInTask.class, 
 				intent, 
 				new IListener<Bundle>()
 				{
@@ -131,7 +135,7 @@ public class TempActivity extends ABActivity implements OnSharedPreferenceChange
 						if(mIsDestroyed)
 							return;
 				
-						mTheCorrectAccountTaskId = null;
+						mIsLoggedInTaskId = null;
 						
 						if(bundle.getBoolean(BundleFields.CORRECT_ACCOUNT))	
 							tvl.setTextColor(Color.GREEN);

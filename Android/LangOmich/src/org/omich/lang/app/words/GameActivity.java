@@ -22,7 +22,6 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 	private static final int I_KNOW = 2;
 	private static final int I_DONT_KNOW = 3;
 	
-	private boolean mIsDestroyed;
 	private TextView tvn;
 	private TextView tvf;
 	private Button bt1;
@@ -107,8 +106,6 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 			getBcConnector().unsubscribeTask(mSetRatingTaskId);
 			mSetRatingTaskId = null;
 		}
-		
-		mIsDestroyed = true;
 		super.onDestroy();
 	}
 	

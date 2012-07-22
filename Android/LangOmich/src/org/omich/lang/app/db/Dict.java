@@ -14,17 +14,27 @@ public class Dict implements Parcelable
 	//========================================================================
 	public long dictId;
 	public String name;
+	public long serverId;
+	public long time;
 
 	public Dict (long dictId, String name)
 	{
 		this.dictId = dictId;
 		this.name = name;
 	}
-	
+	public Dict (long dictId, long serverId, String name, long time)
+	{
+		this.dictId = dictId;
+		this.serverId = serverId;
+		this.name = name;
+		this.time = time;
+	}	
 	public Dict (Parcel source)
 	{
 		dictId = source.readLong();
+		serverId = source.readLong();
 		name = source.readString();
+		time = source.readLong();
 	}
 	
 	public int describeContents (){return 0;}
@@ -32,7 +42,8 @@ public class Dict implements Parcelable
 	public void writeToParcel (Parcel dest, int flags)
 	{
 		dest.writeLong(dictId);
+		dest.writeLong(serverId);
 		dest.writeString(name);
-		
+		dest.writeLong(time);
 	}
 }

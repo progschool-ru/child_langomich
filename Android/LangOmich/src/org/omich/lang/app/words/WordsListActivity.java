@@ -15,9 +15,6 @@ import android.widget.Spinner;
 
 public class WordsListActivity extends ABActivity implements OnSharedPreferenceChangeListener
 {
-	@SuppressWarnings("unused")
-	private boolean mIsDestroyed;
-	
 	private WordsListAdapter mWordsAdapter;
 	private DictsListAdapter mDictsAdapter;
 
@@ -65,7 +62,6 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 		mDictsAdapter.destroy();
 		mDictsAdapter = null;
 
-		mIsDestroyed = true;
 		super.onDestroy();
 	}
 	

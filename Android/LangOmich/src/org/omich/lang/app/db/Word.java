@@ -15,15 +15,18 @@ public class Word implements Parcelable
 	public String foreign;
 	public int rating;
 	public long id;
+	public long time;
 	
 	public Word (String n, String f, int r){nativ = n; foreign = f; rating = r;}
 	public Word (String n, String f, int r, long i){nativ = n; foreign = f; rating = r; id = i;}
-	
+	public Word (String n, String f, int r, long i, long t){nativ = n; foreign = f; rating = r; id = i; time = t;}
 	public Word (Parcel source)
 	{
 		nativ = source.readString();
 		foreign = source.readString();
 		rating = source.readInt();
+		id = source.readLong();
+		time = source.readLong();
 	}
 
 	public int describeContents (){return 0;}
@@ -33,5 +36,7 @@ public class Word implements Parcelable
 		dest.writeString(nativ);
 		dest.writeString(foreign);
 		dest.writeInt(rating);
+		dest.writeLong(id);
+		dest.writeLong(time);
 	}
 }

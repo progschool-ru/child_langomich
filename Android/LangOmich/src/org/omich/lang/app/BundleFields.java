@@ -17,6 +17,7 @@ public class BundleFields
 	public static final String TASK_SUCCESS_TEXT   = "taskSuccessText";
 	public static final String WORD_FOREIGN        = "wordForeign";
 	public static final String WORD_ID			   = "wordId";
+	public static final String WORD_DICT_ID		   = "dictId";
 	public static final String WORD_RATING		   = "wordRating";
 	public static final String WORD_NATIV          = "wordNativ";
 	public static final String WORDS_LIST          = "wordsList";
@@ -25,4 +26,6 @@ public class BundleFields
 	public static final String ACCOUNT_PASSWORD	   = "accountPassword";
 	public static final String CORRECT_ACCOUNT	   = "correctAccount";
 	public static final String COOKIE	   		   = "cookie";
+	public static final String MOBILE_TIME	   	   = "mobileTime";
+	public static final String SERVER_TIME	   	   = "serverTime";
 }

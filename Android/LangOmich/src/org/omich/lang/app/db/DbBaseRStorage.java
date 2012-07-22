@@ -37,32 +37,47 @@ abstract public class DbBaseRStorage implements IRStorage
 	
 	public List<Dict> getDicts ()
 	{
+		String where = null;
+		return getDicts(where);
+	}	
+	public List<Dict> getDicts (Long mobileTime)
+	{
+		String where = DictsCols.TIME + ">" + mobileTime;
+		return getDicts(where);
+	}	
+	private List<Dict> getDicts (String where)
+	{
 		Cursor cursor = mDb.query(TNAME_DICTS, 
-				new String[]{DictsCols.ID, DictsCols.NAME}, 
-				null, null, null, null, null);
-
+				new String[]{DictsCols.ID, DictsCols.SERVER_ID, DictsCols.NAME, DictsCols.TIME}, 
+				where, null, null, null, null);
+			
 		final List<Dict> answer = new ArrayList<Dict>();
 		
 		DbHelper.iterateCursorAndClose(cursor, new CursorIterator()
 		{
 			public void handle(Cursor cursor)
 			{
-				Dict dict = new Dict(cursor.getLong(0), cursor.getString(1));
+				Dict dict = new Dict(cursor.getLong(0),cursor.getLong(1), cursor.getString(2), cursor.getLong(3));
 				answer.add(dict);
 			}
 		});
 		
 		return answer;
-	}
-	
+	}		
 	public List<Word> getWords ()
 	{
-		return getWords(null);
+		String where = null;
+		return getWords(where);
 	}
-	public List<Word> getWords (String where)
+	public List<Word> getWords (Long mobileTime)
+	{
+		String where = WordsCols.TIME + ">" + mobileTime;
+		return getWords(where);
+	}	
+	private List<Word> getWords (String where)
 	{
 		Cursor cursor = mDb.query(TNAME_WORDS, 
-				new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.ID}, 
+				new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.ID, WordsCols.TIME}, 
 				where, null, null, null, null);
 
 		final List<Word> answer = new ArrayList<Word>();
@@ -71,7 +86,7 @@ abstract public class DbBaseRStorage implements IRStorage
 		{
 			public void handle(Cursor cursor)
 			{
-				Word word = new Word(cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getLong(3));
+				Word word = new Word(cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getLong(3), cursor.getLong(4));
 				answer.add(word);
 			}
 		});

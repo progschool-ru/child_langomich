@@ -1,5 +1,7 @@
 package org.omich.lang.app.db;
 
+import java.util.Date;
+
 import org.omich.tool.log.Log;
 
 import android.content.ContentValues;
@@ -20,6 +22,8 @@ public class SQLiteHelper extends SQLiteOpenHelper
 	private static final String CREATE_DICTS_QUERY = "create table "
 			+ TNAME_DICTS + "("
 				+ DictsCols.ID              + " integer not null primary key autoincrement, "
+				+ DictsCols.TIME            + " integer not null, "
+				+ DictsCols.SERVER_ID       + " integer not null, "
 				+ DictsCols.NAME            + " text unique)";
 
 	private static final String CREATE_WORDS_QUERY = "create table "
@@ -27,6 +31,7 @@ public class SQLiteHelper extends SQLiteOpenHelper
 				+ WordsCols.ID              + " integer not null primary key autoincrement, "
 				+ WordsCols.DICT_ID         + " integer not null, "
 				+ WordsCols.RATING          + " integer not null, "
+				+ WordsCols.TIME            + " integer not null, "
 				+ WordsCols.NATIV           + " text unique, "
 				+ WordsCols.FOREIGN         + " text, "
 				+ "foreign key (" + WordsCols.DICT_ID + ") references " 
@@ -36,6 +41,8 @@ public class SQLiteHelper extends SQLiteOpenHelper
 	{
 		public static final String ID          = "_id";
 		public static final String NAME        = "name";
+		public static final String SERVER_ID   = "serverId";
+		public static final String TIME        = "time";
 	}
 
 	public static final class WordsCols
@@ -45,6 +52,7 @@ public class SQLiteHelper extends SQLiteOpenHelper
 		public static final String FOREIGN     = "forein";
 		public static final String RATING      = "rating";
 		public static final String DICT_ID     = "dictId";
+		public static final String TIME        = "time";
 	}
 	
 	//=========================================================================
@@ -79,6 +87,9 @@ public class SQLiteHelper extends SQLiteOpenHelper
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(DictsCols.NAME, "default");
+		cv.put(DictsCols.SERVER_ID, -1);
+		Long time = new Date().getTime();
+		cv.put(DictsCols.TIME, time);
 		db.insert(TNAME_DICTS, null, cv);
 	}
 }

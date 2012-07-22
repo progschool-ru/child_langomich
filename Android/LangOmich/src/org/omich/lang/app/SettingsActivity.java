@@ -18,7 +18,6 @@ public class SettingsActivity extends ABActivity implements OnSharedPreferenceCh
 {
 	private TextView tvl;
 	private String mTheCorrectAccountTaskId;
-	private boolean mIsDestroyed;
 	@Override
 	protected void onCreate (Bundle b)
 	{
@@ -38,8 +37,6 @@ public class SettingsActivity extends ABActivity implements OnSharedPreferenceCh
 			getBcConnector().unsubscribeTask(mTheCorrectAccountTaskId);
 			mTheCorrectAccountTaskId = null;
 		}
-		
-		mIsDestroyed = true;
 		super.onDestroy();
 	}	
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
