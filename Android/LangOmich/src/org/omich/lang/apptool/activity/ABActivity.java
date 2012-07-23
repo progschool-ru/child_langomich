@@ -3,17 +3,21 @@ package org.omich.lang.apptool.activity;
 import java.util.ArrayList;
 import org.omich.lang.R;
 import org.omich.lang.app.BundleFields;
+import org.omich.lang.app.IsLoggedInTask;
+import org.omich.lang.app.TheCorrectAccountTask;
 import org.omich.lang.app.db.Dict;
 import org.omich.lang.app.db.Word;
 import org.omich.tool.events.Listeners.IListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class ABActivity extends BcActivity
 {
@@ -21,6 +25,9 @@ public class ABActivity extends BcActivity
 	protected SharedPreferences sp;
 	protected boolean mIsDestroyed;	
 	private String mTimingTaskId;
+	private String mTheCorrectAccountTaskId;
+	private String mIsLoggedInTaskId;	
+	private TextView tvl;
 	@Override
 	protected void onCreate (Bundle savedInstanceState)
 	{
@@ -34,7 +41,17 @@ public class ABActivity extends BcActivity
 		{
 			getBcConnector().unsubscribeTask(mTimingTaskId);
 			mTimingTaskId = null;
-		}		
+		}	
+		if(mTheCorrectAccountTaskId != null)
+		{
+			getBcConnector().unsubscribeTask(mTheCorrectAccountTaskId);
+			mTheCorrectAccountTaskId = null;
+		}
+		if(mTheCorrectAccountTaskId != null)
+		{
+			getBcConnector().unsubscribeTask(mTheCorrectAccountTaskId);
+			mTheCorrectAccountTaskId = null;
+		}	
 		mIsDestroyed = true;
 		super.onDestroy();
 	}	
@@ -146,4 +163,56 @@ public class ABActivity extends BcActivity
 					}
 				});			
 	}
+	protected void isLoggedIn()
+	{
+		if(mIsLoggedInTaskId != null)
+			return;
+		if(sp.getString("cookie", "").equals(""))
+		{
+			theCorrectAccount();
+			return;
+		}
+		Intent intent = IsLoggedInTask.createIntent(sp.getString("cookie", ""));
+		mIsLoggedInTaskId = getBcConnector().startTypicalTask(IsLoggedInTask.class, 
+				intent, 
+				new IListener<Bundle>()
+				{
+					public void handle (Bundle bundle)
+					{
+						if(mIsDestroyed)
+							return;
+				
+						mIsLoggedInTaskId = null;
+						
+						if(!bundle.getBoolean(BundleFields.IS_LOGGED_IN))					
+							theCorrectAccount();
+					}
+				});
+	}	
+	protected void theCorrectAccount()
+	{
+		if(mTheCorrectAccountTaskId != null)
+			return;
+
+		Intent intent = TheCorrectAccountTask.createIntent(sp.getString("login", ""),sp.getString("password", ""));
+		mTheCorrectAccountTaskId = getBcConnector().startTypicalTask(TheCorrectAccountTask.class, 
+				intent, 
+				new IListener<Bundle>()
+				{
+					public void handle (Bundle bundle)
+					{
+						if(mIsDestroyed)
+							return;
+				
+						mTheCorrectAccountTaskId = null;
+						
+						Editor ed = sp.edit();
+						if(bundle.getBoolean(BundleFields.CORRECT_ACCOUNT))	
+						    ed.putString("cookie", bundle.getString(BundleFields.COOKIE));														
+						else
+						    ed.putString("cookie", "");	
+						ed.commit();
+					}
+				});
+	}			
 }

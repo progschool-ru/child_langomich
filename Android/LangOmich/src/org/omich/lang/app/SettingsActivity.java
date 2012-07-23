@@ -2,11 +2,8 @@ package org.omich.lang.app;
 
 import org.omich.lang.R;
 import org.omich.lang.apptool.activity.ABActivity;
-import org.omich.tool.events.Listeners.IListener;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -26,8 +23,11 @@ public class SettingsActivity extends ABActivity implements OnSharedPreferenceCh
 		sp.registerOnSharedPreferenceChangeListener(this);	
 		tvl = (TextView)findViewById(R.id.item_settings_text_login);
 		tvl.setText(sp.getString("login", ""));
-		tvl.setTextColor(Color.WHITE);
-		theCorrectAccount();
+		if(sp.getString("cookie", "").equals(""))
+			tvl.setTextColor(Color.RED);
+		else
+			tvl.setTextColor(Color.GREEN);
+		isLoggedIn();
 	}
 	@Override
 	protected void onDestroy ()
@@ -41,12 +41,23 @@ public class SettingsActivity extends ABActivity implements OnSharedPreferenceCh
 	}	
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
 	{
-		if(key.equals("login"))
-		{
+		if(key.equals("cookie"))
+		{		
 			tvl.setText(sp.getString("login", ""));
-			tvl.setTextColor(Color.WHITE);
+			if(sp.getString("cookie", "").equals(""))
+				tvl.setTextColor(Color.RED);
+			else
+				tvl.setTextColor(Color.GREEN);
+		}
+		else if(key.equals("login"))
+		{			
+			tvl.setText(sp.getString("login", ""));	
 			theCorrectAccount();
-		}	
+		}
+		else if(key.equals("password"))
+		{
+			theCorrectAccount();
+		}
 		else if(key.equals("isTiming"))
 		{
 			  if(sp.getBoolean("isTiming", false))
@@ -58,36 +69,5 @@ public class SettingsActivity extends ABActivity implements OnSharedPreferenceCh
 	public void onNewAccount (View v)
 	{
 		getForResultStarter().startForResult(new Intent(this, NewAccountActivity.class), null);
-	}	
-	private void theCorrectAccount()
-	{
-		if(mTheCorrectAccountTaskId != null)
-			return;
-
-		Intent intent = TheCorrectAccountTask.createIntent(sp.getString("login", ""),sp.getString("password", ""));
-		mTheCorrectAccountTaskId = getBcConnector().startTypicalTask(TheCorrectAccountTask.class, 
-				intent, 
-				new IListener<Bundle>()
-				{
-					public void handle (Bundle bundle)
-					{
-						if(mIsDestroyed)
-							return;
-				
-						mTheCorrectAccountTaskId = null;
-						
-						if(bundle.getBoolean(BundleFields.CORRECT_ACCOUNT))	
-						{
-							tvl.setTextColor(Color.GREEN);
-						    Editor ed = sp.edit();
-						    ed.putString("cookie", bundle.getString(BundleFields.COOKIE));
-						    ed.commit();		
-						}
-						else
-							tvl.setTextColor(Color.RED);
-						
-
-					}
-				});
-	}	
+	}		
 }

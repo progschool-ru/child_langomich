@@ -32,7 +32,7 @@ public class IsLoggedInTask implements IBcTask
 				isLoggedIn = hr.isLoggedIn();	
 			}			
 			catch(Exception e){}
-			result.putBoolean(BundleFields.CORRECT_ACCOUNT, isLoggedIn);
+			result.putBoolean(BundleFields.IS_LOGGED_IN, isLoggedIn);
 			return result;
 		}
 	}
