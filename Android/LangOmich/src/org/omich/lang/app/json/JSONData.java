@@ -2,30 +2,31 @@ package org.omich.lang.app.json;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.omich.lang.words.Language;
+import org.omich.lang.app.db.Dict;
+import org.omich.lang.app.db.Word;
 
-public class JSONData {
-	
-	private static final String LANGUAGES = "languages";
+public class JSONData 
+{
 	private static final String SUCCESS = "success";
+	private static final String SERVER_TIME = "serverTime";
+	private static final String LANGUAGES = "languages";
 	private static final String LAST_CONNECTION = "lastConnection";
 	
-	private long lastconnect = 0;
+	private long serverTime = 0;
 	private boolean sucsess;
-	private List<Language> languages = new ArrayList<Language>();
+	private List<Word> words = new ArrayList<Word>();
+	private List<Dict> dicts = new ArrayList<Dict>();
 	
-	public JSONData(){
+	public JSONData()
+	{
 		sucsess = false;
 	}
-	
-	
-	public JSONData(String jString) throws JSONException{
-		
+	public JSONData(String jString) throws JSONException
+	{
+/*		
 		JSONObject jObject = new JSONObject(jString);
 		
 		sucsess = jObject.getBoolean(SUCCESS);
@@ -43,50 +44,48 @@ public class JSONData {
 				languages.add(languge);
 			}
 		}
+		*/
 	}
-	
-	public long getLastConnect(){
-		if(sucsess){
-			return lastconnect;
-		}
-		return 0;
-	}
-	
-	public List<Language> getLanguage(){
-		if(sucsess){
-			return languages;
-		}
-		return null;
-	}
-	
-	public void put(List<Language> languages, long lastconnect){
-		this.languages = languages;
-		this.lastconnect = lastconnect;
+	public void put(List<Word> words, List<Dict> dicts, long serverTime)
+	{
+		this.words = words;
+		this.dicts = dicts;
+		this.serverTime = serverTime;
 	}
 	
 	@Override
-	public String toString(){
-		
+	public String toString()
+	{
 		JSONObject jObject = new JSONObject();
-		
-		JSONArray jLanguage = new JSONArray();
-		
-		ListIterator<Language> iter = languages.listIterator();
-		
-		
-		try {
-			
-			while(iter.hasNext()){
-				jLanguage.put(iter.next().toJSON());
+		try
+		{
+			JSONArray JSONDicts = new JSONArray();
+			for(int i = 0; i < dicts.size();i++)
+			{
+				JSONObject JSONDict = new JSONObject();
+				JSONArray JSONWords = new JSONArray();
+				for(int j = 0; j < words.size();j++)
+				{
+					if(words.get(j).id == dicts.get(i).dictId)
+					{
+						JSONObject JSONWord = new JSONObject();
+						JSONWord.put("original",   words.get(j).nativ);		
+						JSONWord.put("translation", words.get(j).foreign);
+						JSONWord.put("rating",  words.get(j).rating);
+//						JSONWord.put("time",    words.get(j).time);
+						JSONWords.put(JSONWord);
+					}
+				}
+				JSONDict.put("id",    dicts.get(i).serverId);		
+				JSONDict.put("name",  dicts.get(i).name);				
+				JSONDict.put("words", JSONWords);
+				JSONDicts.put(JSONDict);
 			}
-		
-			jObject.put(LANGUAGES, jLanguage);
-			jObject.put(LAST_CONNECTION, lastconnect);
-		
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			jObject.put(LANGUAGES, JSONDicts);
+			jObject.put(LAST_CONNECTION, serverTime);
 		}
-		
+		catch(JSONException e){}		
+
 		return jObject.toString();
 	}
 }

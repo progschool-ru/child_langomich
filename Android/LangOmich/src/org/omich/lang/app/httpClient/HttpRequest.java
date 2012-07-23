@@ -54,7 +54,6 @@ public class HttpRequest {
 		postRequest.setEntity(entity);
 		
 		HttpResponse response = httpClient.execute(postRequest);
-		System.out.print("response "+response);
 		h = response.getFirstHeader("Set-Cookie");
 
 		return inputSreamToString(response.getEntity().getContent());
@@ -76,8 +75,8 @@ public class HttpRequest {
 		return inputSreamToString(response.getEntity().getContent());
 	}
 	
-	public String addWords(String data) throws ClientProtocolException, IOException{
-		
+	public String addWords(String data) throws ClientProtocolException, IOException
+	{		
 		HttpPost postRequest = new HttpPost(ADD_WORDS);
 		
 		List<NameValuePair> postParametrs = new ArrayList<NameValuePair>();
@@ -90,8 +89,7 @@ public class HttpRequest {
 		
 		HttpResponse response = httpClient.execute(postRequest);
 		
-		return inputSreamToString(response.getEntity().getContent());
-		
+		return inputSreamToString(response.getEntity().getContent());		
 	}
 	
 	private String inputSreamToString(InputStream input) throws IOException{

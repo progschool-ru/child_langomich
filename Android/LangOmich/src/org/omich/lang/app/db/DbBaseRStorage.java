@@ -72,7 +72,21 @@ abstract public class DbBaseRStorage implements IRStorage
 	public List<Word> getWords (Long mobileTime)
 	{
 		String where = WordsCols.TIME + ">" + mobileTime;
-		return getWords(where);
+		Cursor cursor = mDb.query(TNAME_WORDS, 
+				new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.DICT_ID, WordsCols.TIME}, 
+				where, null, null, null, null);
+
+		final List<Word> answer = new ArrayList<Word>();
+		
+		DbHelper.iterateCursorAndClose(cursor, new CursorIterator()
+		{
+			public void handle(Cursor cursor)
+			{
+				Word word = new Word(cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getLong(3), cursor.getLong(4));
+				answer.add(word);
+			}
+		});
+		return answer;
 	}	
 	private List<Word> getWords (String where)
 	{
