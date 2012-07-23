@@ -45,13 +45,19 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		mDb.delete(TNAME_WORDS, WordsCols.DICT_ID + " = " + dictId + " AND " 
 						+ WordsCols.NATIV + " = ? ", new String[]{nativ});
 		
-		ContentValues values = new ContentValues();
+		ContentValues values = new ContentValues();		
 		values.put(WordsCols.NATIV, nativ);
 		values.put(WordsCols.FOREIGN, foreign);
 		values.put(WordsCols.RATING, 0);
 		values.put(WordsCols.DICT_ID, dictId);
 		Long time = new Date().getTime();
 		values.put(WordsCols.TIME, time);
+		
+		ContentValues valuesForDict = new ContentValues();
+		valuesForDict.put(DictsCols.TIME, time);
+		String where = DictsCols.ID + " = " + dictId;
+		mDb.update(TNAME_DICTS, valuesForDict, where, null);
+		
 		return mDb.insert(TNAME_WORDS, null, values);
 	}
 	public void addWords (List<Word> words)
@@ -126,12 +132,25 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		}
 	}	
 	public void setRating (long id, int rating)
-	{		
-		ContentValues values = new ContentValues();		
-		values.put(WordsCols.RATING, rating);
+	{	
 		Long time = new Date().getTime();
+		
+		ContentValues valuesForDict = new ContentValues();
+		valuesForDict.put(DictsCols.TIME, time);
+		String where = DictsCols.ID + " = " + getDictId(id);
+		mDb.update(TNAME_DICTS, valuesForDict, where, null);
+		
+		ContentValues values = new ContentValues();
+		values.put(WordsCols.RATING, rating);		
 		values.put(WordsCols.TIME, time);
-		String where = "_id=" + id;
+		where = WordsCols.ID + " = " + id;
 		mDb.update(TNAME_WORDS, values, where, null);
+	}
+	private long getDictId(long wordId)
+	{
+		String where = WordsCols.ID + "=" + wordId;		
+		Cursor cursor = mDb.query(TNAME_WORDS, new String[]{WordsCols.DICT_ID}, 
+				where, null, null, null, null);			
+		return cursor.getLong(0);
 	}
 }

@@ -1,21 +1,23 @@
 package org.omich.lang.apptool.activity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.omich.lang.app.BundleFields;
 import org.omich.lang.app.db.DbCreator;
 import org.omich.lang.app.db.Dict;
 import org.omich.lang.app.db.IRStorage;
 import org.omich.lang.app.db.Word;
+import org.omich.lang.app.httpClient.SmdClient;
 import org.omich.tool.bcops.IBcTask;
 
 
 import android.content.Intent;
 import android.os.Bundle;
 
-public class TimingGetWordsTask implements IBcTask
+public class TimingTask implements IBcTask
 {
-	public static Intent createIntent (long mobileTime)
+	public static Intent createIntent (long mobileTime,long serverTime, String cookie)
 	{
 		Intent intent = new Intent();
 		intent.putExtra(BundleFields.MOBILE_TIME, mobileTime);
@@ -32,13 +34,25 @@ public class TimingGetWordsTask implements IBcTask
 
 	public Bundle execute()
 	{
-		ArrayList<Word> words = new ArrayList<Word>(mDb.getWords(mMobileTime));	
-		ArrayList<Dict> dicts = new ArrayList<Dict>(mDb.getDicts(mMobileTime));
+		List<Word> words = new ArrayList<Word>(mDb.getWords(mMobileTime));	
+		List<Dict> dicts = new ArrayList<Dict>(mDb.getDicts(mMobileTime));
+		
+/*		boolean isLoggedIn = false;
+
 		Bundle result = new Bundle();
-		result.putParcelableArrayList(BundleFields.WORDS_LIST, words);
-		result.putParcelableArrayList(BundleFields.DICTS_LIST, dicts);
+		SmdClient hr = new SmdClient();	
+		try
+		{
+			hr.setCookie(mCookie);
+
+			isLoggedIn = hr.isLoggedIn();	
+		}			
+		catch(Exception e){}	
+		mDb.addDicts(dicts);
+		mDb.addWords(words);
+		*/
 		mDb.destroy();
-		return result;
+		return null;
 	}
 
 }
