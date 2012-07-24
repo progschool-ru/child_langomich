@@ -25,6 +25,8 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 		super.onCreate(b);
 		setContentView(R.layout.app_screen_wordslist);	
 		
+		sp.registerOnSharedPreferenceChangeListener(this);	
+		
 		mWordsAdapter = new WordsListAdapter(this, getBcConnector());
 		mWordsAdapter.reloadItems();
 		

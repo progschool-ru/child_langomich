@@ -38,6 +38,9 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 	{
 		super.onCreate(b);
 		setContentView(R.layout.app_screen_game);
+		
+		sp.registerOnSharedPreferenceChangeListener(this);	
+		
 		tvn = (TextView)findViewById(R.id.item_wordslist_text_nativ);
 		tvf = (TextView)findViewById(R.id.item_wordslist_text_foreign);
 		bt1 = (Button)findViewById(R.id.button_1);
