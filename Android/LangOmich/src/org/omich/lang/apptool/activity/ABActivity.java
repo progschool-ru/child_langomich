@@ -1,5 +1,7 @@
 package org.omich.lang.apptool.activity;
 
+import java.util.Date;
+
 import org.omich.lang.R;
 import org.omich.lang.app.BundleFields;
 import org.omich.lang.app.IsLoggedInTask;
@@ -8,6 +10,8 @@ import org.omich.tool.events.Listeners.IListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -78,6 +82,8 @@ public class ABActivity extends BcActivity
     }	
 	private void timing()
 	{
+		if(!hasInternetConnection())
+			return;		
 		Editor ed = sp.edit();
     	ed.putBoolean("isTiming", true);
     	ed.commit();
@@ -97,7 +103,13 @@ public class ABActivity extends BcActivity
 				
 						mTimingTaskId = null;
 						
-		        		Editor ed = sp.edit();
+						Editor ed = sp.edit();
+						if(bundle.getLong(BundleFields.SERVER_TIME) != 0)
+						{					
+							Long mobileTime = new Date().getTime();
+							ed.putLong("mobileTime", mobileTime);
+							ed.putLong("serverTime", bundle.getLong(BundleFields.SERVER_TIME));
+						}	        		
 		    	    	ed.putBoolean("isTiming", false);
 		    	    	ed.commit();											
 					}
@@ -107,6 +119,8 @@ public class ABActivity extends BcActivity
 	{
 		if(mIsLoggedInTaskId != null)
 			return;
+		if(!hasInternetConnection())
+			return;		
 		if(sp.getString("cookie", "").equals(""))
 		{
 			theCorrectAccount();
@@ -130,10 +144,12 @@ public class ABActivity extends BcActivity
 				});
 	}	
 	protected void theCorrectAccount()
-	{
+	{		
+		
 		if(mTheCorrectAccountTaskId != null)
 			return;
-
+		if(!hasInternetConnection())
+			return;
 		Intent intent = TheCorrectAccountTask.createIntent(sp.getString("login", ""),sp.getString("password", ""));
 		mTheCorrectAccountTaskId = getBcConnector().startTypicalTask(TheCorrectAccountTask.class, 
 				intent, 
@@ -154,5 +170,11 @@ public class ABActivity extends BcActivity
 						ed.commit();
 					}
 				});
-	}			
+	}	
+	public boolean hasInternetConnection()
+	{
+		ConnectivityManager cm = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+		return networkInfo != null && networkInfo.isConnected();
+	}
 }

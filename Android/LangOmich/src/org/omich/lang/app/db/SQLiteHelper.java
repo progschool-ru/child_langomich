@@ -23,7 +23,7 @@ public class SQLiteHelper extends SQLiteOpenHelper
 			+ TNAME_DICTS + "("
 				+ DictsCols.ID              + " integer not null primary key autoincrement, "
 				+ DictsCols.TIME            + " integer not null, "
-				+ DictsCols.SERVER_ID       + " integer not null, "
+				+ DictsCols.SERVER_ID       + " text unique, "
 				+ DictsCols.NAME            + " text unique)";
 
 	private static final String CREATE_WORDS_QUERY = "create table "
@@ -87,7 +87,7 @@ public class SQLiteHelper extends SQLiteOpenHelper
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(DictsCols.NAME, "default");
-		cv.put(DictsCols.SERVER_ID, -1);
+		cv.put(DictsCols.SERVER_ID, "");
 		Long time = new Date().getTime();
 		cv.put(DictsCols.TIME, time);
 		db.insert(TNAME_DICTS, null, cv);

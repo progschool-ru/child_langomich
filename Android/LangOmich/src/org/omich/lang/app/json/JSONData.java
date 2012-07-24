@@ -6,14 +6,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.omich.lang.app.db.Dict;
+import org.omich.lang.app.db.IWStorage;
 import org.omich.lang.app.db.Word;
 
 public class JSONData 
 {
-	private static final String SUCCESS = "success";
-	private static final String SERVER_TIME = "serverTime";
-	private static final String LANGUAGES = "languages";
+	private static final String SUCCESS			= "success";
+	private static final String LANGUAGES		= "languages";
 	private static final String LAST_CONNECTION = "lastConnection";
+	private static final String ID				= "id";
+	private static final String NAME			= "name";
+	private static final String WORDS			= "words";
+	private static final String NATIV			= "original";
+	private static final String FOREIGN			= "translation";
+	private static final String RATING			= "rating";
 	
 	private long serverTime = 0;
 	private boolean sucsess;
@@ -24,27 +30,37 @@ public class JSONData
 	{
 		sucsess = false;
 	}
-	public JSONData(String jString) throws JSONException
-	{
-/*		
+	public long write(String jString, IWStorage mDbW) throws JSONException
+	{		
 		JSONObject jObject = new JSONObject(jString);
 		
 		sucsess = jObject.getBoolean(SUCCESS);
-		
-		if(sucsess){
-		
-			if(jObject.has(LAST_CONNECTION)){
-				lastconnect = jObject.getLong(LAST_CONNECTION);
+		serverTime = 0;
+		if(sucsess)
+		{		
+			if(jObject.has(LAST_CONNECTION))
+			{
+				serverTime = jObject.getLong(LAST_CONNECTION);
+			}	
+			JSONArray JSONLanguages = jObject.getJSONArray(LANGUAGES);	
+			for(int i = 0; i < JSONLanguages.length(); i++)
+			{
+				String serverId = JSONLanguages.getJSONObject(i).getString(ID);
+				String name = JSONLanguages.getJSONObject(i).getString(NAME);	
+				long id = mDbW.addDict(serverId, name);
+				
+				JSONArray JSONWords = JSONLanguages.getJSONObject(i).getJSONArray(WORDS);
+				for(int j = 0; j < JSONWords.length(); j++)
+				{
+					String nativ 	= JSONWords.getJSONObject(j).getString(NATIV);
+					String foreign	= JSONWords.getJSONObject(j).getString(FOREIGN);					
+					int rating		= JSONWords.getJSONObject(j).getInt(RATING);
+					mDbW.addWord(nativ, foreign, rating, id);
+				}
 			}
-		
-			JSONArray jLanguages = jObject.getJSONArray(LANGUAGES);
 			
-			for(int i=0; i<jLanguages.length(); i++){
-				Language languge = new Language(jLanguages.getJSONObject(i));
-				languages.add(languge);
-			}
 		}
-		*/
+		return serverTime;		
 	}
 	public void put(List<Word> words, List<Dict> dicts, long serverTime)
 	{
@@ -69,16 +85,15 @@ public class JSONData
 					if(words.get(j).id == dicts.get(i).dictId)
 					{
 						JSONObject JSONWord = new JSONObject();
-						JSONWord.put("original",   words.get(j).nativ);		
-						JSONWord.put("translation", words.get(j).foreign);
-						JSONWord.put("rating",  words.get(j).rating);
-//						JSONWord.put("time",    words.get(j).time);
+						JSONWord.put(NATIV,			words.get(j).nativ);		
+						JSONWord.put(FOREIGN,		words.get(j).foreign);
+						JSONWord.put(RATING,		words.get(j).rating);
 						JSONWords.put(JSONWord);
 					}
 				}
-				JSONDict.put("id",    dicts.get(i).serverId);		
-				JSONDict.put("name",  dicts.get(i).name);				
-				JSONDict.put("words", JSONWords);
+				JSONDict.put(ID,    dicts.get(i).serverId);		
+				JSONDict.put(NAME,  dicts.get(i).name);				
+				JSONDict.put(WORDS, JSONWords);
 				JSONDicts.put(JSONDict);
 			}
 			jObject.put(LANGUAGES, JSONDicts);

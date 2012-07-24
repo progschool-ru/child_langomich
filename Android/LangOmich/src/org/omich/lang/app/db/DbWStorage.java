@@ -1,10 +1,7 @@
 package org.omich.lang.app.db;
 
 import java.util.Date;
-import java.util.List;
-
 import org.omich.lang.app.db.SQLiteHelper.DictsCols;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -42,94 +39,75 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 			dictId = cursor.getLong(0);
 			cursor.close();
 		}
-		mDb.delete(TNAME_WORDS, WordsCols.DICT_ID + " = " + dictId + " AND " 
-						+ WordsCols.NATIV + " = ? ", new String[]{nativ});
-		
-		ContentValues values = new ContentValues();		
-		values.put(WordsCols.NATIV, nativ);
-		values.put(WordsCols.FOREIGN, foreign);
-		values.put(WordsCols.RATING, 0);
-		values.put(WordsCols.DICT_ID, dictId);
-		Long time = new Date().getTime();
-		values.put(WordsCols.TIME, time);
-		
-		ContentValues valuesForDict = new ContentValues();
-		valuesForDict.put(DictsCols.TIME, time);
-		String where = DictsCols.ID + " = " + dictId;
-		mDb.update(TNAME_DICTS, valuesForDict, where, null);
-		
-		return mDb.insert(TNAME_WORDS, null, values);
+		return addWord(nativ, foreign, 0, dictId);
 	}
-	public void addWords (List<Word> words)
-	{	
-		for(int i = 0; i < words.size(); i++)
-		{
-			String where = WordsCols.NATIV + "=" + words.get(i).nativ;
+	public long addWord (String nativ, String foreign, int rating, long dictId)
+	{				
+			mDb.delete(TNAME_WORDS, WordsCols.DICT_ID + " = " + dictId + " AND " 
+					+ WordsCols.NATIV + " = ? ", new String[]{nativ});
 			
-			Cursor cursor = mDb.query(TNAME_WORDS, new String[]{WordsCols.ID}, 
-					where, null, null, null, null);				
-			if(cursor.moveToFirst())
-			{
-				ContentValues values = new ContentValues();		
-				values.put(WordsCols.FOREIGN, words.get(i).foreign);
-				values.put(WordsCols.RATING, 0);
-				Long time = new Date().getTime();
-				values.put(WordsCols.TIME, time);
-				mDb.update(TNAME_WORDS, values, where, null);				
-			}
-			else
-				addWord(words.get(i).nativ, words.get(i).foreign, words.get(i).id);
-		}
+			ContentValues values = new ContentValues();		
+			values.put(WordsCols.NATIV, nativ);
+			values.put(WordsCols.FOREIGN, foreign);
+			values.put(WordsCols.RATING, rating);
+			values.put(WordsCols.DICT_ID, dictId);
+			Long time = new Date().getTime();
+			values.put(WordsCols.TIME, time);
+			
+			ContentValues valuesForDict = new ContentValues();
+			valuesForDict.put(DictsCols.TIME, time);
+			String where = DictsCols.ID + " = " + dictId;
+			mDb.update(TNAME_DICTS, valuesForDict, where, null);
+			
+			return mDb.insert(TNAME_WORDS, null, values);
 	}		
 	public long addDict (String name)
 	{		
 		ContentValues values = new ContentValues();
 		values.put(DictsCols.NAME, name);
-		values.put(DictsCols.SERVER_ID, -1);
+		values.put(DictsCols.SERVER_ID, "");
 		Long time = new Date().getTime();
 		values.put(DictsCols.TIME, time);
 		return mDb.insert(TNAME_DICTS, null, values);
 	}	
-	public void addDicts (List<Dict> dicts)
-	{	
-		for(int i = 0; i < dicts.size(); i++)
+	public long addDict (String serverId, String name)
+	{
+		String where = DictsCols.SERVER_ID + "= ?";
+		Cursor cursor = mDb.query(TNAME_DICTS, new String[]{DictsCols.ID}, 
+				where, new String[]{serverId}, null, null, null);	
+		if(cursor.moveToFirst()) // изменение имени словаря (при изменении имени на сервере)
 		{
-			String where = DictsCols.SERVER_ID + "=" + dicts.get(i).serverId;
-			
-			Cursor cursor = mDb.query(TNAME_DICTS, new String[]{WordsCols.ID}, 
-					where, null, null, null, null);	
-			if(cursor.moveToFirst()) // изменение имени словаря (при изменении имени на сервере)
+			ContentValues values = new ContentValues();		
+			values.put(DictsCols.NAME, name);
+			Long time = new Date().getTime();
+			values.put(DictsCols.TIME, time);
+			mDb.update(TNAME_DICTS, values, where, null);
+			return cursor.getLong(0);
+		}
+		else
+		{
+			where = DictsCols.NAME + "= ?";
+			cursor = mDb.query(TNAME_DICTS, new String[]{DictsCols.ID}, 
+					where, new String[]{name}, null, null, null);	
+			if(cursor.moveToFirst()) // присваивание serverId новому словарю созданому на мобильном (или повоторное присваивание)
 			{
 				ContentValues values = new ContentValues();		
-				values.put(DictsCols.NAME, dicts.get(i).name);
+				values.put(DictsCols.SERVER_ID, serverId);
 				Long time = new Date().getTime();
 				values.put(DictsCols.TIME, time);
 				mDb.update(TNAME_DICTS, values, where, null);
+				return cursor.getLong(0);
 			}
-			else
+			else // создание нового словаря на мобильном по имени и id словаря созданого на сервере
 			{
-				where = DictsCols.NAME + "=" + dicts.get(i).name;
-				cursor = mDb.query(TNAME_DICTS, new String[]{WordsCols.ID}, 
-						where, null, null, null, null);	
-				if(cursor.moveToFirst()) // присваивание serverId новому словарю созданому на мобильном
-				{
-					ContentValues values = new ContentValues();		
-					values.put(DictsCols.SERVER_ID, dicts.get(i).serverId);
-					Long time = new Date().getTime();
-					values.put(DictsCols.TIME, time);
-					mDb.update(TNAME_DICTS, values, where, null);
-				}
-				else // создание нового словаря на мобильном по имени и id словаря созданого на сервере
-				{
-					ContentValues values = new ContentValues();
-					values.put(DictsCols.NAME, dicts.get(i).name);
-					values.put(DictsCols.SERVER_ID, dicts.get(i).serverId);
-					Long time = new Date().getTime();
-					values.put(DictsCols.TIME, time);
-					mDb.insert(TNAME_DICTS, null, values);					
-				}
+				ContentValues values = new ContentValues();
+				values.put(DictsCols.NAME, name);
+				values.put(DictsCols.SERVER_ID, serverId);
+				Long time = new Date().getTime();
+				values.put(DictsCols.TIME, time);
+				return mDb.insert(TNAME_DICTS, null, values);					
 			}
-		}
+		}		
 	}	
 	public void setRating (long id, int rating)
 	{	

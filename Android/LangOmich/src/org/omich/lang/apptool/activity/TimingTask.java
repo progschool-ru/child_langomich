@@ -12,7 +12,6 @@ import org.omich.lang.app.db.Word;
 import org.omich.lang.app.httpClient.SmdClient;
 import org.omich.tool.bcops.IBcTask;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -51,16 +50,15 @@ public class TimingTask implements IBcTask
 		try
 		{
 			hr.setCookie(mCookie);	
-			System.out.println(hr.timing(words, dicts, mServerTime));
+			mServerTime = hr.timing(words, dicts, mServerTime, mDbW);
 		}			
 		catch(Exception e){}	
 		
-/*		mDb.addDicts(dicts);
-		mDb.addWords(words);
-		*/
+		Bundle result = new Bundle();
+		result.putLong(BundleFields.SERVER_TIME, mServerTime);
 		
 		mDbW.destroy();
-		return null;
+		return result;
 	}
 
 }

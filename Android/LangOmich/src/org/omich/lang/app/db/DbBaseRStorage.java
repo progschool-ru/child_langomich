@@ -57,7 +57,7 @@ abstract public class DbBaseRStorage implements IRStorage
 		{
 			public void handle(Cursor cursor)
 			{
-				Dict dict = new Dict(cursor.getLong(0),cursor.getLong(1), cursor.getString(2), cursor.getLong(3));
+				Dict dict = new Dict(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getLong(3));
 				answer.add(dict);
 			}
 		});
