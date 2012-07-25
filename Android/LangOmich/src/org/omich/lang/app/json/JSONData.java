@@ -91,7 +91,8 @@ public class JSONData
 						JSONWords.put(JSONWord);
 					}
 				}
-				JSONDict.put(ID,    dicts.get(i).serverId);		
+				if(!dicts.get(i).serverId.equals("") & !dicts.get(i).serverId.equals(-1))
+					JSONDict.put(ID,    dicts.get(i).serverId);	
 				JSONDict.put(NAME,  dicts.get(i).name);				
 				JSONDict.put(WORDS, JSONWords);
 				JSONDicts.put(JSONDict);

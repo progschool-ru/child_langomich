@@ -19,16 +19,16 @@ import org.apache.http.message.BasicNameValuePair;
 
 public class HttpRequest 
 {
-	private static final String LOGIN			= "http://lang.omich.net/smdserver/servlet/login";
+/*	private static final String LOGIN			= "http://lang.omich.net/smdserver/servlet/login";
 	private static final String IS_LOGGED_IN	= "http://lang.omich.net/smdserver/servlet/isLoggedIn";
 	private static final String GET_WORDS		= "http://lang.omich.net/smdserver/servlet/getWords"; 
 	private static final String ADD_WORDS		= "http://lang.omich.net/smdserver/servlet/addWords";	
-
-/*	private static final String LOGIN 			= "http://10.0.2.2:8080/smdserver/servlet/login";
+*/
+	private static final String LOGIN 			= "http://10.0.2.2:8080/smdserver/servlet/login";
 	private static final String IS_LOGGED_IN	= "http://10.0.2.2:8080/smdserver/servlet/isLoggedIn";
 	private static final String GET_WORDS		= "http://10.0.2.2:8080/smdserver/servlet/getWords"; 
 	private static final String ADD_WORDS		= "http://10.0.2.2:8080/smdserver/servlet/addWords";
-*/	
+	
 	private HttpClient httpClient;
 	private Header h;
 	
