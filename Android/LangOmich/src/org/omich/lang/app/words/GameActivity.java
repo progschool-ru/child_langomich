@@ -89,7 +89,7 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 	{
 		if(key.equals("isTiming"))
 		{
-			if(sp.getBoolean("isTiming", false))
+			if(prefs.getBoolean("isTiming", false))
 				itemTiming.setIcon(R.drawable.ic_sunc_enable);
 			else
 				itemTiming.setIcon(R.drawable.ic_sunc_disable);			

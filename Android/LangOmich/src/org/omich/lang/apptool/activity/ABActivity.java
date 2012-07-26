@@ -92,7 +92,9 @@ public class ABActivity extends BcActivity
 		if(mTimingTaskId != null)
 			return;
 
-		Intent intent = TimingTask.createIntent(sp.getLong("mobileTime", 0), sp.getLong("serverTime", 0),sp.getString("cookie", ""));
+		Intent intent = TimingTask.createIntent(sp.getLong(PreferenceFields.MOBILE_TIME, 0), 
+				sp.getLong(PreferenceFields.SERVER_TIME, 0), 
+				sp.getString(PreferenceFields.COOKIE, ""));
 		mTimingTaskId = getBcConnector().startTypicalTask(TimingTask.class, 
 				intent, 
 				new IListener<Bundle>()
@@ -108,8 +110,8 @@ public class ABActivity extends BcActivity
 						if(bundle.getLong(BundleFields.SERVER_TIME) != 0)
 						{					
 							Long mobileTime = new Date().getTime();
-							ed.putLong("mobileTime", mobileTime);
-							ed.putLong("serverTime", bundle.getLong(BundleFields.SERVER_TIME));
+							ed.putLong(PreferenceFields.MOBILE_TIME, mobileTime);
+							ed.putLong(PreferenceFields.SERVER_TIME, bundle.getLong(BundleFields.SERVER_TIME));
 						}	        		
 		    	    	ed.putBoolean(PreferenceFields.IS_TIMING, false);
 		    	    	ed.commit();											
@@ -122,12 +124,12 @@ public class ABActivity extends BcActivity
 			return;
 		if(!hasInternetConnection())
 			return;		
-		if(sp.getString("cookie", "").equals(""))
+		if(sp.getString(PreferenceFields.COOKIE, "").equals(""))
 		{
 			theCorrectAccount();
 			return;
 		}
-		Intent intent = IsLoggedInTask.createIntent(sp.getString("cookie", ""));
+		Intent intent = IsLoggedInTask.createIntent(sp.getString(PreferenceFields.COOKIE, ""));
 		mIsLoggedInTaskId = getBcConnector().startTypicalTask(IsLoggedInTask.class, 
 				intent, 
 				new IListener<Bundle>()
@@ -165,9 +167,9 @@ public class ABActivity extends BcActivity
 						
 						Editor ed = sp.edit();
 						if(bundle.getBoolean(BundleFields.CORRECT_ACCOUNT))	
-						    ed.putString("cookie", bundle.getString(BundleFields.COOKIE));														
+						    ed.putString(PreferenceFields.COOKIE, bundle.getString(BundleFields.COOKIE));														
 						else
-						    ed.putString("cookie", "");	
+						    ed.putString(PreferenceFields.COOKIE, "");	
 						ed.commit();
 					}
 				});

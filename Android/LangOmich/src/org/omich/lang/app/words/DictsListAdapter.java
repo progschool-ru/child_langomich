@@ -65,6 +65,7 @@ public class DictsListAdapter extends TaskListAdapter<Dict>
 		public Bundle execute()
 		{
 			ArrayList<Dict> dicts = new ArrayList<Dict>(mDb.getDicts());
+			dicts.add(new Dict(-1, "Новый словарь"));
 			Bundle result = new Bundle();
 			result.putParcelableArrayList(BundleFields.DICTS_LIST, dicts);
 			mDb.destroy();

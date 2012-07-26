@@ -73,7 +73,12 @@ public class AddDictActivity extends BcActivity
 						
 						boolean dictIsAdded = bundle.getBoolean(BundleFields.DICT_IS_ADDED);
 						if(dictIsAdded)
+						{
+						    Intent intent = new Intent();
+						    intent.putExtra("dictIsAdded", true);
+						    setResult(RESULT_OK, intent);
 							finish();
+						}
 						else
 						{
 							TextView errorView = (TextView) findViewById(R.id.adddict_errorReport);
@@ -86,6 +91,9 @@ public class AddDictActivity extends BcActivity
 	}
 	public void onCancelButton (View v)
 	{
+	    Intent intent = new Intent();
+	    intent.putExtra("dictIsAdded", false);
+	    setResult(RESULT_OK, intent);		
 		finish();
 	}	
 }

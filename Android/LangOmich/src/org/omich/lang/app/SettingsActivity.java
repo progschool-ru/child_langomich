@@ -43,15 +43,15 @@ public class SettingsActivity extends ABActivity implements OnSharedPreferenceCh
 	{
 		if(key.equals("cookie"))
 		{		
-			tvl.setText(sp.getString("login", ""));
-			if(sp.getString("cookie", "").equals(""))
+			tvl.setText(prefs.getString("login", ""));
+			if(prefs.getString("cookie", "").equals(""))
 				tvl.setTextColor(Color.RED);
 			else
 				tvl.setTextColor(Color.GREEN);
 		}
 		else if(key.equals("login"))
 		{			
-			tvl.setText(sp.getString("login", ""));	
+			tvl.setText(prefs.getString("login", ""));	
 			theCorrectAccount();
 		}
 		else if(key.equals("password"))
@@ -60,7 +60,7 @@ public class SettingsActivity extends ABActivity implements OnSharedPreferenceCh
 		}
 		else if(key.equals("isTiming"))
 		{
-			  if(sp.getBoolean("isTiming", false))
+			  if(prefs.getBoolean("isTiming", false))
 				  itemTiming.setIcon(R.drawable.ic_sunc_enable);
 			  else
 				  itemTiming.setIcon(R.drawable.ic_sunc_disable);			
