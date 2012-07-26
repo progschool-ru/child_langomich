@@ -42,30 +42,38 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		return addWord(nativ, foreign, 0, dictId);
 	}
 	public long addWord (String nativ, String foreign, int rating, long dictId)
-	{				
+	{			
 			mDb.delete(TNAME_WORDS, WordsCols.DICT_ID + " = " + dictId + " AND " 
 					+ WordsCols.NATIV + " = ? ", new String[]{nativ});
 			
-			ContentValues values = new ContentValues();		
-			values.put(WordsCols.NATIV, nativ);
-			values.put(WordsCols.FOREIGN, foreign);
-			values.put(WordsCols.RATING, rating);
-			values.put(WordsCols.DICT_ID, dictId);
 			Long time = new Date().getTime();
-			values.put(WordsCols.TIME, time);
-			
+			long id = 0;
+			if(!foreign.equals(""))
+			{
+				ContentValues values = new ContentValues();		
+				values.put(WordsCols.NATIV, nativ);
+				values.put(WordsCols.FOREIGN, foreign);
+				values.put(WordsCols.RATING, rating);
+				values.put(WordsCols.DICT_ID, dictId);
+				values.put(WordsCols.TIME, time);
+				id = mDb.insert(TNAME_WORDS, null, values);
+			}
 			ContentValues valuesForDict = new ContentValues();
 			valuesForDict.put(DictsCols.TIME, time);
 			String where = DictsCols.ID + " = " + dictId;
 			mDb.update(TNAME_DICTS, valuesForDict, where, null);
 			
-			return mDb.insert(TNAME_WORDS, null, values);
+			return id;
 	}		
 	public long addDict (String name)
 	{		
+		String where = DictsCols.NAME + "= ?";
+		Cursor cursor = mDb.query(TNAME_DICTS, new String[]{DictsCols.ID}, 
+				where, new String[]{name}, null, null, null);	
+		if(cursor.moveToFirst())
+			return -1;
 		ContentValues values = new ContentValues();
 		values.put(DictsCols.NAME, name);
-		values.put(DictsCols.SERVER_ID, "");
 		Long time = new Date().getTime();
 		values.put(DictsCols.TIME, time);
 		return mDb.insert(TNAME_DICTS, null, values);
@@ -75,6 +83,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		String where = DictsCols.SERVER_ID + "= ?";
 		Cursor cursor = mDb.query(TNAME_DICTS, new String[]{DictsCols.ID}, 
 				where, new String[]{serverId}, null, null, null);	
+		long dictId = 0;
 		if(cursor.moveToFirst()) // изменение имени словаря (при изменении имени на сервере)
 		{
 			ContentValues values = new ContentValues();		
@@ -82,7 +91,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 			Long time = new Date().getTime();
 			values.put(DictsCols.TIME, time);
 			mDb.update(TNAME_DICTS, values, where, null);
-			return cursor.getLong(0);
+			dictId = cursor.getLong(0);
 		}
 		else
 		{
@@ -96,7 +105,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 				Long time = new Date().getTime();
 				values.put(DictsCols.TIME, time);
 				mDb.update(TNAME_DICTS, values, where, null);
-				return cursor.getLong(0);
+				dictId = cursor.getLong(0);
 			}
 			else // создание нового словаря на мобильном по имени и id словаря созданого на сервере
 			{
@@ -105,19 +114,25 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 				values.put(DictsCols.SERVER_ID, serverId);
 				Long time = new Date().getTime();
 				values.put(DictsCols.TIME, time);
-				return mDb.insert(TNAME_DICTS, null, values);					
+		
+				dictId =  mDb.insert(TNAME_DICTS, null, values);					
 			}
-		}		
+		}	
+		cursor.close();
+		return dictId;
 	}	
 	public void setRating (long id, int rating)
 	{	
 		Long time = new Date().getTime();
-		
-		ContentValues valuesForDict = new ContentValues();
-		valuesForDict.put(DictsCols.TIME, time);
-		String where = DictsCols.ID + " = " + getDictId(id);
-		mDb.update(TNAME_DICTS, valuesForDict, where, null);
-		
+		String where;
+		long dictId = getDictId(id);
+		if(dictId != 0)
+		{
+			ContentValues valuesForDict = new ContentValues();
+			valuesForDict.put(DictsCols.TIME, time);
+			where = DictsCols.ID + " = " + dictId;
+			mDb.update(TNAME_DICTS, valuesForDict, where, null);
+		}		
 		ContentValues values = new ContentValues();
 		values.put(WordsCols.RATING, rating);		
 		values.put(WordsCols.TIME, time);
@@ -126,9 +141,13 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 	}
 	private long getDictId(long wordId)
 	{
-		String where = WordsCols.ID + "=" + wordId;		
+		long dictId = 0;
+		String where = WordsCols.ID + " = " + wordId;		
 		Cursor cursor = mDb.query(TNAME_WORDS, new String[]{WordsCols.DICT_ID}, 
-				where, null, null, null, null);			
-		return cursor.getLong(0);
+				where, null, null, null, null);	
+		if(cursor.moveToFirst())
+			dictId = cursor.getLong(0);
+		cursor.close();
+		return dictId;
 	}
 }

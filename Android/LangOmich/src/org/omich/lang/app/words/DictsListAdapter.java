@@ -10,6 +10,7 @@ import org.omich.lang.app.db.IRStorage;
 import org.omich.lang.apptool.lists.TaskListAdapter;
 import org.omich.tool.bcops.IBcConnector;
 import org.omich.tool.bcops.IBcTask;
+import org.omich.tool.events.Listeners.IListenerBoolean;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +24,10 @@ public class DictsListAdapter extends TaskListAdapter<Dict>
 	{
 		super(context, conn);
 	}
-	
+	public DictsListAdapter (Context context, IBcConnector conn, IListenerBoolean ilb)
+	{
+		super(context, conn, ilb);
+	}	
 	//==== TaskListAdapter ===================================================
 	@Override
 	protected Class<? extends IBcTask> getLoadItemsTaskClass (){return LoadDictsTask.class;}

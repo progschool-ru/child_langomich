@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.omich.lang.R;
 import org.omich.lang.app.BundleFields;
+import org.omich.lang.app.PreferenceFields;
 import org.omich.lang.app.IsLoggedInTask;
 import org.omich.lang.app.TheCorrectAccountTask;
 import org.omich.tool.events.Listeners.IListener;
@@ -59,7 +60,7 @@ public class ABActivity extends BcActivity
 		  MenuInflater inflater = getMenuInflater();
 		  inflater.inflate(R.menu.menu, menu);		  
 		  itemTiming = menu.findItem(R.id.app_menu_item_timing);
-		  if(sp.getBoolean("isTiming", false))
+		  if(sp.getBoolean(PreferenceFields.IS_TIMING, false))
 			  itemTiming.setIcon(R.drawable.ic_sunc_enable);
 		  else
 			  itemTiming.setIcon(R.drawable.ic_sunc_disable);
@@ -71,7 +72,7 @@ public class ABActivity extends BcActivity
         {
 	        case R.id.app_menu_item_timing:
 	        	timing();
-	        	if(!sp.getBoolean("isTiming", false))
+	        	if(!sp.getBoolean(PreferenceFields.IS_TIMING, false))
 	        	{
 	        		timing();
 	        	}
@@ -85,7 +86,7 @@ public class ABActivity extends BcActivity
 		if(!hasInternetConnection())
 			return;		
 		Editor ed = sp.edit();
-    	ed.putBoolean("isTiming", true);
+    	ed.putBoolean(PreferenceFields.IS_TIMING, true);
     	ed.commit();
 		
 		if(mTimingTaskId != null)
@@ -110,7 +111,7 @@ public class ABActivity extends BcActivity
 							ed.putLong("mobileTime", mobileTime);
 							ed.putLong("serverTime", bundle.getLong(BundleFields.SERVER_TIME));
 						}	        		
-		    	    	ed.putBoolean("isTiming", false);
+		    	    	ed.putBoolean(PreferenceFields.IS_TIMING, false);
 		    	    	ed.commit();											
 					}
 				});

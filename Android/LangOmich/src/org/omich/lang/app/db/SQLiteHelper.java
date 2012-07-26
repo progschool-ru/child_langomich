@@ -87,7 +87,6 @@ public class SQLiteHelper extends SQLiteOpenHelper
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(DictsCols.NAME, "default");
-		cv.put(DictsCols.SERVER_ID, "");
 		Long time = new Date().getTime();
 		cv.put(DictsCols.TIME, time);
 		db.insert(TNAME_DICTS, null, cv);

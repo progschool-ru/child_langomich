@@ -5,6 +5,7 @@ import java.util.List;
 import org.omich.tool.bcops.IBcConnector;
 import org.omich.tool.bcops.IBcTask;
 import org.omich.tool.events.Listeners.IListener;
+import org.omich.tool.events.Listeners.IListenerBoolean;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,13 +16,18 @@ abstract public class TaskListAdapter<Item extends Parcelable> extends ListAdapt
 {
 	private IBcConnector mConn;
 	private String mLoadItemsTaskId;
-
+	private IListenerBoolean ilb;
 	protected TaskListAdapter(Context context, IBcConnector conn)
 	{
 		super(context);
 		mConn = conn;
 	}
-	
+	protected TaskListAdapter(Context context, IBcConnector conn, IListenerBoolean ilb)
+	{
+		super(context);
+		this.ilb = ilb;
+		mConn = conn;
+	}	
 	@Override
 	public void destroy ()
 	{
@@ -55,7 +61,8 @@ abstract public class TaskListAdapter<Item extends Parcelable> extends ListAdapt
 								mLoadItemsTaskId = null;
 			
 								List<Item> dicts = b.<Item>getParcelableArrayList(getListBundleField());							
-								setItems(dicts);	
+								setItems(dicts);
+								if(ilb != null){ilb.handle(true);}
 							}
 						});
 	}

@@ -26,14 +26,19 @@
             android:label="@string/dialogAddWordMain_Title"
             android:theme="@android:style/Theme.Dialog">
         </activity>
+         <activity
+            android:name=".app.words.AddDictActivity"
+            android:label="@string/adddict_title"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>       
         <activity
             android:name=".app.words.GameActivity"
-            android:label="@string/settigs"
+            android:label="@string/game_lable"
             android:theme="@style/Theme.Sherlock">
         </activity>
         <activity
             android:name=".app.words.WordsListActivity"
-            android:label="@string/dialogAddWordMain_Title"
+            android:label="@string/dictionary_label"
             android:theme="@style/Theme.Sherlock">
         </activity>
   		<activity android:name=".app.SettingsActivity"

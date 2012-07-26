@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="10dip" >
 
     <LinearLayout
@@ -13,46 +13,39 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/createL_tView_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/createL_enter_name" />
-
+            android:text="@string/adddict_lable" />
+
         <EditText
-            android:id="@+id/createL_tEdit_language_name"
+            android:id="@+id/adddict_dictNameEdit"
             android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/createL_tView_error_report"
+            android:id="@+id/adddict_errorReport"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left" />
-        
+            android:layout_height="wrap_content" />
+       
         <LinearLayout
-            android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
-
+            
             <Button
-                android:id="@+id/createL_button_cancel"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/createL_cancel" />
-
+                android:text="@string/adddict_cancel" 
+                android:onClick="onCancelButton"/>
+            
             <Button
-                android:id="@+id/createL_button_create"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="34dp"
-                android:text="@string/createL_create" />
-
+                android:text="@string/adddict_create"
+                android:onClick="onCreateButton"/>
+            
         </LinearLayout>
-
-        
-
     </LinearLayout>
-
 </RelativeLayout>

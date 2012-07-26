@@ -91,7 +91,7 @@ abstract public class DbBaseRStorage implements IRStorage
 	private List<Word> getWords (String where)
 	{
 		Cursor cursor = mDb.query(TNAME_WORDS, 
-				new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.ID, WordsCols.TIME}, 
+				new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.ID, WordsCols.TIME, WordsCols.DICT_ID}, 
 				where, null, null, null, null);
 
 		final List<Word> answer = new ArrayList<Word>();
@@ -122,6 +122,7 @@ abstract public class DbBaseRStorage implements IRStorage
 			r = r + 10 - i;
 			max[i] = r;
 		}
+		cursor.close();
 		if(r!=0)
 		{
 			int random = new Random().nextInt(r);

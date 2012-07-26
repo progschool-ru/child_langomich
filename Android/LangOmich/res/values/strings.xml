@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
+    <string name="game_lable">Игра</string>
     <string name="i_know">Знаю</string>
     <string name="i_dont_know">Не знаю</string>
     <string name="isTrue">Верно</string>
     <string name="isFalse">Ошибся</string>
     <string name="next">Продолжить</string>
+ 
+    <string name="adddict_title">Hовый словарь</string>
+    <string name="adddict_lable">Введите имя нового словаря:</string>
+    <string name="adddict_emptyString">Вы ничего не ввели</string>
+    <string name="adddict_inBase">Словарь с таким именем уже существует</string>
+    <string name="adddict_added">Словарь успешно добавлен</string>
+    <string name="adddict_create">Создать</string>
+    <string name="adddict_cancel">Отмена</string>
     
     <string name="app_name">LangOmich</string>
     <string name="test">Test</string>

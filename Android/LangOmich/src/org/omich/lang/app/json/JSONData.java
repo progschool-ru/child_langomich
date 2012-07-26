@@ -17,8 +17,8 @@ public class JSONData
 	private static final String ID				= "id";
 	private static final String NAME			= "name";
 	private static final String WORDS			= "words";
-	private static final String NATIV			= "original";
-	private static final String FOREIGN			= "translation";
+	private static final String NATIV			= "translation";
+	private static final String FOREIGN			= "original";
 	private static final String RATING			= "rating";
 	
 	private long serverTime = 0;
@@ -48,7 +48,6 @@ public class JSONData
 				String serverId = JSONLanguages.getJSONObject(i).getString(ID);
 				String name = JSONLanguages.getJSONObject(i).getString(NAME);	
 				long id = mDbW.addDict(serverId, name);
-				
 				JSONArray JSONWords = JSONLanguages.getJSONObject(i).getJSONArray(WORDS);
 				for(int j = 0; j < JSONWords.length(); j++)
 				{
@@ -91,8 +90,7 @@ public class JSONData
 						JSONWords.put(JSONWord);
 					}
 				}
-				if(!dicts.get(i).serverId.equals("") & !dicts.get(i).serverId.equals(-1))
-					JSONDict.put(ID,    dicts.get(i).serverId);	
+				JSONDict.put(ID,    dicts.get(i).serverId);	
 				JSONDict.put(NAME,  dicts.get(i).name);				
 				JSONDict.put(WORDS, JSONWords);
 				JSONDicts.put(JSONDict);
