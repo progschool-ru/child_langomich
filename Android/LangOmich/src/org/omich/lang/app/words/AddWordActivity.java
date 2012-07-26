@@ -1,23 +1,26 @@
 package org.omich.lang.app.words;
 
 import org.omich.lang.R;
+import org.omich.lang.app.PreferenceFields;
 import org.omich.lang.apptool.activity.BcActivity;
 import org.omich.tool.events.Listeners.IListener;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
+import android.widget.Spinner;
 
-public class AddWordActivity extends BcActivity
+public class AddWordActivity extends BcActivity implements OnSharedPreferenceChangeListener
 {
 	private String mAddWordTaskId;
 	
 	private boolean mIsDestroyed;
-	
+	private DictSpinner dictSpinner;
 	protected SharedPreferences sp;
 	//==== live cycle =========================================================
 	@Override
@@ -25,7 +28,9 @@ public class AddWordActivity extends BcActivity
 	{
 		super.onCreate(b);
 		setContentView(R.layout.app_dialog_addword);
+		dictSpinner = new DictSpinner((Spinner)findViewById(R.id.addword_dictSpinner), this);
 		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		sp.registerOnSharedPreferenceChangeListener(this);	
 		getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 	}
 	
@@ -37,11 +42,19 @@ public class AddWordActivity extends BcActivity
 			getBcConnector().unsubscribeTask(mAddWordTaskId);
 			mAddWordTaskId = null;
 		}
+		dictSpinner.destroy();
 		mIsDestroyed = true;
 		super.onDestroy();
 	}
 	
 	//==== events =============================================================
+	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
+	{
+		if(key.equals(PreferenceFields.DICT_POSITION))
+		{
+			dictSpinner.reload();
+		}		
+	}		
 	public void onAddButton (View v)
 	{
 		if(mAddWordTaskId != null)

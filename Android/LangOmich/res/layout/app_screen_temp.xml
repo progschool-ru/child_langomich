@@ -47,10 +47,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Settings"
-        android:onClick="onSettings"/>
-    <Button 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Dict"
-        android:onClick="onAddDict"/>    
+        android:onClick="onSettings"/>  
 </LinearLayout>

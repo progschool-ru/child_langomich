@@ -66,10 +66,6 @@ public class TempActivity extends ABActivity implements OnSharedPreferenceChange
 	public void onSettings (View v)
 	{
 		getForResultStarter().startForResult(new Intent(this, SettingsActivity.class), null);
-	}	
-	public void onAddDict (View v)
-	{
-		getForResultStarter().startForResult(new Intent(this, AddDictActivity.class), null);
 	}		
 	//=========================================================================	
 }

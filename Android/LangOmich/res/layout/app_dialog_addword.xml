@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="left">
+    <Spinner
+		android:id="@+id/addword_dictSpinner"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+	</Spinner>  
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
