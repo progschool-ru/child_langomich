@@ -54,6 +54,10 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 		{
 			mWordsAdapter.setNewDictId(prefs.getLong(PreferenceFields.DICT_ID, -1));
 			mWordsAdapter.reloadItems();
+		}	
+		else if(key.equals(PreferenceFields.DICT_POSITION))
+		{
+			dictSpinner.reload();
 		}		
 	}		
 	@Override

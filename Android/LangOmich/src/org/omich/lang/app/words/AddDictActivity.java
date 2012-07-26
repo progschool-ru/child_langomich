@@ -2,11 +2,13 @@ package org.omich.lang.app.words;
 
 import org.omich.lang.R;
 import org.omich.lang.app.BundleFields;
+import org.omich.lang.app.PreferenceFields;
 import org.omich.lang.apptool.activity.BcActivity;
 import org.omich.tool.events.Listeners.IListener;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,8 +22,8 @@ public class AddDictActivity extends BcActivity
 	private String mAddDictTaskId;
 	
 	private boolean mIsDestroyed;
-	
-	protected SharedPreferences sp;
+	private int size = 1;
+	private SharedPreferences sp;
 	//==== live cycle =========================================================
 	@Override
 	protected void onCreate (Bundle b)
@@ -30,6 +32,8 @@ public class AddDictActivity extends BcActivity
 		setContentView(R.layout.app_dialog_adddict);
 		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		Intent intent = getIntent();
+		size = intent.getIntExtra("dictsSize", 1);
 	}
 	
 	@Override
@@ -71,29 +75,27 @@ public class AddDictActivity extends BcActivity
 		
 						mAddDictTaskId = null;
 						
-						boolean dictIsAdded = bundle.getBoolean(BundleFields.DICT_IS_ADDED);
-						if(dictIsAdded)
-						{
-						    Intent intent = new Intent();
-						    intent.putExtra("dictIsAdded", true);
-						    setResult(RESULT_OK, intent);
-							finish();
-						}
-						else
+						long dictId = bundle.getLong(BundleFields.DICT_ID);
+						if(dictId == -1)
 						{
 							TextView errorView = (TextView) findViewById(R.id.adddict_errorReport);
 							errorView.setTextColor(Color.RED);
-							errorView.setText(R.string.adddict_inBase);	
-						}		
+							errorView.setText(R.string.adddict_inBase);														
+						}
+						else
+						{
+		        			Editor ed = sp.edit();
+		        			ed.putInt(PreferenceFields.DICT_POSITION, size - 1);
+		        			ed.putLong(PreferenceFields.DICT_ID, dictId);
+		        			ed.commit();
+							finish();
+						}
 					}
 				});		
 		}
 	}
 	public void onCancelButton (View v)
-	{
-	    Intent intent = new Intent();
-	    intent.putExtra("dictIsAdded", false);
-	    setResult(RESULT_OK, intent);		
+	{	
 		finish();
 	}	
 }

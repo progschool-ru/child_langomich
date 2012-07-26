@@ -34,17 +34,12 @@ public class AddDictTask implements IBcTask
 	public Bundle execute()
 	{	
 		long id = mDb.addDict(mName);
-		boolean dictIsAdded = false;
-		if(id != -1)
-		{	
-			if(mTaskSuccessText != null)
-				mBcToaster.showToast(mTaskSuccessText);
-			dictIsAdded = true;			
-		}
+		if(id != -1 && mTaskSuccessText != null)
+				mBcToaster.showToast(mTaskSuccessText);		
 		mDb.destroy();	
 		
 		Bundle result = new Bundle();
-		result.putBoolean(BundleFields.DICT_IS_ADDED, dictIsAdded);
+		result.putLong(BundleFields.DICT_ID, id);
 		return result;
 	}
 

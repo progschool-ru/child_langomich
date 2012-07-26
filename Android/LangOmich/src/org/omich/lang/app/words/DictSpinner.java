@@ -15,13 +15,14 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class DictSpinner 
+public class DictSpinner
 {
 	private Spinner spinner;
 	private Context context;
 	private DictsListAdapter mDictsAdapter;
 	private SharedPreferences sp;
 	private BcConnector mBcConnector;
+	private int size = 1;
 	public DictSpinner(Spinner spinner, Context context)
 	{
 		
@@ -37,13 +38,13 @@ public class DictSpinner
 				if(b) setSelection();
 			}			
 		});
-		mDictsAdapter.reloadItems();
+		mDictsAdapter.reloadItems();		
 		
 		spinner.setAdapter(mDictsAdapter);
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
         	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) 
         	{
-        		int size = mDictsAdapter.getCount();
+        		size = mDictsAdapter.getCount();
         		if(position + 1 == size) 
         		{
         			onAddDict();
@@ -71,8 +72,14 @@ public class DictSpinner
 	}	
 	private void onAddDict()
 	{
-		context.startActivity(new Intent(context, AddDictActivity.class));
-	}	
+		Intent intent = new Intent(context, AddDictActivity.class);
+		intent.putExtra("dictsSize", size);
+		context.startActivity(intent);
+	}
+	public void reload()
+	{
+		mDictsAdapter.reloadItems();
+	}		
 	public void destroy()
 	{
 		mDictsAdapter.destroy();
