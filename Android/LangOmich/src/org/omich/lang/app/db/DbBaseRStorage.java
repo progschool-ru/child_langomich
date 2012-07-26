@@ -64,12 +64,13 @@ abstract public class DbBaseRStorage implements IRStorage
 		
 		return answer;
 	}		
-	public List<Word> getWords ()
+	
+	public List<Word> getWordsByDictId (Long dictId)
 	{
-		String where = null;
+		String where = WordsCols.DICT_ID + "=" + dictId;
 		return getWords(where);
 	}
-	public List<Word> getWords (Long mobileTime)
+	public List<Word> getWordsByTime (Long mobileTime)
 	{
 		String where = WordsCols.TIME + ">" + mobileTime;
 		Cursor cursor = mDb.query(TNAME_WORDS, 
@@ -86,12 +87,18 @@ abstract public class DbBaseRStorage implements IRStorage
 				answer.add(word);
 			}
 		});
+		
 		return answer;
+	}
+	public List<Word> getWords ()
+	{
+		String where = null;
+		return getWords(where);
 	}	
 	private List<Word> getWords (String where)
 	{
 		Cursor cursor = mDb.query(TNAME_WORDS, 
-				new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.ID, WordsCols.TIME, WordsCols.DICT_ID}, 
+				new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.ID, WordsCols.TIME}, 
 				where, null, null, null, null);
 
 		final List<Word> answer = new ArrayList<Word>();
@@ -107,10 +114,10 @@ abstract public class DbBaseRStorage implements IRStorage
 		
 		return answer;
 	}
-	public Word getRandomWord ()
+	public Word getRandomWord (Long dictId)
 	{		
 		int r = 0;
-		String query = "SELECT count(*), "+WordsCols.RATING+" FROM "+TNAME_WORDS+" GROUP BY "+WordsCols.RATING; 
+		String query = "SELECT count(*), "+WordsCols.RATING+" FROM "+TNAME_WORDS+" WHERE "+WordsCols.DICT_ID+" = "+dictId+" GROUP BY "+WordsCols.RATING; 
 		Cursor cursor = mDb.rawQuery(query, null);
 		int size[] = new int[10];
 		int max[] = new int[10];	
@@ -130,7 +137,7 @@ abstract public class DbBaseRStorage implements IRStorage
 				if(random < max[i])
 					r = i;
 			random = new Random().nextInt(size[r]);
-			String where = WordsCols.RATING + "=" + r;		
+			String where = WordsCols.RATING + "=" + r +" AND "+WordsCols.DICT_ID+" = "+dictId;		
 			return (Word)getWords(where).get(random);
 		}
 		else

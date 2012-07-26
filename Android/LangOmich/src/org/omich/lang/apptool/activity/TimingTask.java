@@ -42,7 +42,7 @@ public class TimingTask implements IBcTask
 
 	public Bundle execute()
 	{
-		List<Word> words = new ArrayList<Word>(mDbR.getWords(mMobileTime));	
+		List<Word> words = new ArrayList<Word>(mDbR.getWordsByTime(mMobileTime));	
 		List<Dict> dicts = new ArrayList<Dict>(mDbR.getDicts(mMobileTime));	
 		mDbR.destroy();
 		

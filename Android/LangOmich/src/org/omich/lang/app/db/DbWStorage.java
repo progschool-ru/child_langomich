@@ -126,7 +126,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		Long time = new Date().getTime();
 		String where;
 		long dictId = getDictId(id);
-		if(dictId != 0)
+		if(dictId != -1)
 		{
 			ContentValues valuesForDict = new ContentValues();
 			valuesForDict.put(DictsCols.TIME, time);
@@ -141,7 +141,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 	}
 	private long getDictId(long wordId)
 	{
-		long dictId = 0;
+		long dictId = -1;
 		String where = WordsCols.ID + " = " + wordId;		
 		Cursor cursor = mDb.query(TNAME_WORDS, new String[]{WordsCols.DICT_ID}, 
 				where, null, null, null, null);	

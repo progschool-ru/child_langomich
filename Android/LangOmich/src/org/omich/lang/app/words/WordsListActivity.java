@@ -33,7 +33,7 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 		
 		sp.registerOnSharedPreferenceChangeListener(this);	
 		
-		mWordsAdapter = new WordsListAdapter(this, getBcConnector());
+		mWordsAdapter = new WordsListAdapter(this, getBcConnector(), sp.getLong(PreferenceFields.DICT_ID, -1));
 		mWordsAdapter.reloadItems();
 		
 		mDictsAdapter = new DictsListAdapter(this, getBcConnector(), new IListenerBoolean()
@@ -74,6 +74,11 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 			  else
 				  itemTiming.setIcon(R.drawable.ic_sunc_disable);			
 		}
+		else if(key.equals(PreferenceFields.DICT_ID))
+		{
+			mWordsAdapter.setNewDictId(sp.getLong(PreferenceFields.DICT_ID, -1));
+			mWordsAdapter.reloadItems();
+		}		
 	}		
 	@Override
 	protected void onDestroy ()

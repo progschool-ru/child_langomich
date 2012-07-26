@@ -7,8 +7,9 @@ public interface IRStorage
 	void destroy();
 	
 	List<Word> getWords ();
-	List<Word> getWords (Long mobileTime);
-	Word getRandomWord ();
+	List<Word> getWordsByTime (Long mobileTime);
+	List<Word> getWordsByDictId (Long dictId);
+	Word getRandomWord (Long dictId);
 	List<Dict> getDicts ();
 	List<Dict> getDicts (Long mobileTime);
 }

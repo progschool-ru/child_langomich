@@ -2,9 +2,9 @@ package org.omich.lang.app.words;
 
 import org.omich.lang.R;
 import org.omich.lang.app.BundleFields;
+import org.omich.lang.app.PreferenceFields;
 import org.omich.lang.app.db.Word;
 import org.omich.lang.apptool.activity.ABActivity;
-import org.omich.tool.bcops.IBcConnector;
 import org.omich.tool.events.Listeners.IListener;
 
 import android.content.Intent;
@@ -165,8 +165,8 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 		if(mGetWordTaskId != null)
 			return;
 
-		IBcConnector conn = getBcConnector();
-		conn.startTypicalTask(GetRandomWordTask.class, new Intent(), new IListener<Bundle>()
+		Intent intent = GetRandomWordTask.createIntent(sp.getLong(PreferenceFields.DICT_ID, -1));
+		getBcConnector().startTypicalTask(GetRandomWordTask.class, intent, new IListener<Bundle>()
 						{
 							public void handle (Bundle b)
 							{

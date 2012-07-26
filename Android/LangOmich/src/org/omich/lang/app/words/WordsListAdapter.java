@@ -19,11 +19,16 @@ import android.widget.TextView;
 
 public class WordsListAdapter extends TaskListAdapter<Word>
 {
-	public WordsListAdapter (Context context, IBcConnector conn)
+	private static long dictId = -1;
+	public WordsListAdapter (Context context, IBcConnector conn, Long dictId)
 	{
 		super(context, conn);
+		this.dictId = dictId;
 	}
-
+	public void setNewDictId(Long dictId)
+	{
+		this.dictId = dictId;
+	}
 	//==== TaskListAdapter ===================================================
 	@Override
 	protected Class<? extends IBcTask> getLoadItemsTaskClass (){return LoadWordsTask.class;}
@@ -62,7 +67,7 @@ public class WordsListAdapter extends TaskListAdapter<Word>
 
 		public Bundle execute()
 		{
-			ArrayList<Word> words = new ArrayList<Word>(mDb.getWords());
+			ArrayList<Word> words = new ArrayList<Word>(mDb.getWordsByDictId(dictId));
 			Bundle result = new Bundle();
 			result.putParcelableArrayList(BundleFields.WORDS_LIST, words);
 			mDb.destroy();
