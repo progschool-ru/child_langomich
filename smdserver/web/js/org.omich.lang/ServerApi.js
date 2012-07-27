@@ -3,7 +3,8 @@
 	var ns = org.omich.nsSelf("lang");
 	var log = org.omich.log;
 	var isArray = jQuery.isArray;
-	var unescapeFromJavaString = org.omich.Unicode.quickUnescapeFromUtf16;
+	//var unescapeFromJavaString = org.omich.Unicode.quickUnescapeFromUtf16;
+	var unescapeFromJavaString = org.omich.Unicode.unescapeFromUtf16;
 	var escapeToJavaString = org.omich.Unicode.escapeToUtf16;
 	
 	var PREFIX = "/smdserver/servlet/";
