@@ -44,11 +44,11 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 	public long addWord (String nativ, String foreign, int rating, long dictId)
 	{			
 			mDb.delete(TNAME_WORDS, WordsCols.DICT_ID + " = " + dictId + " AND " 
-					+ WordsCols.NATIV + " = ? ", new String[]{nativ});
+					+ WordsCols.FOREIGN + " = ? ", new String[]{foreign});
 			
 			Long time = new Date().getTime();
 			long id = 0;
-			if(foreign != null && !foreign.equals(""))
+			if(nativ != null && !nativ.equals("") && foreign != null && !foreign.equals(""))
 			{
 				ContentValues values = new ContentValues();		
 				values.put(WordsCols.NATIV, nativ);
