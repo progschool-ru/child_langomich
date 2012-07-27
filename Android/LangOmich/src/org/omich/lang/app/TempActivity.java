@@ -1,7 +1,6 @@
 package org.omich.lang.app;
 
 import org.omich.lang.R;
-import org.omich.lang.app.words.AddDictActivity;
 import org.omich.lang.app.words.AddWordActivity;
 import org.omich.lang.app.words.GameActivity;
 import org.omich.lang.app.words.WordsListActivity;

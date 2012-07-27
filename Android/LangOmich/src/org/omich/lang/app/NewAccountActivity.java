@@ -3,6 +3,7 @@ package org.omich.lang.app;
 import org.omich.lang.R;
 import org.omich.lang.apptool.activity.AppActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -34,11 +35,17 @@ public class NewAccountActivity extends AppActivity
 	    Editor ed = sp.edit();
 	    ed.putString("login", login);
 	    ed.putString("password", password);
-	    ed.commit();		
+	    ed.commit();
+	    Intent intent = new Intent();
+	    intent.putExtra("isNewAccount", true);
+	    setResult(RESULT_OK, intent);	    
 		finish();
 	}
 	public void onNewAccountButtonCancel (View v)
 	{
+	    Intent intent = new Intent();
+	    intent.putExtra("isNewAccount", false);
+	    setResult(RESULT_OK, intent);			
 		finish();
 	}	
 }

@@ -38,7 +38,18 @@ public class SettingsActivity extends ABActivity implements OnSharedPreferenceCh
 			mTheCorrectAccountTaskId = null;
 		}
 		super.onDestroy();
-	}	
+	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+		if (data == null) {return;}
+	    Boolean isNewAccount = data.getBooleanExtra("isNewAccount", false);
+	    if(isNewAccount)
+		{
+			tvl.setText(sp.getString("login", ""));	
+			theCorrectAccount();	
+    	}
+	}		
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
 	{
 		if(key.equals("cookie"))
@@ -48,16 +59,7 @@ public class SettingsActivity extends ABActivity implements OnSharedPreferenceCh
 				tvl.setTextColor(Color.RED);
 			else
 				tvl.setTextColor(Color.GREEN);
-		}
-		else if(key.equals("login"))
-		{			
-			tvl.setText(prefs.getString("login", ""));	
-			theCorrectAccount();
-		}
-		else if(key.equals("password"))
-		{
-			theCorrectAccount();
-		}
+		}	
 		else if(key.equals("isTiming"))
 		{
 			  if(prefs.getBoolean("isTiming", false))
@@ -69,5 +71,5 @@ public class SettingsActivity extends ABActivity implements OnSharedPreferenceCh
 	public void onNewAccount (View v)
 	{
 		getForResultStarter().startForResult(new Intent(this, NewAccountActivity.class), null);
-	}		
+	}
 }

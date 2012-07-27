@@ -52,11 +52,10 @@ public class DictSpinner
         		}
         		else
         		{
-        			long dictId = getSelectedItem();
+        			long dictId = getSelectedItemTableId();
         			Editor ed = sp.edit();
-        			ed.putInt(PreferenceFields.DICT_POSITION, position);
         			ed.putLong(PreferenceFields.DICT_ID, dictId);
-        			ed.commit();
+        			ed.commit();       			
         		}
         	}
         	public void onNothingSelected(AdapterView<?> arg0) {}
@@ -64,17 +63,28 @@ public class DictSpinner
 	}
 	private void setSelection()
 	{
-		 spinner.setSelection(sp.getInt(PreferenceFields.DICT_POSITION, 0)); 
+		long dictId = sp.getLong(PreferenceFields.DICT_ID, -1);
+		if(dictId != -1)
+		{
+			spinner.setSelection(getPositionByTableId(dictId)); 
+		}
 	}
-	private long getSelectedItem()
+	private int getPositionByTableId(long dictId)
+	{
+		int i = 0;
+		int size = mDictsAdapter.getCount();
+		for(i = 0; i < size; i++)			
+			if(((Dict)mDictsAdapter.getItem(i)).dictId == dictId)
+				break;
+		return i;
+	}
+	private long getSelectedItemTableId()
 	{
 		return ((Dict)spinner.getSelectedItem()).dictId;
-	}	
+	}			
 	private void onAddDict()
 	{
-		Intent intent = new Intent(context, AddDictActivity.class);
-		intent.putExtra("dictsSize", size);
-		context.startActivity(intent);
+		context.startActivity(new Intent(context, AddDictActivity.class));
 	}
 	public void reload()
 	{

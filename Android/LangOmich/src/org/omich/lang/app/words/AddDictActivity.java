@@ -22,7 +22,6 @@ public class AddDictActivity extends BcActivity
 	private String mAddDictTaskId;
 	
 	private boolean mIsDestroyed;
-	private int size = 1;
 	private SharedPreferences sp;
 	//==== live cycle =========================================================
 	@Override
@@ -32,8 +31,6 @@ public class AddDictActivity extends BcActivity
 		setContentView(R.layout.app_dialog_adddict);
 		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		Intent intent = getIntent();
-		size = intent.getIntExtra("dictsSize", 1);
 	}
 	
 	@Override
@@ -85,7 +82,6 @@ public class AddDictActivity extends BcActivity
 						else
 						{
 		        			Editor ed = sp.edit();
-		        			ed.putInt(PreferenceFields.DICT_POSITION, size - 1);
 		        			ed.putLong(PreferenceFields.DICT_ID, dictId);
 		        			ed.commit();
 							finish();

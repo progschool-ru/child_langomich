@@ -56,16 +56,18 @@ public class DictsListAdapter extends TaskListAdapter<Dict>
 		public static Intent createIntent () {return new Intent();}
 
 		private IRStorage mDb;
+		private String mNewDictText;
 
 		public void init(BcTaskEnv env)
 		{
 			mDb = DbCreator.createReadable(env.context);
+			mNewDictText = env.context.getResources().getString(R.string.adddict_title);
 		}
 
 		public Bundle execute()
 		{
 			ArrayList<Dict> dicts = new ArrayList<Dict>(mDb.getDicts());
-			dicts.add(new Dict(-1, "Новый словарь"));
+			dicts.add(new Dict(-1, mNewDictText));
 			Bundle result = new Bundle();
 			result.putParcelableArrayList(BundleFields.DICTS_LIST, dicts);
 			mDb.destroy();

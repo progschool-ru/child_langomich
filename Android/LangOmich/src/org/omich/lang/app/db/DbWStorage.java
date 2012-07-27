@@ -48,7 +48,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 			
 			Long time = new Date().getTime();
 			long id = 0;
-			if(!foreign.equals(""))
+			if(foreign != null && !foreign.equals(""))
 			{
 				ContentValues values = new ContentValues();		
 				values.put(WordsCols.NATIV, nativ);

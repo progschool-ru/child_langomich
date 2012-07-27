@@ -50,7 +50,7 @@ public class AddWordActivity extends BcActivity implements OnSharedPreferenceCha
 	//==== events =============================================================
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
 	{
-		if(key.equals(PreferenceFields.DICT_POSITION))
+		if(key.equals(PreferenceFields.DICT_ID))
 		{
 			dictSpinner.reload();
 		}		
@@ -64,7 +64,7 @@ public class AddWordActivity extends BcActivity implements OnSharedPreferenceCha
 		String foreign = ((EditText)findViewById(R.id.addword_foreignEdit)).getText().toString();
 		String toast = getResources().getString(R.string.dialogAddWordMain_Added);
 
-		Intent intent = AddWordTask.createIntent(nativ, foreign,sp.getLong("dictId", -1), toast);
+		Intent intent = AddWordTask.createIntent(nativ, foreign, sp.getLong(PreferenceFields.DICT_ID, -1), toast);
 		mAddWordTaskId = getBcConnector().startTypicalTask(AddWordTask.class, intent, new IListener<Bundle>()
 			{
 				public void handle (Bundle bundle)
