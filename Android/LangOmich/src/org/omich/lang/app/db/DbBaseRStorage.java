@@ -115,9 +115,13 @@ abstract public class DbBaseRStorage implements IRStorage
 		return answer;
 	}
 	public Word getRandomWord (Long dictId)
+	{
+		return getRandomWord(dictId, "");
+	}
+	private Word getRandomWord (Long dictId, String str)
 	{		
 		int r = 0;
-		String query = "SELECT count(*), "+WordsCols.RATING+" FROM "+TNAME_WORDS+" WHERE "+WordsCols.DICT_ID+" = "+dictId+" GROUP BY "+WordsCols.RATING; 
+		String query = "SELECT count(*), "+WordsCols.RATING+" FROM "+TNAME_WORDS+" WHERE "+WordsCols.DICT_ID+" = "+dictId+str+" GROUP BY "+WordsCols.RATING; 
 		Cursor cursor = mDb.rawQuery(query, null);
 		int size[] = new int[10];
 		int max[] = new int[10];	
@@ -137,10 +141,24 @@ abstract public class DbBaseRStorage implements IRStorage
 				if(random < max[i])
 					r = i;
 			random = new Random().nextInt(size[r]);
-			String where = WordsCols.RATING + "=" + r +" AND "+WordsCols.DICT_ID+" = "+dictId;		
+			String where = WordsCols.RATING + "=" + r +" AND "+WordsCols.DICT_ID+" = "+dictId+str;		
 			return (Word)getWords(where).get(random);
 		}
 		else
 			return new Word("Словарь пуст", "Dictionary is empty", 0, -1);
-	}	
+	}
+	public List<Word> getRandomWords (Long dictId, int n)	
+	{
+		List<Word> answer = new ArrayList<Word>();
+		String where = "";
+		for(int i = 0; i < n; i++)
+		{
+			Word word = getRandomWord(dictId, where);
+			if(word.id == -1)
+				break;
+			answer.add(word);
+			where = where+" AND "+WordsCols.ID+" <> "+word.id;
+		}
+		return answer;
+	} 
 }

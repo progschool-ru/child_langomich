@@ -1,5 +1,7 @@
 package org.omich.lang.app.words;
 
+import java.util.ArrayList;
+
 import org.omich.lang.R;
 import org.omich.lang.app.BundleFields;
 import org.omich.lang.app.PreferenceFields;
@@ -31,6 +33,11 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 	private Word word;
 	private String mGetWordTaskId;
 	private String mSetRatingTaskId;
+	private String mGetWordsTaskId;
+	
+	private int process = 0;
+	private int size = 0;
+	ArrayList<Word> words;
 
 	//==== live cycle =========================================================
 	@Override
@@ -38,7 +45,6 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 	{
 		super.onCreate(b);
 		setContentView(R.layout.app_screen_game);
-		
 		sp.registerOnSharedPreferenceChangeListener(this);	
 		
 		tvn = (TextView)findViewById(R.id.item_wordslist_text_nativ);
@@ -104,11 +110,16 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 			mGetWordTaskId = null;
 		}
 		
+		if(mGetWordsTaskId != null)
+		{
+			getBcConnector().unsubscribeTask(mGetWordsTaskId);
+			mGetWordsTaskId = null;
+		}
 		if(mSetRatingTaskId != null)
 		{
 			getBcConnector().unsubscribeTask(mSetRatingTaskId);
 			mSetRatingTaskId = null;
-		}
+		}		
 		super.onDestroy();
 	}
 	
@@ -162,7 +173,15 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 
 	private void getWord ()
 	{
-		if(mGetWordTaskId != null)
+		if(words == null || process == size)
+			getWords();
+		else
+		{
+			word = words.get(process);
+			tvn.setText(word.nativ);
+			process++;	
+		}
+/*		if(mGetWordTaskId != null)
 			return;
 
 		Intent intent = GetRandomWordTask.createIntent(sp.getLong(PreferenceFields.DICT_ID, -1));
@@ -179,8 +198,37 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 								tvn.setText(word.nativ);
 							}
 						});
+*/
 	}	
-
+	private void getWords ()
+	{
+		if(mGetWordsTaskId != null)
+			return;
+		int number = 3;
+		Intent intent = GetRandomWordsTask.createIntent(sp.getLong(PreferenceFields.DICT_ID, -1), number);
+		mGetWordsTaskId = getBcConnector().startTypicalTask(GetRandomWordsTask.class, intent, new IListener<Bundle>()
+						{
+							public void handle (Bundle b)
+							{
+								mGetWordsTaskId = null;
+			
+								words = b.<Word>getParcelableArrayList(BundleFields.WORDS_LIST);	
+								process = 0;
+								size = words.size();
+								if(size != 0)
+								{
+									word = words.get(process);
+									tvn.setText(word.nativ);
+									process++;
+								}
+								else
+								{
+									word = new Word("Словарь пуст", "Dictionary is empty", 0, -1);
+									tvn.setText(word.nativ);
+								}
+							}
+						});
+	}		
 	private void setNewRating (long id, int rating)
 	{
 		if(mSetRatingTaskId != null)
