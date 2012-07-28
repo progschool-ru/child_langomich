@@ -114,51 +114,109 @@ abstract public class DbBaseRStorage implements IRStorage
 		
 		return answer;
 	}
-	public Word getRandomWord (Long dictId)
+	public List<Word> getRandomWords(Long dictId, int n, int weight[])
 	{
-		return getRandomWord(dictId, "");
-	}
-	private Word getRandomWord (Long dictId, String str)
-	{		
-		int r = 0;
-		String query = "SELECT count(*), "+WordsCols.RATING+" FROM "+TNAME_WORDS+" WHERE "+WordsCols.DICT_ID+" = "+dictId+str+" GROUP BY "+WordsCols.RATING; 
-		Cursor cursor = mDb.rawQuery(query, null);
+		List<Word> answer = new ArrayList<Word>();
+		if(n < 1)
+			return answer;
+		String query = "SELECT count(*), "+WordsCols.RATING+" FROM "+TNAME_WORDS+" WHERE "+WordsCols.DICT_ID+" = "+dictId+" GROUP BY "+WordsCols.RATING; 
+		Cursor cursor = mDb.rawQuery(query, null);			
+		int allSize = 0;
 		int size[] = new int[10];
+		int table[] = new int[10];
 		int max[] = new int[10];	
-		for(int i = 0; i < 10;i++) { max[i] = 0;size[i] = 0;}
+		for(int i = 0; i < 10; i++) {max[i] = 0; size[i] = 0; table[i] = 0;}
 		while(cursor.moveToNext())
 		{
 			int i = cursor.getInt(1);
 			size[i] = cursor.getInt(0);
-			r = r + 10 - i;
-			max[i] = r;
+			allSize = allSize + size[i];
 		}
-		cursor.close();
-		if(r!=0)
+		cursor.close();		
+		if(allSize < n)
+			return getWordsByDictId(dictId);
+		Random random = new Random();
+		int r = 0;
+		int k = 0;
+		for(int i = 0; i < n; i++) // заполнение таблицы: сколько слов каждого рейтинга должно быть в выборке
 		{
-			int random = new Random().nextInt(r);
-			for(int i = 9; i >= 0;i--)
-				if(random < max[i])
-					r = i;
-			random = new Random().nextInt(size[r]);
-			String where = WordsCols.RATING + "=" + r +" AND "+WordsCols.DICT_ID+" = "+dictId+str;		
-			return (Word)getWords(where).get(random);
+			r = 0;
+			for(int j = 0; j < 10; j++)
+				if(size[j] - table[j] > 0)
+				{
+					r = r + weight[j];
+					max[j] = r;
+				}
+			k = random.nextInt(r);
+			for(int j = 9; j >= 0; j--)
+				if(k < max[j])
+					r = j;			
+			table[r]++;			
 		}
-		else
-			return new Word("Словарь пуст", "Dictionary is empty", 0, -1);
-	}
-	public List<Word> getRandomWords (Long dictId, int n)	
-	{
-		List<Word> answer = new ArrayList<Word>();
-		String where = "";
-		for(int i = 0; i < n; i++)
+		int list[] = new int[n];
+		k = 0;
+		allSize = 0;
+		for(int i = 0; i < 10; i++)// заполнение списка порядков номеров слов для выборки
 		{
-			Word word = getRandomWord(dictId, where);
-			if(word.id == -1)
+			if(table[i] > 0)
+			{
+				if(table[i] < size[i])
+				{
+					int m[] = new int[size[i]];
+					for(int j = 0; j < size[i]; j++) m[j] = 1;
+					for(int j = 0; j < table[i]; j++)
+					{
+						r = random.nextInt(size[i] - j);
+						int ind = -1;
+						for(int q = 0; q < size[i]; q++)
+						{
+							if(m[q]!=0) ind++;
+							if(ind == r)
+							{
+								r = q;
+								m[q] = 0;
+								break;
+							}
+						}
+						list[k] = allSize+r;
+						k++;
+					}
+				}
+				else if(table[i] == size[i])
+					for(int j = 0; j < size[i]; j++)
+					{
+						list[k] = allSize+j;					
+						k++;
+					}	
+			}
+			allSize = allSize + size[i];
+		}				
+		query = "SELECT "+ WordsCols.NATIV+", "+WordsCols.FOREIGN+", "+WordsCols.RATING+", "+WordsCols.ID+" FROM "+TNAME_WORDS+" WHERE "+WordsCols.DICT_ID+" = "+dictId+" ORDER BY "+WordsCols.RATING;
+		cursor = mDb.rawQuery(query, null);
+		
+		k = 0;
+		r = 0;
+		while(cursor.moveToNext())
+		{
+			boolean fl = false;
+			for(int i = 0; i < n; i++)
+			{
+				if(list[i] == k)
+				{
+					fl = true;
+					r++;
+					break;
+				}
+			}		
+			if(fl)
+			{
+				Word word = new Word(cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getLong(3));
+				answer.add(word);
+			}
+			k++;
+			if(r  == n)
 				break;
-			answer.add(word);
-			where = where+" AND "+WordsCols.ID+" <> "+word.id;
-		}
+		}		
 		return answer;
-	} 
+	}
 }

@@ -110,7 +110,10 @@ public class Game
 								mGetRandomWordsTaskId = null;
 			
 								words = b.<Word>getParcelableArrayList(BundleFields.WORDS_LIST);	
-								realNumber = words.size();
+								if(words == null)
+									realNumber = 0;
+								else
+									realNumber = words.size();
 								currentNumber = 0;
 								
 								updateWord();

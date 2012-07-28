@@ -9,8 +9,7 @@ public interface IRStorage
 	List<Word> getWords ();
 	List<Word> getWordsByTime (Long mobileTime);
 	List<Word> getWordsByDictId (Long dictId);
-	Word getRandomWord (Long dictId);
-	List<Word> getRandomWords (Long dictId, int n);
+	List<Word> getRandomWords (Long dictId, int n, int weight[]);
 	List<Dict> getDicts ();
 	List<Dict> getDicts (Long mobileTime);
 }

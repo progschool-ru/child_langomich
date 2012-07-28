@@ -32,7 +32,8 @@ public class GetRandomWordsTask implements IBcTask
 
 	public Bundle execute()
 	{
-		ArrayList<Word> words = new ArrayList<Word>(mDb.getRandomWords(mDictId, mWordsNumber));
+		int weight[] = {100, 80, 60, 40, 20, 10, 5, 3, 2, 1};
+		ArrayList<Word> words = new ArrayList<Word>(mDb.getRandomWords(mDictId, mWordsNumber, weight));
 		Bundle result = new Bundle();
 		result.putParcelableArrayList(BundleFields.WORDS_LIST, words);		
 		mDb.destroy();
