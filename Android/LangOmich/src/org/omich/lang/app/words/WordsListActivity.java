@@ -4,7 +4,9 @@ import org.omich.lang.R;
 import org.omich.lang.app.PreferenceFields;
 import org.omich.lang.app.words.WordsListAdapter;
 import org.omich.lang.apptool.activity.ABActivity;
+import org.omich.tool.events.Listeners.IListenerInt;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 {
 	private WordsListAdapter mWordsAdapter;
 	private DictSpinner dictSpinner;
+	
 	//==== live cycle =========================================================
 	@Override
 	protected void onCreate (Bundle b)
@@ -30,7 +33,16 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 		mWordsAdapter = new WordsListAdapter(this, getBcConnector(), sp.getLong(PreferenceFields.DICT_ID, -1));
 		mWordsAdapter.reloadItems();
 		
-		dictSpinner = new DictSpinner((Spinner)findViewById(R.id.wordslist_spinner), this);
+		dictSpinner = new DictSpinner((Spinner)findViewById(R.id.wordslist_spinner), this, new IListenerInt()
+		{
+			public void handle (int key)
+			{ 
+				if(key == dictSpinner.ADD_DICT)
+					startAddDictActivity();
+				else if(key == dictSpinner.SELECT_DICT)
+					reload();
+			}			
+		});
 		ListView lv = (ListView)findViewById(R.id.wordslist_list);
 		lv.setAdapter(mWordsAdapter);
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -40,7 +52,29 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 			}
 		});
 	}
-
+	private void startAddDictActivity()
+	{
+	    Intent intent = new Intent(this, AddDictActivity.class);
+	    startActivityForResult(intent, 1);		
+	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+		if(requestCode == 1 && resultCode == RESULT_OK && data != null)
+		{
+			if(data.getBooleanExtra("result", true))
+			{
+				reload();			
+			}
+			
+		}
+	}	
+	private void reload()
+	{
+		mWordsAdapter.setNewDictId(sp.getLong(PreferenceFields.DICT_ID, -1));
+		mWordsAdapter.reloadItems();					
+		dictSpinner.reload();			
+	}
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
 	{
 		if(key.equals(PreferenceFields.IS_TIMING))
@@ -50,12 +84,6 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 			  else
 				  itemTiming.setIcon(R.drawable.ic_sunc_disable);			
 		}	
-		else if(key.equals(PreferenceFields.DICT_ID))
-		{
-			mWordsAdapter.setNewDictId(sp.getLong(PreferenceFields.DICT_ID, -1));
-			mWordsAdapter.reloadItems();					
-			dictSpinner.reload();			
-		}
 	}		
 	@Override
 	protected void onDestroy ()

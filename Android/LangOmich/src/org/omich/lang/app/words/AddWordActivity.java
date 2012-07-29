@@ -4,10 +4,10 @@ import org.omich.lang.R;
 import org.omich.lang.app.PreferenceFields;
 import org.omich.lang.apptool.activity.BcActivity;
 import org.omich.tool.events.Listeners.IListener;
+import org.omich.tool.events.Listeners.IListenerInt;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -15,7 +15,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-public class AddWordActivity extends BcActivity implements OnSharedPreferenceChangeListener
+public class AddWordActivity extends BcActivity
 {
 	private String mAddWordTaskId;
 	
@@ -28,9 +28,17 @@ public class AddWordActivity extends BcActivity implements OnSharedPreferenceCha
 	{
 		super.onCreate(b);
 		setContentView(R.layout.app_dialog_addword);
-		dictSpinner = new DictSpinner((Spinner)findViewById(R.id.addword_dictSpinner), this);
+		dictSpinner = new DictSpinner((Spinner)findViewById(R.id.addword_dictSpinner), this, new IListenerInt()
+		{
+			public void handle (int key)
+			{ 
+				if(key == dictSpinner.ADD_DICT)
+					startAddDictActivity();
+				else if(key == dictSpinner.SELECT_DICT)
+					reload();
+			}			
+		});
 		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		sp.registerOnSharedPreferenceChangeListener(this);	
 		getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 	}
 	
@@ -48,13 +56,26 @@ public class AddWordActivity extends BcActivity implements OnSharedPreferenceCha
 	}
 	
 	//==== events =============================================================
-	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
+	private void startAddDictActivity()
 	{
-		if(key.equals(PreferenceFields.DICT_ID))
+	    Intent intent = new Intent(this, AddDictActivity.class);
+	    startActivityForResult(intent, 1);		
+	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+		if(requestCode == 1 && resultCode == RESULT_OK && data != null)
 		{
-			dictSpinner.reload();
-		}		
-	}		
+			if(data.getBooleanExtra("result", true))
+			{
+				reload();			
+			}			
+		}
+	}	
+	private void reload()
+	{				
+		dictSpinner.reload();			
+	}	
 	public void onAddButton (View v)
 	{
 		if(mAddWordTaskId != null)

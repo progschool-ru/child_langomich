@@ -43,7 +43,7 @@ public class SettingsActivity extends ABActivity implements OnSharedPreferenceCh
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
 		if (data == null) {return;}
-	    Boolean isNewAccount = data.getBooleanExtra("isNewAccount", false);
+	    Boolean isNewAccount = data.getBooleanExtra("isNewAccount", true);
 	    if(isNewAccount)
 		{
 			tvl.setText(sp.getString("login", ""));	

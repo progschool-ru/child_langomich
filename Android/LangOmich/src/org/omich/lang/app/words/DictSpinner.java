@@ -3,10 +3,10 @@ package org.omich.lang.app.words;
 import org.omich.lang.app.PreferenceFields;
 import org.omich.lang.app.db.Dict;
 import org.omich.tool.bcops.BcConnector;
-import org.omich.tool.events.Listeners.IListenerBoolean;
+import org.omich.tool.events.Listeners.IListenerInt;
+import org.omich.tool.events.Listeners.IListenerVoid;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
@@ -18,24 +18,28 @@ import android.widget.AdapterView.OnItemSelectedListener;
 public class DictSpinner
 {
 	private Spinner spinner;
-	private Context context;
 	private DictsListAdapter mDictsAdapter;
 	private SharedPreferences sp;
 	private BcConnector mBcConnector;
+	private IListenerInt li;
 	private int size = 1;
-	public DictSpinner(Spinner spinner, Context context)
+	
+	public final int ADD_DICT = 1;
+	public final int SELECT_DICT = 2;
+	
+	public DictSpinner(Spinner spinner, Context context, IListenerInt li)
 	{
 		
 		this.spinner = spinner;
-		this.context = context;
+		this.li = li;
 		sp = PreferenceManager.getDefaultSharedPreferences(context);
 		mBcConnector = new BcConnector(context);
 		
-		mDictsAdapter = new DictsListAdapter(context, mBcConnector, new IListenerBoolean()
+		mDictsAdapter = new DictsListAdapter(context, mBcConnector, new IListenerVoid()
 		{
-			public void handle (boolean b)
+			public void handle ()
 			{ 
-				if(b) setSelection();
+				setSelection();
 			}			
 		});
 		mDictsAdapter.reloadItems();		
@@ -55,7 +59,8 @@ public class DictSpinner
         			long dictId = getSelectedItemTableId();
         			Editor ed = sp.edit();
         			ed.putLong(PreferenceFields.DICT_ID, dictId);
-        			ed.commit();       			
+        			ed.commit();
+        			onSelectDict();
         		}
         	}
         	public void onNothingSelected(AdapterView<?> arg0) {}
@@ -84,8 +89,14 @@ public class DictSpinner
 	}			
 	private void onAddDict()
 	{
-		context.startActivity(new Intent(context, AddDictActivity.class));
+		li.handle(ADD_DICT);
+//		context.startActivity(new Intent(context, AddDictActivity.class));
 	}
+	private void onSelectDict()
+	{
+		li.handle(SELECT_DICT);
+//		context.startActivity(new Intent(context, AddDictActivity.class));
+	}	
 	public void reload()
 	{
 		mDictsAdapter.reloadItems();
