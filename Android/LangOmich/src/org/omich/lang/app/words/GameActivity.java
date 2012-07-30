@@ -38,7 +38,9 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 		bt1 = (Button)findViewById(R.id.button_1);
 		bt2 = (Button)findViewById(R.id.button_2);
 		
-		game = new Game(this,sp.getLong(PreferenceFields.DICT_ID, -1), new IListenerVoid()
+		int weight[] = {100, 80, 60, 40, 20, 10, 5, 3, 2, 1};		
+		game = new Game(this,sp.getLong(PreferenceFields.DICT_ID, -1), sp.getInt(PreferenceFields.IDEAL_NUMBER, 5),
+				weight, new IListenerVoid()
 		{
 			public void handle ()
 			{ 
@@ -90,6 +92,14 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 		
 		setScreen(GAME);
 	}
+	@Override
+	protected void onResume()
+	{
+		int weight[] = {100, 80, 60, 40, 20, 10, 5, 3, 2, 1};	
+		game.setNewSettings(sp.getLong(PreferenceFields.DICT_ID, -1), sp.getInt(PreferenceFields.IDEAL_NUMBER, 5),
+				weight);	
+		super.onResume();
+	}
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
 	{
 		if(key.equals("isTiming"))
@@ -98,10 +108,6 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 				itemTiming.setIcon(R.drawable.ic_sunc_enable);
 			else
 				itemTiming.setIcon(R.drawable.ic_sunc_disable);			
-		}
-		else if(key.equals(PreferenceFields.DICT_ID))
-		{
-			game.setNewDictId(sp.getLong(PreferenceFields.DICT_ID, -1));
 		}
 	}	
 	@Override

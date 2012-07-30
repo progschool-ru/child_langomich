@@ -116,16 +116,17 @@ abstract public class DbBaseRStorage implements IRStorage
 	}
 	public List<Word> getRandomWords(Long dictId, int n, int weight[])
 	{
+		int N = 10;// количество рейтингов
 		List<Word> answer = new ArrayList<Word>();
 		if(n < 1)
 			return answer;
 		String query = "SELECT count(*), "+WordsCols.RATING+" FROM "+TNAME_WORDS+" WHERE "+WordsCols.DICT_ID+" = "+dictId+" GROUP BY "+WordsCols.RATING; 
 		Cursor cursor = mDb.rawQuery(query, null);			
 		int allSize = 0;
-		int size[] = new int[10];
-		int table[] = new int[10];
-		int max[] = new int[10];	
-		for(int i = 0; i < 10; i++) {max[i] = 0; size[i] = 0; table[i] = 0;}
+		int size[] = new int[N];
+		int table[] = new int[N];
+		int max[] = new int[N];	
+		for(int i = 0; i < N; i++) {max[i] = 0; size[i] = 0; table[i] = 0;}
 		while(cursor.moveToNext())
 		{
 			int i = cursor.getInt(1);
@@ -141,14 +142,14 @@ abstract public class DbBaseRStorage implements IRStorage
 		for(int i = 0; i < n; i++) // заполнение таблицы: сколько слов каждого рейтинга должно быть в выборке
 		{
 			r = 0;
-			for(int j = 0; j < 10; j++)
+			for(int j = 0; j < N; j++)
 				if(size[j] - table[j] > 0)
 				{
 					r = r + weight[j];
 					max[j] = r;
 				}
 			k = random.nextInt(r);
-			for(int j = 9; j >= 0; j--)
+			for(int j = N-1; j >= 0; j--)
 				if(k < max[j])
 					r = j;			
 			table[r]++;			
@@ -156,7 +157,7 @@ abstract public class DbBaseRStorage implements IRStorage
 		int list[] = new int[n];
 		k = 0;
 		allSize = 0;
-		for(int i = 0; i < 10; i++)// заполнение списка порядков номеров слов для выборки
+		for(int i = 0; i < N; i++)// заполнение списка: номера слов для выборки
 		{
 			if(table[i] > 0)
 			{
@@ -173,13 +174,22 @@ abstract public class DbBaseRStorage implements IRStorage
 							if(m[q]!=0) ind++;
 							if(ind == r)
 							{
-								r = q;
 								m[q] = 0;
 								break;
 							}
 						}
-						list[k] = allSize+r;
-						k++;
+					}
+					int l = 0;
+					for(int j = 0; j < size[i]; j++)
+					{
+						if(m[j] == 0)
+						{
+							list[k] = allSize+j;
+							k++;
+							l++;
+							if(l == table[i])
+								break;
+						}
 					}
 				}
 				else if(table[i] == size[i])
@@ -197,21 +207,12 @@ abstract public class DbBaseRStorage implements IRStorage
 		k = 0;
 		r = 0;
 		while(cursor.moveToNext())
-		{
-			boolean fl = false;
-			for(int i = 0; i < n; i++)
-			{
-				if(list[i] == k)
-				{
-					fl = true;
-					r++;
-					break;
-				}
-			}		
-			if(fl)
+		{	
+			if(k == list[r])
 			{
 				Word word = new Word(cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getLong(3));
 				answer.add(word);
+				r++;
 			}
 			k++;
 			if(r  == n)

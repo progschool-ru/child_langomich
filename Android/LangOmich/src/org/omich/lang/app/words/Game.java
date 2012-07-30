@@ -17,11 +17,12 @@ public class Game
 {
 	private BcConnector mBcConnector;
 
-	private long dictId;
+	private long dictId = -1;
 	private int idealNumber = 3;
 	private int realNumber = 0;
 	private int currentNumber = 0;
 	private Word word;
+	private int[] weight = {100, 80, 60, 40, 20, 10, 5, 3, 2, 1};
 	private ArrayList<Word> words;
 	
 	private String dictIsEmptyNativ;
@@ -39,17 +40,19 @@ public class Game
 	
 	private IListenerVoid lv;
 			
-	public Game(Context context, long dictId, IListenerVoid lv)
+	public Game(Context context, long dictId, int idealNumber, int []weight, IListenerVoid lv)
 	{
 		this.lv = lv;
 		mBcConnector = new BcConnector(context);
 		dictIsEmptyNativ = context.getResources().getString(R.string.game_die_nativ);
 		dictIsEmptyEnglish = context.getResources().getString(R.string.game_die_english);
-		setNewDictId(dictId);
+		setNewSettings(dictId, idealNumber, weight);
 	}
-	public void setNewDictId(long dictId)
+	public void setNewSettings(long dictId, int idealNumber, int []weight)
 	{
 		this.dictId = dictId;
+		this.idealNumber = idealNumber;
+		this.weight = weight;
 		getRandomWords();
 	}
 	public String getText(int key)
@@ -99,7 +102,7 @@ public class Game
 		if(mGetRandomWordsTaskId != null)
 			return;		
 		
-		Intent intent = GetRandomWordsTask.createIntent(dictId, idealNumber);
+		Intent intent = GetRandomWordsTask.createIntent(dictId, idealNumber, weight);
 		mGetRandomWordsTaskId = mBcConnector.startTypicalTask(GetRandomWordsTask.class, intent, new IListener<Bundle>()
 						{
 							public void handle (Bundle b)

@@ -4,16 +4,19 @@ import org.omich.lang.R;
 import org.omich.lang.apptool.activity.ABActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class SettingsActivity extends ABActivity implements OnSharedPreferenceChangeListener
 {
 	private TextView tvl;
+	private EditText etin;
 	private String mTheCorrectAccountTaskId;
 	@Override
 	protected void onCreate (Bundle b)
@@ -22,13 +25,23 @@ public class SettingsActivity extends ABActivity implements OnSharedPreferenceCh
 		setContentView(R.layout.app_screen_settings);		
 		sp.registerOnSharedPreferenceChangeListener(this);	
 		tvl = (TextView)findViewById(R.id.item_settings_text_login);
+		etin = (EditText)findViewById(R.id.item_settings_edit_idealNumber);
 		tvl.setText(sp.getString("login", ""));
 		if(sp.getString("cookie", "").equals(""))
 			tvl.setTextColor(Color.RED);
 		else
 			tvl.setTextColor(Color.GREEN);
+		etin.setText(Integer.toString(sp.getInt(PreferenceFields.IDEAL_NUMBER, 5)));
 		isLoggedIn();
 	}
+	@Override
+	protected void onPause()
+	{
+		Editor ed = sp.edit();
+		ed.putInt(PreferenceFields.IDEAL_NUMBER, Integer.valueOf(etin.getText().toString()));
+		ed.commit();
+		super.onPause();
+	}	
 	@Override
 	protected void onDestroy ()
 	{

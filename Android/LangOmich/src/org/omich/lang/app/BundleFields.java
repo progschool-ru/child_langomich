@@ -22,6 +22,7 @@ public class BundleFields
 	public static final String WORD_NATIV          = "wordNativ";
 	public static final String WORDS_LIST          = "wordsList";
 	public static final String WORDS_NUMBER        = "wordsNumber";
+	public static final String WORDS_WEIGHT        = "wordsWeight";
 	public static final String WORD				   = "word";
 	public static final String DICT_NAME           = "dictName";
 	public static final String DICT_ID		       = "dictId";

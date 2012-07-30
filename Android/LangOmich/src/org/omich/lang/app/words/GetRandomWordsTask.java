@@ -11,29 +11,32 @@ import android.os.Bundle;
 
 public class GetRandomWordsTask implements IBcTask
 {
-	public static Intent createIntent (long dictId, int n) 
+	public static Intent createIntent (long dictId, int n, int weight[]) 
 	{
 		Intent intent = new Intent();
 		intent.putExtra(BundleFields.WORD_DICT_ID, dictId);
 		intent.putExtra(BundleFields.WORDS_NUMBER, n);
+		intent.putExtra(BundleFields.WORDS_WEIGHT, weight);
 		return intent;
 	}
 
 	private IRStorage mDb;
 	private Long mDictId;
+	private int[] mWeight;
 	private int mWordsNumber;
 
 	public void init(BcTaskEnv env)
 	{
 		mDictId = env.extras.getLong(BundleFields.WORD_DICT_ID);
 		mWordsNumber = env.extras.getInt(BundleFields.WORDS_NUMBER);
+		mWeight = env.extras.getIntArray(BundleFields.WORDS_WEIGHT);
 		mDb = DbCreator.createReadable(env.context);
 	}
 
 	public Bundle execute()
 	{
-		int weight[] = {100, 80, 60, 40, 20, 10, 5, 3, 2, 1};
-		ArrayList<Word> words = new ArrayList<Word>(mDb.getRandomWords(mDictId, mWordsNumber, weight));
+		
+		ArrayList<Word> words = new ArrayList<Word>(mDb.getRandomWords(mDictId, mWordsNumber, mWeight));
 		Bundle result = new Bundle();
 		result.putParcelableArrayList(BundleFields.WORDS_LIST, words);		
 		mDb.destroy();
