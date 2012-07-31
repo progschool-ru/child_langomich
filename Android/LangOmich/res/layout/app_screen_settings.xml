@@ -1,72 +1,151 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-	<RelativeLayout
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+	<LinearLayout
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
-
-	    <TextView
-	        android:id="@+id/item_settings_text_account"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_alignParentTop="true"
-	        android:layout_marginLeft="16dp"
-	        android:layout_marginTop="16dp"
-	        android:text="Учетная запись"
-	        android:textStyle="bold" />	
-	    <TextView
-	        android:id="@+id/item_settings_text_login"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignLeft="@+id/item_settings_text_account"
-	        android:layout_below="@+id/item_settings_text_account"
-	        android:layout_marginLeft="35dp" />
-
-	    <ImageButton
-	        android:id="@+id/new_account"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignBottom="@+id/item_settings_text_login"
-	        android:layout_alignParentRight="true"
-	        android:layout_marginRight="15dp"
-	        android:onClick="onNewAccount"
-	        android:src="@drawable/ic_new_account" />
- 
-	</RelativeLayout>
-	<RelativeLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
-
-	    <TextView
-	        android:id="@+id/item_settings_text_idealNumber_a"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_alignParentTop="true"
-	        android:layout_marginLeft="16dp"
-	        android:layout_marginTop="16dp"
-	        android:text="Количество слов"
-	        android:textStyle="bold" />	
-	    <TextView
-	        android:id="@+id/item_settings_text_idealNumber_b"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignLeft="@+id/item_settings_text_idealNumber_a"
-	        android:layout_below="@+id/item_settings_text_idealNumber_a"
-	        android:layout_marginLeft="35dp" 
-	        android:text="в неповторяющейся последовательности слов"/>
-
-		<EditText
-		    android:id="@+id/item_settings_edit_idealNumber"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical">
+	
+		<RelativeLayout
 		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_alignParentLeft="true"
-		    android:layout_below="@+id/item_settings_text_idealNumber_b"
-		    android:ems="10"
-		    android:inputType="number" />
-	</RelativeLayout>	
-</LinearLayout>
+		    android:layout_height="wrap_content" >
+	
+		    <TextView
+		        android:id="@+id/item_settings_text_account"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignParentTop="true"
+		        android:layout_marginLeft="16dp"
+		        android:layout_marginTop="16dp"
+		        android:text="Учетная запись"
+		        android:textStyle="bold" />	
+		    <TextView
+		        android:id="@+id/item_settings_text_login"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignLeft="@+id/item_settings_text_account"
+		        android:layout_below="@+id/item_settings_text_account"
+		        android:layout_marginLeft="35dp" />
+	
+		    <ImageButton
+		        android:id="@+id/new_account"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignBottom="@+id/item_settings_text_login"
+		        android:layout_alignParentRight="true"
+		        android:layout_marginRight="15dp"
+		        android:onClick="onNewAccount"
+		        android:src="@drawable/ic_new_account" />
+	 
+		</RelativeLayout>
+		<RelativeLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content" >
+	
+		    <TextView
+		        android:id="@+id/item_settings_text_idealNumber_a"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignParentTop="true"
+		        android:layout_marginLeft="16dp"
+		        android:layout_marginTop="16dp"
+		        android:text="Количество слов"
+		        android:textStyle="bold" />	
+		    <TextView
+		        android:id="@+id/item_settings_text_idealNumber_b"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignLeft="@+id/item_settings_text_idealNumber_a"
+		        android:layout_below="@+id/item_settings_text_idealNumber_a"
+		        android:layout_marginLeft="35dp" 
+		        android:text="в неповторяющейся последовательности слов"/>
+	
+			<EditText
+			    android:id="@+id/item_settings_edit_idealNumber"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentLeft="true"
+			    android:layout_below="@+id/item_settings_text_idealNumber_b"
+			    android:ems="10"
+			    android:inputType="number" />
+		</RelativeLayout>
+
+		<RelativeLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content" >
+
+		    <TextView
+		        android:id="@+id/item_settings_text_seekBar_top"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignParentTop="true"
+		        android:layout_marginLeft="16dp"
+		        android:layout_marginTop="16dp"
+		        android:text="Настройка весов"
+		        android:textStyle="bold" />
+
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@+id/item_settings_text_seekBar_top"
+		        android:orientation="vertical" >
+
+		        <SeekBar
+		            android:id="@+id/seekBar0"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:max="99" />
+
+		        <SeekBar
+		            android:id="@+id/seekBar1"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content" />
+
+		        <SeekBar
+		            android:id="@+id/seekBar2"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content" />
+
+		        <SeekBar
+		            android:id="@+id/seekBar3"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content" />
+
+		        <SeekBar
+		            android:id="@+id/seekBar4"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content" />
+
+		        <SeekBar
+		            android:id="@+id/seekBar5"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content" />
+
+		        <SeekBar
+		            android:id="@+id/seekBar6"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content" />
+
+		        <SeekBar
+		            android:id="@+id/seekBar7"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content" />
+
+		        <SeekBar
+		            android:id="@+id/seekBar8"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content" />
+
+		        <SeekBar
+		            android:id="@+id/seekBar9"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content" />
+		    </LinearLayout>
+		</RelativeLayout>
+							
+	</LinearLayout>
+</ScrollView>

@@ -10,6 +10,7 @@ import org.omich.lang.app.db.Word;
 import org.omich.lang.apptool.lists.TaskListAdapter;
 import org.omich.tool.bcops.IBcConnector;
 import org.omich.tool.bcops.IBcTask;
+import org.omich.tool.events.Listeners.IListenerVoid;
 
 import android.content.Context;
 import android.content.Intent;
@@ -51,7 +52,7 @@ public class WordsListAdapter extends TaskListAdapter<Word>
 		TextView tvf = (TextView)view.findViewById(R.id.item_wordslist_text_foreign);
 		tvf.setText(item.foreign);
 		TextView tvr = (TextView)view.findViewById(R.id.item_wordslist_text_rating);
-		tvr.setText(Integer.toString(item.rating));
+		tvr.setText(Integer.toString(item.rating));		
 	}
 	//=========================================================================
 	public static class LoadWordsTask implements IBcTask

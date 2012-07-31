@@ -16,7 +16,13 @@
     <string name="adddict_added">Словарь успешно добавлен</string>
     <string name="adddict_create">Создать</string>
     <string name="adddict_cancel">Отмена</string>
-    
+
+    <string name="item_wordslist_text_change">Изменить</string>
+    <string name="item_wordslist_text_copy">Копировать</string>
+    <string name="item_wordslist_text_insert">Переместить</string>
+    <string name="item_wordslist_text_delete">Удалить</string>
+    <string name="item_wordslist_text_cancel">Отмена</string>
+       
     <string name="app_name">LangOmich</string>
     <string name="test">Test</string>
     <string name="addWords">add Word</string>
