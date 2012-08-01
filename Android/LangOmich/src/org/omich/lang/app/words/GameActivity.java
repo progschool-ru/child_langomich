@@ -147,6 +147,7 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 	private int [] getWeight()
 	{
 		int weight[] = new int[10];
+		
 		weight [0] = sp.getInt(PreferenceFields.WEIGHT_ZERO, 100);
 		weight [1] = sp.getInt(PreferenceFields.WEIGHT_ONE, 80);
 		weight [2] = sp.getInt(PreferenceFields.WEIGHT_TWO, 60);
@@ -157,9 +158,7 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 		weight [7] = sp.getInt(PreferenceFields.WEIGHT_SEVEN, 5);
 		weight [8] = sp.getInt(PreferenceFields.WEIGHT_EIGHT, 3);
 		weight [9] = sp.getInt(PreferenceFields.WEIGHT_NINE, 1);	
-		System.out.println("Веса:");
-		for(int i = 0; i < 10; i++)
-			System.out.println(weight[i]);
+		
 		return weight;
 	}
 }

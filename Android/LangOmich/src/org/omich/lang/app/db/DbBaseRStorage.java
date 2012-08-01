@@ -67,8 +67,23 @@ abstract public class DbBaseRStorage implements IRStorage
 	
 	public List<Word> getWordsByDictId (Long dictId)
 	{
-		String where = WordsCols.DICT_ID + "=" + dictId;
-		return getWords(where);
+		String where = WordsCols.DICT_ID + "=" + dictId +" AND "+WordsCols.NATIV + "<> ?";
+		Cursor cursor = mDb.query(TNAME_WORDS, 
+				new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.ID}, 
+				where, new String[]{""}, null, null, null);
+
+		final List<Word> answer = new ArrayList<Word>();
+		
+		DbHelper.iterateCursorAndClose(cursor, new CursorIterator()
+		{
+			public void handle(Cursor cursor)
+			{
+				Word word = new Word(cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getLong(3));
+				answer.add(word);
+			}
+		});
+		
+		return answer;
 	}
 	public List<Word> getWordsByTime (Long mobileTime)
 	{
@@ -90,38 +105,16 @@ abstract public class DbBaseRStorage implements IRStorage
 		
 		return answer;
 	}
-	public List<Word> getWords ()
-	{
-		String where = null;
-		return getWords(where);
-	}	
-	private List<Word> getWords (String where)
-	{
-		Cursor cursor = mDb.query(TNAME_WORDS, 
-				new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.ID, WordsCols.TIME}, 
-				where, null, null, null, null);
-
-		final List<Word> answer = new ArrayList<Word>();
-		
-		DbHelper.iterateCursorAndClose(cursor, new CursorIterator()
-		{
-			public void handle(Cursor cursor)
-			{
-				Word word = new Word(cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getLong(3), cursor.getLong(4));
-				answer.add(word);
-			}
-		});
-		
-		return answer;
-	}
 	public List<Word> getRandomWords(Long dictId, int n, int weight[])
 	{
 		int N = 10;// количество рейтингов
 		List<Word> answer = new ArrayList<Word>();
 		if(n < 1)
 			return answer;
-		String query = "SELECT count(*), "+WordsCols.RATING+" FROM "+TNAME_WORDS+" WHERE "+WordsCols.DICT_ID+" = "+dictId+" GROUP BY "+WordsCols.RATING; 
-		Cursor cursor = mDb.rawQuery(query, null);			
+		String query = "SELECT count(*), "+WordsCols.RATING+" FROM "+TNAME_WORDS+
+				" WHERE "+WordsCols.DICT_ID+" = "+dictId+" AND "+WordsCols.NATIV + "<> ?"+
+				" GROUP BY "+WordsCols.RATING; 
+		Cursor cursor = mDb.rawQuery(query, new String[]{""});			
 		int allSize = 0;
 		int size[] = new int[N];
 		int table[] = new int[N];
@@ -201,8 +194,10 @@ abstract public class DbBaseRStorage implements IRStorage
 			}
 			allSize = allSize + size[i];
 		}				
-		query = "SELECT "+ WordsCols.NATIV+", "+WordsCols.FOREIGN+", "+WordsCols.RATING+", "+WordsCols.ID+" FROM "+TNAME_WORDS+" WHERE "+WordsCols.DICT_ID+" = "+dictId+" ORDER BY "+WordsCols.RATING;
-		cursor = mDb.rawQuery(query, null);
+		query = "SELECT "+ WordsCols.NATIV+", "+WordsCols.FOREIGN+", "+WordsCols.RATING+", "+WordsCols.ID+
+				" FROM "+TNAME_WORDS+" WHERE "+WordsCols.DICT_ID+" = "+dictId+" AND "+WordsCols.NATIV + "<> ?"+
+				" ORDER BY "+WordsCols.RATING;
+		cursor = mDb.rawQuery(query, new String[]{""});
 		
 		k = 0;
 		r = 0;

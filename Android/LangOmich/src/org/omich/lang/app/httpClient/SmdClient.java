@@ -9,7 +9,7 @@ import org.omich.lang.app.db.Dict;
 import org.omich.lang.app.db.IWStorage;
 import org.omich.lang.app.db.Word;
 import org.omich.lang.app.json.JSONAuthData;
-import org.omich.lang.app.json.JSONData;
+import org.omich.lang.app.json.JSONConverter;
 
 import com.ccg.util.JavaString;
 
@@ -50,14 +50,13 @@ public class SmdClient {
 	}	
 	public long timing(List<Word> words, List<Dict> dicts, long serverTime, IWStorage mDbW) throws Exception
 	{
-		JSONData jData = new JSONData();
-		jData.put(words, dicts, serverTime);
-		String sendingData = jData.toString();
+		JSONConverter jConverter = new JSONConverter();
+		String sendingData = jConverter.toString(words, dicts, serverTime);
 		System.out.println(sendingData);
 		sendingData = JavaString.encode(sendingData);
 		String result = request.addWords(sendingData);
 		result = JavaString.decode(result);
 		System.out.println(result);
-		return jData.write(result, mDbW);
+		return jConverter.write(result, mDbW);
 	}		
 }

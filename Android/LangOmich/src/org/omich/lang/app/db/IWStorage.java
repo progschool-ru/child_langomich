@@ -6,5 +6,6 @@ public interface IWStorage extends IRStorage
 	long addWord (String nativ, String foreign, int rating, long dictId);
 	long addDict (String name);
 	long addDict (String serverId, String name);
-	void setRating (long id, int rating);
+	boolean setRating (long id, int rating);
+	boolean deleteWord (long id);
 }

@@ -1,6 +1,5 @@
 package org.omich.lang.app.json;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,7 +8,7 @@ import org.omich.lang.app.db.Dict;
 import org.omich.lang.app.db.IWStorage;
 import org.omich.lang.app.db.Word;
 
-public class JSONData 
+public class JSONConverter 
 {
 	private static final String SUCCESS			= "success";
 	private static final String LANGUAGES		= "languages";
@@ -21,21 +20,13 @@ public class JSONData
 	private static final String FOREIGN			= "original";
 	private static final String RATING			= "rating";
 	
-	private long serverTime = 0;
-	private boolean sucsess;
-	private List<Word> words = new ArrayList<Word>();
-	private List<Dict> dicts = new ArrayList<Dict>();
-	
-	public JSONData()
-	{
-		sucsess = false;
-	}
 	public long write(String jString, IWStorage mDbW) throws JSONException
 	{		
 		JSONObject jObject = new JSONObject(jString);
 		
-		sucsess = jObject.getBoolean(SUCCESS);
-		serverTime = 0;
+		boolean sucsess = jObject.getBoolean(SUCCESS);
+		long serverTime = 0;
+		
 		if(sucsess)
 		{		
 			if(jObject.has(LAST_CONNECTION))
@@ -61,15 +52,8 @@ public class JSONData
 		}
 		return serverTime;		
 	}
-	public void put(List<Word> words, List<Dict> dicts, long serverTime)
-	{
-		this.words = words;
-		this.dicts = dicts;
-		this.serverTime = serverTime;
-	}
 	
-	@Override
-	public String toString()
+	public String toString(List<Word> words, List<Dict> dicts, long serverTime)
 	{
 		JSONObject jObject = new JSONObject();
 		try

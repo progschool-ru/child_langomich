@@ -33,12 +33,12 @@ public class DeleteWordTask implements IBcTask
 
 	public Bundle execute()
 	{	
-		boolean success = false;
+		boolean success = mDb.deleteWord(mId);
 		if(success && mTaskSuccessText != null)
 				mBcToaster.showToast(mTaskSuccessText);		
 		mDb.destroy();	
 		
 		return null;
 	}
-
+	
 }

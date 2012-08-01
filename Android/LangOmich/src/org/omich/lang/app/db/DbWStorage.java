@@ -64,7 +64,30 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 			mDb.update(TNAME_DICTS, valuesForDict, where, null);
 			
 			return id;
-	}		
+	}	
+	public boolean deleteWord(long id)
+	{
+		try
+		{
+			Long time = new Date().getTime();
+			String where;
+			long dictId = getDictIdByWordId(id);
+			if(dictId != -1)
+			{
+				ContentValues valuesForDict = new ContentValues();
+				valuesForDict.put(DictsCols.TIME, time);
+				where = DictsCols.ID + " = " + dictId;
+				mDb.update(TNAME_DICTS, valuesForDict, where, null);
+			}		
+			ContentValues values = new ContentValues();
+			values.put(WordsCols.NATIV, "");		
+			values.put(WordsCols.TIME, time);
+			where = WordsCols.ID + " = " + id;
+			mDb.update(TNAME_WORDS, values, where, null);	
+			return true;
+		}
+		catch(Exception e) {return false;}
+	}
 	public long addDict (String name)
 	{		
 		String where = DictsCols.NAME + "= ?";
@@ -121,11 +144,11 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		cursor.close();
 		return dictId;
 	}	
-	public void setRating (long id, int rating)
+	public boolean setRating (long id, int rating)
 	{	
 		Long time = new Date().getTime();
 		String where;
-		long dictId = getDictId(id);
+		long dictId = getDictIdByWordId(id);
 		if(dictId != -1)
 		{
 			ContentValues valuesForDict = new ContentValues();
@@ -138,8 +161,9 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		values.put(WordsCols.TIME, time);
 		where = WordsCols.ID + " = " + id;
 		mDb.update(TNAME_WORDS, values, where, null);
+		return true;
 	}
-	private long getDictId(long wordId)
+	private long getDictIdByWordId(long wordId)
 	{
 		long dictId = -1;
 		String where = WordsCols.ID + " = " + wordId;		
