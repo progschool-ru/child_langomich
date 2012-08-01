@@ -3,6 +3,7 @@
     <string name="game_lable">Игра</string>
     <string name="game_die_nativ">Словарь пуст</string>
     <string name="game_die_english">Dictionary is empty</string>
+    <string name="game_rating">Рейтинг</string>
     <string name="i_know">Знаю</string>
     <string name="i_dont_know">Не знаю</string>
     <string name="isTrue">Верно</string>

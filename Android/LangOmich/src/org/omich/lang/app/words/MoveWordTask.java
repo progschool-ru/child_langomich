@@ -10,10 +10,13 @@ import android.os.Bundle;
 
 public class MoveWordTask implements IBcTask
 {
-	public static Intent createIntent (long id, long dictId, String taskSuccessText)
+	public static Intent createIntent (long id, String nativ, String foreign, int rating, long dictId, String taskSuccessText)
 	{
 		Intent intent = new Intent();
 		intent.putExtra(BundleFields.WORD_ID, id);
+		intent.putExtra(BundleFields.WORD_NATIV, nativ);
+		intent.putExtra(BundleFields.WORD_FOREIGN, foreign);
+		intent.putExtra(BundleFields.WORD_RATING, rating);		
 		intent.putExtra(BundleFields.WORD_DICT_ID, dictId);
 		intent.putExtra(BundleFields.TASK_SUCCESS_TEXT, taskSuccessText);
 		return intent;
@@ -21,6 +24,9 @@ public class MoveWordTask implements IBcTask
 
 	private IBcToaster mBcToaster;
 	private long mId;
+	private String mNativ;
+	private String mForeign;
+	private int mRating;	
 	private long mDictID;
 	private String mTaskSuccessText;
 	private IWStorage mDb;
@@ -29,6 +35,9 @@ public class MoveWordTask implements IBcTask
 	{
 		mBcToaster = env.bcToaster;
 		mId = env.extras.getLong(BundleFields.WORD_ID);
+		mNativ = env.extras.getString(BundleFields.WORD_NATIV);
+		mForeign = env.extras.getString(BundleFields.WORD_FOREIGN);
+		mRating = env.extras.getInt(BundleFields.WORD_RATING);		
 		mDictID = env.extras.getLong(BundleFields.WORD_DICT_ID);
 		mTaskSuccessText = env.extras.getString(BundleFields.TASK_SUCCESS_TEXT);
 		mDb = DbCreator.createWritable(env.context);
@@ -36,7 +45,9 @@ public class MoveWordTask implements IBcTask
 
 	public Bundle execute()
 	{	
-		boolean success = false;
+		boolean success = mDb.copyWord(mNativ, mForeign, mRating, mDictID);
+		if(success)
+			success = mDb.deleteWord(mId);
 		if(success && mTaskSuccessText != null)
 				mBcToaster.showToast(mTaskSuccessText);		
 		mDb.destroy();	

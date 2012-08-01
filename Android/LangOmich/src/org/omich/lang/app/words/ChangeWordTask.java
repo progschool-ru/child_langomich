@@ -39,7 +39,7 @@ public class ChangeWordTask implements IBcTask
 
 	public Bundle execute()
 	{	
-		boolean success = false;
+		boolean success = mDb.changeWord(mId, mNativ, mForeign);
 		if(success && mTaskSuccessText != null)
 				mBcToaster.showToast(mTaskSuccessText);		
 		mDb.destroy();	

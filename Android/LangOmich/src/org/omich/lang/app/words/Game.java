@@ -27,6 +27,7 @@ public class Game
 	
 	private String dictIsEmptyNativ;
 	private String dictIsEmptyEnglish;
+	private String ratingIs;
 	
 	private String mSetRatingTaskId;
 	private String mGetRandomWordsTaskId;	
@@ -39,13 +40,15 @@ public class Game
 	public final int FOREIGN = 2;	
 	
 	private IListenerVoid lv;
-			
+				
 	public Game(Context context, long dictId, int idealNumber, int []weight, IListenerVoid lv)
 	{
 		this.lv = lv;
+
 		mBcConnector = new BcConnector(context);
 		dictIsEmptyNativ = context.getResources().getString(R.string.game_die_nativ);
 		dictIsEmptyEnglish = context.getResources().getString(R.string.game_die_english);
+		ratingIs = context.getResources().getString(R.string.game_rating);
 		setNewSettings(dictId, idealNumber, weight);
 	}
 	public void setNewSettings(long dictId, int idealNumber, int []weight)
@@ -72,23 +75,17 @@ public class Game
 	}
 	public void changeTheRating(int key)
 	{
-		int rating = 0;
 		switch (key)
 		{
 			case UPGRADE:				
 				if(word.rating<9)
-					rating = word.rating + 1;
-				else
-					rating = 9;
+					setNewRating(word.id, word.rating + 1);
 				break;
 		    case DOWNGRADE:
 				if(word.rating>2)
-					rating = word.rating - 2;
-				else
-					rating = 0;
+					setNewRating(word.id,word.rating - 2);
 				break;
-		}
-		setNewRating(word.id, rating);
+		}		
 	}
 	public void getNextWord()
 	{
@@ -139,7 +136,7 @@ public class Game
 		if(mSetRatingTaskId != null)
 			return;
 
-		Intent intent = SetNewRatingTask.createIntent(id,rating);
+		Intent intent = SetNewRatingTask.createIntent(id, rating, ratingIs);
 		mSetRatingTaskId = mBcConnector.startTypicalTask(SetNewRatingTask.class, 
 				intent, 
 				new IListener<Bundle>()
