@@ -89,25 +89,26 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 		});
 		*/
 
-		registerForContextMenu(lv);
+//		registerForContextMenu(lv);
 	}
-	@Override
+/*	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-/*		menu.add(0, 1, 0, "Удалить запись");
+		menu.add(0, 1, 0, "Удалить запись");
 		menu.setHeaderTitle("Set background to:");
 		//Если вы хотите сделать несколько
 		// контекстных меню для разные элементов
 		// интерфейса, то отличать их можно по id
 		MenuInflater inflater = new MenuInflater(this);
-		inflater.inflate(R.menu.context, menu); */
+		inflater.inflate(R.menu.context, menu); 
 	}	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) 
 	{
 		return true;
 	}	
+	*/
 	private void startAddDictActivity()
 	{
 	    Intent intent = new Intent(this, AddDictActivity.class);
