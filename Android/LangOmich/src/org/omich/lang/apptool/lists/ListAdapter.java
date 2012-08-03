@@ -14,6 +14,7 @@ abstract public class ListAdapter<Item> extends BaseAdapter
 	private Context mContext;
 	private List<Item> mItems = new ArrayList<Item>();
 	private boolean mIsDestroyed;
+	private int selectedPosition = -1;
 	
 	protected ListAdapter (Context context)
 	{
@@ -30,6 +31,14 @@ abstract public class ListAdapter<Item> extends BaseAdapter
 		mContext = null;
 		mIsDestroyed = true;
 	}
+	public void setSelectedPosition(int selectedPosition)
+	{
+		this.selectedPosition = selectedPosition;
+	}
+	public int getSelectedPosition()
+	{
+		return selectedPosition;
+	}	
 	//==== protected interface ================================================
 	abstract protected void destroyItem (int position, Item item);
 	abstract protected int getItemViewResId (int position);
@@ -61,6 +70,7 @@ abstract public class ListAdapter<Item> extends BaseAdapter
 		}
 
 		fillViewByData(v, position, mItems.get(position));
+		
 		return v;
 	}
 	

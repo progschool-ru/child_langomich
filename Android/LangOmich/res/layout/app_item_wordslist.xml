@@ -1,93 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    	android:id="@+id/viewflipper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/screen_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-	<RelativeLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
-	    <TextView
-	        android:id="@+id/item_wordslist_text_nativ"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_alignParentTop="true" 
-	        android:textStyle="bold"/>
-	    <TextView
-	        android:id="@+id/item_wordslist_text_foreign"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/item_wordslist_text_nativ"/>
-	    <TextView
-	        android:id="@+id/item_wordslist_text_rating"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentRight="true"
-	        android:layout_alignParentTop="true"
-	        android:layout_marginRight="16dp" />
-	</RelativeLayout>
-	<LinearLayout
-	    android:id="@+id/item_wordslist_options"
+        <TextView
+            android:id="@+id/item_wordslist_text_nativ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/item_wordslist_text_foreign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/item_wordslist_text_nativ" />
+
+        <TextView
+            android:id="@+id/item_wordslist_text_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="16dp" />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/screen_two"
     	android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:orientation="vertical" 
-    	android:visibility="gone" >
-		<RelativeLayout
-		    android:id="@+id/item_wordslist_change"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content">
-			<Button
-			    android:id="@+id/item_wordslist_button_change"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_centerHorizontal="true"
-			    android:text="@string/item_wordslist_text_change" />
-		</RelativeLayout>
-		<RelativeLayout
-		    android:id="@+id/item_wordslist_copy"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content" >
-			<Button
-				android:id="@+id/item_wordslist_button_copy"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-	        	android:text="@string/item_wordslist_text_copy"
-	        	android:layout_centerHorizontal="true" />
-		</RelativeLayout>	
-		<RelativeLayout
-		    android:id="@+id/item_wordslist_insert"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content">
-			<Button
-				android:id="@+id/item_wordslist_button_insert"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-	        	android:text="@string/item_wordslist_text_insert"
-	        	android:layout_centerHorizontal="true" />
-		</RelativeLayout>	
-		<RelativeLayout
-		    android:id="@+id/item_wordslist_delete"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content">
-			<Button
-				android:id="@+id/item_wordslist_button_delete"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-	        	android:text="@string/item_wordslist_text_delete"
-	        	android:layout_centerHorizontal="true" />
-		</RelativeLayout>		
-		<RelativeLayout
-		    android:id="@+id/item_wordslist_cancel"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content">
-			<Button
-				android:id="@+id/item_wordslist_button_cancel"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-	        	android:text="@string/item_wordslist_text_cancel"
-	        	android:layout_centerHorizontal="true" />
-		</RelativeLayout>
-	</LinearLayout>				
-</LinearLayout>
+    	android:layout_height="wrap_content" >
+        
+    	<Button
+        	android:id="@+id/item_wordslist_button_return"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text = "Вернуть"/>
+    	
+	</RelativeLayout>
+	
+</ViewFlipper>

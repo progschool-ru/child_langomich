@@ -10,20 +10,23 @@ import org.omich.lang.app.db.Word;
 import org.omich.lang.apptool.lists.TaskListAdapter;
 import org.omich.tool.bcops.IBcConnector;
 import org.omich.tool.bcops.IBcTask;
-import org.omich.tool.events.Listeners.IListenerVoid;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 public class WordsListAdapter extends TaskListAdapter<Word>
 {
 	private static long dictId = -1;
+	
 	public WordsListAdapter (Context context, IBcConnector conn, Long dictId)
 	{
 		super(context, conn);
+		
 		this.dictId = dictId;
 	}
 	public void setNewDictId(Long dictId)
@@ -52,7 +55,19 @@ public class WordsListAdapter extends TaskListAdapter<Word>
 		TextView tvf = (TextView)view.findViewById(R.id.item_wordslist_text_foreign);
 		tvf.setText(item.foreign);
 		TextView tvr = (TextView)view.findViewById(R.id.item_wordslist_text_rating);
-		tvr.setText(Integer.toString(item.rating));		
+		tvr.setText(Integer.toString(item.rating));
+		
+		ViewFlipper MyViewFlipper = (ViewFlipper)view.findViewById(R.id.viewflipper);
+
+		MyViewFlipper.setInAnimation(null);
+		MyViewFlipper.setOutAnimation(null);	
+		
+		int viewId = MyViewFlipper.getCurrentView().getId();
+		if(position != getSelectedPosition() && viewId == R.id.screen_two)
+			MyViewFlipper.showPrevious();
+		else if(position == getSelectedPosition() && viewId == R.id.screen_one)
+			MyViewFlipper.showNext();	
+				
 	}
 	//=========================================================================
 	public static class LoadWordsTask implements IBcTask

@@ -2,7 +2,6 @@ package org.omich.lang.app.words;
 
 import org.omich.lang.R;
 import org.omich.lang.app.PreferenceFields;
-import org.omich.lang.app.db.Word;
 import org.omich.lang.app.words.WordsListAdapter;
 import org.omich.lang.apptool.activity.ABActivity;
 import org.omich.tool.events.Listeners.IListenerInt;
@@ -11,24 +10,30 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AbsListView;
-import android.widget.LinearLayout;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.ViewFlipper;
 
 public class WordsListActivity extends ABActivity implements OnSharedPreferenceChangeListener
 {
 	private WordsListAdapter mWordsAdapter;
 	private DictSpinner dictSpinner;
-	LinearLayout options;
+	Animation anim;
+	View viewSel;
+	
+	private Animation animationFlipInSide;
+	private Animation animationFlipOutSide;
+	private Animation animationFlipInMain;
+	private Animation animationFlipOutMain;
+	ViewFlipper MyViewFlipper;
+	
 	//==== live cycle =========================================================
 	@Override
 	protected void onCreate (Bundle b)
@@ -53,62 +58,51 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 					reload();
 			}			
 		});
-		
 		lv.setAdapter(mWordsAdapter);
-/*		lv.setOnScrollListener(new OnScrollListener() 
+		
+		animationFlipInSide = AnimationUtils.loadAnimation(this, R.anim.flipin_side);
+		animationFlipOutSide = AnimationUtils.loadAnimation(this, R.anim.flipout_side);
+		animationFlipInMain = AnimationUtils.loadAnimation(this, R.anim.flipin_main);
+		animationFlipOutMain = AnimationUtils.loadAnimation(this, R.anim.flipout_main);
+		
+		lv.setOnItemClickListener(new OnItemClickListener() 
 		{
-	        public void onScrollStateChanged(AbsListView view, int scrollState)
-	        {
-	        	
-	        }
-	        public void onScroll(AbsListView view, int firstVisibleItem,
-	                int visibleItemCount, int totalItemCount) 
-	        {
-
-	        }
-	    });
-		lv.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 			{
-			if(options != null)
-					options.setVisibility(view.GONE);
-				Word word = (Word)mWordsAdapter.getItem(position);
-				options = (LinearLayout)view.findViewById(R.id.item_wordslist_options);
-				if(position != lastPosition)
+				if(mWordsAdapter.getSelectedPosition() != -1 && MyViewFlipper != null)
 				{
-					options.setVisibility(view.VISIBLE);
-					lastPosition = position;
+					MyViewFlipper.setInAnimation(animationFlipInMain);
+					MyViewFlipper.setOutAnimation(animationFlipOutMain);			
+					MyViewFlipper.showPrevious();
 				}
-				else
+//				Word word = (Word)mWordsAdapter.getItem(position);
+				mWordsAdapter.setSelectedPosition(position);
+
+				MyViewFlipper = (ViewFlipper)view.findViewById(R.id.viewflipper);
+					
+				int viewId = MyViewFlipper.getCurrentView().getId();
+				if(viewId == R.id.screen_one)
 				{
-					options.setVisibility(view.GONE);
-					lastPosition = -1;
-				}
-				
+					MyViewFlipper.setInAnimation(animationFlipInSide);
+					MyViewFlipper.setOutAnimation(animationFlipOutSide);				
+					MyViewFlipper.showNext();	
+					Button but = (Button)view.findViewById(R.id.item_wordslist_button_return);
+					but.setOnClickListener(new OnClickListener()
+					{
+						public void onClick(View v)
+						{
+							MyViewFlipper.setInAnimation(animationFlipInMain);
+							MyViewFlipper.setOutAnimation(animationFlipOutMain);			
+							MyViewFlipper.showPrevious();
+							mWordsAdapter.setSelectedPosition(-1);
+						}
+					});
+				}	
+				mWordsAdapter.notifyDataSetChanged();
 			}
 		});
-		*/
 
-//		registerForContextMenu(lv);
 	}
-/*	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		menu.add(0, 1, 0, "Удалить запись");
-		menu.setHeaderTitle("Set background to:");
-		//Если вы хотите сделать несколько
-		// контекстных меню для разные элементов
-		// интерфейса, то отличать их можно по id
-		MenuInflater inflater = new MenuInflater(this);
-		inflater.inflate(R.menu.context, menu); 
-	}	
-	@Override
-	public boolean onContextItemSelected(MenuItem item) 
-	{
-		return true;
-	}	
-	*/
 	private void startAddDictActivity()
 	{
 	    Intent intent = new Intent(this, AddDictActivity.class);
