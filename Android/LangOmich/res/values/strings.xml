@@ -26,6 +26,14 @@
     
     <string name="wordslist_deleted">Слово успешно удалено</string>
     
+    <string name="editword_title">Редактор слова</string>
+    <string name="editword_text_nativ">На родном языке:</string>
+    <string name="editword_text_foreign">На иностранном языке:</string>
+    <string name="editword_text_cancel">Отмена</string>
+    <string name="editword_text_change">Изменить</string>
+    <string name="editword_text_changed">Слово успешно изменено</string>
+    <string name="editword_text_empty">Вы ничего не ввели</string>
+    
     <string name="app_name">LangOmich</string>
     <string name="test">Test</string>
     <string name="addWords">add Word</string>

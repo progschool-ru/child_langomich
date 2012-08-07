@@ -90,12 +90,10 @@ public class DictSpinner
 	private void onAddDict()
 	{
 		li.handle(ADD_DICT);
-//		context.startActivity(new Intent(context, AddDictActivity.class));
 	}
 	private void onSelectDict()
 	{
 		li.handle(SELECT_DICT);
-//		context.startActivity(new Intent(context, AddDictActivity.class));
 	}	
 	public void reload()
 	{

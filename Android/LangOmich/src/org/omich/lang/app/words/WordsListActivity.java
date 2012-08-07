@@ -36,7 +36,6 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 	
 	private Word word;
 	
-	private String mEditWordTaskId;
 	private String mCopyWordTaskId;
 	private String mCutWordTaskId;
 	private String mDeleteWordTaskId;
@@ -113,7 +112,13 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 	}
 	public void onEdit (View v)
 	{
-		System.out.println("Edit");
+		if(word == null)
+			return;
+		Intent intent = new Intent(this, EditWordActivity.class);
+		intent.putExtra("id", word.id);
+		intent.putExtra("nativ", word.nativ);
+		intent.putExtra("foreign", word.foreign);
+		startActivityForResult(intent, 2);
 	}	
 	public void onCopy (View v)
 	{
@@ -163,6 +168,14 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 			}
 			
 		}
+		else if(requestCode == 2 && resultCode == RESULT_OK && data != null)
+		{
+			if(data.getBooleanExtra("result", true))
+			{
+				mWordsAdapter.reloadItems();			
+			}
+			
+		}		
 	}	
 	private void reload()
 	{
@@ -183,11 +196,6 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 	@Override
 	protected void onDestroy ()
 	{
-		if(mEditWordTaskId != null)
-		{
-			getBcConnector().unsubscribeTask(mEditWordTaskId);
-			mEditWordTaskId = null;
-		}
 		if(mCopyWordTaskId != null)
 		{
 			getBcConnector().unsubscribeTask(mCopyWordTaskId);

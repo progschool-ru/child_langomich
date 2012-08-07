@@ -30,7 +30,12 @@
             android:name=".app.words.AddDictActivity"
             android:label="@string/adddict_title"
             android:theme="@android:style/Theme.Dialog">
-        </activity>       
+        </activity>   
+         <activity
+            android:name=".app.words.EditWordActivity"
+            android:label="@string/editword_title"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>              
         <activity
             android:name=".app.words.GameActivity"
             android:label="@string/game_lable"
