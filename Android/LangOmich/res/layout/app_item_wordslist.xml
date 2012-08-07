@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
-    	android:id="@+id/viewflipper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+    android:id="@+id/viewflipper"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
         
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/screen_one"
+	<RelativeLayout
+		android:id="@+id/screen_one"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -29,21 +29,62 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="16dp" />
-    </RelativeLayout>
+            android:layout_alignParentTop="true" />
+
+	</RelativeLayout>	
     
-    <RelativeLayout
-        android:id="@+id/screen_two"
+	<RelativeLayout
+		android:id="@+id/screen_two"
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content" >
         
-    	<Button
+    	<ImageButton
         	android:id="@+id/item_wordslist_button_return"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:text = "Вернуть"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/app_ic_return" />
     	
+		<TableLayout
+	    	android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	    	android:shrinkColumns="*"
+	    	android:stretchColumns="*" 
+	    	android:layout_toRightOf="@+id/item_wordslist_button_return">
+	    	
+			<TableRow
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content" >
+	        	
+				<ImageButton
+	            	android:layout_width="wrap_content"
+	            	android:layout_height="wrap_content"
+	            	android:src="@drawable/app_ic_edit"
+	            	android:onClick="onEdit"/>
+		        
+				<ImageButton
+	            	android:layout_width="wrap_content"
+	            	android:layout_height="wrap_content"
+	            	android:src="@drawable/app_ic_copy"
+	            	android:onClick="onCopy"/>
+			        
+				<ImageButton
+	            	android:layout_width="wrap_content"
+	            	android:layout_height="wrap_content"
+	            	android:src="@drawable/app_ic_cut"
+	            	android:onClick="onCut"/>
+			        	        
+				<ImageButton
+	            	android:layout_width="wrap_content"
+	            	android:layout_height="wrap_content"
+	            	android:src="@drawable/app_ic_delete"
+	            	android:onClick="onDelete"/>	
+	            	
+	 		</TableRow> 
+	 		     
+		</TableLayout>	
+			
 	</RelativeLayout>
-	
+
 </ViewFlipper>

@@ -2,8 +2,10 @@ package org.omich.lang.app.words;
 
 import org.omich.lang.R;
 import org.omich.lang.app.PreferenceFields;
+import org.omich.lang.app.db.Word;
 import org.omich.lang.app.words.WordsListAdapter;
 import org.omich.lang.apptool.activity.ABActivity;
+import org.omich.tool.events.Listeners.IListener;
 import org.omich.tool.events.Listeners.IListenerInt;
 
 import android.content.Intent;
@@ -16,7 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.ViewFlipper;
@@ -25,14 +27,19 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 {
 	private WordsListAdapter mWordsAdapter;
 	private DictSpinner dictSpinner;
-	Animation anim;
-	View viewSel;
 	
 	private Animation animationFlipInSide;
 	private Animation animationFlipOutSide;
 	private Animation animationFlipInMain;
 	private Animation animationFlipOutMain;
-	ViewFlipper MyViewFlipper;
+	private ViewFlipper viewFlipper;
+	
+	private Word word;
+	
+	private String mEditWordTaskId;
+	private String mCopyWordTaskId;
+	private String mCutWordTaskId;
+	private String mDeleteWordTaskId;
 	
 	//==== live cycle =========================================================
 	@Override
@@ -69,31 +76,32 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 		{
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 			{
-				if(mWordsAdapter.getSelectedPosition() != -1 && MyViewFlipper != null)
+				if(mWordsAdapter.getSelectedPosition() != -1 && viewFlipper != null)
 				{
-					MyViewFlipper.setInAnimation(animationFlipInMain);
-					MyViewFlipper.setOutAnimation(animationFlipOutMain);			
-					MyViewFlipper.showPrevious();
+					viewFlipper.setInAnimation(animationFlipInMain);
+					viewFlipper.setOutAnimation(animationFlipOutMain);			
+					viewFlipper.showPrevious();
 				}
-//				Word word = (Word)mWordsAdapter.getItem(position);
+
+				word = (Word)mWordsAdapter.getItem(position);
 				mWordsAdapter.setSelectedPosition(position);
 
-				MyViewFlipper = (ViewFlipper)view.findViewById(R.id.viewflipper);
+				viewFlipper = (ViewFlipper)view.findViewById(R.id.viewflipper);
 					
-				int viewId = MyViewFlipper.getCurrentView().getId();
+				int viewId = viewFlipper.getCurrentView().getId();
 				if(viewId == R.id.screen_one)
 				{
-					MyViewFlipper.setInAnimation(animationFlipInSide);
-					MyViewFlipper.setOutAnimation(animationFlipOutSide);				
-					MyViewFlipper.showNext();	
-					Button but = (Button)view.findViewById(R.id.item_wordslist_button_return);
+					viewFlipper.setInAnimation(animationFlipInSide);
+					viewFlipper.setOutAnimation(animationFlipOutSide);				
+					viewFlipper.showNext();	
+					ImageButton but = (ImageButton)view.findViewById(R.id.item_wordslist_button_return);
 					but.setOnClickListener(new OnClickListener()
 					{
 						public void onClick(View v)
 						{
-							MyViewFlipper.setInAnimation(animationFlipInMain);
-							MyViewFlipper.setOutAnimation(animationFlipOutMain);			
-							MyViewFlipper.showPrevious();
+							viewFlipper.setInAnimation(animationFlipInMain);
+							viewFlipper.setOutAnimation(animationFlipOutMain);			
+							viewFlipper.showPrevious();
 							mWordsAdapter.setSelectedPosition(-1);
 						}
 					});
@@ -103,6 +111,42 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 		});
 
 	}
+	public void onEdit (View v)
+	{
+		System.out.println("Edit");
+	}	
+	public void onCopy (View v)
+	{
+		System.out.println("Copy");
+	}
+	public void onCut (View v)
+	{
+		System.out.println("Cut");
+	}
+	public void onDelete (View v)
+	{
+		if(word == null || mDeleteWordTaskId != null)
+			return;
+
+		String successText = getResources().getString(R.string.wordslist_deleted);
+		
+		Intent intent = DeleteWordTask.createIntent(word.id, successText);
+		mDeleteWordTaskId = getBcConnector().startTypicalTask(DeleteWordTask.class, 
+				intent, 
+				new IListener<Bundle>()
+				{
+					public void handle (Bundle bundle)
+					{
+						if(mIsDestroyed)
+							return;
+				
+						mDeleteWordTaskId = null;
+						
+						mWordsAdapter.setSelectedPosition(-1);
+						mWordsAdapter.reloadItems();
+					}
+				});
+	}		
 	private void startAddDictActivity()
 	{
 	    Intent intent = new Intent(this, AddDictActivity.class);
@@ -139,6 +183,27 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 	@Override
 	protected void onDestroy ()
 	{
+		if(mEditWordTaskId != null)
+		{
+			getBcConnector().unsubscribeTask(mEditWordTaskId);
+			mEditWordTaskId = null;
+		}
+		if(mCopyWordTaskId != null)
+		{
+			getBcConnector().unsubscribeTask(mCopyWordTaskId);
+			mCopyWordTaskId = null;
+		}
+		if(mCutWordTaskId != null)
+		{
+			getBcConnector().unsubscribeTask(mCutWordTaskId);
+			mCutWordTaskId = null;
+		}
+		if(mDeleteWordTaskId != null)
+		{
+			getBcConnector().unsubscribeTask(mDeleteWordTaskId);
+			mDeleteWordTaskId = null;
+		}	
+		
 		mWordsAdapter.destroy();
 		mWordsAdapter = null;
 

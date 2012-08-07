@@ -72,7 +72,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 			ContentValues values = new ContentValues();
 			values.put(WordsCols.NATIV, "");		
 			values.put(WordsCols.TIME, time);
-			String where = WordsCols.ID + " = " + id;
+			String where = WordsCols.ID + "=" + id;
 			mDb.update(TNAME_WORDS, values, where, null);	
 			return true;
 		}

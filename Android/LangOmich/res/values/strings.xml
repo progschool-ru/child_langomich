@@ -23,7 +23,9 @@
     <string name="item_wordslist_text_insert">Переместить</string>
     <string name="item_wordslist_text_delete">Удалить</string>
     <string name="item_wordslist_text_cancel">Отмена</string>
-       
+    
+    <string name="wordslist_deleted">Слово успешно удалено</string>
+    
     <string name="app_name">LangOmich</string>
     <string name="test">Test</string>
     <string name="addWords">add Word</string>

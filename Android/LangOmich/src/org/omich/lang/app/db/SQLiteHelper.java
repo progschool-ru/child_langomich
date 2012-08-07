@@ -32,7 +32,7 @@ public class SQLiteHelper extends SQLiteOpenHelper
 				+ WordsCols.DICT_ID         + " integer not null, "
 				+ WordsCols.RATING          + " integer not null, "
 				+ WordsCols.TIME            + " integer not null, "
-				+ WordsCols.NATIV           + " text unique, "
+				+ WordsCols.NATIV           + " text, "
 				+ WordsCols.FOREIGN         + " text, "
 				+ "foreign key (" + WordsCols.DICT_ID + ") references " 
 						+ TNAME_DICTS + "(" + DictsCols.ID + ") on delete cascade)";
