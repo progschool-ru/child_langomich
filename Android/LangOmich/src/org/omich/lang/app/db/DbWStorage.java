@@ -30,6 +30,8 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 
 	public long addWord (String nativ, String foreign, long dictId)
 	{
+		nativ = nativ.trim();
+		foreign = foreign.trim();
 		if(dictId == -1)
 		{
 			String query = "SELECT " + DictsCols.ID + " FROM " + TNAME_DICTS 
@@ -42,25 +44,27 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		return addWord(nativ, foreign, 0, dictId);
 	}
 	public long addWord (String nativ, String foreign, int rating, long dictId)
-	{			
-			mDb.delete(TNAME_WORDS, WordsCols.DICT_ID + " = " + dictId + " AND " 
-					+ WordsCols.FOREIGN + " = ? ", new String[]{foreign});
+	{	
+		nativ = nativ.trim();
+		foreign = foreign.trim();
+		mDb.delete(TNAME_WORDS, WordsCols.DICT_ID + " = " + dictId + " AND " 
+				+ WordsCols.FOREIGN + " = ? ", new String[]{foreign});
 			
-			Long time = new Date().getTime();
-			long id = 0;
-			if(nativ != null && !nativ.equals("") && foreign != null && !foreign.equals(""))
-			{
-				ContentValues values = new ContentValues();		
-				values.put(WordsCols.NATIV, nativ);
-				values.put(WordsCols.FOREIGN, foreign);
-				values.put(WordsCols.RATING, rating);
-				values.put(WordsCols.DICT_ID, dictId);
-				values.put(WordsCols.TIME, time);
-				id = mDb.insert(TNAME_WORDS, null, values);
-			}
-			dictTimeUpdate(dictId, time);
+		Long time = new Date().getTime();
+		long id = 0;
+		if(nativ != null && !nativ.equals("") && foreign != null && !foreign.equals(""))
+		{
+			ContentValues values = new ContentValues();		
+			values.put(WordsCols.NATIV, nativ);
+			values.put(WordsCols.FOREIGN, foreign);
+			values.put(WordsCols.RATING, rating);
+			values.put(WordsCols.DICT_ID, dictId);
+			values.put(WordsCols.TIME, time);
+			id = mDb.insert(TNAME_WORDS, null, values);
+		}
+		dictTimeUpdate(dictId, time);
 			
-			return id;
+		return id;
 	}	
 	public boolean deleteWord(long id)
 	{
@@ -123,6 +127,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 	}	
 	public long addDict (String name)
 	{		
+		name = name.trim();
 		String where = DictsCols.NAME + "= ?";
 		Cursor cursor = mDb.query(TNAME_DICTS, new String[]{DictsCols.ID}, 
 				where, new String[]{name}, null, null, null);	
@@ -136,6 +141,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 	}	
 	public long addDict (String serverId, String name)
 	{
+		name = name.trim();
 		String where = DictsCols.SERVER_ID + "= ?";
 		Cursor cursor = mDb.query(TNAME_DICTS, new String[]{DictsCols.ID}, 
 				where, new String[]{serverId}, null, null, null);	

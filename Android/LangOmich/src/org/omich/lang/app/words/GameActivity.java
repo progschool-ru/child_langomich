@@ -38,8 +38,7 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 		bt1 = (Button)findViewById(R.id.button_1);
 		bt2 = (Button)findViewById(R.id.button_2);
 		
-		game = new Game(this,sp.getLong(PreferenceFields.DICT_ID, -1), sp.getInt(PreferenceFields.IDEAL_NUMBER, 5),
-				getWeight(), new IListenerVoid()
+		game = new Game(this, sp.getLong(PreferenceFields.DICT_ID, -1), new IListenerVoid()
 		{
 			public void handle ()
 			{ 
@@ -94,8 +93,7 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 	@Override
 	protected void onResume()
 	{		
-		game.setNewSettings(sp.getLong(PreferenceFields.DICT_ID, -1), sp.getInt(PreferenceFields.IDEAL_NUMBER, 5),
-				getWeight());	
+		game.setNewDict(sp.getLong(PreferenceFields.DICT_ID, -1));	
 		super.onResume();
 	}
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
@@ -143,22 +141,5 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 			bt2.setText(getString(R.string.next));
 			currentScreen = I_DONT_KNOW;
 		}		
-	}
-	private int [] getWeight()
-	{
-		int weight[] = new int[10];
-		
-		weight [0] = sp.getInt(PreferenceFields.WEIGHT_ZERO, 100);
-		weight [1] = sp.getInt(PreferenceFields.WEIGHT_ONE, 80);
-		weight [2] = sp.getInt(PreferenceFields.WEIGHT_TWO, 60);
-		weight [3] = sp.getInt(PreferenceFields.WEIGHT_THREE, 40);
-		weight [4] = sp.getInt(PreferenceFields.WEIGHT_FOUR, 30);
-		weight [5] = sp.getInt(PreferenceFields.WEIGHT_FIVE, 20);
-		weight [6] = sp.getInt(PreferenceFields.WEIGHT_SIX, 10);
-		weight [7] = sp.getInt(PreferenceFields.WEIGHT_SEVEN, 5);
-		weight [8] = sp.getInt(PreferenceFields.WEIGHT_EIGHT, 3);
-		weight [9] = sp.getInt(PreferenceFields.WEIGHT_NINE, 1);	
-		
-		return weight;
 	}
 }

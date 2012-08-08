@@ -18,11 +18,11 @@ public class Game
 	private BcConnector mBcConnector;
 
 	private long dictId = -1;
-	private int idealNumber = 3;
+	private int idealNumber = 30;
 	private int realNumber = 0;
 	private int currentNumber = 0;
 	private Word word;
-	private int[] weight = {100, 80, 60, 40, 20, 10, 5, 3, 2, 1};
+	private int[] weight = {512, 256, 128, 64, 32, 16, 8, 4, 2, 1};
 	private ArrayList<Word> words;
 	
 	private String dictIsEmptyNativ;
@@ -41,7 +41,7 @@ public class Game
 	
 	private IListenerVoid lv;
 				
-	public Game(Context context, long dictId, int idealNumber, int []weight, IListenerVoid lv)
+	public Game(Context context, long dictId, IListenerVoid lv)
 	{
 		this.lv = lv;
 
@@ -49,13 +49,11 @@ public class Game
 		dictIsEmptyNativ = context.getResources().getString(R.string.game_die_nativ);
 		dictIsEmptyEnglish = context.getResources().getString(R.string.game_die_english);
 		ratingIs = context.getResources().getString(R.string.game_rating);
-		setNewSettings(dictId, idealNumber, weight);
+		setNewDict(dictId);
 	}
-	public void setNewSettings(long dictId, int idealNumber, int []weight)
+	public void setNewDict(long dictId)
 	{
 		this.dictId = dictId;
-		this.idealNumber = idealNumber;
-		this.weight = weight;
 		getRandomWords();
 	}
 	public String getText(int key)

@@ -32,6 +32,8 @@ public class NewAccountActivity extends AppActivity
 	{		
 		String login = ((EditText)findViewById(R.id.newaccount_loginEdit)).getText().toString();
 		String password = ((EditText)findViewById(R.id.newaccount_passwordEdit)).getText().toString();	
+		login = login.trim();
+		password = password.trim();
 	    Editor ed = sp.edit();
 	    ed.putString("login", login);
 	    ed.putString("password", password);
