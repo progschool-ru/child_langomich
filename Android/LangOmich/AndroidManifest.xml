@@ -32,6 +32,11 @@
             android:theme="@android:style/Theme.Dialog">
         </activity>   
          <activity
+            android:name=".app.words.DictsListForChooseActivity"
+            android:label="@string/dictslist_title"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>          
+         <activity
             android:name=".app.words.EditWordActivity"
             android:label="@string/editword_title"
             android:theme="@android:style/Theme.Dialog">

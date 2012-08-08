@@ -10,4 +10,5 @@ public interface IWStorage extends IRStorage
 	boolean deleteWord (long id);
 	boolean changeWord (long id, String nativ, String foreign);
 	boolean copyWord(String nativ, String foreign, int rating, long dictId);
+	boolean moveWord(long id, long dictId);
 }

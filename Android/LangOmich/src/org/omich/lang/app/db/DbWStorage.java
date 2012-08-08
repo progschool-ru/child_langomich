@@ -95,6 +95,23 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		}
 		catch(Exception e) {return false;}
 	}	
+	public boolean moveWord(long id, long dictId)
+	{
+		try
+		{
+			Long time = new Date().getTime();
+			dictTimeUpdate(getDictIdByWordId(id), time);
+			dictTimeUpdate(dictId, time);
+			
+			ContentValues values = new ContentValues();
+			values.put(WordsCols.DICT_ID, dictId);	
+			values.put(WordsCols.TIME, time);
+			String where = WordsCols.ID + " = " + id;
+			mDb.update(TNAME_WORDS, values, where, null);	
+			return true;
+		}
+		catch(Exception e) {return false;}
+	}		
 	public boolean copyWord(String nativ, String foreign,int rating, long dictId)
 	{
 		try

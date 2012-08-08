@@ -122,11 +122,13 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 	}	
 	public void onCopy (View v)
 	{
-		System.out.println("Copy");
+	    Intent intent = new Intent(this, DictsListForChooseActivity.class);
+	    startActivityForResult(intent, 3);	
 	}
 	public void onCut (View v)
 	{
-		System.out.println("Cut");
+	    Intent intent = new Intent(this, DictsListForChooseActivity.class);
+	    startActivityForResult(intent, 4);	
 	}
 	public void onDelete (View v)
 	{
@@ -160,22 +162,73 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
-		if(requestCode == 1 && resultCode == RESULT_OK && data != null)
+		if(resultCode == RESULT_OK && data != null)
 		{
-			if(data.getBooleanExtra("result", true))
+			if(requestCode == 1)
 			{
-				reload();			
+				if(data.getBooleanExtra("result", true))
+				{
+					reload();			
+				}			
 			}
-			
+			else if(requestCode == 2)
+			{
+				if(data.getBooleanExtra("result", true))
+				{
+					mWordsAdapter.reloadItems();			
+				}
+				
+			}
+			else if(requestCode == 3)
+			{
+				long dictId = data.getLongExtra("dictId", -1);
+				if(word == null || mCopyWordTaskId != null || dictId == -1)
+					return;
+
+				String successText = getResources().getString(R.string.wordslist_copied);
+				
+				Intent intent = CopyWordTask.createIntent(word.nativ, word.foreign,word.rating, dictId, successText);
+				mCopyWordTaskId = getBcConnector().startTypicalTask(CopyWordTask.class, 
+						intent, 
+						new IListener<Bundle>()
+						{
+							public void handle (Bundle bundle)
+							{
+								if(mIsDestroyed)
+									return;
+						
+								mCopyWordTaskId = null;
+								
+								mWordsAdapter.reloadItems();
+							}
+						});				
+			}
+			else if(requestCode == 4)
+			{
+				long dictId = data.getLongExtra("dictId", -1);
+				if(word == null || mCutWordTaskId != null || dictId == -1)
+					return;
+
+				String successText = getResources().getString(R.string.wordslist_moved);
+				
+				Intent intent = CutWordTask.createIntent(word.id, dictId, successText);
+				mCutWordTaskId = getBcConnector().startTypicalTask(CutWordTask.class, 
+						intent, 
+						new IListener<Bundle>()
+						{
+							public void handle (Bundle bundle)
+							{
+								if(mIsDestroyed)
+									return;
+						
+								mCutWordTaskId = null;
+								
+								mWordsAdapter.setSelectedPosition(-1);
+								mWordsAdapter.reloadItems();
+							}
+						});				
+			}			
 		}
-		else if(requestCode == 2 && resultCode == RESULT_OK && data != null)
-		{
-			if(data.getBooleanExtra("result", true))
-			{
-				mWordsAdapter.reloadItems();			
-			}
-			
-		}		
 	}	
 	private void reload()
 	{

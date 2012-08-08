@@ -20,9 +20,11 @@ import android.widget.TextView;
 
 public class DictsListAdapter extends TaskListAdapter<Dict>
 {	
-	public DictsListAdapter (Context context, IBcConnector conn)
-	{
+	boolean withNewDict = true;
+	public DictsListAdapter (Context context, IBcConnector conn, boolean withNewDict)
+	{		
 		super(context, conn);
+		this.withNewDict = withNewDict;
 	}
 	public DictsListAdapter (Context context, IBcConnector conn, IListenerVoid lv)
 	{
@@ -32,7 +34,7 @@ public class DictsListAdapter extends TaskListAdapter<Dict>
 	@Override
 	protected Class<? extends IBcTask> getLoadItemsTaskClass (){return LoadDictsTask.class;}
 	@Override
-	public Intent createLoadItemsIntent (){return LoadDictsTask.createIntent();}
+	public Intent createLoadItemsIntent (){return LoadDictsTask.createIntent(withNewDict);}
 	@Override
 	protected String getListBundleField (){return BundleFields.DICTS_LIST;}
 
@@ -53,13 +55,20 @@ public class DictsListAdapter extends TaskListAdapter<Dict>
 	//=========================================================================
 	public static class LoadDictsTask implements IBcTask
 	{
-		public static Intent createIntent () {return new Intent();}
+		public static Intent createIntent (boolean withNewDict) 
+		{
+			Intent intent = new Intent();
+			intent.putExtra(BundleFields.DICTS_WITH_NEW_DICT, withNewDict);
+			return intent;
+		}
 
 		private IRStorage mDb;
 		private String mNewDictText;
+		private boolean mWithNewDict;
 
 		public void init(BcTaskEnv env)
 		{
+			mWithNewDict = env.extras.getBoolean(BundleFields.DICTS_WITH_NEW_DICT);
 			mDb = DbCreator.createReadable(env.context);
 			mNewDictText = env.context.getResources().getString(R.string.adddict_title);
 		}
@@ -67,7 +76,8 @@ public class DictsListAdapter extends TaskListAdapter<Dict>
 		public Bundle execute()
 		{
 			ArrayList<Dict> dicts = new ArrayList<Dict>(mDb.getDicts());
-			dicts.add(new Dict(-1, mNewDictText));
+			if(mWithNewDict)
+				dicts.add(new Dict(-1, mNewDictText));
 			Bundle result = new Bundle();
 			result.putParcelableArrayList(BundleFields.DICTS_LIST, dicts);
 			mDb.destroy();
