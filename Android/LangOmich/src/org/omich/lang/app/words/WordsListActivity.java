@@ -135,7 +135,7 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 		if(word == null || mDeleteWordTaskId != null)
 			return;
 
-		String successText = getResources().getString(R.string.wordslist_deleted);
+		String successText = getResources().getString(R.string.wordslist_report_deleted);
 		
 		Intent intent = DeleteWordTask.createIntent(word.id, successText);
 		mDeleteWordTaskId = getBcConnector().startTypicalTask(DeleteWordTask.class, 
@@ -185,7 +185,7 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 				if(word == null || mCopyWordTaskId != null || dictId == -1)
 					return;
 
-				String successText = getResources().getString(R.string.wordslist_copied);
+				String successText = getResources().getString(R.string.wordslist_report_copied);
 				
 				Intent intent = CopyWordTask.createIntent(word.nativ, word.foreign,word.rating, dictId, successText);
 				mCopyWordTaskId = getBcConnector().startTypicalTask(CopyWordTask.class, 
@@ -209,7 +209,7 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 				if(word == null || mCutWordTaskId != null || dictId == -1)
 					return;
 
-				String successText = getResources().getString(R.string.wordslist_moved);
+				String successText = getResources().getString(R.string.wordslist_report_moved);
 				
 				Intent intent = CutWordTask.createIntent(word.id, dictId, successText);
 				mCutWordTaskId = getBcConnector().startTypicalTask(CutWordTask.class, 

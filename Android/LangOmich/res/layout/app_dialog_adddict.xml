@@ -36,14 +36,14 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/adddict_cancel" 
+                android:text="@string/adddict_text_cancel" 
                 android:onClick="onCancelButton"/>
             
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="34dp"
-                android:text="@string/adddict_create"
+                android:text="@string/adddict_text_create"
                 android:onClick="onCreateButton"/>
             
         </LinearLayout>

@@ -1,88 +1,52 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-    <string name="game_lable">Игра</string>
-    <string name="game_die_nativ">Словарь пуст</string>
-    <string name="game_die_english">Dictionary is empty</string>
-    <string name="game_rating">Рейтинг</string>
-    <string name="i_know">Знаю</string>
-    <string name="i_dont_know">Не знаю</string>
-    <string name="isTrue">Верно</string>
-    <string name="isFalse">Ошибся</string>
-    <string name="next">Продолжить</string>
+    <string name="app_name">LangOmich</string>   
+    
+    <string name="training_lable">Game</string>
+    <string name="training_text_die_nativ">Dictionary is empty</string>
+    <string name="training_text_die_english">Dictionary is empty</string>
+    <string name="training_text_i_know">Know</string>
+    <string name="training_text_i_dont_know">Dont know</string>
+    <string name="training_text_is_true">True</string>
+    <string name="training_text_is_false">False</string>
+    <string name="training_text_is_next">Next</string>
  
-    <string name="adddict_title">Hовый словарь</string>
-    <string name="adddict_lable">Введите имя нового словаря:</string>
-    <string name="adddict_emptyString">Вы ничего не ввели</string>
-    <string name="adddict_inBase">Словарь с таким именем уже существует</string>
-    <string name="adddict_added">Словарь успешно добавлен</string>
-    <string name="adddict_create">Создать</string>
-    <string name="adddict_cancel">Отмена</string>
+    <string name="adddict_title">New dictionary</string>
+    <string name="adddict_lable">Enter a name for dictionary:</string>
+    <string name="adddict_text_create">Create</string>
+    <string name="adddict_text_cancel">Cancel</string>
+    <string name="adddict_report_empty">You did not enter</string>
+    <string name="adddict_report_in_base">Dictionary with the same name already exists</string>
+    <string name="adddict_report_added">Added the dictionary</string>
+       
+    <string name="wordslist_title">Dictionary</string>
+    <string name="wordslist_report_deleted">Deleted the word</string>
+    <string name="wordslist_report_copied">Copied the word</string>
+    <string name="wordslist_report_moved">Moved the word</string>
+    
+    <string name="editword_title">Editor of the word</string>
+    <string name="editword_text_nativ">In a native language:</string>
+    <string name="editword_text_foreign">In a foreign language:</string>
+    <string name="editword_text_cancel">Cancel</string>
+    <string name="editword_text_change">Change</string>   
+    <string name="editword_text_empty">You did not enter</string>
+    <string name="editword_report_changed">Changed the word</string>
+    
+    <string name="dictslist_title">Select a dictionary</string>
+    <string name="dictslist_text_cancel">Cancel</string>
+    
+    <string name="settings_title">Settings</string>
+    <string name="settings_text_account">Account</string>
 
-    <string name="item_wordslist_text_change">Изменить</string>
-    <string name="item_wordslist_text_copy">Копировать</string>
-    <string name="item_wordslist_text_insert">Переместить</string>
-    <string name="item_wordslist_text_delete">Удалить</string>
-    <string name="item_wordslist_text_cancel">Отмена</string>
+    <string name="newaccount_title">Account</string>
+    <string name="newaccount_text_login">Login</string>
+    <string name="newaccount_text_password">Password</string>
+    <string name="newaccount_text_ok">Ok</string>
+    <string name="newaccount_text_cancel">Cancel</string>
     
-    <string name="wordslist_deleted">Слово успешно удалено</string>
-    <string name="wordslist_copied">Слово успешно скопировано</string>
-    <string name="wordslist_moved">Слово успешно перемещено</string>
-    
-    <string name="editword_title">Редактор слова</string>
-    <string name="editword_text_nativ">На родном языке:</string>
-    <string name="editword_text_foreign">На иностранном языке:</string>
-    <string name="editword_text_cancel">Отмена</string>
-    <string name="editword_text_change">Изменить</string>
-    <string name="editword_text_changed">Слово успешно изменено</string>
-    <string name="editword_text_empty">Вы ничего не ввели</string>
-    
-    <string name="dictslist_title">Выбирите словарь</string>
-    <string name="dictslist_text_cancel">Отмена</string>
-    
-    <string name="app_name">LangOmich</string>
-    <string name="test">Test</string>
-    <string name="addWords">add Word</string>
-    <string name="Dictionary">Dictionary</string>
-    <string name="settigs">Настройки</string>
-    <string name="language_label">Словарь:</string>
-    <string name="words_number">Количество слов в тесте:</string>
-    <string name="login_label">Логин:</string>
-    <string name="input_login">Введите логин</string>
-    <string name="password_label">Пароль:</string>
-    <string name="input_password">Введите пароль</string>
-    <string name="look">показать</string>
-    <string name="ok">Ok</string>
-    <string name="cancel">Cancel</string>
-    <string name="dictionary_label">Словарь</string>
-    <string name="edit_word_label">Edit</string>
-    <string name="rating_label">Рейтинг:</string>
-    <string name="original_label">Оригинал</string>
-    <string name="translate_label">Перевод</string>
-    
-    
-    <string name="editW_label">Редактор записи:</string>
-    <string name="editW_nothing_change">Ничего небыло изменено</string>
-    <string name="editW_save">Сохранить</string>
-    <string name="editW_cancel">Отмена</string>
-    
-    
-    <string name="createL_label">Новый словарь</string>
-    <string name="createL_enter_name">Введите язык словаря:</string>
-    <string name="createL_empty_string">Вы ввели пустую строку</string>
-    <string name="createL_in_base">Словарь с таким языком уже есть</string>
-    <string name="createL_create">Создать</string>
-    <string name="createL_cancel">Отмена</string>
-    
-    <string name="createW_label">Добавить новое слово</string>
-   	<string name="createW_added_ok">Слово успешно добавлено</string>
-    <string name="createW_create">Создать</string>
-  	<string name="createW_cancel">Отмена</string>
-  	  
-    <string name="original">Оригинал:</string>
-    <string name="translation">Перевод:</string>
-    <string name="rating">Рейтинг:</string> 
-    <string name="error_empty_original">Поле оригинал пустое</string>
-    <string name="error_empty_translation">Поле перевод пустое</string>
-    <string name="error_in_base">Такое слово есть в словаре</string>
-    
+    <string name="addword_title">Add the word</string>
+    <string name="addword_text_add">Add</string>   
+    <string name="addword_text_foreign">In a foreign language:</string>
+    <string name="addword_text_native">In a native language:</string>    
+    <string name="addword_report_added">Added the word</string>
 </resources>

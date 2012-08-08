@@ -52,13 +52,13 @@ public class AddDictActivity extends BcActivity
 			return;
 
 		String name = ((EditText)findViewById(R.id.adddict_dictNameEdit)).getText().toString();
-		String taskAddText = getResources().getString(R.string.adddict_added);
+		String taskAddText = getResources().getString(R.string.adddict_report_added);
 
 		if(name.equals(""))
 		{
 			TextView errorView = (TextView) findViewById(R.id.adddict_errorReport);
 			errorView.setTextColor(Color.RED);
-			errorView.setText(R.string.adddict_emptyString);
+			errorView.setText(R.string.adddict_report__empty);
 		}
 		else
 		{
@@ -77,7 +77,7 @@ public class AddDictActivity extends BcActivity
 						{
 							TextView errorView = (TextView) findViewById(R.id.adddict_errorReport);
 							errorView.setTextColor(Color.RED);
-							errorView.setText(R.string.adddict_inBase);														
+							errorView.setText(R.string.adddict_report_in_base);														
 						}
 						else
 						{

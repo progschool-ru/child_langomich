@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Логин"/>
+        android:text="@string/newaccount_text_login"/>
     <EditText
         android:id="@+id/newaccount_loginEdit"
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Пароль"/>
+        android:text="@string/newaccount_text_password"/>
     <EditText 
         android:id="@+id/newaccount_passwordEdit"
         android:layout_width="match_parent"
@@ -24,13 +24,13 @@
     <Button 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ok"
+        android:text="@string/newaccount_text_ok"
         android:layout_gravity="right"
         android:onClick="onNewAccountButtonOk"/>
     <Button 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Отмена"
+        android:text="@string/newaccount_text_cancel"
 		android:layout_gravity="right"
         android:onClick="onNewAccountButtonCancel"/>
 </LinearLayout>

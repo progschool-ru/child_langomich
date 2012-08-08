@@ -83,7 +83,7 @@ public class AddWordActivity extends BcActivity
 
 		String nativ = ((EditText)findViewById(R.id.addword_nativEdit)).getText().toString();
 		String foreign = ((EditText)findViewById(R.id.addword_foreignEdit)).getText().toString();
-		String toast = getResources().getString(R.string.dialogAddWordMain_Added);
+		String toast = getResources().getString(R.string.addword_report_added);
 
 		Intent intent = AddWordTask.createIntent(nativ, foreign, sp.getLong(PreferenceFields.DICT_ID, -1), toast);
 		mAddWordTaskId = getBcConnector().startTypicalTask(AddWordTask.class, intent, new IListener<Bundle>()

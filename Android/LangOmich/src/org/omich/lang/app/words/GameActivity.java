@@ -120,8 +120,8 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 		{
 			tvn.setText("");
 			tvf.setText("");		
-			bt1.setText(getString(R.string.i_know));
-			bt2.setText(getString(R.string.i_dont_know));
+			bt1.setText(getString(R.string.training_text_i_know));
+			bt2.setText(getString(R.string.training_text_i_dont_know));
 			bt1.setVisibility(View.INVISIBLE);
 			bt2.setVisibility(View.INVISIBLE);
 			game.getNextWord();
@@ -130,15 +130,15 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 		else if(screen == I_KNOW)
 		{
 			tvf.setText(game.getText(game.FOREIGN));
-			bt1.setText(getString(R.string.isTrue));
-			bt2.setText(getString(R.string.isFalse));
+			bt1.setText(getString(R.string.training_text_is_true));
+			bt2.setText(getString(R.string.training_text_is_false));
 			currentScreen = I_KNOW;	
 		}
 		else if(screen == I_DONT_KNOW)
 		{
 			tvf.setText(game.getText(game.FOREIGN));
 			bt1.setVisibility(View.INVISIBLE);
-			bt2.setText(getString(R.string.next));
+			bt2.setText(getString(R.string.training_text_is_next));
 			currentScreen = I_DONT_KNOW;
 		}		
 	}

@@ -27,7 +27,6 @@ public class Game
 	
 	private String dictIsEmptyNativ;
 	private String dictIsEmptyEnglish;
-	private String ratingIs;
 	
 	private String mSetRatingTaskId;
 	private String mGetRandomWordsTaskId;	
@@ -46,9 +45,8 @@ public class Game
 		this.lv = lv;
 
 		mBcConnector = new BcConnector(context);
-		dictIsEmptyNativ = context.getResources().getString(R.string.game_die_nativ);
-		dictIsEmptyEnglish = context.getResources().getString(R.string.game_die_english);
-		ratingIs = context.getResources().getString(R.string.game_rating);
+		dictIsEmptyNativ = context.getResources().getString(R.string.training_text_die_nativ);
+		dictIsEmptyEnglish = context.getResources().getString(R.string.training_text_die_english);
 		setNewDict(dictId);
 	}
 	public void setNewDict(long dictId)
@@ -134,7 +132,7 @@ public class Game
 		if(mSetRatingTaskId != null)
 			return;
 
-		Intent intent = SetNewRatingTask.createIntent(id, rating, ratingIs);
+		Intent intent = SetNewRatingTask.createIntent(id, rating);
 		mSetRatingTaskId = mBcConnector.startTypicalTask(SetNewRatingTask.class, 
 				intent, 
 				new IListener<Bundle>()

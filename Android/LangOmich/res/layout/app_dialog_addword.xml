@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/dialogAddWordMain_Native"/>
+        android:text="@string/addword_text_native"/>
     <EditText
         android:id="@+id/addword_nativEdit"
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/dialogAddWordMain_Foreign"/>
+        android:text="@string/addword_text_foreign"/>
     <EditText 
         android:id="@+id/addword_foreignEdit"
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@
     <Button 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/dialogAddWordMain_Add"
+        android:text="@string/addword_text_add"
         android:layout_gravity="right"
         android:onClick="onAddButton"/>
 

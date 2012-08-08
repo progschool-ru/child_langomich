@@ -51,7 +51,7 @@ public class EditWordActivity extends BcActivity
 
 		String newNativ = ((EditText)findViewById(R.id.editword_edit_nativ)).getText().toString();
 		String newForeign = ((EditText)findViewById(R.id.editword_edit_foreign)).getText().toString();
-		String taskAddText = getResources().getString(R.string.editword_text_changed);
+		String taskAddText = getResources().getString(R.string.editword_report_changed);
 
 		if(newNativ.equals("") || newForeign.equals(""))
 		{

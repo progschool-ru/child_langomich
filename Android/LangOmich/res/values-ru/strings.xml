@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="app_name">LangOmich</string>   
+    
+    <string name="training_lable">Игра</string>
+    <string name="training_text_die_nativ">Словарь пуст</string>
+    <string name="training_text_die_english">Dictionary is empty</string>
+    <string name="training_text_i_know">Знаю</string>
+    <string name="training_text_i_dont_know">Не знаю</string>
+    <string name="training_text_is_true">Верно</string>
+    <string name="training_text_is_false">Ошибся</string>
+    <string name="training_text_is_next">Продолжить</string>
+ 
+    <string name="adddict_title">Hовый словарь</string>
+    <string name="adddict_lable">Введите имя нового словаря:</string>
+    <string name="adddict_text_create">Создать</string>
+    <string name="adddict_text_cancel">Отмена</string>
+    <string name="adddict_report__empty">Вы ничего не ввели</string>
+    <string name="adddict_report_in_base">Словарь с таким именем уже существует</string>
+    <string name="adddict_report_added">Словарь успешно добавлен</string>
+       
+    <string name="wordslist_title">Словарь</string>
+    <string name="wordslist_report_deleted">Слово успешно удалено</string>
+    <string name="wordslist_report_copied">Слово успешно скопировано</string>
+    <string name="wordslist_report_moved">Слово успешно перемещено</string>
+    
+    <string name="editword_title">Редактор слова</string>
+    <string name="editword_text_nativ">На родном языке:</string>
+    <string name="editword_text_foreign">На иностранном языке:</string>
+    <string name="editword_text_cancel">Отмена</string>
+    <string name="editword_text_change">Изменить</string>   
+    <string name="editword_text_empty">Вы ничего не ввели</string>
+    <string name="editword_report_changed">Слово успешно изменено</string>
+    
+    <string name="dictslist_title">Выбирите словарь</string>
+    <string name="dictslist_text_cancel">Отмена</string>
+    
+    <string name="settings_title">Настройки</string>
+    <string name="settings_text_account">Учетная запись</string>
+
+    <string name="newaccount_title">Учетная запись</string>
+    <string name="newaccount_text_login">Логин</string>
+    <string name="newaccount_text_password">Пароль</string>
+    <string name="newaccount_text_ok">Ок</string>
+    <string name="newaccount_text_cancel">Отмена</string>
+    
+    <string name="addword_title">Добавить слово</string>
+    <string name="addword_text_add">Добавить</string>   
+    <string name="addword_text_foreign">На иностранном языке:</string>
+    <string name="addword_text_native">На родном языке:</string>    
+    <string name="addword_report_added">Слово добавлено</string> 
+</resources>
