@@ -1,0 +1,66 @@
+<mockup version="1.0" skin="sketch" measuredW="609" measuredH="575" mockupW="412" mockupH="510">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::Component" x="197" y="65" w="282" h="510" measuredW="282" measuredH="510" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>./assets/org.omich.lang.bmml#applicationGeneral</src>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::Icon" x="410" y="169" w="-1" h="-1" measuredW="32" measuredH="32" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <icon>HLinesIcon%7Cmedium</icon>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::Label" x="250" y="175" w="-1" h="-1" measuredW="74" measuredH="21" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u041F%u043E%u0432%u0442%u043E%u0440%u044F%u0435%u043C%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Button" x="343" y="427" w="99" h="57" measuredW="55" measuredH="27" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>2575891</color>
+        <href>playKnow%26bm%3BplayKnow.bmml%26bm%3BplayKnow.bmml%26bm%3BplayKnow.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22146%2C362%2C245%2C419%22%20href%3D%22playKnow.bmml%22%20alt%3D%22playKnow%22%20id%3D%223%22/%3E</map>
+        <text>%u0417%u043D%u0430%u044E</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Button" x="235" y="427" w="99" h="57" measuredW="73" measuredH="27" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>6684672</color>
+        <href>playDontKnow%26bm%3BplayDontKnow.bmml%26bm%3BplayDontKnow.bmml%26bm%3BplayDontKnow.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%2238%2C362%2C137%2C419%22%20href%3D%22playDontKnow.bmml%22%20alt%3D%22playDontKnow%22%20id%3D%224%22/%3E</map>
+        <text>%u041D%u0435%20%u0437%u043D%u0430%u044E</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Label" x="266" y="229" w="-1" h="-1" measuredW="138" measuredH="24" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>%u041A%u0440%u0435%u043F%u043E%u0441%u0442%u043D%u043E%u0435%20%u043F%u0440%u0430%u0432%u043E</text>
+      </controlProperties>
+    </control>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::Label" x="321" y="175" w="83" h="21" measuredW="71" measuredH="21" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u0410%u043D%u0433%u043B%u0438%u0439%u0441%u043A%u0438%u0439</text>
+        <underline>true</underline>
+      </controlProperties>
+    </control>
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::ComboBox" x="319" y="176" w="-1" h="-1" measuredW="97" measuredH="78" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <href>playWord%26bm%3BplayWord.bmml%26bm%3BplayWord.bmml%26bm%3BplayWord.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22122%2C111%2C219%2C189%22%20href%3D%22playWord.bmml%22%20alt%3D%22playWord%22%20id%3D%2212%22/%3E</map>
+        <text>%u0410%u043D%u0433%u043B%u0438%u0439%u0441%u043A%u0438%u0439%0A%u0411%u0440%u0438%u0442%u0430%u043D%u0441%u043A%u0438%u0439%0A%u0418%u0441%u043F%u0430%u043D%u0441%u043A%u0438%u0439%0A%u0418%u0441%u043F%u0430%u043D%u0441%u043A%u0438%u0439-2</text>
+      </controlProperties>
+    </control>
+    <control controlID="13" controlTypeID="com.balsamiq.mockups::StickyNote" x="437" y="169" w="172" h="160" measuredW="109" measuredH="123" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u0412%u044B%u0431%u0435%u0440%u0438%u0442%u0435%20%u0438%u0437%20%u0441%u043F%u0438%u0441%u043A%u0430%20%u0441%u043B%u043E%u0432%u0430%u0440%u0435%u0439%20%u0442%u043E%u0442%2C%20%u0438%u0437%20%u043A%u043E%u0442%u043E%u0440%u043E%u0433%u043E%20%u043D%u0443%u0436%u043D%u043E%20%u0431%u0440%u0430%u0442%u044C%20%u0441%u043B%u043E%u0432%u0430%20%u0434%u043B%u044F%20%u0438%u0433%u0440%u044B.</text>
+      </controlProperties>
+    </control>
+    <control controlID="14" controlTypeID="com.balsamiq.mockups::Canvas" x="224" y="203" w="228" h="287" measuredW="100" measuredH="70" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <backgroundAlpha>0.75</backgroundAlpha>
+        <borderStyle>none</borderStyle>
+        <color>0</color>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

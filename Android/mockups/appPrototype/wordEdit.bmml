@@ -1,0 +1,70 @@
+<mockup version="1.0" skin="sketch" measuredW="482" measuredH="579" mockupW="282" mockupH="510">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::Component" x="200" y="69" w="282" h="510" measuredW="282" measuredH="510" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>./assets/org.omich.lang.bmml#applicationGeneral</src>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::Icon" x="413" y="173" w="-1" h="-1" measuredW="32" measuredH="32" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <href>dictionaryWords%26bm%3BdictionaryWords.bmml%26bm%3BdictionaryWords.bmml%26bm%3BdictionaryWords.bmml</href>
+        <icon>HLinesIcon%7Cmedium</icon>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22213%2C104%2C245%2C136%22%20href%3D%22dictionaryWords.bmml%22%20alt%3D%22dictionaryWords%22%20id%3D%221%22/%3E</map>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::Label" x="253" y="179" w="-1" h="-1" measuredW="97" measuredH="21" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u0418%u0437%u043C%u0435%u043D%u0438%u0442%u044C%20%u0441%u043B%u043E%u0432%u043E</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Button" x="346" y="431" w="99" h="57" measuredW="80" measuredH="27" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>16777215</color>
+        <href>dictionaryWords%26bm%3BdictionaryWords.bmml%26bm%3BdictionaryWords.bmml%26bm%3BdictionaryWords.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22146%2C362%2C245%2C419%22%20href%3D%22dictionaryWords.bmml%22%20alt%3D%22dictionaryWords%22%20id%3D%223%22/%3E</map>
+        <text>%u0414%u043E%u0431%u0430%u0432%u0438%u0442%u044C</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Button" x="238" y="431" w="99" h="57" measuredW="69" measuredH="27" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>16777215</color>
+        <href>dictionaryWords%26bm%3BdictionaryWords.bmml%26bm%3BdictionaryWords.bmml%26bm%3BdictionaryWords.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%2238%2C362%2C137%2C419%22%20href%3D%22dictionaryWords.bmml%22%20alt%3D%22dictionaryWords%22%20id%3D%224%22/%3E</map>
+        <text>%u041E%u0442%u043C%u0435%u043D%u0430</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Label" x="238" y="272" w="-1" h="-1" measuredW="145" measuredH="21" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>13</size>
+        <text>%u0421%u043B%u043E%u0432%u043E%20%u043D%u0430%20%u0440%u043E%u0434%u043D%u043E%u043C%20%u044F%u0437%u044B%u043A%u0435</text>
+      </controlProperties>
+    </control>
+    <control controlID="15" controlTypeID="com.balsamiq.mockups::TextInput" x="239" y="293" w="206" h="-1" measuredW="121" measuredH="27" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u041A%u0440%u0435%u043F%u043E%u0441%u0442%u043D%u043E%u0435%20%u043F%u0440%u0430%u0432%u043E</text>
+      </controlProperties>
+    </control>
+    <control controlID="16" controlTypeID="com.balsamiq.mockups::Label" x="238" y="328" w="-1" h="-1" measuredW="152" measuredH="21" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>13</size>
+        <text>%u041F%u0435%u0440%u0435%u0432%u043E%u0434%20%u043D%u0430%20%u0438%u043D%u043E%u0441%u0442%u0440%u0430%u043D%u043D%u044B%u0439</text>
+      </controlProperties>
+    </control>
+    <control controlID="17" controlTypeID="com.balsamiq.mockups::TextInput" x="238" y="349" w="207" h="-1" measuredW="61" measuredH="27" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>serfdom</text>
+      </controlProperties>
+    </control>
+    <control controlID="18" controlTypeID="com.balsamiq.mockups::ComboBox" x="309" y="220" w="136" h="-1" measuredW="97" measuredH="23" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u0410%u043D%u0433%u043B%u0438%u0439%u0441%u043A%u0438%u0439</text>
+      </controlProperties>
+    </control>
+    <control controlID="19" controlTypeID="com.balsamiq.mockups::Label" x="238" y="221" w="-1" h="-1" measuredW="56" measuredH="21" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>13</size>
+        <text>%u0421%u043B%u043E%u0432%u0430%u0440%u044C</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
