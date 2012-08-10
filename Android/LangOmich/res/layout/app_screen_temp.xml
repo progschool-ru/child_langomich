@@ -3,30 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-	<RelativeLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
-
-	    <TextView
-	        android:id="@+id/item_temp_text_account"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_alignParentTop="true"
-	        android:text="Учетная запись:"
-	        android:textStyle="bold" />
-
-	    <TextView
-	        android:id="@+id/item_temp_text_login"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentTop="true"
-	        android:layout_marginLeft="20dp"
-	        android:layout_toRightOf="@+id/item_temp_text_account" />
-
-	</RelativeLayout>
-    
+   
     <Button 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

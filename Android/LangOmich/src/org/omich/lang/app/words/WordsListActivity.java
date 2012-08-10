@@ -10,8 +10,8 @@ import org.omich.tool.events.Listeners.IListenerInt;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -23,7 +23,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.ViewFlipper;
 
-public class WordsListActivity extends ABActivity implements OnSharedPreferenceChangeListener
+public class WordsListActivity extends ABActivity
 {
 	private WordsListAdapter mWordsAdapter;
 	private DictSpinner dictSpinner;
@@ -40,16 +40,18 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 	private String mCutWordTaskId;
 	private String mDeleteWordTaskId;
 	
+	private SharedPreferences sp;	
+	private boolean mIsDestroyed;
 	//==== live cycle =========================================================
 	@Override
 	protected void onCreate (Bundle b)
 	{
 		super.onCreate(b);
 		setContentView(R.layout.app_screen_wordslist);	
+		sp = PreferenceManager.getDefaultSharedPreferences(this);
+		
 		ListView lv = (ListView)findViewById(R.id.wordslist_list);
-		
-		sp.registerOnSharedPreferenceChangeListener(this);	
-		
+	
 		mWordsAdapter = new WordsListAdapter(this, getBcConnector(), 
 				sp.getLong(PreferenceFields.DICT_ID, -1));
 		mWordsAdapter.reloadItems();
@@ -235,17 +237,7 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 		mWordsAdapter.setNewDictId(sp.getLong(PreferenceFields.DICT_ID, -1));
 		mWordsAdapter.reloadItems();					
 		dictSpinner.reload();			
-	}
-	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
-	{
-		if(key.equals(PreferenceFields.IS_TIMING))
-		{
-			  if(prefs.getBoolean(PreferenceFields.IS_TIMING, false))
-				  itemTiming.setIcon(R.drawable.ic_sunc_enable);
-			  else
-				  itemTiming.setIcon(R.drawable.ic_sunc_disable);			
-		}	
-	}		
+	}	
 	@Override
 	protected void onDestroy ()
 	{
@@ -270,6 +262,7 @@ public class WordsListActivity extends ABActivity implements OnSharedPreferenceC
 
 		dictSpinner.destroy();
 		
+		mIsDestroyed = true;
 		super.onDestroy();
 	}
 	

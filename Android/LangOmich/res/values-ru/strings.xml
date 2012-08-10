@@ -37,6 +37,7 @@
     
     <string name="settings_title">Настройки</string>
     <string name="settings_text_account">Учетная запись</string>
+    <string name="settings_text_timing">Синхронизация</string>
 
     <string name="newaccount_title">Учетная запись</string>
     <string name="newaccount_text_login">Логин</string>
@@ -49,4 +50,6 @@
     <string name="addword_text_foreign">На иностранном языке:</string>
     <string name="addword_text_native">На родном языке:</string>    
     <string name="addword_report_added">Слово добавлено</string> 
+    
+    <string name="timing_report_success">Синхронизация прошла успешно</string> 
 </resources>

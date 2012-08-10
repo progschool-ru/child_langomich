@@ -37,6 +37,7 @@
     
     <string name="settings_title">Settings</string>
     <string name="settings_text_account">Account</string>
+    <string name="settings_text_timing">Synchronization</string>
 
     <string name="newaccount_title">Account</string>
     <string name="newaccount_text_login">Login</string>
@@ -49,4 +50,7 @@
     <string name="addword_text_foreign">In a foreign language:</string>
     <string name="addword_text_native">In a native language:</string>    
     <string name="addword_report_added">Added the word</string>
+    
+    <string name="timing_report_success">Synchronization was successful</string> 
+    
 </resources>

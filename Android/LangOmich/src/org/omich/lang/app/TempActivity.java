@@ -6,49 +6,18 @@ import org.omich.lang.app.words.GameActivity;
 import org.omich.lang.app.words.WordsListActivity;
 import org.omich.lang.apptool.activity.ABActivity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
-public class TempActivity extends ABActivity implements OnSharedPreferenceChangeListener
+public class TempActivity extends ABActivity
 {
-	private TextView tvl;
 	//==== live cycle =========================================================
 	@Override
 	protected void onCreate (Bundle b)
 	{
 		super.onCreate(b);
-		setContentView(R.layout.app_screen_temp);
-		sp.registerOnSharedPreferenceChangeListener(this);	
-		tvl = (TextView)findViewById(R.id.item_temp_text_login);
-		tvl.setText(sp.getString("login", ""));
-		if(sp.getString("cookie", "").equals(""))
-			tvl.setTextColor(Color.RED);
-		else
-			tvl.setTextColor(Color.GREEN);
-		isLoggedIn();
-	}		
-	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
-	{
-		if(key.equals("cookie") || key.equals("login"))
-		{		
-			tvl.setText(prefs.getString("login", ""));
-			if(prefs.getString("cookie", "").equals(""))
-				tvl.setTextColor(Color.RED);
-			else
-				tvl.setTextColor(Color.GREEN);
-		}
-		else if(key.equals("isTiming"))
-		{
-			if(prefs.getBoolean("isTiming", false))
-				itemTiming.setIcon(R.drawable.ic_sunc_enable);
-			else
-				itemTiming.setIcon(R.drawable.ic_sunc_disable);			
-		}
-	}		
+		setContentView(R.layout.app_screen_temp);	
+	}			
 	//==== events =============================================================
 	public void onAddWord (View v)
 	{

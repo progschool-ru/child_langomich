@@ -5,14 +5,14 @@ import org.omich.lang.app.PreferenceFields;
 import org.omich.lang.apptool.activity.ABActivity;
 import org.omich.tool.events.Listeners.IListenerVoid;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class GameActivity extends ABActivity implements OnSharedPreferenceChangeListener
+public class GameActivity extends ABActivity
 {
 	private static final int GAME = 1;
 	private static final int I_KNOW = 2;
@@ -25,13 +25,14 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 	private int currentScreen = GAME;
 
 	private Game game;
+	private SharedPreferences sp;
 	//==== live cycle =========================================================
 	@Override
 	protected void onCreate (Bundle b)
 	{
 		super.onCreate(b);
 		setContentView(R.layout.app_screen_game);
-		sp.registerOnSharedPreferenceChangeListener(this);	
+		sp = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		tvn = (TextView)findViewById(R.id.item_wordslist_text_nativ);
 		tvf = (TextView)findViewById(R.id.item_wordslist_text_foreign);
@@ -96,16 +97,6 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 		game.setNewDict(sp.getLong(PreferenceFields.DICT_ID, -1));	
 		super.onResume();
 	}
-	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
-	{
-		if(key.equals("isTiming"))
-		{
-			if(prefs.getBoolean("isTiming", false))
-				itemTiming.setIcon(R.drawable.ic_sunc_enable);
-			else
-				itemTiming.setIcon(R.drawable.ic_sunc_disable);			
-		}
-	}	
 	@Override
 	protected void onDestroy ()
 	{
@@ -120,8 +111,8 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 		{
 			tvn.setText("");
 			tvf.setText("");		
-			bt1.setText(getString(R.string.training_text_i_know));
-			bt2.setText(getString(R.string.training_text_i_dont_know));
+			bt1.setText("\n"+getString(R.string.training_text_i_know)+"\n");
+			bt2.setText("\n"+getString(R.string.training_text_i_dont_know)+"\n");
 			bt1.setVisibility(View.INVISIBLE);
 			bt2.setVisibility(View.INVISIBLE);
 			game.getNextWord();
@@ -130,15 +121,15 @@ public class GameActivity extends ABActivity implements OnSharedPreferenceChange
 		else if(screen == I_KNOW)
 		{
 			tvf.setText(game.getText(game.FOREIGN));
-			bt1.setText(getString(R.string.training_text_is_true));
-			bt2.setText(getString(R.string.training_text_is_false));
+			bt1.setText("\n"+getString(R.string.training_text_is_true)+"\n");
+			bt2.setText("\n"+getString(R.string.training_text_is_false)+"\n");
 			currentScreen = I_KNOW;	
 		}
 		else if(screen == I_DONT_KNOW)
 		{
 			tvf.setText(game.getText(game.FOREIGN));
 			bt1.setVisibility(View.INVISIBLE);
-			bt2.setText(getString(R.string.training_text_is_next));
+			bt2.setText("\n"+getString(R.string.training_text_is_next)+"\n");
 			currentScreen = I_DONT_KNOW;
 		}		
 	}

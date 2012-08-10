@@ -1,45 +1,42 @@
 package org.omich.lang.app;
 
 import org.omich.lang.R;
+import org.omich.lang.app.httpClient.Timing;
 import org.omich.lang.apptool.activity.ABActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
 
 public class SettingsActivity extends ABActivity implements OnSharedPreferenceChangeListener
 {
 	private TextView tvl;
-	private String mTheCorrectAccountTaskId;
-	
+	private SharedPreferences sp;
+	Timing timing;
 	@Override
 	protected void onCreate (Bundle b)
 	{
 		super.onCreate(b);
-		setContentView(R.layout.app_screen_settings);		
-		sp.registerOnSharedPreferenceChangeListener(this);	
+		setContentView(R.layout.app_screen_settings);	
+		sp = PreferenceManager.getDefaultSharedPreferences(this);
+		sp.registerOnSharedPreferenceChangeListener(this);
+		timing = new Timing(this, getBcConnector());
 		tvl = (TextView)findViewById(R.id.item_settings_text_login);
-		
-		
-		tvl.setText(sp.getString("login", ""));
-		if(sp.getString("cookie", "").equals(""))
+		tvl.setText(sp.getString("login", ""));	
+		if(sp.getString(PreferenceFields.COOKIE, "").equals(""))
 			tvl.setTextColor(Color.RED);
 		else
 			tvl.setTextColor(Color.GREEN);
-		
-		isLoggedIn();
+		timing.isLoggedIn();
 	}
 	@Override
 	protected void onDestroy ()
 	{
-		if(mTheCorrectAccountTaskId != null)
-		{
-			getBcConnector().unsubscribeTask(mTheCorrectAccountTaskId);
-			mTheCorrectAccountTaskId = null;
-		}
+		timing.destroy();
 		super.onDestroy();
 	}
 	@Override
@@ -50,29 +47,25 @@ public class SettingsActivity extends ABActivity implements OnSharedPreferenceCh
 	    if(isNewAccount)
 		{
 			tvl.setText(sp.getString("login", ""));	
-			theCorrectAccount();	
+			timing.theCorrectAccount();	
     	}
 	}		
-	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
-	{
-		if(key.equals("cookie"))
-		{		
-			tvl.setText(prefs.getString("login", ""));
-			if(prefs.getString("cookie", "").equals(""))
-				tvl.setTextColor(Color.RED);
-			else
-				tvl.setTextColor(Color.GREEN);
-		}	
-		else if(key.equals("isTiming"))
-		{
-			  if(prefs.getBoolean("isTiming", false))
-				  itemTiming.setIcon(R.drawable.ic_sunc_enable);
-			  else
-				  itemTiming.setIcon(R.drawable.ic_sunc_disable);			
-		}
-	}	
 	public void onNewAccount (View v)
 	{
 		getForResultStarter().startForResult(new Intent(this, NewAccountActivity.class), null);
 	}
+	public void onTiming (View v)
+	{
+		timing.timing();
+	}
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) 
+	{
+		if(key.equals(PreferenceFields.COOKIE))
+		{
+			if(sp.getString(PreferenceFields.COOKIE, "").equals(""))
+				tvl.setTextColor(Color.RED);
+			else
+				tvl.setTextColor(Color.GREEN);
+		}
+	}	
 }
