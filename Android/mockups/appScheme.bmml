@@ -50,7 +50,7 @@
         <text>%u041F%u043E%u0432%u0442%u043E%u0440%u044F%u0435%u043C%3A%20%u0410%u043D%u0433%u043B%u0438%u0439%u0441%u043A%u0438%u0439</text>
       </controlProperties>
     </control>
-    <control controlID="16" controlTypeID="com.balsamiq.mockups::Label" x="919" y="264" w="-1" h="-1" measuredW="95" measuredH="33" zOrder="10" locked="false" isInGroup="-1">
+    <control controlID="16" controlTypeID="com.balsamiq.mockups::Label" x="927" y="225" w="-1" h="-1" measuredW="95" measuredH="33" zOrder="10" locked="false" isInGroup="-1">
       <controlProperties>
         <bold>true</bold>
         <size>24</size>
