@@ -1,4 +1,4 @@
-<mockup version="1.0" skin="sketch" measuredW="683" measuredH="575" mockupW="683" mockupH="532">
+<mockup version="1.0" skin="sketch" measuredW="683" measuredH="575" mockupW="683" mockupH="574">
   <controls>
     <control controlID="0" controlTypeID="com.balsamiq.mockups::Component" x="197" y="65" w="282" h="510" measuredW="282" measuredH="510" zOrder="0" locked="false" isInGroup="-1">
       <controlProperties>
@@ -14,7 +14,7 @@
       <controlProperties>
         <color>2575891</color>
         <href>wizardAddWord%26bm%3BwizardAddWord.bmml%26bm%3BwizardAddWord.bmml%26bm%3BwizardAddWord.bmml</href>
-        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22265%2C363%2C395%2C420%22%20href%3D%22wizardAddWord.bmml%22%20alt%3D%22wizardAddWord%22%20id%3D%225%22/%3E</map>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22265%2C405%2C395%2C462%22%20href%3D%22wizardAddWord.bmml%22%20alt%3D%22wizardAddWord%22%20id%3D%225%22/%3E</map>
         <text>%u041D%u0430%u0447%u0430%u0442%u044C</text>
         <underline>false</underline>
       </controlProperties>
@@ -41,7 +41,13 @@
         <backgroundAlpha>0</backgroundAlpha>
         <borderStyle>none</borderStyle>
         <href>playWord%26bm%3BplayWord.bmml%26bm%3BplayWord.bmml%26bm%3BplayWord.bmml</href>
-        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22479%2C179%2C668%2C221%22%20href%3D%22playWord.bmml%22%20alt%3D%22playWord%22%20id%3D%229%22/%3E</map>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22479%2C221%2C668%2C263%22%20href%3D%22playWord.bmml%22%20alt%3D%22playWord%22%20id%3D%229%22/%3E</map>
+      </controlProperties>
+    </control>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::StickyNote" x="452" y="1" w="173" h="123" measuredW="109" measuredH="123" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <color>10066329</color>
+        <text>%u041F%u0440%u0435%u0434%u043B%u043E%u0436%u0435%u043D%u0438%u044F%20%u043F%u043E%20%u043D%u0430%u0437%u0432%u0430%u043D%u0438%u044E%20%u0438%20%u043B%u043E%u0433%u043E%u0442%u0438%u043F%u0443%20%u043F%u0440%u0438%u0432%u0435%u0442%u0441%u0442%u0432%u0443%u044E%u0442%u0441%u044F</text>
       </controlProperties>
     </control>
   </controls>
