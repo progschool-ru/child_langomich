@@ -17,19 +17,19 @@
         <text>%u0414%u043E%u0431%u0430%u0432%u0438%u0442%u044C%20%u0441%u043B%u043E%u0432%u043E</text>
       </controlProperties>
     </control>
-    <control controlID="3" controlTypeID="com.balsamiq.mockups::Button" x="346" y="431" w="99" h="57" measuredW="80" measuredH="27" zOrder="3" locked="false" isInGroup="-1">
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Button" x="346" y="391" w="99" h="33" measuredW="80" measuredH="27" zOrder="3" locked="false" isInGroup="-1">
       <controlProperties>
         <color>16777215</color>
         <href>dictionaryWords%26bm%3BdictionaryWords.bmml%26bm%3BdictionaryWords.bmml%26bm%3BdictionaryWords.bmml</href>
-        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22146%2C362%2C245%2C419%22%20href%3D%22dictionaryWords.bmml%22%20alt%3D%22dictionaryWords%22%20id%3D%223%22/%3E</map>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22146%2C322%2C245%2C355%22%20href%3D%22dictionaryWords.bmml%22%20alt%3D%22dictionaryWords%22%20id%3D%223%22/%3E</map>
         <text>%u0414%u043E%u0431%u0430%u0432%u0438%u0442%u044C</text>
       </controlProperties>
     </control>
-    <control controlID="4" controlTypeID="com.balsamiq.mockups::Button" x="238" y="431" w="99" h="57" measuredW="69" measuredH="27" zOrder="4" locked="false" isInGroup="-1">
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Button" x="238" y="391" w="99" h="33" measuredW="69" measuredH="27" zOrder="4" locked="false" isInGroup="-1">
       <controlProperties>
         <color>16777215</color>
         <href>dictionaryWords%26bm%3BdictionaryWords.bmml%26bm%3BdictionaryWords.bmml%26bm%3BdictionaryWords.bmml</href>
-        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%2238%2C362%2C137%2C419%22%20href%3D%22dictionaryWords.bmml%22%20alt%3D%22dictionaryWords%22%20id%3D%224%22/%3E</map>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%2238%2C322%2C137%2C355%22%20href%3D%22dictionaryWords.bmml%22%20alt%3D%22dictionaryWords%22%20id%3D%224%22/%3E</map>
         <text>%u041E%u0442%u043C%u0435%u043D%u0430</text>
       </controlProperties>
     </control>
@@ -57,6 +57,8 @@
     </control>
     <control controlID="18" controlTypeID="com.balsamiq.mockups::ComboBox" x="309" y="220" w="136" h="-1" measuredW="97" measuredH="23" zOrder="9" locked="false" isInGroup="-1">
       <controlProperties>
+        <href>wordSelectDictionary%26bm%3BwordSelectDictionary.bmml%26bm%3BwordSelectDictionary.bmml%26bm%3BwordSelectDictionary.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22109%2C151%2C245%2C174%22%20href%3D%22wordSelectDictionary.bmml%22%20alt%3D%22wordSelectDictionary%22%20id%3D%2218%22/%3E</map>
         <text>%u0410%u043D%u0433%u043B%u0438%u0439%u0441%u043A%u0438%u0439</text>
       </controlProperties>
     </control>
