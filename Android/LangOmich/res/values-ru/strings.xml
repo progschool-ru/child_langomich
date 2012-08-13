@@ -47,6 +47,8 @@
     
     <string name="addword_title">Добавить слово</string>
     <string name="addword_text_add">Добавить</string>   
+    <string name="addword_text_cancel">Отмена</string>  
+    <string name="addword_text_dict">Словарь:</string>
     <string name="addword_text_foreign">На иностранном языке:</string>
     <string name="addword_text_native">На родном языке:</string>    
     <string name="addword_report_added">Слово добавлено</string> 

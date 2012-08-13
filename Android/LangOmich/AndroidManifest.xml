@@ -31,8 +31,7 @@
         </activity>         
         <activity
             android:name=".app.words.AddWordActivity"
-            android:label="@string/addword_title"
-            android:theme="@android:style/Theme.Holo.Light.Dialog">
+            android:label="@string/addword_title">
         </activity>
          <activity
             android:name=".app.words.AddDictActivity"

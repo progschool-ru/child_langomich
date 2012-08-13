@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -27,7 +26,7 @@ public class AddWordActivity extends BcActivity
 	protected void onCreate (Bundle b)
 	{
 		super.onCreate(b);
-		setContentView(R.layout.app_dialog_addword);
+		setContentView(R.layout.app_screen_add_word);
 		dictSpinner = new DictSpinner((Spinner)findViewById(R.id.addword_dictSpinner), this,false, new IListenerInt()
 		{
 			public void handle (int key)
@@ -39,7 +38,6 @@ public class AddWordActivity extends BcActivity
 			}			
 		});
 		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 	}
 	
 	@Override
@@ -96,6 +94,10 @@ public class AddWordActivity extends BcActivity
 					mAddWordTaskId = null;
 				}
 			});
+		finish();
+	}
+	public void onCancelButton (View v)
+	{
 		finish();
 	}
 }

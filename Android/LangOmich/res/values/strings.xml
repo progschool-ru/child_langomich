@@ -47,6 +47,8 @@
     
     <string name="addword_title">Add the word</string>
     <string name="addword_text_add">Add</string>   
+    <string name="addword_text_cancel">Cancel</string>  
+    <string name="addword_text_dict">Dictionary:</string>    
     <string name="addword_text_foreign">In a foreign language:</string>
     <string name="addword_text_native">In a native language:</string>    
     <string name="addword_report_added">Added the word</string>
