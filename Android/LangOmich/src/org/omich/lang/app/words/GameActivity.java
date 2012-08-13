@@ -55,14 +55,14 @@ public class GameActivity extends BcActivity
 		});
 		mDictsAdapter.reloadItems();
 		
-		getActionBar().setListNavigationCallbacks(mDictsAdapter, new OnNavigationListener() {
-	          
-	          public boolean onNavigationItemSelected(int position, long itemId) 
-	          {
-	        	  onSelectDict(position);
-	        	  return true;
-	          }
-	        });
+		getActionBar().setListNavigationCallbacks(mDictsAdapter, new OnNavigationListener() 
+		{
+			public boolean onNavigationItemSelected(int position, long itemId) 
+			{
+				onSelectDict(position);
+				return true;
+			}
+		});
 
 		tvn = (TextView)findViewById(R.id.item_wordslist_text_nativ);
 		tvf = (TextView)findViewById(R.id.item_wordslist_text_foreign);
@@ -139,7 +139,7 @@ public class GameActivity extends BcActivity
 	public boolean onCreateOptionsMenu(Menu menu) 
 	{
 		  MenuInflater inflater = getMenuInflater();
-		  inflater.inflate(R.menu.menu, menu);	
+		  inflater.inflate(R.menu.menu_game, menu);	
 
 		  return super.onCreateOptionsMenu(menu);
 	}
@@ -157,7 +157,11 @@ public class GameActivity extends BcActivity
 		}
 		return true;
     }	
-    
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+		mDictsAdapter.reloadItems();
+	}
 	//=========================================================================
 	private void setScreen(int screen)
 	{

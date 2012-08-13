@@ -4,13 +4,13 @@
     <item 
         android:id="@+id/app_menu_item_button_settings"
         android:icon="@drawable/app_ic_action_bar_settings" 
-        android:showAsAction="ifRoom|withText"
-        android:title="Настройки"/>  
+        android:showAsAction="always" >
+    </item>
           
     <item
 		android:id="@+id/app_menu_item_button_dictionary"
 		android:icon="@drawable/app_ic_action_bar_dictionary" 
-		android:showAsAction="ifRoom|withText"
-		android:title="Словарь"/>
+		android:showAsAction="always">     
+    </item>
     
 </menu>

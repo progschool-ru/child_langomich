@@ -2,16 +2,22 @@ package org.omich.lang.app.words;
 
 import org.omich.lang.R;
 import org.omich.lang.app.PreferenceFields;
+import org.omich.lang.app.db.Dict;
 import org.omich.lang.app.db.Word;
 import org.omich.lang.app.words.WordsListAdapter;
 import org.omich.lang.apptool.activity.ABActivity;
 import org.omich.tool.events.Listeners.IListener;
-import org.omich.tool.events.Listeners.IListenerInt;
+import org.omich.tool.events.Listeners.IListenerVoid;
 
+import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -20,13 +26,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.ViewFlipper;
 
 public class WordsListActivity extends ABActivity
 {
 	private WordsListAdapter mWordsAdapter;
-	private DictSpinner dictSpinner;
 	
 	private Animation animationFlipInSide;
 	private Animation animationFlipOutSide;
@@ -41,6 +45,7 @@ public class WordsListActivity extends ABActivity
 	private String mDeleteWordTaskId;
 	
 	private SharedPreferences sp;	
+	private DictsListAdapter mDictsAdapter;
 	private boolean mIsDestroyed;
 	//==== live cycle =========================================================
 	@Override
@@ -50,23 +55,38 @@ public class WordsListActivity extends ABActivity
 		setContentView(R.layout.app_screen_wordslist);	
 		sp = PreferenceManager.getDefaultSharedPreferences(this);
 		
+		getActionBar().setDisplayShowTitleEnabled(false);
+		getActionBar().setNavigationMode(getActionBar().NAVIGATION_MODE_LIST);
+		
 		ListView lv = (ListView)findViewById(R.id.wordslist_list);
 	
 		mWordsAdapter = new WordsListAdapter(this, getBcConnector(), 
 				sp.getLong(PreferenceFields.DICT_ID, -1));
 		mWordsAdapter.reloadItems();
 		
-		dictSpinner = new DictSpinner((Spinner)findViewById(R.id.wordslist_spinner), this, false, new IListenerInt()
+		lv.setAdapter(mWordsAdapter);
+
+		mDictsAdapter = new DictsListAdapter(this, getBcConnector(), true, new IListenerVoid()
 		{
-			public void handle (int key)
+			public void handle ()
 			{ 
-				if(key == dictSpinner.ADD_DICT)
-					startAddDictActivity();
-				else if(key == dictSpinner.SELECT_DICT)
-					reload();
+				setSelectedPosition();	
 			}			
 		});
-		lv.setAdapter(mWordsAdapter);
+		mDictsAdapter.reloadItems();
+		
+		getActionBar().setListNavigationCallbacks(mDictsAdapter, new OnNavigationListener() 
+		{
+			public boolean onNavigationItemSelected(int position, long itemId) 
+			{
+        		int size = mDictsAdapter.getCount();
+        		if(position + 1 == size) 
+        			startAddDictActivity();    			
+        		else
+        			onSelectDict(position);				
+				return true;
+			}
+		});	
 		
 		animationFlipInSide = AnimationUtils.loadAnimation(this, R.anim.flipin_side);
 		animationFlipOutSide = AnimationUtils.loadAnimation(this, R.anim.flipout_side);
@@ -112,6 +132,28 @@ public class WordsListActivity extends ABActivity
 		});
 
 	}
+	@Override 
+	public boolean onCreateOptionsMenu(Menu menu) 
+	{
+		  MenuInflater inflater = getMenuInflater();
+		  inflater.inflate(R.menu.menu_words_list, menu);	
+
+		  return super.onCreateOptionsMenu(menu);
+	}
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) 
+	{
+		int id = item.getItemId();
+		if(id == R.id.app_menu_item_button_add_word)
+		{
+			getForResultStarter().startForResult(new Intent(this, AddWordActivity.class), null);
+		}
+		else if(id == R.id.app_menu_item_button_game)
+		{
+			finish();
+		}
+		return true;
+    }		
 	public void onEdit (View v)
 	{
 		if(word == null)
@@ -155,7 +197,35 @@ public class WordsListActivity extends ABActivity
 						mWordsAdapter.reloadItems();
 					}
 				});
-	}		
+	}	
+	private void setSelectedPosition()
+	{
+		long dictId = sp.getLong(PreferenceFields.DICT_ID, -1);
+		if(dictId != -1)
+		{
+			getActionBar().setSelectedNavigationItem(getPositionByTableId(dictId));
+		}				
+	}
+	private int getPositionByTableId(long dictId)
+	{
+		int i = 0;
+		int size = mDictsAdapter.getCount();
+		for(i = 0; i < size; i++)			
+			if(((Dict)mDictsAdapter.getItem(i)).dictId == dictId)
+				break;
+		return i;
+	}
+	private void onSelectDict(int position)
+	{	
+		long dictId = ((Dict)mDictsAdapter.getItem(position)).dictId;
+		if(dictId != sp.getLong(PreferenceFields.DICT_ID, -1))
+		{
+			Editor ed = sp.edit();
+			ed.putLong(PreferenceFields.DICT_ID, dictId);
+			ed.commit();			
+			reload();
+		}
+	}	
 	private void startAddDictActivity()
 	{
 	    Intent intent = new Intent(this, AddDictActivity.class);
@@ -235,8 +305,8 @@ public class WordsListActivity extends ABActivity
 	private void reload()
 	{
 		mWordsAdapter.setNewDictId(sp.getLong(PreferenceFields.DICT_ID, -1));
-		mWordsAdapter.reloadItems();					
-		dictSpinner.reload();			
+		mWordsAdapter.reloadItems();	
+		mDictsAdapter.reloadItems();
 	}	
 	@Override
 	protected void onDestroy ()
@@ -259,8 +329,6 @@ public class WordsListActivity extends ABActivity
 		
 		mWordsAdapter.destroy();
 		mWordsAdapter = null;
-
-		dictSpinner.destroy();
 		
 		mIsDestroyed = true;
 		super.onDestroy();
