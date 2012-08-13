@@ -56,7 +56,7 @@ public class WordsListActivity extends ABActivity
 				sp.getLong(PreferenceFields.DICT_ID, -1));
 		mWordsAdapter.reloadItems();
 		
-		dictSpinner = new DictSpinner((Spinner)findViewById(R.id.wordslist_spinner), this, new IListenerInt()
+		dictSpinner = new DictSpinner((Spinner)findViewById(R.id.wordslist_spinner), this, false, new IListenerInt()
 		{
 			public void handle (int key)
 			{ 

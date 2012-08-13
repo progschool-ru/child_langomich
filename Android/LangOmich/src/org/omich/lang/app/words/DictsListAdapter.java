@@ -26,9 +26,10 @@ public class DictsListAdapter extends TaskListAdapter<Dict>
 		super(context, conn);
 		this.withNewDict = withNewDict;
 	}
-	public DictsListAdapter (Context context, IBcConnector conn, IListenerVoid lv)
+	public DictsListAdapter (Context context, IBcConnector conn, boolean withNewDict, IListenerVoid lv)
 	{
 		super(context, conn, lv);
+		this.withNewDict = withNewDict;
 	}	
 	//==== TaskListAdapter ===================================================
 	@Override

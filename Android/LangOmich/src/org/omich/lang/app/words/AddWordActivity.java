@@ -28,7 +28,7 @@ public class AddWordActivity extends BcActivity
 	{
 		super.onCreate(b);
 		setContentView(R.layout.app_dialog_addword);
-		dictSpinner = new DictSpinner((Spinner)findViewById(R.id.addword_dictSpinner), this, new IListenerInt()
+		dictSpinner = new DictSpinner((Spinner)findViewById(R.id.addword_dictSpinner), this,false, new IListenerInt()
 		{
 			public void handle (int key)
 			{ 

@@ -27,15 +27,18 @@ public class DictSpinner
 	public final int ADD_DICT = 1;
 	public final int SELECT_DICT = 2;
 	
-	public DictSpinner(Spinner spinner, Context context, IListenerInt li)
+	private boolean withNewDict = false;
+	
+	public DictSpinner(Spinner spinner, Context context, boolean withNewDict, IListenerInt li)
 	{
 		
 		this.spinner = spinner;
 		this.li = li;
+		this.withNewDict = withNewDict;
 		sp = PreferenceManager.getDefaultSharedPreferences(context);
 		mBcConnector = new BcConnector(context);
 		
-		mDictsAdapter = new DictsListAdapter(context, mBcConnector, new IListenerVoid()
+		mDictsAdapter = new DictsListAdapter(context, mBcConnector, withNewDict, new IListenerVoid()
 		{
 			public void handle ()
 			{ 
@@ -50,18 +53,9 @@ public class DictSpinner
         	{
         		size = mDictsAdapter.getCount();
         		if(position + 1 == size) 
-        		{
-        			onAddDict();
-        			setSelection();
-        		}
+        			onAddDict();     			
         		else
-        		{
-        			long dictId = getSelectedItemTableId();
-        			Editor ed = sp.edit();
-        			ed.putLong(PreferenceFields.DICT_ID, dictId);
-        			ed.commit();
         			onSelectDict();
-        		}
         	}
         	public void onNothingSelected(AdapterView<?> arg0) {}
         });
@@ -89,12 +83,26 @@ public class DictSpinner
 	}			
 	private void onAddDict()
 	{
-		li.handle(ADD_DICT);
+		if(withNewDict)
+		{
+			li.handle(ADD_DICT);
+			setSelection();
+		}
+		else
+			onSelectDict();
 	}
 	private void onSelectDict()
 	{
+		long dictId = getSelectedItemTableId();
+		Editor ed = sp.edit();
+		ed.putLong(PreferenceFields.DICT_ID, dictId);
+		ed.commit();		
 		li.handle(SELECT_DICT);
 	}	
+	public DictsListAdapter getDictsAdapter()
+	{
+		return mDictsAdapter;
+	}
 	public void reload()
 	{
 		mDictsAdapter.reloadItems();

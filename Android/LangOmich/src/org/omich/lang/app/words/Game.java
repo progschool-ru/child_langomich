@@ -39,7 +39,8 @@ public class Game
 	public final int FOREIGN = 2;	
 	
 	private IListenerVoid lv;
-				
+	private boolean isUpdate = false;
+	
 	public Game(Context context, long dictId, IListenerVoid lv)
 	{
 		this.lv = lv;
@@ -94,6 +95,7 @@ public class Game
 	{
 		if(mGetRandomWordsTaskId != null)
 			return;		
+		isUpdate = true;
 		
 		Intent intent = GetRandomWordsTask.createIntent(dictId, idealNumber, weight);
 		mGetRandomWordsTaskId = mBcConnector.startTypicalTask(GetRandomWordsTask.class, intent, new IListener<Bundle>()
@@ -112,20 +114,24 @@ public class Game
 									realNumber = words.size();
 								currentNumber = 0;
 								
+								isUpdate = false;
 								updateWord();
 							}
 						});
 	}	
 	private void updateWord()
 	{
-		if(realNumber > 0)
+		if(!isUpdate)
 		{
-			word = words.get(currentNumber);
-			currentNumber++;
+			if(realNumber > 0)
+			{
+				word = words.get(currentNumber);
+				currentNumber++;
+			}
+			else
+				word = new Word(dictIsEmptyNativ, dictIsEmptyEnglish, 0, -1); 
+			lv.handle();
 		}
-		else
-			word = new Word(dictIsEmptyNativ, dictIsEmptyEnglish, 0, -1); 
-		lv.handle();
 	}	
 	private void setNewRating(long id, int rating)
 	{
