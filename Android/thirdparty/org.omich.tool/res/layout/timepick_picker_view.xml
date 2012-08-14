@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Диалог выбора времени с кнопочками ок и reset
+
+Настраивается переопределением файла values/timepick.xml
+	- значение @layout/timepick_picker_timeselector, если хотите отображать или неотображать секунды
+	- значение @layout/timepick_picker_customview, если хотите вставить своё
+	
+Либо переписывается полностью, если нужно изменить до безобразия.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/timepick_picker"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        >
+    	<include layout="@layout/timepick_picker_timeselector"/>
+    </LinearLayout>
+	<LinearLayout
+        android:id="@+id/timepick_picker_resetButton"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:paddingLeft="30dp"
+	    android:paddingRight="@dimen/timepick_picker_arrowSideButtonPadding"
+	    android:paddingTop="10dp"
+	    android:paddingBottom="10dp"
+	    android:orientation="horizontal"
+	    android:clickable="true"
+        >
+        <View 
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginRight="10dp"
+            android:clickable="false"
+            android:layout_gravity="center"
+            android:background="#ff0000"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timepick_picker_reset"
+            android:clickable="false"
+            />
+    </LinearLayout>
+    <include layout="@layout/timepick_picker_customview"/>
+	<Button
+	    android:id="@+id/timepick_picker_okButton"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_margin="@dimen/timepick_picker_arrowSideButtonPadding"
+	    android:text="@string/timepick_picker_ok"
+	    />
+</LinearLayout>

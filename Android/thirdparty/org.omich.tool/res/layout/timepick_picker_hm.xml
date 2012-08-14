@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Поля вывода часов и минут
+поменяйте значение @layout/timepick_picker_timeselector, если хотите использовать это поле 
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+		<FrameLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    >
+			<ListView
+			    android:id="@+id/timepick_picker_hoursList" 
+			    android:layout_width="@dimen/timepick_picker_arrowButtonWidth"
+			    android:layout_height="@dimen/timepick_picker_listHeight"
+			    android:layout_marginTop="@dimen/timepick_picker_listTopPadding"
+			    android:layout_marginBottom="@dimen/timepick_picker_listBottomPadding"
+			    android:layout_marginLeft="@dimen/timepick_picker_arrowSideButtonPadding"
+			    />	    
+		    <FrameLayout 
+		        android:id="@+id/timepick_picker_hoursUpButton"
+		        style="@style/timepick_picker_ArrowButton.Up"
+		        android:layout_width="@dimen/timepick_picker_arrowSideButtonWidth"
+		        android:paddingLeft="@dimen/timepick_picker_arrowSideButtonPadding"
+		    	>
+		    	<View style="@style/timepick_picker_ArrowIcon.Up" />
+		    </FrameLayout>
+			<TextView
+		        android:id="@+id/timepick_picker_hoursView"
+		        style="@style/timepick_picker_TimeText"
+		        android:layout_width="@dimen/timepick_picker_arrowSideButtonWidth"
+		        android:paddingLeft="@dimen/timepick_picker_arrowSideButtonPadding"
+		        android:visibility="gone"
+		        />
+		    <FrameLayout 
+		        android:id="@+id/timepick_picker_hoursDownButton"
+		        style="@style/timepick_picker_ArrowButton.Down"
+		        android:layout_width="@dimen/timepick_picker_arrowSideButtonWidth"
+		        android:paddingLeft="@dimen/timepick_picker_arrowSideButtonPadding"
+		    	>
+		    	<View style="@style/timepick_picker_ArrowIcon.Down"/>
+		    </FrameLayout>
+		</FrameLayout>
+		<TextView style="@style/timepick_picker_TimeText.Colon" />
+		<FrameLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    >
+		    <ListView
+			    android:id="@+id/timepick_picker_minutesList" 
+			    android:layout_width="@dimen/timepick_picker_arrowButtonWidth"
+			    android:layout_height="@dimen/timepick_picker_listHeight"
+			    android:layout_marginTop="@dimen/timepick_picker_listTopPadding"
+			    android:layout_marginBottom="@dimen/timepick_picker_listBottomPadding"
+			    />
+		    <FrameLayout 
+		        android:id="@+id/timepick_picker_minutesUpButton"
+		        style="@style/timepick_picker_ArrowButton.Up"
+		        android:layout_width="@dimen/timepick_picker_arrowSideButtonWidth"
+		        android:paddingRight="@dimen/timepick_picker_arrowSideButtonPadding"
+		    	>
+		    	<View style="@style/timepick_picker_ArrowIcon.Up"/>
+		    </FrameLayout>
+		    <TextView
+		        android:id="@+id/timepick_picker_minutesView"
+		        style="@style/timepick_picker_TimeText"
+		        android:layout_width="@dimen/timepick_picker_arrowSideButtonWidth"
+		        android:paddingRight="@dimen/timepick_picker_arrowSideButtonPadding"
+		        android:visibility="gone"
+		        />
+		    <FrameLayout 
+		        android:id="@+id/timepick_picker_minutesDownButton"
+		        style="@style/timepick_picker_ArrowButton.Down"
+		        android:layout_width="@dimen/timepick_picker_arrowSideButtonWidth"
+		        android:paddingRight="@dimen/timepick_picker_arrowSideButtonPadding"
+		    	>
+		    	<View style="@style/timepick_picker_ArrowIcon.Down"/>
+		    </FrameLayout>
+		</FrameLayout>
+	</LinearLayout>
+</merge>

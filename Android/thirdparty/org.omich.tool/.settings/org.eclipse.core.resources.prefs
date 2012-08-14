@@ -1,0 +1,14 @@
+eclipse.preferences.version=1
+encoding//src/org/omich/tool/activity/ForResultActivity.java=UTF-8
+encoding//src/org/omich/tool/activity/ForResultStarter.java=UTF-8
+encoding//src/org/omich/tool/activity/IForResultStarter.java=UTF-8
+encoding//src/org/omich/tool/constants/Strings.java=UTF-8
+encoding//src/org/omich/tool/db/DbHelper.java=UTF-8
+encoding//src/org/omich/tool/errors/OmRuntimeException.java=UTF-8
+encoding//src/org/omich/tool/events/Listeners.java=UTF-8
+encoding//src/org/omich/tool/lists/CycledAdapter.java=UTF-8
+encoding//src/org/omich/tool/lists/OmListAdapter.java=UTF-8
+encoding//src/org/omich/tool/lists/SelectedInMiddleListController.java=UTF-8
+encoding//src/org/omich/tool/lists/TaskListAdapter.java=UTF-8
+encoding//src/org/omich/tool/timepick/ITimePicker.java=UTF-8
+encoding//src/org/omich/tool/timepick/UnitSelectionController.java=UTF-8

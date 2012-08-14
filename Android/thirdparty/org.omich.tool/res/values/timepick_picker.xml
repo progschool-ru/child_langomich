@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <dimen name="timepick_picker_arrowButtonWidth">60dp</dimen>
+    <dimen name="timepick_picker_arrowButtonHeight">60dp</dimen>
+    <dimen name="timepick_picker_arrowSideButtonWidth">80dp</dimen>
+    <dimen name="timepick_picker_arrowSideButtonPadding">20dp</dimen>
+    <dimen name="timepick_picker_arrowTopButtonHeight">80dp</dimen>
+    <dimen name="timepick_picker_arrowTopButtonPadding">20dp</dimen>
+    
+    <dimen name="timepick_picker_listHeight">80dp</dimen>
+    <dimen name="timepick_picker_listTopPadding">70dp</dimen>
+    <dimen name="timepick_picker_listBottomPadding">50dp</dimen>
+    <dimen name="timepick_picker_listItemHeight">40dp</dimen>
+    
+    <dimen name="timepick_picker_arrowIconSize">48px</dimen>
+    
+    <style name="timepick_picker_ArrowButton">
+        <item name="android:layout_width">@dimen/timepick_picker_arrowButtonWidth</item>
+        <item name="android:layout_height">@dimen/timepick_picker_arrowButtonHeight</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="timepick_picker_ArrowButton.Up">
+        <item name="android:layout_height">@dimen/timepick_picker_arrowTopButtonHeight</item>
+        <item name="android:paddingTop">@dimen/timepick_picker_arrowTopButtonPadding</item>
+    </style>
+    
+    <style name="timepick_picker_ArrowButton.Down">
+        <item name="android:layout_gravity">bottom</item>
+    </style>
+    
+    <style name="timepick_picker_ArrowIcon">
+        <item name="android:layout_width">@dimen/timepick_picker_arrowIconSize</item>
+        <item name="android:layout_height">@dimen/timepick_picker_arrowIconSize</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:clickable">false</item>
+    </style>
+    
+    <style name="timepick_picker_ArrowIcon.Up">
+        <item name="android:background">@drawable/timepick_picker_up</item>
+    </style>
+    
+    <style name="timepick_picker_ArrowIcon.Down">
+        <item name="android:background">@drawable/timepick_picker_down</item>
+    </style>
+    
+    <style name="timepick_picker_TimeText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/timepick_picker_listItemHeight</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
+    
+    <style name="timepick_picker_TimeText.Colon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingTop">@dimen/timepick_picker_arrowTopButtonPadding</item>
+        <item name="android:text">@string/timepick_picker_colon</item>
+    </style>
+</resources>

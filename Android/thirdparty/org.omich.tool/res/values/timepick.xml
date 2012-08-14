@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <item name="timepick_picker_up" type="drawable">@drawable/blackwireframe_br_up</item>
+    <item name="timepick_picker_down" type="drawable">@drawable/blackwireframe_br_down</item>
+    
+    <item name="timepick_picker_customview" type="layout">@layout/timepick_empty</item>
+    <item name="timepick_picker_timeselector" type="layout">@layout/timepick_picker_hms</item>
+    
+    <string name="timepick_picker_colon">:</string>
+    <string name="timepick_picker_ok">Ok</string>
+    <string name="timepick_picker_reset">- reset</string>
+    <string name="timepick_picker_title">Set Time</string>
+</resources>
