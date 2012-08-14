@@ -8,11 +8,13 @@ import org.omich.tool.events.Listeners.IListenerInt;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class AddWordActivity extends BcActivity
 {
@@ -76,6 +78,7 @@ public class AddWordActivity extends BcActivity
 	}	
 	public void onAddButton (View v)
 	{
+		boolean error = false;
 		if(mAddWordTaskId != null)
 			return;
 
@@ -83,18 +86,39 @@ public class AddWordActivity extends BcActivity
 		String foreign = ((EditText)findViewById(R.id.addword_foreignEdit)).getText().toString();
 		String toast = getResources().getString(R.string.addword_report_added);
 
-		Intent intent = AddWordTask.createIntent(nativ, foreign, sp.getLong(PreferenceFields.DICT_ID, -1), toast);
-		mAddWordTaskId = getBcConnector().startTypicalTask(AddWordTask.class, intent, new IListener<Bundle>()
-			{
-				public void handle (Bundle bundle)
+		if(nativ.equals(""))
+		{
+			TextView errorView = (TextView) findViewById(R.id.addword__errorReport_nativ);
+			errorView.setTextColor(Color.RED);
+			errorView.setText(R.string.addword_report_empty);
+			error = true;
+		}
+		
+		if(foreign.equals(""))
+		{
+			TextView errorView = (TextView) findViewById(R.id.addword__errorReport_foreign);
+			errorView.setTextColor(Color.RED);
+			errorView.setText(R.string.addword_report_empty);
+			error = true;
+		}	
+		if(!error)
+		{
+			Intent intent = AddWordTask.createIntent(nativ, foreign, sp.getLong(PreferenceFields.DICT_ID, -1), toast);
+			mAddWordTaskId = getBcConnector().startTypicalTask(AddWordTask.class, 
+				intent, new IListener<Bundle>()
 				{
-					if(mIsDestroyed)
-						return;
+					public void handle (Bundle bundle)
+					{
+						if(mIsDestroyed)
+							return;
 	
-					mAddWordTaskId = null;
-				}
-			});
-		finish();
+						mAddWordTaskId = null;
+						
+						setResult(RESULT_OK);
+						finish();
+					}
+				});
+		}
 	}
 	public void onCancelButton (View v)
 	{

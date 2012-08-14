@@ -84,9 +84,7 @@ public class AddDictActivity extends BcActivity
 		        			Editor ed = sp.edit();
 		        			ed.putLong(PreferenceFields.DICT_ID, dictId);
 		        			ed.commit();
-		        		    Intent intent = new Intent();
-		        		    intent.putExtra("result", true);
-		        		    setResult(RESULT_OK, intent);		        			
+		        		    setResult(RESULT_OK);		        			
 							finish();
 						}
 					}
@@ -95,9 +93,7 @@ public class AddDictActivity extends BcActivity
 	}
 	public void onCancelButton (View v)
 	{	
-	    Intent intent = new Intent();
-	    intent.putExtra("result", false);
-	    setResult(RESULT_OK, intent);			
+	    setResult(RESULT_CANCELED);			
 		finish();
 	}	
 }

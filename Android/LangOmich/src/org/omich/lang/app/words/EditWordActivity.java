@@ -71,20 +71,15 @@ public class EditWordActivity extends BcActivity
 		
 						mEditWordTaskId = null;
 						
-						boolean success = true;
-						if(success)
-						{
-							Intent intent = new Intent();
-	        		    	intent.putExtra("result", true);
-	        		    	setResult(RESULT_OK, intent);
-						}
+	        		    setResult(RESULT_OK);
 						finish();
 					}
 				});		
 		}
 	}
 	public void onCancelButton (View v)
-	{			
+	{		
+		setResult(RESULT_CANCELED);
 		finish();
 	}		
 }

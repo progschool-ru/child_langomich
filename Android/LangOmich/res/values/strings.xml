@@ -50,7 +50,8 @@
     <string name="addword_text_cancel">Cancel</string>  
     <string name="addword_text_dict">Dictionary:</string>    
     <string name="addword_text_foreign">In a foreign language:</string>
-    <string name="addword_text_native">In a native language:</string>    
+    <string name="addword_text_native">In a native language:</string>   
+    <string name="addword_report_empty">You did not enter</string> 
     <string name="addword_report_added">Added the word</string>
     
     <string name="timing_report_success">Synchronization was successful</string> 

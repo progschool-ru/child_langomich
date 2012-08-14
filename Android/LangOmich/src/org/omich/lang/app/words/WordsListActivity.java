@@ -30,6 +30,10 @@ import android.widget.ViewFlipper;
 
 public class WordsListActivity extends ABActivity
 {
+	private final int REQUEST_CODE_ADD_DICT = 101;
+	private final int REQUEST_CODE_ADD_WORD = 102;
+	private final int REQUEST_CODE_EDIT_WORD = 103;
+	
 	private WordsListAdapter mWordsAdapter;
 	
 	private Animation animationFlipInSide;
@@ -146,7 +150,8 @@ public class WordsListActivity extends ABActivity
 		int id = item.getItemId();
 		if(id == R.id.app_menu_item_button_add_word)
 		{
-			getForResultStarter().startForResult(new Intent(this, AddWordActivity.class), null);
+		    Intent intent = new Intent(this, AddWordActivity.class);
+		    startActivityForResult(intent, REQUEST_CODE_ADD_WORD);				
 		}
 		else if(id == R.id.app_menu_item_button_game)
 		{
@@ -162,7 +167,7 @@ public class WordsListActivity extends ABActivity
 		intent.putExtra("id", word.id);
 		intent.putExtra("nativ", word.nativ);
 		intent.putExtra("foreign", word.foreign);
-		startActivityForResult(intent, 2);
+		startActivityForResult(intent, REQUEST_CODE_EDIT_WORD);
 	}	
 	public void onCopy (View v)
 	{
@@ -229,27 +234,18 @@ public class WordsListActivity extends ABActivity
 	private void startAddDictActivity()
 	{
 	    Intent intent = new Intent(this, AddDictActivity.class);
-	    startActivityForResult(intent, 1);		
+	    startActivityForResult(intent, REQUEST_CODE_ADD_DICT);		
 	}
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
-		if(resultCode == RESULT_OK && data != null)
+		if(resultCode == RESULT_OK)
 		{
-			if(requestCode == 1)
+			if(requestCode == REQUEST_CODE_ADD_DICT || 
+				requestCode ==  REQUEST_CODE_ADD_WORD ||
+				requestCode == REQUEST_CODE_EDIT_WORD )
 			{
-				if(data.getBooleanExtra("result", true))
-				{
-					reload();			
-				}			
-			}
-			else if(requestCode == 2)
-			{
-				if(data.getBooleanExtra("result", true))
-				{
-					mWordsAdapter.reloadItems();			
-				}
-				
+				reload();					
 			}
 			else if(requestCode == 3)
 			{
