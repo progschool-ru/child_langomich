@@ -12,10 +12,13 @@ import org.omich.tool.bcops.IBcConnector;
 import org.omich.tool.bcops.IBcTask;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 public class WordsListAdapter extends TaskListAdapter<Word>
 {
@@ -46,25 +49,22 @@ public class WordsListAdapter extends TaskListAdapter<Word>
 
 	@Override
 	protected void fillViewByData (View view, int position, Word item)
-	{
-		TextView tvn = (TextView)view.findViewById(R.id.item_wordslist_text_nativ);
-		tvn.setText(item.nativ);
-		TextView tvf = (TextView)view.findViewById(R.id.item_wordslist_text_foreign);
-		tvf.setText(item.foreign);
+	{	
+		TextView tvt = (TextView)view.findViewById(R.id.item_wordslist_text);
+		
+		SpannableStringBuilder text = new SpannableStringBuilder(item.foreign+" - "+item.nativ); 
+	    text.setSpan(new StyleSpan(Typeface.BOLD), 0, item.foreign.length(), 
+	    		  Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+	    tvt.setText(text);
+	      
 		TextView tvr = (TextView)view.findViewById(R.id.item_wordslist_text_rating);
 		tvr.setText(Integer.toString(item.rating));
-			
-		ViewFlipper mViewFlipper = (ViewFlipper)view.findViewById(R.id.viewflipper);
-
-		mViewFlipper.setInAnimation(null);
-		mViewFlipper.setOutAnimation(null);	
 		
-		int viewId = mViewFlipper.getCurrentView().getId();
-		if(position != getSelectedPosition() && viewId == R.id.screen_two)
-			mViewFlipper.showPrevious();
-		else if(position == getSelectedPosition() && viewId == R.id.screen_one)
-			mViewFlipper.showNext();	
-				
+		View sideScreen = view.findViewById(R.id.item_wordlist_screen_side);
+		if(position != getSelectedPosition())
+				sideScreen.setVisibility(View.INVISIBLE);
+		else if(position == getSelectedPosition())
+				sideScreen.setVisibility(View.VISIBLE);			
 	}
 	//=========================================================================
 	public static class LoadWordsTask implements IBcTask

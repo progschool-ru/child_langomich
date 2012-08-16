@@ -9,6 +9,7 @@ import org.omich.lang.apptool.activity.ABActivity;
 import org.omich.tool.events.Listeners.IListener;
 import org.omich.tool.events.Listeners.IListenerVoid;
 
+import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,14 +20,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.ViewFlipper;
 
 public class WordsListActivity extends ABActivity
 {
@@ -36,11 +34,10 @@ public class WordsListActivity extends ABActivity
 	
 	private WordsListAdapter mWordsAdapter;
 	
-	private Animation animationFlipInSide;
-	private Animation animationFlipOutSide;
-	private Animation animationFlipInMain;
-	private Animation animationFlipOutMain;
-	private ViewFlipper viewFlipper;
+	private Animation animationSideIn;
+	private Animation animationSideOut;
+	private View sideScreen;
+	private View returnButton;
 	
 	private Word word;
 	
@@ -60,7 +57,7 @@ public class WordsListActivity extends ABActivity
 		sp = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		getActionBar().setDisplayShowTitleEnabled(false);
-		getActionBar().setNavigationMode(getActionBar().NAVIGATION_MODE_LIST);
+		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		
 		ListView lv = (ListView)findViewById(R.id.wordslist_list);
 	
@@ -92,49 +89,33 @@ public class WordsListActivity extends ABActivity
 			}
 		});	
 		
-		animationFlipInSide = AnimationUtils.loadAnimation(this, R.anim.flipin_side);
-		animationFlipOutSide = AnimationUtils.loadAnimation(this, R.anim.flipout_side);
-		animationFlipInMain = AnimationUtils.loadAnimation(this, R.anim.flipin_main);
-		animationFlipOutMain = AnimationUtils.loadAnimation(this, R.anim.flipout_main);
+		animationSideIn = AnimationUtils.loadAnimation(this, R.anim.side_in);
+		animationSideOut = AnimationUtils.loadAnimation(this, R.anim.side_out);
 		
 		lv.setOnItemClickListener(new OnItemClickListener() 
 		{
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 			{
-				if(mWordsAdapter.getSelectedPosition() != -1 && viewFlipper != null)
+				if(mWordsAdapter.getSelectedPosition() != -1 && sideScreen != null)
 				{
-					viewFlipper.setInAnimation(animationFlipInMain);
-					viewFlipper.setOutAnimation(animationFlipOutMain);			
-					viewFlipper.showPrevious();
+					sideScreen.startAnimation(animationSideOut);
+					sideScreen.setVisibility(View.INVISIBLE);
+					returnButton.setVisibility(View.INVISIBLE);
 				}
-
+				
 				word = (Word)mWordsAdapter.getItem(position);
 				mWordsAdapter.setSelectedPosition(position);
 
-				viewFlipper = (ViewFlipper)view.findViewById(R.id.viewflipper);
-					
-				int viewId = viewFlipper.getCurrentView().getId();
-				if(viewId == R.id.screen_one)
-				{
-					viewFlipper.setInAnimation(animationFlipInSide);
-					viewFlipper.setOutAnimation(animationFlipOutSide);				
-					viewFlipper.showNext();	
-					ImageButton but = (ImageButton)view.findViewById(R.id.item_wordslist_button_return);
-					but.setOnClickListener(new OnClickListener()
-					{
-						public void onClick(View v)
-						{
-							viewFlipper.setInAnimation(animationFlipInMain);
-							viewFlipper.setOutAnimation(animationFlipOutMain);			
-							viewFlipper.showPrevious();
-							mWordsAdapter.setSelectedPosition(-1);
-						}
-					});
-				}	
+				sideScreen = view.findViewById(R.id.item_wordlist_screen_side); 
+				sideScreen.setVisibility(View.VISIBLE);
+				sideScreen.startAnimation(animationSideIn);
+				
+				returnButton = view.findViewById(R.id.item_wordlist_button_return); 
+				returnButton.setVisibility(View.VISIBLE);
+
 				mWordsAdapter.notifyDataSetChanged();
 			}
 		});
-
 	}
 	@Override 
 	public boolean onCreateOptionsMenu(Menu menu) 
@@ -168,6 +149,15 @@ public class WordsListActivity extends ABActivity
 		intent.putExtra("nativ", word.nativ);
 		intent.putExtra("foreign", word.foreign);
 		startActivityForResult(intent, REQUEST_CODE_EDIT_WORD);
+	}	
+	public void onReturn (View v)
+	{		
+		if(mWordsAdapter.getSelectedPosition() == -1)
+			return;
+		sideScreen.startAnimation(animationSideOut);
+		sideScreen.setVisibility(View.INVISIBLE);
+		returnButton.setVisibility(View.INVISIBLE);
+		mWordsAdapter.setSelectedPosition(-1);
 	}	
 	public void onCopy (View v)
 	{

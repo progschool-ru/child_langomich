@@ -1,51 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/viewflipper"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_wordlist_screen_main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
-        
-	<RelativeLayout
-		android:id="@+id/screen_one"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/item_wordslist_text_nativ"
+            android:id="@+id/item_wordslist_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/item_wordslist_text_foreign"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/item_wordslist_text_nativ" />
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@+id/item_wordslist_text_rating"
+            android:text="word" />
 
         <TextView
             android:id="@+id/item_wordslist_text_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="4dp"
+            android:text="0" />
 
-	</RelativeLayout>	
+    <View
+        android:id="@+id/item_wordlist_button_return"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/item_wordlist_screen_side"
+        android:layout_toLeftOf="@+id/item_wordslist_centerHorizontal"
+        android:clickable="true" 
+        android:visibility="invisible"
+        android:background="@drawable/button_return"
+        android:onClick="onReturn"/>
     
 	<RelativeLayout
-		android:id="@+id/screen_two"
-    	android:layout_width="match_parent"
-    	android:layout_height="wrap_content" >
-        
-    	<ImageButton
-        	android:id="@+id/item_wordslist_button_return"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/app_ic_return" />
-    	
+	    android:id="@+id/item_wordlist_screen_side"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_toRightOf="@+id/item_wordslist_centerHorizontal"
+	    android:visibility="invisible"
+	    android:background="@drawable/item_wordslist_background" >
+        	
 		<TableLayout
 	    	android:layout_width="match_parent"
 	    	android:layout_height="wrap_content"
@@ -60,24 +57,14 @@
 				<ImageButton
 	            	android:layout_width="wrap_content"
 	            	android:layout_height="wrap_content"
+	            	android:background="@drawable/item_wordslist_background"
 	            	android:src="@drawable/app_ic_edit"
 	            	android:onClick="onEdit"/>
-		        
-				<ImageButton
-	            	android:layout_width="wrap_content"
-	            	android:layout_height="wrap_content"
-	            	android:src="@drawable/app_ic_copy"
-	            	android:onClick="onCopy"/>
-			        
-				<ImageButton
-	            	android:layout_width="wrap_content"
-	            	android:layout_height="wrap_content"
-	            	android:src="@drawable/app_ic_cut"
-	            	android:onClick="onCut"/>
 			        	        
 				<ImageButton
 	            	android:layout_width="wrap_content"
 	            	android:layout_height="wrap_content"
+	            	android:background="@drawable/item_wordslist_background"
 	            	android:src="@drawable/app_ic_delete"
 	            	android:onClick="onDelete"/>	
 	            	
@@ -87,4 +74,11 @@
 			
 	</RelativeLayout>
 
-</ViewFlipper>
+	<TextView
+	    android:id="@+id/item_wordslist_centerHorizontal"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentTop="true"
+	    android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>	

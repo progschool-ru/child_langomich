@@ -6,6 +6,8 @@ import org.omich.lang.app.SettingsActivity;
 import org.omich.lang.app.db.Dict;
 import org.omich.lang.apptool.activity.BcActivity;
 import org.omich.tool.events.Listeners.IListenerVoid;
+
+import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -44,7 +46,7 @@ public class GameActivity extends BcActivity
 		setContentView(R.layout.app_screen_game);
 		sp = PreferenceManager.getDefaultSharedPreferences(this);
 		getActionBar().setDisplayShowTitleEnabled(false);
-		getActionBar().setNavigationMode(getActionBar().NAVIGATION_MODE_LIST);
+		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		
 		mDictsAdapter = new DictsListAdapter(this, getBcConnector(), false, new IListenerVoid()
 		{

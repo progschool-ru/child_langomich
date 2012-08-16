@@ -31,7 +31,6 @@ public class Timing
 	private SharedPreferences sp;
 	private boolean mIsDestroyed;
 	
-	public static final String CONNECTIVITY_SERVICE = "connectivity";
 	public String successText;
 	
 	public Timing(Context context, IBcConnector bcConnector)
@@ -136,7 +135,7 @@ public class Timing
 	}	
 	private boolean hasInternetConnection()
 	{
-		ConnectivityManager cm = (ConnectivityManager)context.getSystemService(CONNECTIVITY_SERVICE);
+		ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = cm.getActiveNetworkInfo();
 		return networkInfo != null && networkInfo.isConnected();
 	}
