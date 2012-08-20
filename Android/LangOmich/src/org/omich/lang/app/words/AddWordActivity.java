@@ -29,7 +29,7 @@ public class AddWordActivity extends BcActivity
 	{
 		super.onCreate(b);
 		setContentView(R.layout.app_screen_add_word);
-		dictSpinner = new DictSpinner((Spinner)findViewById(R.id.addword_dictSpinner), this,false, new IListenerInt()
+		dictSpinner = new DictSpinner((Spinner)findViewById(R.id.addword_dictSpinner), this, true, true, new IListenerInt()
 		{
 			public void handle (int key)
 			{ 
@@ -88,7 +88,7 @@ public class AddWordActivity extends BcActivity
 
 		if(nativ.equals(""))
 		{
-			TextView errorView = (TextView) findViewById(R.id.addword__errorReport_nativ);
+			TextView errorView = (TextView) findViewById(R.id.addword_errorReport_nativ);
 			errorView.setTextColor(Color.RED);
 			errorView.setText(R.string.addword_report_empty);
 			error = true;
@@ -96,7 +96,7 @@ public class AddWordActivity extends BcActivity
 		
 		if(foreign.equals(""))
 		{
-			TextView errorView = (TextView) findViewById(R.id.addword__errorReport_foreign);
+			TextView errorView = (TextView) findViewById(R.id.addword_errorReport_foreign);
 			errorView.setTextColor(Color.RED);
 			errorView.setText(R.string.addword_report_empty);
 			error = true;

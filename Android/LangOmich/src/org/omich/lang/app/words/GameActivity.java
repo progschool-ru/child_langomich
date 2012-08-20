@@ -45,6 +45,12 @@ public class GameActivity extends BcActivity
 		super.onCreate(b);
 		setContentView(R.layout.app_screen_game);
 		sp = PreferenceManager.getDefaultSharedPreferences(this);
+		if(sp.getLong(PreferenceFields.DICT_ID, -1) == -1)
+		{
+			startActivity(new Intent(this, WelcomeActivity.class));
+			finish();
+			return;
+		}
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		
@@ -134,7 +140,8 @@ public class GameActivity extends BcActivity
 	@Override
 	protected void onDestroy ()
 	{
-		game.destroy();
+		if(game != null)
+			game.destroy();
 		super.onDestroy();
 	}
 	@Override 
@@ -151,7 +158,8 @@ public class GameActivity extends BcActivity
 		int id = item.getItemId();
 		if(id == R.id.app_menu_item_button_dictionary)
 		{
-			getForResultStarter().startForResult(new Intent(this, WordsListActivity.class), null);
+			startActivity(new Intent(this, WordsListActivity.class));
+			finish();
 		}
 		else if(id == R.id.app_menu_item_button_settings)
 		{

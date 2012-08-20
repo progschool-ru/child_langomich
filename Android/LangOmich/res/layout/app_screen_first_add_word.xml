@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
+	<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -18,34 +18,23 @@
             android:layout_marginTop="20dp"
             android:text="@string/addword_text_dict" />
 
-        <Spinner
-            android:id="@+id/addword_dictSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+		<EditText
+        	android:id="@+id/first_addword_dictEdit"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_toRightOf="@+id/addword_textView_dict" />
-                
+            android:layout_marginTop="10dp" 
+            android:layout_toRightOf="@+id/addword_textView_dict"
+        	android:ems="10" />
+		
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/addword_textView_native"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/addword_text_native" />
-
-    <EditText
-        android:id="@+id/addword_nativEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10" />
-    
-    <RelativeLayout
+	<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
         
     	<TextView
-    	    android:id="@+id/addword_errorReport_nativ"
+    	    android:id="@+id/first_addword_errorReport_dict"
     	    android:layout_width="wrap_content"
     	    android:layout_height="wrap_content"
     	    android:layout_centerHorizontal="true" />
@@ -53,13 +42,35 @@
 	</RelativeLayout>
 	
     <TextView
-        android:id="@+id/addword_textView_foreign"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/addword_text_native" />
+
+    <EditText
+        android:id="@+id/first_addword_nativEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" />
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        
+    	<TextView
+    	    android:id="@+id/first_addword_errorReport_nativ"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:layout_centerHorizontal="true" />
+    
+	</RelativeLayout>
+	
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/addword_text_foreign" />
 
     <EditText
-        android:id="@+id/addword_foreignEdit"
+        android:id="@+id/first_addword_foreignEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10" />
@@ -69,7 +80,7 @@
         android:layout_height="wrap_content" >
         
     	<TextView
-    	    android:id="@+id/addword_errorReport_foreign"
+    	    android:id="@+id/first_addword_errorReport_foreign"
     	    android:layout_width="wrap_content"
     	    android:layout_height="wrap_content"
     	    android:layout_centerHorizontal="true" />
@@ -81,25 +92,23 @@
         android:layout_height="wrap_content" >
     		
 		<TextView
-    	    android:id="@+id/addword_centerHorizontal"
+    	    android:id="@+id/first_addword_centerHorizontal"
     	    android:layout_width="wrap_content"
     	    android:layout_height="wrap_content"
     	    android:layout_centerHorizontal="true" />
     	           
 	    <Button
-	        android:id="@+id/addword_button_cancel"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
-	        android:layout_toLeftOf="@+id/addword_centerHorizontal"
+	        android:layout_toLeftOf="@+id/first_addword_centerHorizontal"
 	        android:onClick="onCancelButton"
 	        android:text="@string/addword_text_cancel" />
 
         <Button
-            android:id="@+id/addword_button_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/addword_centerHorizontal"
+            android:layout_alignLeft="@+id/first_addword_centerHorizontal"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:onClick="onAddButton"

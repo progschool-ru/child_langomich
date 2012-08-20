@@ -8,46 +8,52 @@ import org.omich.tool.bcops.IBcToaster;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class CopyWordTask implements IBcTask
+public class FirstAddWordTask implements IBcTask
 {
-	public static Intent createIntent (String nativ, String foreign, int rating, long dictId, String taskSuccessText)
+	public static Intent createIntent (String nativ, String foreign, String dict,
+			String taskSuccessText)
 	{
 		Intent intent = new Intent();
 		intent.putExtra(BundleFields.WORD_NATIV, nativ);
 		intent.putExtra(BundleFields.WORD_FOREIGN, foreign);
-		intent.putExtra(BundleFields.WORD_RATING, rating);
-		intent.putExtra(BundleFields.WORD_DICT_ID, dictId);
+		intent.putExtra(BundleFields.DICT_NAME, dict);
 		intent.putExtra(BundleFields.TASK_SUCCESS_TEXT, taskSuccessText);
 		return intent;
 	}
 
 	private IBcToaster mBcToaster;
-	private String mNativ;
 	private String mForeign;
-	private int mRating;
-	private long mDictID;
+	private String mNativ;
+	private String mDict;
 	private String mTaskSuccessText;
 	private IWStorage mDb;
 
 	public void init(BcTaskEnv env)
 	{
 		mBcToaster = env.bcToaster;
-		mNativ = env.extras.getString(BundleFields.WORD_NATIV);
 		mForeign = env.extras.getString(BundleFields.WORD_FOREIGN);
-		mRating = env.extras.getInt(BundleFields.WORD_RATING);
-		mDictID = env.extras.getLong(BundleFields.WORD_DICT_ID);
+		mNativ = env.extras.getString(BundleFields.WORD_NATIV);
+		mDict = env.extras.getString(BundleFields.DICT_NAME);
 		mTaskSuccessText = env.extras.getString(BundleFields.TASK_SUCCESS_TEXT);
 		mDb = DbCreator.createWritable(env.context);
 	}
 
 	public Bundle execute()
-	{	
-		boolean success = mDb.copyWord(mNativ, mForeign, mRating, mDictID);
-		if(success && mTaskSuccessText != null)
-				mBcToaster.showToast(mTaskSuccessText);		
-		mDb.destroy();	
+	{
+		long dictId = mDb.addDict(mDict);
+		long wordId = -1;
+		if(dictId != -1)
+			wordId = mDb.addWord(mNativ, mForeign, dictId);
 		
-		return null;
-	}
+		if(mTaskSuccessText != null && dictId != -1 && wordId != -1)
+		{	
+			mBcToaster.showToast(mTaskSuccessText);
+		}
 
+		mDb.destroy();
+		
+		Bundle result = new Bundle();
+		result.putLong(BundleFields.DICT_ID, dictId);
+		return result;
+	}
 }

@@ -1,10 +1,7 @@
 package org.omich.lang.app.db;
 
-import java.util.Date;
-
 import org.omich.tool.log.Log;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -72,8 +69,7 @@ public class SQLiteHelper extends SQLiteOpenHelper
 	{
 		database.execSQL(CREATE_DICTS_QUERY);
 		database.execSQL(CREATE_WORDS_QUERY);
-//		database.execSQL(String.format(CREATE_INDEX_TEMPLATE, LgsCols.SERVER_ID, LGS_NAME));		
-		createDefaultDict(database);
+//		database.execSQL(String.format(CREATE_INDEX_TEMPLATE, LgsCols.SERVER_ID, LGS_NAME));
 	}
 
 	@Override
@@ -81,14 +77,5 @@ public class SQLiteHelper extends SQLiteOpenHelper
 	{
 		Log.wtf(this.getClass(), "Should never try to upgrade in this version!"
 				+ "oldV: " + oldVersion + ", newV: " + newVersion, null);
-	}
-	
-	private void createDefaultDict (SQLiteDatabase db)
-	{
-		ContentValues cv = new ContentValues();
-		cv.put(DictsCols.NAME, "default");
-		Long time = new Date().getTime();
-		cv.put(DictsCols.TIME, time);
-		db.insert(TNAME_DICTS, null, cv);
 	}
 }

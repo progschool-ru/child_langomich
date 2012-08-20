@@ -12,15 +12,6 @@
         android:label="@string/app_name" android:theme="@android:style/Theme.Holo.Light">
         <service android:name="org.omich.tool.bcops.BcService" android:exported="false"/>
 
- <!--        <activity
-            android:name=".app.TempActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-         -->
         <activity
             android:name=".app.words.GameActivity"
             android:label="@string/training_lable">
@@ -28,25 +19,27 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>            
-        </activity>         
+        </activity>     
+        <activity
+            android:name=".app.words.WelcomeActivity"
+            android:label="@string/welcome_title">
+        </activity>          
+        <activity
+            android:name=".app.words.FirstAddWordActivity"
+            android:label="@string/addword_title">
+        </activity>            
         <activity
             android:name=".app.words.AddWordActivity"
             android:label="@string/addword_title">
         </activity>
-         <activity
+        <activity
             android:name=".app.words.AddDictActivity"
             android:label="@string/adddict_title"
             android:theme="@android:style/Theme.Holo.Light.Dialog">
-        </activity>   
-         <activity
-            android:name=".app.words.DictsListForChooseActivity"
-            android:label="@string/dictslist_title"
-            android:theme="@android:style/Theme.Holo.Light.Dialog">
-        </activity>          
+        </activity>           
          <activity
             android:name=".app.words.EditWordActivity"
-            android:label="@string/editword_title"
-            android:theme="@android:style/Theme.Holo.Light.Dialog">
+            android:label="@string/editWord_title">
         </activity>              
         <activity
             android:name=".app.words.WordsListActivity"

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
+    <string name="welcome_title">Smart dictionary</string> 
+    <string name="welcome_text_greeting">Welcome to our wonderful application. It will make you a hundred times smarter, just have to add the first word.</string> 
+    <string name="welcome_text_start">Start</string> 
+    
     <string name="app_name">LangOmich</string>   
     
     <string name="training_lable">Game</string>
@@ -24,13 +28,14 @@
     <string name="wordslist_report_copied">Copied the word</string>
     <string name="wordslist_report_moved">Moved the word</string>
     
-    <string name="editword_title">Editor of the word</string>
-    <string name="editword_text_nativ">In a native language:</string>
-    <string name="editword_text_foreign">In a foreign language:</string>
-    <string name="editword_text_cancel">Cancel</string>
-    <string name="editword_text_change">Change</string>   
-    <string name="editword_text_empty">You did not enter</string>
-    <string name="editword_report_changed">Changed the word</string>
+    <string name="editWord_title">Editor of the word</string>
+    <string name="editWord_text_dict">Dictionary:</string>
+    <string name="editWord_text_nativ">In a native language:</string>
+    <string name="editWord_text_foreign">In a foreign language:</string>
+    <string name="editWord_text_cancel">Cancel</string>
+    <string name="editWord_text_edit">Edit</string>   
+    <string name="editWord_text_empty">You did not enter</string>
+    <string name="editWord_report_changed">Changed the word</string>
     
     <string name="dictslist_title">Select a dictionary</string>
     <string name="dictslist_text_cancel">Cancel</string>
@@ -53,6 +58,10 @@
     <string name="addword_text_native">In a native language:</string>   
     <string name="addword_report_empty">You did not enter</string> 
     <string name="addword_report_added">Added the word</string>
+    
+    <string name="first_addword_text_exemple_dict">Russian</string>
+    <string name="first_addword_text_exemple_nativ">Hello</string>
+    <string name="first_addword_text_exemple_foreign">Привет</string>
     
     <string name="timing_report_success">Synchronization was successful</string> 
     

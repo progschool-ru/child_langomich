@@ -27,7 +27,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		mDb.close();
 		mDb = null;
 	}
-
+	
 	public long addWord (String nativ, String foreign, long dictId)
 	{
 		nativ = nativ.trim();
@@ -82,7 +82,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		}
 		catch(Exception e) {return false;}
 	}
-	public boolean changeWord(long id, String nativ, String foreign)
+	public boolean changeWord(long id, String nativ, String foreign, long dictId)
 	{
 		try
 		{
@@ -92,6 +92,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 			ContentValues values = new ContentValues();
 			values.put(WordsCols.NATIV, nativ);	
 			values.put(WordsCols.FOREIGN, foreign);	
+			values.put(WordsCols.DICT_ID, dictId);	
 			values.put(WordsCols.TIME, time);
 			String where = WordsCols.ID + " = " + id;
 			mDb.update(TNAME_WORDS, values, where, null);	
