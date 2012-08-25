@@ -23,6 +23,8 @@ public class AddDictActivity extends BcActivity
 	
 	private boolean mIsDestroyed;
 	private SharedPreferences sp;
+	
+	private boolean changeDictInPreferences;
 	//==== live cycle =========================================================
 	@Override
 	protected void onCreate (Bundle b)
@@ -30,6 +32,7 @@ public class AddDictActivity extends BcActivity
 		super.onCreate(b);
 		setContentView(R.layout.app_dialog_adddict);
 		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		changeDictInPreferences = getIntent().getBooleanExtra("changeDictInPreferences", true);
 		getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 	}
 	
@@ -79,13 +82,20 @@ public class AddDictActivity extends BcActivity
 							errorView.setTextColor(Color.RED);
 							errorView.setText(R.string.adddict_report_in_base);														
 						}
-						else
+						else if(changeDictInPreferences)
 						{
 		        			Editor ed = sp.edit();
 		        			ed.putLong(PreferenceFields.DICT_ID, dictId);
 		        			ed.commit();
 		        		    setResult(RESULT_OK);		        			
 							finish();
+						}
+						else
+						{
+		        			Intent data = new Intent();
+		        			data.putExtra("dictId", dictId);							
+		        		    setResult(RESULT_OK, data);		        			
+							finish();							
 						}
 					}
 				});		

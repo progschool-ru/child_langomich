@@ -4,7 +4,6 @@ import org.omich.lang.R;
 import org.omich.lang.apptool.activity.BcActivity;
 import org.omich.tool.events.Listeners.IListener;
 import org.omich.tool.events.Listeners.IListenerInt;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,6 +22,8 @@ public class EditWordActivity extends BcActivity
 	private String foreign;
 	private long id;
 
+	private final int REQUEST_CODE_ADD_DICT = 101;
+	
 	//==== live cycle =========================================================
 	protected void onCreate (Bundle b)
 	{
@@ -31,19 +32,35 @@ public class EditWordActivity extends BcActivity
 		nativ = getIntent().getExtras().getString("nativ");
 		foreign = getIntent().getExtras().getString("foreign");
 		setContentView(R.layout.app_screen_edit_word);
-		dictSpinner = new DictSpinner((Spinner)findViewById(R.id.editWord_dictSpinner), this, false, false, new IListenerInt()
+
+		dictSpinner = new DictSpinner((Spinner)findViewById(R.id.editWord_dictSpinner), this, true, false, new IListenerInt()
 		{
 			public void handle (int key)
 			{ 
-				if(key == dictSpinner.ADD_DICT)
+				if(key == DictSpinner.ADD_DICT)
 					startAddDictActivity();
-				else if(key == dictSpinner.SELECT_DICT)
-					reload();
 			}			
-		});		
+		});
+		
 		((EditText)findViewById(R.id.editWord_edit_nativ)).setText(nativ);
 		((EditText)findViewById(R.id.editWord_edit_foreign)).setText(foreign);		
 	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+		if(requestCode == REQUEST_CODE_ADD_DICT)
+		{
+			if(resultCode == RESULT_OK)
+			{
+				if(data!= null)
+					dictSpinner.reload(data.getLongExtra("dictId", DictSpinner.NULL_DICT));	
+				else
+					dictSpinner.reload(DictSpinner.NULL_DICT);
+			}
+			else if(resultCode == RESULT_CANCELED)
+				dictSpinner.reload(DictSpinner.NULL_DICT);
+		}
+	}		
 	@Override
 	protected void onDestroy ()
 	{
@@ -56,14 +73,11 @@ public class EditWordActivity extends BcActivity
 		dictSpinner.destroy();
 		super.onDestroy();
 	}
-	private void reload()
-	{				
-//		dictSpinner.reload();			
-	}	
 	private void startAddDictActivity()
 	{
 	    Intent intent = new Intent(this, AddDictActivity.class);
-	    startActivityForResult(intent, 1);		
+	    intent.putExtra("changeDictInPreferences", false);
+	    startActivityForResult(intent, REQUEST_CODE_ADD_DICT);		
 	}	
 	//==== events =============================================================	
 	public void onEditButton (View v)
@@ -94,7 +108,7 @@ public class EditWordActivity extends BcActivity
 		
 		if(!error)
 		{
-			long dictId = dictSpinner.getSelectedItemTableId();
+			long dictId = dictSpinner.getIdFromDBForSelectedItem();
 			Intent intent = EditWordTask.createIntent(id, newNativ, newForeign, dictId, taskAddText);
 			mEditWordTaskId = getBcConnector().startTypicalTask(EditWordTask.class, intent, new IListener<Bundle>()
 				{

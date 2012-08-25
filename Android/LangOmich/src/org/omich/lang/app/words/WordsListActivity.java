@@ -225,12 +225,17 @@ public class WordsListActivity extends ABActivity
 			if(	requestCode == REQUEST_CODE_ADD_DICT || 
 				requestCode == REQUEST_CODE_ADD_WORD ||
 				requestCode == REQUEST_CODE_EDIT_WORD )
-					reload();					
-		
+					reload();							
 		}
 	}	
 	private void reload()
 	{
+		if(mWordsAdapter.getSelectedPosition() != -1 && sideScreen != null)
+		{
+			sideScreen.setVisibility(View.INVISIBLE);
+			returnButton.setVisibility(View.INVISIBLE);
+		}		
+		mWordsAdapter.setSelectedPosition(-1);
 		mWordsAdapter.setNewDictId(sp.getLong(PreferenceFields.DICT_ID, -1));
 		mWordsAdapter.reloadItems();	
 		mDictsAdapter.reloadItems();

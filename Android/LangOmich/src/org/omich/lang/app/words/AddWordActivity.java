@@ -23,6 +23,9 @@ public class AddWordActivity extends BcActivity
 	private boolean mIsDestroyed;
 	private DictSpinner dictSpinner;
 	protected SharedPreferences sp;
+	
+	private final int REQUEST_CODE_ADD_DICT = 101;
+	
 	//==== live cycle =========================================================
 	@Override
 	protected void onCreate (Bundle b)
@@ -33,10 +36,8 @@ public class AddWordActivity extends BcActivity
 		{
 			public void handle (int key)
 			{ 
-				if(key == dictSpinner.ADD_DICT)
+				if(key == DictSpinner.ADD_DICT)
 					startAddDictActivity();
-				else if(key == dictSpinner.SELECT_DICT)
-					reload();
 			}			
 		});
 		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -64,18 +65,20 @@ public class AddWordActivity extends BcActivity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
-		if(requestCode == 1 && resultCode == RESULT_OK && data != null)
+		if(requestCode == REQUEST_CODE_ADD_DICT)
 		{
-			if(data.getBooleanExtra("result", true))
+			if(resultCode == RESULT_OK)
 			{
-				reload();			
-			}			
+				if(data!= null)
+					dictSpinner.reload(data.getLongExtra("dictId", DictSpinner.NULL_DICT));	
+				else
+					dictSpinner.reload(DictSpinner.NULL_DICT);
+			}
+			else if(resultCode == RESULT_CANCELED)
+				dictSpinner.reload(DictSpinner.NULL_DICT);
 		}
 	}	
-	private void reload()
-	{				
-		dictSpinner.reload();			
-	}	
+
 	public void onAddButton (View v)
 	{
 		boolean error = false;
@@ -122,6 +125,7 @@ public class AddWordActivity extends BcActivity
 	}
 	public void onCancelButton (View v)
 	{
+		setResult(RESULT_CANCELED);
 		finish();
 	}
 }
