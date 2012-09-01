@@ -23,6 +23,7 @@ import android.widget.TextView;
 public class WordsListAdapter extends TaskListAdapter<Word>
 {
 	private long dictId = -1;
+	private String text = "";
 	
 	public WordsListAdapter (Context context, IBcConnector conn, Long dictId)
 	{
@@ -33,11 +34,15 @@ public class WordsListAdapter extends TaskListAdapter<Word>
 	{
 		this.dictId = dictId;
 	}
+	public void setNewText(String text)
+	{
+		this.text = text;
+	}	
 	//==== TaskListAdapter ===================================================
 	@Override
 	protected Class<? extends IBcTask> getLoadItemsTaskClass (){return LoadWordsTask.class;}
 	@Override
-	public Intent createLoadItemsIntent (){return LoadWordsTask.createIntent(dictId);}
+	public Intent createLoadItemsIntent (){return LoadWordsTask.createIntent(dictId, text);}
 	@Override
 	protected String getListBundleField (){return BundleFields.WORDS_LIST;}
 	
@@ -69,25 +74,28 @@ public class WordsListAdapter extends TaskListAdapter<Word>
 	//=========================================================================
 	public static class LoadWordsTask implements IBcTask
 	{
-		public static Intent createIntent (long dictId) 
+		public static Intent createIntent (long dictId, String text) 
 		{
 			Intent intent = new Intent();
 			intent.putExtra(BundleFields.WORD_DICT_ID, dictId);
+			intent.putExtra(BundleFields.TEXT, text);
 			return intent;
 		}
 
 		private IRStorage mDb;
 		private long mDictId;
+		private String mText;
 
 		public void init(BcTaskEnv env)
 		{
 			mDictId = env.extras.getLong(BundleFields.WORD_DICT_ID);
+			mText = env.extras.getString(BundleFields.TEXT);
 			mDb = DbCreator.createReadable(env.context);
 		}
 
 		public Bundle execute()
 		{
-			ArrayList<Word> words = new ArrayList<Word>(mDb.getWordsByDictId(mDictId));
+			ArrayList<Word> words = new ArrayList<Word>(mDb.getWordsByDictIdAndText(mDictId, mText));
 			Bundle result = new Bundle();
 			result.putParcelableArrayList(BundleFields.WORDS_LIST, words);
 			mDb.destroy();

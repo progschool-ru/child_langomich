@@ -85,6 +85,36 @@ abstract public class DbBaseRStorage implements IRStorage
 		
 		return answer;
 	}
+	public List<Word> getWordsByDictIdAndText (Long dictId, String text)
+	{
+		final List<Word> answer = new ArrayList<Word>();
+		Cursor cursor;
+	
+		if(text.equals(""))
+		{
+			String where = WordsCols.DICT_ID + "=" + dictId +" AND "+WordsCols.NATIV + "<> ?";
+			cursor = mDb.query(TNAME_WORDS, 
+					new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.ID}, 
+					where, new String[]{""}, null, null, null);
+		}
+		else
+		{
+			String where = WordsCols.DICT_ID + "=" + dictId +" AND ("
+					+WordsCols.NATIV + " LIKE '%"+text+"%' OR "+WordsCols.FOREIGN + " LIKE '%"+text+"%')";
+			cursor = mDb.query(TNAME_WORDS, 
+					new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.ID}, 
+					where, null, null, null, null);
+		}
+		DbHelper.iterateCursorAndClose(cursor, new CursorIterator()
+		{
+			public void handle(Cursor cursor)
+			{
+				Word word = new Word(cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getLong(3));
+				answer.add(word);
+			}
+		});	
+		return answer;
+	}	
 	public List<Word> getWordsByTime (Long mobileTime)
 	{
 		String where = WordsCols.TIME + ">" + mobileTime;

@@ -16,6 +16,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +26,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ListView;
 
 public class WordsListActivity extends ABActivity
@@ -67,6 +70,18 @@ public class WordsListActivity extends ABActivity
 		
 		lv.setAdapter(mWordsAdapter);
 
+		EditText search = (EditText)findViewById(R.id.wordslist_edit_text);
+		search.addTextChangedListener(new TextWatcher()
+		{
+			public void afterTextChanged(Editable s) 
+			{
+				mWordsAdapter.setNewText(s.toString());
+				mWordsAdapter.reloadItems();
+			}
+			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+			public void onTextChanged(CharSequence s, int start, int before, int count){}
+		}); 
+		
 		mDictsAdapter = new DictsListAdapter(this, getBcConnector(), true, new IListenerVoid()
 		{
 			public void handle ()
@@ -87,8 +102,8 @@ public class WordsListActivity extends ABActivity
         			onSelectDict(position);				
 				return true;
 			}
-		});	
-		
+		});
+		    
 		animationSideIn = AnimationUtils.loadAnimation(this, R.anim.side_in);
 		animationSideOut = AnimationUtils.loadAnimation(this, R.anim.side_out);
 		

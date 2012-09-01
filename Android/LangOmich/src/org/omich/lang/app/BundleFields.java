@@ -12,6 +12,7 @@ public class BundleFields
 	public static final String BC_RESULT           = BcService.BF_RESULT;
 	public static final String BC_SUCCESS          = BcService.BF_SUCCESS;
 	
+	public static final String TEXT          	   = "text";	
 	public static final String DICTS_LIST          = "dictsList";	
 	public static final String DICTS_WITH_NEW_DICT = "dictsWithNewDict";
 	public static final String TASK_ERROR_TEXT     = "taskErrorText";
