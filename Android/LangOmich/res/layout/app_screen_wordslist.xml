@@ -4,11 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-    <EditText 
+    
+	<LinearLayout 
+    	android:focusable="true"
+    	android:focusableInTouchMode="true" 
+		android:layout_width="0px"
+    	android:layout_height="0px" />
+	
+    <EditText
         android:id="@+id/wordslist_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:hint="@string/wordslist_text_search" />
+
     <ListView
         android:id="@+id/wordslist_list"
         android:layout_width="match_parent"

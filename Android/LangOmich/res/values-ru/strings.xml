@@ -27,6 +27,7 @@
     <string name="wordslist_report_deleted">Слово успешно удалено</string>
     <string name="wordslist_report_copied">Слово успешно скопировано</string>
     <string name="wordslist_report_moved">Слово успешно перемещено</string>
+    <string name="wordslist_text_search">Поиск</string>
     
     <string name="editWord_title">Редактор слова</string>
     <string name="editWord_text_dict">Словарь:</string>

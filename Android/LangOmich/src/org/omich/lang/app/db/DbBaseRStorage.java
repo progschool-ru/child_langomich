@@ -157,9 +157,21 @@ abstract public class DbBaseRStorage implements IRStorage
 			allSize = allSize + size[i];
 		}
 		cursor.close();		
-		if(allSize < n)
-			return getWordsByDictId(dictId);
+		
 		Random random = new Random();
+		if(allSize < n)
+		{
+			answer = getWordsByDictId(dictId);
+			List<Word> answer2 = new ArrayList<Word>();
+			for(int i = allSize; i > 0; i--)
+			{
+				int r = random.nextInt(i);
+				Word word = answer.get(r);
+				answer2.add(word);
+				answer.remove(r);
+			}
+			return answer2;
+		}		
 		int r = 0;
 		int k = 0;
 		for(int i = 0; i < n; i++) // заполнение таблицы: сколько слов каждого рейтинга должно быть в выборке
@@ -242,7 +254,15 @@ abstract public class DbBaseRStorage implements IRStorage
 			k++;
 			if(r  == n)
 				break;
-		}		
-		return answer;
+		}
+		List<Word> answer2 = new ArrayList<Word>();
+		for(int i = n; i > 0; i--)
+		{
+			r = random.nextInt(i);
+			Word word = answer.get(r);
+			answer2.add(word);
+			answer.remove(r);
+		}			
+		return answer2;
 	}
 }
