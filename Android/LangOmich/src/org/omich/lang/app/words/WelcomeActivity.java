@@ -25,7 +25,9 @@ public class WelcomeActivity extends AppActivity
 	{
 		if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_ADD_WORD )
 		{
-			startActivity(new Intent(this, WordsListActivity.class));
+			Intent i = new Intent(this, WordsListActivity.class);
+			i.putExtra("itIsFirst", true);
+			startActivity(i);
 			finish();
 		}
 	}		

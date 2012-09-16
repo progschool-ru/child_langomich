@@ -45,12 +45,19 @@ public class GameActivity extends BcActivity
 		super.onCreate(b);
 		setContentView(R.layout.app_screen_game);
 		sp = PreferenceManager.getDefaultSharedPreferences(this);
+		
 		if(sp.getLong(PreferenceFields.DICT_ID, -1) == -1)
 		{
 			startActivity(new Intent(this, WelcomeActivity.class));
 			finish();
 			return;
 		}
+		
+		if(this.getIntent().getBooleanExtra("itIsFirst", false))
+		{
+			getForResultStarter().startForResult(new Intent(this, WordsListActivity.class), null);			
+		}
+		
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		
@@ -158,8 +165,7 @@ public class GameActivity extends BcActivity
 		int id = item.getItemId();
 		if(id == R.id.app_menu_item_button_dictionary)
 		{
-			startActivity(new Intent(this, WordsListActivity.class));
-			finish();
+			getForResultStarter().startForResult(new Intent(this, WordsListActivity.class), null);
 		}
 		else if(id == R.id.app_menu_item_button_settings)
 		{
