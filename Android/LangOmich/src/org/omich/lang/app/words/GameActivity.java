@@ -69,7 +69,7 @@ public class GameActivity extends BcActivity
 			}			
 		});
 		mDictsAdapter.reloadItems();
-		
+	
 		getActionBar().setListNavigationCallbacks(mDictsAdapter, new OnNavigationListener() 
 		{
 			public boolean onNavigationItemSelected(int position, long itemId) 
@@ -166,10 +166,6 @@ public class GameActivity extends BcActivity
 		if(id == R.id.app_menu_item_button_dictionary)
 		{
 			getForResultStarter().startForResult(new Intent(this, WordsListActivity.class), null);
-		}
-		else if(id == R.id.app_menu_item_button_settings)
-		{
-			getForResultStarter().startForResult(new Intent(this, SettingsActivity.class), null);
 		}
 		return true;
     }	

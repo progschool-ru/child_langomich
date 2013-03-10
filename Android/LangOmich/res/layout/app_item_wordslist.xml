@@ -10,8 +10,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="8dp"
-            android:layout_toLeftOf="@+id/item_wordslist_text_rating"
+            android:layout_marginRight="8dp"      
+            android:paddingLeft="8dp" 
+            android:minHeight="37dp"     
+            android:layout_toLeftOf="@+id/item_wordslist_text_rating"            
+            android:gravity="center_vertical"
+            android:textSize="18sp"
             android:text="word" />
 
         <TextView
@@ -21,64 +25,69 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="4dp"
+            android:paddingRight="8dp"
+            android:minHeight="37dp"
             android:layout_marginTop="4dp"
-            android:text="0" />
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:text="0" />
 
     <View
         android:id="@+id/item_wordlist_button_return"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/item_wordlist_screen_side"
+        android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@+id/item_wordslist_centerHorizontal"
-        android:clickable="true" 
-        android:visibility="invisible"
         android:background="@drawable/button_return"
-        android:onClick="onReturn"/>
+        android:clickable="true"
+        android:onClick="onReturn"
+        android:visibility="invisible" />
     
-	<RelativeLayout
-	    android:id="@+id/item_wordlist_screen_side"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_toRightOf="@+id/item_wordslist_centerHorizontal"
-	    android:visibility="invisible"
-	    android:background="@drawable/item_wordslist_background" >
-        	
-		<TableLayout
-	    	android:layout_width="match_parent"
-	    	android:layout_height="wrap_content"
-	    	android:shrinkColumns="*"
-	    	android:stretchColumns="*" 
-	    	android:layout_toRightOf="@+id/item_wordslist_button_return">
-	    	
-			<TableRow
-	        	android:layout_width="wrap_content"
-	        	android:layout_height="wrap_content" >
-	        	
-				<ImageButton
-	            	android:layout_width="wrap_content"
-	            	android:layout_height="wrap_content"
-	            	android:background="@drawable/item_wordslist_button"
-	            	android:src="@drawable/app_ic_edit"
-	            	android:onClick="onEdit"/>
-			        	        
-				<ImageButton
-	            	android:layout_width="wrap_content"
-	            	android:layout_height="wrap_content"
-	            	android:background="@drawable/item_wordslist_button"
-	            	android:src="@drawable/app_ic_delete"
-	            	android:onClick="onDelete"/>	
-	            	
-	 		</TableRow> 
-	 		     
-		</TableLayout>	
-			
-	</RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/item_wordlist_screen_side"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/item_wordslist_centerHorizontal"
+            android:visibility="invisible"
+            android:background="@drawable/item_wordslist_background" >
+                
+                <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:shrinkColumns="*"
+                android:stretchColumns="*" 
+                android:layout_toRightOf="@+id/item_wordslist_button_return">
+                
+                        <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+                        
+                                <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/item_wordslist_button"
+                        android:src="@drawable/app_ic_edit"
+                        android:onClick="onEdit"/>
+                                                
+                                <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/item_wordslist_button"
+                        android:src="@drawable/app_ic_delete"
+                        android:onClick="onDelete"/>    
+                        
+                        </TableRow> 
+                             
+                </TableLayout>  
+                        
+        </RelativeLayout>
 
-	<TextView
-	    android:id="@+id/item_wordslist_centerHorizontal"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentTop="true"
-	    android:layout_centerHorizontal="true"/>
+        <TextView
+            android:id="@+id/item_wordslist_centerHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
 
-</RelativeLayout>	
+</RelativeLayout>       
