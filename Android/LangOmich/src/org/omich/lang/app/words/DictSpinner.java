@@ -5,14 +5,15 @@ import org.omich.lang.app.db.Dict;
 import org.omich.tool.bcops.BcConnector;
 import org.omich.tool.events.Listeners.IListenerInt;
 import org.omich.tool.events.Listeners.IListenerVoid;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Spinner;
 
 public class DictSpinner
 {

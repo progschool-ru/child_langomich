@@ -44,15 +44,7 @@
         <activity
             android:name=".app.words.WordsListActivity"
             android:label="@string/wordslist_title">
-        </activity>
-  		<activity android:name=".app.SettingsActivity"
-			android:label="@string/settings_title">
-		</activity>	      
-        <activity
-            android:name=".app.NewAccountActivity"
-            android:label="@string/newaccount_title"
-            android:theme="@android:style/Theme.Holo.Light.Dialog">
-        </activity>        
+        </activity> 
         
     </application>
 	

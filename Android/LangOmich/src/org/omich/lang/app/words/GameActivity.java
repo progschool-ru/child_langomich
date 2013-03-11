@@ -2,7 +2,6 @@ package org.omich.lang.app.words;
 
 import org.omich.lang.R;
 import org.omich.lang.app.PreferenceFields;
-import org.omich.lang.app.SettingsActivity;
 import org.omich.lang.app.db.Dict;
 import org.omich.lang.apptool.activity.BcActivity;
 import org.omich.tool.events.Listeners.IListenerVoid;
