@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.omich.lang.R;
 import org.omich.lang.app.BundleFields;
+import org.omich.lang.app.db.ListItem;
 import org.omich.lang.app.db.Word;
 import org.omich.tool.bcops.BcConnector;
 import org.omich.tool.events.Listeners.IListener;
@@ -23,7 +24,7 @@ public class Game
 	private int currentNumber = 0;
 	private Word word;
 	private int[] weight = {512, 256, 128, 64, 32, 16, 8, 4, 2, 1};
-	private ArrayList<Word> words;
+	private ArrayList<ListItem> words;
 	
 	private String dictIsEmptyNativ;
 	private String dictIsEmptyEnglish;
@@ -72,17 +73,20 @@ public class Game
 	}
 	public void changeTheRating(int key)
 	{
-		switch (key)
+		if(word != null)
 		{
-			case UPGRADE:				
-				if(word.rating<9)
-					setNewRating(word.id, word.rating + 1);
-				break;
-		    case DOWNGRADE:
-				if(word.rating>2)
-					setNewRating(word.id,word.rating - 2);
-				break;
-		}		
+			switch (key)
+			{
+				case UPGRADE:				
+					if(word.rating<9)
+						setNewRating(word.id, word.rating + 1);
+					break;
+			    case DOWNGRADE:
+					if(word.rating>2)
+						setNewRating(word.id,word.rating - 2);
+					break;
+			}	
+		}
 	}
 	public void getNextWord()
 	{
@@ -107,7 +111,7 @@ public class Game
 								
 								mGetRandomWordsTaskId = null;
 			
-								words = b.<Word>getParcelableArrayList(BundleFields.WORDS_LIST);	
+								words = b.<ListItem>getParcelableArrayList(BundleFields.WORDS_LIST);	
 								if(words == null)
 									realNumber = 0;
 								else
@@ -125,11 +129,28 @@ public class Game
 		{
 			if(realNumber > 0)
 			{
-				word = words.get(currentNumber);
-				currentNumber++;
+				ListItem item = words.get(currentNumber);
+				if(item.getWord() != null)
+				{
+					word = words.get(currentNumber).getWord();
+					currentNumber++;
+				}
+				else
+				{
+
+					currentNumber++;
+					currentNumber %= words.size();
+					word = words.get(currentNumber).getWord();
+				}
 			}
+			else if(realNumber == 0)
+				word = new Word(dictIsEmptyNativ, dictIsEmptyEnglish, 0, -1);
 			else
-				word = new Word(dictIsEmptyNativ, dictIsEmptyEnglish, 0, -1); 
+			{
+				currentNumber++;
+				currentNumber %= words.size();
+				updateWord();
+			}
 			lv.handle();
 		}
 	}	

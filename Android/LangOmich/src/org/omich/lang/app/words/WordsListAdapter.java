@@ -1,11 +1,13 @@
 package org.omich.lang.app.words;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.omich.lang.R;
 import org.omich.lang.app.BundleFields;
 import org.omich.lang.app.db.DbCreator;
 import org.omich.lang.app.db.IRStorage;
+import org.omich.lang.app.db.ListItem;
 import org.omich.lang.app.db.Word;
 import org.omich.lang.apptool.lists.TaskListAdapter;
 import org.omich.tool.bcops.IBcConnector;
@@ -20,7 +22,7 @@ import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.TextView;
 
-public class WordsListAdapter extends TaskListAdapter<Word>
+public class WordsListAdapter extends TaskListAdapter<ListItem>
 {
 	private long dictId = -1;
 	private String text = "";
@@ -48,22 +50,26 @@ public class WordsListAdapter extends TaskListAdapter<Word>
 	
 	//==== ListAdapter ========================================================
 	@Override
-	protected void destroyItem (int position, Word item) {}
+	protected void destroyItem (int position, ListItem item) {}
 	@Override
 	protected int getItemViewResId (int position) {return R.layout.app_item_wordslist;}
 
 	@Override
-	protected void fillViewByData (View view, int position, Word item)
+	protected void fillViewByData (View view, int position, ListItem item)
 	{	
 		TextView tvt = (TextView)view.findViewById(R.id.item_wordslist_text);
-		
-		SpannableStringBuilder text = new SpannableStringBuilder(item.foreign+" - "+item.nativ); 
-	    text.setSpan(new StyleSpan(Typeface.BOLD), 0, item.foreign.length(), 
-	    		  Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-	    tvt.setText(text);
-	      
-		TextView tvr = (TextView)view.findViewById(R.id.item_wordslist_text_rating);
-		tvr.setText(Integer.toString(item.rating));
+		if(item.getWord() == null)
+		{			
+			tvt.setText("Rating ".concat(Integer.toString(item.sep.rating)));
+		}
+		else
+		{
+			Word t = item.getWord();
+			SpannableStringBuilder text = new SpannableStringBuilder(t.foreign+" - "+ t.nativ); 
+		    text.setSpan(new StyleSpan(Typeface.BOLD), 0, t.foreign.length(), 
+		    		  Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		    tvt.setText(text);
+		}
 		
 		View sideScreen = view.findViewById(R.id.item_wordlist_screen_side);
 		if(position != getSelectedPosition())
@@ -95,7 +101,7 @@ public class WordsListAdapter extends TaskListAdapter<Word>
 
 		public Bundle execute()
 		{
-			ArrayList<Word> words = new ArrayList<Word>(mDb.getWordsByDictIdAndText(mDictId, mText));
+			ArrayList<ListItem> words = new ArrayList<ListItem>(mDb.getWordsByDictIdAndText(mDictId, mText));
 			Bundle result = new Bundle();
 			result.putParcelableArrayList(BundleFields.WORDS_LIST, words);
 			mDb.destroy();

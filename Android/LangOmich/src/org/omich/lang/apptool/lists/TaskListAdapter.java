@@ -55,15 +55,15 @@ abstract public class TaskListAdapter<Item extends Parcelable> extends ListAdapt
 
 		IBcConnector conn = mConn;
 		mLoadItemsTaskId = conn.startTypicalTask(getLoadItemsTaskClass(), createLoadItemsIntent(), new IListener<Bundle>()
-						{
-							public void handle (Bundle b)
-							{
-								mLoadItemsTaskId = null;
-			
-								List<Item> dicts = b.<Item>getParcelableArrayList(getListBundleField());							
-								setItems(dicts);
-								if(lv != null){lv.handle();}
-							}
-						});
+		{
+			public void handle (Bundle b)
+			{
+				mLoadItemsTaskId = null;
+
+				List<Item> dicts = b.<Item>getParcelableArrayList(getListBundleField());	
+				setItems(dicts);
+				if(lv != null){lv.handle();}
+			}
+		});
 	}
 }

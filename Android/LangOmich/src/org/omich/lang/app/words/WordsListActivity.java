@@ -3,8 +3,8 @@ package org.omich.lang.app.words;
 import org.omich.lang.R;
 import org.omich.lang.app.PreferenceFields;
 import org.omich.lang.app.db.Dict;
+import org.omich.lang.app.db.ListItem;
 import org.omich.lang.app.db.Word;
-import org.omich.lang.app.words.WordsListAdapter;
 import org.omich.lang.apptool.activity.ABActivity;
 import org.omich.tool.events.Listeners.IListener;
 import org.omich.tool.events.Listeners.IListenerVoid;
@@ -14,6 +14,7 @@ import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -50,7 +51,8 @@ public class WordsListActivity extends ABActivity
 	
 	private SharedPreferences sp;	
 	private DictsListAdapter mDictsAdapter;
-	private boolean mIsDestroyed;
+	private boolean mIsDestroyed;	
+	
 	//==== live cycle =========================================================
 	@Override
 	protected void onCreate (Bundle b)
@@ -113,22 +115,30 @@ public class WordsListActivity extends ABActivity
 			{
 				if(mWordsAdapter.getSelectedPosition() != -1 && sideScreen != null)
 				{
-					sideScreen.startAnimation(animationSideOut);
-					sideScreen.setVisibility(View.INVISIBLE);
-					returnButton.setVisibility(View.INVISIBLE);
+					ListItem item = (ListItem)mWordsAdapter.getItem(mWordsAdapter.getSelectedPosition());
+					if(item.getWord() != null)
+					{
+						sideScreen.startAnimation(animationSideOut);
+						sideScreen.setVisibility(View.INVISIBLE);
+						returnButton.setVisibility(View.INVISIBLE);					
+					}
 				}
 				
-				word = (Word)mWordsAdapter.getItem(position);
+				ListItem wordItem = (ListItem)mWordsAdapter.getItem(position);
+				word = wordItem.getWord();
 				mWordsAdapter.setSelectedPosition(position);
-
-				sideScreen = view.findViewById(R.id.item_wordlist_screen_side); 
+			
+				sideScreen = view.findViewById(R.id.item_wordlist_screen_side);
+				
 				sideScreen.setVisibility(View.VISIBLE);
 				sideScreen.startAnimation(animationSideIn);
 				
-				returnButton = view.findViewById(R.id.item_wordlist_button_return); 
+				returnButton = view.findViewById(R.id.item_wordlist_button_return);
 				returnButton.setVisibility(View.VISIBLE);
 
 				mWordsAdapter.notifyDataSetChanged();
+					
+				
 			}
 		});
 	}

@@ -65,12 +65,12 @@ abstract public class DbBaseRStorage implements IRStorage
 		return answer;
 	}		
 	
-	public List<Word> getWordsByDictId (Long dictId)
+	public List<ListItem> getWordsByDictId (Long dictId)
 	{
 		String where = WordsCols.DICT_ID + "=" + dictId +" AND "+WordsCols.NATIV + "<> ?";
 		Cursor cursor = mDb.query(TNAME_WORDS, 
 				new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.ID}, 
-				where, new String[]{""}, null, null, null);
+				where, new String[]{""}, null, null, WordsCols.RATING);
 
 		final List<Word> answer = new ArrayList<Word>();
 		
@@ -83,9 +83,9 @@ abstract public class DbBaseRStorage implements IRStorage
 			}
 		});
 		
-		return answer;
+		return insertSeparators(answer);
 	}
-	public List<Word> getWordsByDictIdAndText (Long dictId, String text)
+	public List<ListItem> getWordsByDictIdAndText (Long dictId, String text)
 	{
 		final List<Word> answer = new ArrayList<Word>();
 		Cursor cursor;
@@ -95,7 +95,7 @@ abstract public class DbBaseRStorage implements IRStorage
 			String where = WordsCols.DICT_ID + "=" + dictId +" AND "+WordsCols.NATIV + "<> ?";
 			cursor = mDb.query(TNAME_WORDS, 
 					new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.ID}, 
-					where, new String[]{""}, null, null, null);
+					where, new String[]{""}, null, null, WordsCols.RATING);
 		}
 		else
 		{
@@ -103,7 +103,7 @@ abstract public class DbBaseRStorage implements IRStorage
 					+WordsCols.NATIV + " LIKE '%"+text+"%' OR "+WordsCols.FOREIGN + " LIKE '%"+text+"%')";
 			cursor = mDb.query(TNAME_WORDS, 
 					new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.ID}, 
-					where, null, null, null, null);
+					where, null, null, null, WordsCols.RATING);
 		}
 		DbHelper.iterateCursorAndClose(cursor, new CursorIterator()
 		{
@@ -113,14 +113,15 @@ abstract public class DbBaseRStorage implements IRStorage
 				answer.add(word);
 			}
 		});	
-		return answer;
-	}	
-	public List<Word> getWordsByTime (Long mobileTime)
+		return insertSeparators(answer);
+	}
+	
+	public List<ListItem> getWordsByTime (Long mobileTime)
 	{
 		String where = WordsCols.TIME + ">" + mobileTime;
 		Cursor cursor = mDb.query(TNAME_WORDS, 
 				new String[]{WordsCols.NATIV, WordsCols.FOREIGN, WordsCols.RATING, WordsCols.DICT_ID, WordsCols.TIME}, 
-				where, null, null, null, null);
+				where, null, null, null, WordsCols.RATING);
 
 		final List<Word> answer = new ArrayList<Word>();
 		
@@ -133,12 +134,29 @@ abstract public class DbBaseRStorage implements IRStorage
 			}
 		});
 		
-		return answer;
+		return insertSeparators(answer);
 	}
-	public List<Word> getRandomWords(Long dictId, int n, int weight[])
+	
+	public List<ListItem> insertSeparators(List<Word> list)
+	{
+		List<ListItem> result = new ArrayList<ListItem>();
+		int prev = -1;
+		for(Word w : list)
+		{
+			if(prev != w.rating)
+			{
+				prev = w.rating;
+				result.add(new ListItem(prev));
+			}
+			result.add(new ListItem(w));
+		}
+		return result;
+	}
+	
+	public List<ListItem> getRandomWords(Long dictId, int n, int weight[])
 	{
 		int N = 10;// количество рейтингов
-		List<Word> answer = new ArrayList<Word>();
+		List<ListItem> answer = new ArrayList<ListItem>();
 		if(n < 1)
 			return answer;
 		String query = "SELECT count(*), "+WordsCols.RATING+" FROM "+TNAME_WORDS+
@@ -162,11 +180,11 @@ abstract public class DbBaseRStorage implements IRStorage
 		if(allSize < n)
 		{
 			answer = getWordsByDictId(dictId);
-			List<Word> answer2 = new ArrayList<Word>();
+			List<ListItem> answer2 = new ArrayList<ListItem>();
 			for(int i = allSize; i > 0; i--)
 			{
 				int r = random.nextInt(i);
-				Word word = answer.get(r);
+				ListItem word = answer.get(r);
 				answer2.add(word);
 				answer.remove(r);
 			}
@@ -248,18 +266,18 @@ abstract public class DbBaseRStorage implements IRStorage
 			if(k == list[r])
 			{
 				Word word = new Word(cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getLong(3));
-				answer.add(word);
+				answer.add(new ListItem(word));
 				r++;
 			}
 			k++;
 			if(r  == n)
 				break;
 		}
-		List<Word> answer2 = new ArrayList<Word>();
+		List<ListItem> answer2 = new ArrayList<ListItem>();
 		for(int i = n; i > 0; i--)
 		{
 			r = random.nextInt(i);
-			Word word = answer.get(r);
+			ListItem word = answer.get(r);
 			answer2.add(word);
 			answer.remove(r);
 		}			

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import org.omich.lang.app.BundleFields;
 import org.omich.lang.app.db.DbCreator;
 import org.omich.lang.app.db.IRStorage;
+import org.omich.lang.app.db.ListItem;
 import org.omich.lang.app.db.Word;
 import org.omich.tool.bcops.IBcTask;
 import android.content.Intent;
@@ -34,9 +35,8 @@ public class GetRandomWordsTask implements IBcTask
 	}
 
 	public Bundle execute()
-	{
-		
-		ArrayList<Word> words = new ArrayList<Word>(mDb.getRandomWords(mDictId, mWordsNumber, mWeight));
+	{		
+		ArrayList<ListItem> words = new ArrayList<ListItem>(mDb.getRandomWords(mDictId, mWordsNumber, mWeight));
 		Bundle result = new Bundle();
 		result.putParcelableArrayList(BundleFields.WORDS_LIST, words);		
 		mDb.destroy();
