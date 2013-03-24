@@ -137,7 +137,6 @@ public class Game
 				}
 				else
 				{
-
 					currentNumber++;
 					currentNumber %= words.size();
 					word = words.get(currentNumber).getWord();

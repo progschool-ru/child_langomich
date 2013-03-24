@@ -14,6 +14,7 @@ import org.omich.tool.bcops.IBcConnector;
 import org.omich.tool.bcops.IBcTask;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -60,7 +61,18 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 		TextView tvt = (TextView)view.findViewById(R.id.item_wordslist_text);
 		if(item.getWord() == null)
 		{			
+			int rating = item.sep.rating;
 			tvt.setText("Rating ".concat(Integer.toString(item.sep.rating)));
+			int color = 0;
+			if(rating > 5)
+			{
+				color = Color.rgb(120 + rating * 25, 255, 20);
+			}
+			else
+			{
+				color = Color.rgb(255, 17 + rating * 25, 20);
+			}
+			tvt.setBackgroundColor(color);
 		}
 		else
 		{
