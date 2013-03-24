@@ -60,6 +60,7 @@ public class Game
 	{
 		String text = "";
 		if(word != null)
+		{
 			switch (key)
 			{
 				case NATIV:				
@@ -69,6 +70,7 @@ public class Game
 					text = word.foreign;
 					break;
 			}
+		}
 		return text;
 	}
 	public void changeTheRating(int key)
@@ -123,6 +125,7 @@ public class Game
 							}
 						});
 	}	
+	
 	private void updateWord()
 	{
 		if(!isUpdate)
@@ -130,7 +133,7 @@ public class Game
 			if(realNumber > 0)
 			{
 				ListItem item = words.get(currentNumber);
-				if(item.getWord() != null)
+				if(item.getWord() != null && !item.getWord().nativ.isEmpty())
 				{
 					word = words.get(currentNumber).getWord();
 					currentNumber++;
@@ -151,8 +154,9 @@ public class Game
 				updateWord();
 			}
 			lv.handle();
-		}
+		}	
 	}	
+	
 	private void setNewRating(long id, int rating)
 	{
 		if(mSetRatingTaskId != null)

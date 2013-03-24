@@ -2,6 +2,7 @@ package org.omich.lang.app.words;
 
 import org.omich.lang.R;
 import org.omich.lang.app.PreferenceFields;
+import org.omich.lang.app.db.DbBaseRStorage;
 import org.omich.lang.app.db.Dict;
 import org.omich.lang.app.db.ListItem;
 import org.omich.lang.app.db.Word;
@@ -64,7 +65,7 @@ public class WordsListActivity extends ABActivity
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		
-		ListView lv = (ListView)findViewById(R.id.wordslist_list);
+		final ListView lv = (ListView)findViewById(R.id.wordslist_list);
 	
 		mWordsAdapter = new WordsListAdapter(this, getBcConnector(), 
 				sp.getLong(PreferenceFields.DICT_ID, -1));
@@ -113,32 +114,35 @@ public class WordsListActivity extends ABActivity
 		{
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 			{
-				if(mWordsAdapter.getSelectedPosition() != -1 && sideScreen != null)
+				ListItem li = (ListItem) lv.getItemAtPosition(position);
+				if(li.getWord() != null)
 				{
-					ListItem item = (ListItem)mWordsAdapter.getItem(mWordsAdapter.getSelectedPosition());
-					if(item.getWord() != null)
-					{
-						sideScreen.startAnimation(animationSideOut);
-						sideScreen.setVisibility(View.INVISIBLE);
-						returnButton.setVisibility(View.INVISIBLE);					
-					}
-				}
-				
-				ListItem wordItem = (ListItem)mWordsAdapter.getItem(position);
-				word = wordItem.getWord();
-				mWordsAdapter.setSelectedPosition(position);
-			
-				sideScreen = view.findViewById(R.id.item_wordlist_screen_side);
-				
-				sideScreen.setVisibility(View.VISIBLE);
-				sideScreen.startAnimation(animationSideIn);
-				
-				returnButton = view.findViewById(R.id.item_wordlist_button_return);
-				returnButton.setVisibility(View.VISIBLE);
-
-				mWordsAdapter.notifyDataSetChanged();
 					
-				
+					if(mWordsAdapter.getSelectedPosition() != -1 && sideScreen != null)
+					{
+						ListItem item = (ListItem)mWordsAdapter.getItem(mWordsAdapter.getSelectedPosition());
+						if(item.getWord() != null)
+						{
+							sideScreen.startAnimation(animationSideOut);
+							sideScreen.setVisibility(View.INVISIBLE);
+							returnButton.setVisibility(View.INVISIBLE);					
+						}
+					}
+					
+					ListItem wordItem = (ListItem)mWordsAdapter.getItem(position);
+					word = wordItem.getWord();
+					mWordsAdapter.setSelectedPosition(position);
+				    
+					sideScreen = view.findViewById(R.id.item_wordlist_screen_side);
+					
+					sideScreen.setVisibility(View.VISIBLE);
+					sideScreen.startAnimation(animationSideIn);
+					
+					returnButton = view.findViewById(R.id.item_wordlist_button_return);
+					returnButton.setVisibility(View.VISIBLE);
+	
+					mWordsAdapter.notifyDataSetChanged();
+				}				
 			}
 		});
 	}

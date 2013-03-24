@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:minHeight="43dp"
         android:hint="@string/wordslist_text_search" />
+    
     <ListView
         android:id="@+id/wordslist_list"
         android:layout_width="match_parent"

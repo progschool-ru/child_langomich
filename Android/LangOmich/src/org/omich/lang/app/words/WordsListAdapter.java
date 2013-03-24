@@ -59,6 +59,7 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 	protected void fillViewByData (View view, int position, ListItem item)
 	{	
 		TextView tvt = (TextView)view.findViewById(R.id.item_wordslist_text);
+		tvt.setBackgroundColor(Color.WHITE);
 		if(item.getWord() == null)
 		{			
 			int rating = item.sep.rating;

@@ -158,7 +158,7 @@ abstract public class DbBaseRStorage implements IRStorage
 		int N = 10;// количество рейтингов
 		List<ListItem> answer = new ArrayList<ListItem>();
 		if(n < 1)
-			return answer;
+			return checkAnswers(answer);
 		String query = "SELECT count(*), "+WordsCols.RATING+" FROM "+TNAME_WORDS+
 				" WHERE "+WordsCols.DICT_ID+" = "+dictId+" AND "+WordsCols.NATIV + "<> ?"+
 				" GROUP BY "+WordsCols.RATING; 
@@ -188,7 +188,7 @@ abstract public class DbBaseRStorage implements IRStorage
 				answer2.add(word);
 				answer.remove(r);
 			}
-			return answer2;
+			return checkAnswers(answer2);
 		}		
 		int r = 0;
 		int k = 0;
@@ -281,6 +281,18 @@ abstract public class DbBaseRStorage implements IRStorage
 			answer2.add(word);
 			answer.remove(r);
 		}			
-		return answer2;
+		return checkAnswers(answer2);
+	}
+	
+	private List<ListItem> checkAnswers(List<ListItem> list)
+	{
+		for(int i = 0; i < list.size(); i++)
+		{
+			if(list.get(i).getWord() == null)
+				list.remove(i);
+			else if(list.get(i).getWord().nativ.equals(""))
+				list.remove(i);
+		}
+		return list;
 	}
 }
