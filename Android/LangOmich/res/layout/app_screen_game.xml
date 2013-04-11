@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="36dp"
         android:text="nativ"
-        android:textSize="20dip" />
+        android:textSize="25sp" />
 
     <TextView
         android:id="@+id/item_wordslist_centerHorizontal"
@@ -54,7 +54,7 @@
         android:layout_above="@+id/item_wordslist_centerHorizontal"
         android:layout_centerHorizontal="true"
         android:text="foreign"
-        android:textSize="26dip"
+        android:textSize="25sp"
         android:textStyle="bold" />
 
 </RelativeLayout>

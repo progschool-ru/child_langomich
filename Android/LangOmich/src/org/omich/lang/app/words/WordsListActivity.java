@@ -2,7 +2,6 @@ package org.omich.lang.app.words;
 
 import org.omich.lang.R;
 import org.omich.lang.app.PreferenceFields;
-import org.omich.lang.app.db.DbBaseRStorage;
 import org.omich.lang.app.db.Dict;
 import org.omich.lang.app.db.ListItem;
 import org.omich.lang.app.db.Word;
@@ -15,7 +14,6 @@ import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;

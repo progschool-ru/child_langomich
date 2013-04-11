@@ -109,6 +109,11 @@ public class DictSpinner
 			currentDictId = dictId;
 		mDictsAdapter.reloadItems();
 	}		
+	
+	public long getCurrentDictId()
+	{
+		return currentDictId;
+	}
 	public void destroy()
 	{
 		mDictsAdapter.destroy();

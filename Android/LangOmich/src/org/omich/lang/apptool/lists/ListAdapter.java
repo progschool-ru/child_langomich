@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.omich.lang.app.db.DbBaseRStorage;
-import org.omich.lang.app.db.Dict;
-import org.omich.lang.app.db.Word;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -5,7 +5,6 @@ import org.omich.lang.app.BundleFields;
 import org.omich.lang.app.db.DbCreator;
 import org.omich.lang.app.db.IRStorage;
 import org.omich.lang.app.db.ListItem;
-import org.omich.lang.app.db.Word;
 import org.omich.tool.bcops.IBcTask;
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,7 +1,6 @@
 package org.omich.lang.app.words;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.omich.lang.R;
 import org.omich.lang.app.BundleFields;
@@ -12,9 +11,9 @@ import org.omich.lang.app.db.Word;
 import org.omich.lang.apptool.lists.TaskListAdapter;
 import org.omich.tool.bcops.IBcConnector;
 import org.omich.tool.bcops.IBcTask;
+
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -59,21 +58,9 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 	protected void fillViewByData (View view, int position, ListItem item)
 	{	
 		TextView tvt = (TextView)view.findViewById(R.id.item_wordslist_text);
-		tvt.setBackgroundColor(Color.WHITE);
 		if(item.getWord() == null)
 		{			
-			int rating = item.sep.rating;
 			tvt.setText("Rating ".concat(Integer.toString(item.sep.rating)));
-			int color = 0;
-			if(rating > 5)
-			{
-				color = Color.rgb(120 + rating * 25, 255, 20);
-			}
-			else
-			{
-				color = Color.rgb(255, 17 + rating * 25, 20);
-			}
-			tvt.setBackgroundColor(color);
 		}
 		else
 		{

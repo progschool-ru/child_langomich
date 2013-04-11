@@ -39,6 +39,7 @@
         </activity>           
          <activity
             android:name=".app.words.EditWordActivity"
+            android:theme="@android:style/Theme.Holo.Light.Dialog"
             android:label="@string/editWord_title">
         </activity>              
         <activity
