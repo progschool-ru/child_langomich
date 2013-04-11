@@ -59,7 +59,7 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 	{	
 		TextView tvt = (TextView)view.findViewById(R.id.item_wordslist_text);
 		if(item.getWord() == null)
-		{			
+		{						
 			tvt.setText("Rating ".concat(Integer.toString(item.sep.rating)));
 		}
 		else
@@ -77,6 +77,21 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 		else if(position == getSelectedPosition())
 				sideScreen.setVisibility(View.VISIBLE);			
 	}
+	
+	@Override
+	public boolean isEnabled(int position)
+	{
+		ListItem li = (ListItem)getItem(position);
+		if(li.getWord() == null) return false;
+		return true;
+	};
+	
+	@Override
+	public boolean areAllItemsEnabled() 
+	{
+		return false;
+	}
+	
 	//=========================================================================
 	public static class LoadWordsTask implements IBcTask
 	{
