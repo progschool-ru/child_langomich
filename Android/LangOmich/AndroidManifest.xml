@@ -30,6 +30,7 @@
         </activity>            
         <activity
             android:name=".app.words.AddWordActivity"
+            android:theme="@android:style/Theme.Holo.Light.Dialog"
             android:label="@string/addword_title">
         </activity>
         <activity

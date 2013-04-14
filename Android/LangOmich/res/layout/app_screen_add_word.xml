@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/addword_textView_dict"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/addword_text_dict" />
 
         <Spinner
             android:id="@+id/addword_dictSpinner"
@@ -24,21 +14,16 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="10dp"
-            android:spinnerMode="dialog"
-            android:layout_toRightOf="@+id/addword_textView_dict" />
+            android:visibility="gone"
+            android:spinnerMode="dialog"/>
                 
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/addword_textView_native"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/addword_text_native" />
 
     <EditText
         android:id="@+id/addword_nativEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/addword_text_native"
         android:ems="10" />
     
     <RelativeLayout
@@ -52,17 +37,12 @@
     	    android:layout_centerHorizontal="true" />
     
 	</RelativeLayout>
-	
-    <TextView
-        android:id="@+id/addword_textView_foreign"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/addword_text_foreign" />
 
     <EditText
         android:id="@+id/addword_foreignEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/addword_text_foreign"
         android:ems="10" />
 
     <RelativeLayout

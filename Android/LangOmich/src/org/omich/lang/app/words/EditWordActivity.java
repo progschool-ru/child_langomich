@@ -33,7 +33,7 @@ public class EditWordActivity extends BcActivity
                 foreign = getIntent().getExtras().getString("foreign");
                 setContentView(R.layout.app_screen_edit_word);
 
-                dictSpinner = new DictSpinner((Spinner)findViewById(R.id.addword_dictSpinner), this, true, false, new IListenerInt()
+                dictSpinner = new DictSpinner((Spinner)findViewById(R.id.editWord_dictSpinner), this, true, false, new IListenerInt()
                 {
                         public void handle (int key)
                         { 
@@ -41,7 +41,6 @@ public class EditWordActivity extends BcActivity
                                         startAddDictActivity();
                         }                       
                 });
-                
                 ((EditText)findViewById(R.id.editWord_edit_nativ)).setText(nativ);
                 ((EditText)findViewById(R.id.editWord_edit_foreign)).setText(foreign);          
         }

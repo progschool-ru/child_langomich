@@ -1,44 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <TextView
-            android:id="@+id/editWord_textView_dict"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/editWord_text_dict" />
-
         <Spinner
             android:id="@+id/editWord_dictSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="8dp"            
             android:layout_marginTop="10dp"
-            android:spinnerMode="dialog"
-            android:layout_toRightOf="@+id/editWord_textView_dict" />
+            android:spinnerMode="dialog" 
+            android:visibility="gone"/>
                 
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/editWord_textView_nativ"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/editWord_text_nativ" />
 
     <EditText
         android:id="@+id/editWord_edit_nativ"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/editWord_text_nativ"
         android:ems="10" />
     
     <RelativeLayout
@@ -53,16 +38,12 @@
     
         </RelativeLayout>
         
-    <TextView
-        android:id="@+id/editWord_textView_foreign"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/editWord_text_foreign" />
 
     <EditText
         android:id="@+id/editWord_edit_foreign"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/editWord_text_foreign"
         android:ems="10" />
 
     <RelativeLayout
