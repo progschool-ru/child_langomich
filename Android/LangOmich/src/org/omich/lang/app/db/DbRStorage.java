@@ -16,6 +16,7 @@ public class DbRStorage extends DbBaseRStorage
 		super.setDb(mDb);
 	}
 	
+	@Override
 	public void destroy ()
 	{
 		mDb.close();

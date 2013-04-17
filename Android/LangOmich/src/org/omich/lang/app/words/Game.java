@@ -106,6 +106,7 @@ public class Game
 		Intent intent = GetRandomWordsTask.createIntent(dictId, idealNumber, weight);
 		mGetRandomWordsTaskId = mBcConnector.startTypicalTask(GetRandomWordsTask.class, intent, new IListener<Bundle>()
 						{
+							@Override
 							public void handle (Bundle b)
 							{
 								if(mIsDestroyed)
@@ -167,6 +168,7 @@ public class Game
 				intent, 
 				new IListener<Bundle>()
 				{
+					@Override
 					public void handle (Bundle bundle)
 					{
 						if(mIsDestroyed)

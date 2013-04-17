@@ -25,7 +25,8 @@ public class EditWordActivity extends BcActivity
         private final int REQUEST_CODE_ADD_DICT = 101;
         
         //==== live cycle =========================================================
-        protected void onCreate (Bundle b)
+        @Override
+		protected void onCreate (Bundle b)
         {
                 super.onCreate(b);
                 id = getIntent().getExtras().getLong("id");
@@ -35,7 +36,8 @@ public class EditWordActivity extends BcActivity
 
                 dictSpinner = new DictSpinner((Spinner)findViewById(R.id.editWord_dictSpinner), this, true, false, new IListenerInt()
                 {
-                        public void handle (int key)
+                        @Override
+						public void handle (int key)
                         { 
                                 if(key == DictSpinner.ADD_DICT)
                                         startAddDictActivity();
@@ -111,7 +113,8 @@ public class EditWordActivity extends BcActivity
                         Intent intent = EditWordTask.createIntent(id, newNativ, newForeign, dictId, taskAddText);
                         mEditWordTaskId = getBcConnector().startTypicalTask(EditWordTask.class, intent, new IListener<Bundle>()
                                 {
-                                        public void handle (Bundle bundle)
+                                        @Override
+										public void handle (Bundle bundle)
                                         {
                                                 if(mIsDestroyed)
                                                         return;

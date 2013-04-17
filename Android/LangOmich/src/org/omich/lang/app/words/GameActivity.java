@@ -62,6 +62,7 @@ public class GameActivity extends BcActivity
 		
 		mDictsAdapter = new DictsListAdapter(this, getBcConnector(), false, new IListenerVoid()
 		{
+			@Override
 			public void handle ()
 			{ 
 				setSelectedPosition();	
@@ -71,6 +72,7 @@ public class GameActivity extends BcActivity
 	
 		getActionBar().setListNavigationCallbacks(mDictsAdapter, new OnNavigationListener() 
 		{
+			@Override
 			public boolean onNavigationItemSelected(int position, long itemId) 
 			{
 				onSelectDict(position);
@@ -85,6 +87,7 @@ public class GameActivity extends BcActivity
 		
 		game = new Game(this, sp.getLong(PreferenceFields.DICT_ID, -1), new IListenerVoid()
 		{
+			@Override
 			public void handle ()
 			{ 
 				tvn.setText(game.getText(game.NATIV));
@@ -94,6 +97,7 @@ public class GameActivity extends BcActivity
 		});
 		
 		OnClickListener l =  new OnClickListener(){
+			@Override
 			public void onClick(View v) 
 			{
 				switch (v.getId())

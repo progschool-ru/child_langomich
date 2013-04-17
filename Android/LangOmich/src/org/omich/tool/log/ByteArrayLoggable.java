@@ -9,6 +9,7 @@ public class ByteArrayLoggable implements ILoggable
 		mArr = arr;
 	}
 
+	@Override
 	public String getShortLogMessage ()
 	{
 		StringBuilder sb = new StringBuilder("[");
@@ -25,6 +26,7 @@ public class ByteArrayLoggable implements ILoggable
 		return sb.toString();
 	}
 
+	@Override
 	public String getFullLogMessage ()
 	{
 		return getShortLogMessage();

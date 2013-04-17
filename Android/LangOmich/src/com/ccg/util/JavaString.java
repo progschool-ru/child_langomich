@@ -202,7 +202,8 @@ public class JavaString {
    }
 
 
-   public String toString() {
+   @Override
+public String toString() {
      return _Contents.toString();
    }
 

@@ -34,6 +34,7 @@ public class AddWordActivity extends BcActivity
 		setContentView(R.layout.app_screen_add_word);
 		dictSpinner = new DictSpinner((Spinner)findViewById(R.id.addword_dictSpinner), this, true, true, new IListenerInt()
 		{
+			@Override
 			public void handle (int key)
 			{ 
 				if(key == DictSpinner.ADD_DICT)
@@ -110,6 +111,7 @@ public class AddWordActivity extends BcActivity
 			mAddWordTaskId = getBcConnector().startTypicalTask(AddWordTask.class, 
 				intent, new IListener<Bundle>()
 				{
+					@Override
 					public void handle (Bundle bundle)
 					{
 						if(mIsDestroyed)

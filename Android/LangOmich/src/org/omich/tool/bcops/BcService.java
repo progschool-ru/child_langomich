@@ -246,7 +246,9 @@ public class BcService extends IntentService
 		public PH (BcService bgs){mBs = bgs;}
 		
 		//bg thread
+		@Override
 		public void handle (int progress){mBs.sendProgressBroadcast(progress);}
+		@Override
 		public boolean isCancelled () {return mBs.mIsCurrentCancelled;}
 	}
 	

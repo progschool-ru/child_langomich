@@ -20,12 +20,14 @@ public class SetNewRatingTask implements IBcTask
 	private int mRating;
 	private IWStorage mDb;
 	
+	@Override
 	public void init(BcTaskEnv env)
 	{
 		mId = env.extras.getLong(BundleFields.WORD_ID);
 		mRating = env.extras.getInt(BundleFields.WORD_RATING);	
 		mDb = DbCreator.createWritable(env.context);
 	}
+	@Override
 	public Bundle execute()
 	{	
 		if(mId != -1)

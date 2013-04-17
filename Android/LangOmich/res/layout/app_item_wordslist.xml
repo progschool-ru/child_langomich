@@ -53,14 +53,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/item_wordslist_button"
-                        android:src="@drawable/app_ic_edit"
+                        android:src="@drawable/content_edit"
                         android:onClick="onEdit"/>
                                                 
                                 <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/item_wordslist_button"
-                        android:src="@drawable/app_ic_delete"
+                        android:src="@drawable/content_remove"
                         android:onClick="onDelete"/>    
                         
                         </TableRow> 

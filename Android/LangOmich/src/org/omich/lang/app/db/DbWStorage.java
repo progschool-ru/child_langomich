@@ -22,12 +22,14 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		super.setDb(mDb);
 	}
 	
+	@Override
 	public void destroy ()
 	{
 		mDb.close();
 		mDb = null;
 	}
 	
+	@Override
 	public long addWord (String nativ, String foreign, long dictId)
 	{
 		nativ = nativ.trim();
@@ -43,6 +45,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		}
 		return addWord(nativ, foreign, 0, dictId);
 	}
+	@Override
 	public long addWord (String nativ, String foreign, int rating, long dictId)
 	{	
 		nativ = nativ.trim();
@@ -66,6 +69,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 			
 		return id;
 	}	
+	@Override
 	public boolean deleteWord(long id)
 	{
 		try
@@ -82,6 +86,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		}
 		catch(Exception e) {return false;}
 	}
+	@Override
 	public boolean changeWord(long id, String nativ, String foreign, long dictId)
 	{
 		try
@@ -126,6 +131,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		}
 		catch(Exception e) {return false;}
 	}	
+	@Override
 	public long addDict (String name)
 	{		
 		name = name.trim();
@@ -140,6 +146,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		values.put(DictsCols.TIME, time);
 		return mDb.insert(TNAME_DICTS, null, values);
 	}	
+	@Override
 	public long addDict (String serverId, String name)
 	{
 		name = name.trim();
@@ -184,6 +191,7 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		cursor.close();
 		return dictId;
 	}	
+	@Override
 	public boolean setRating (long id, int rating)
 	{
 		try

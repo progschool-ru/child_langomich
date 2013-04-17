@@ -56,6 +56,7 @@ abstract public class TaskListAdapter<Item extends Parcelable> extends ListAdapt
 		IBcConnector conn = mConn;
 		mLoadItemsTaskId = conn.startTypicalTask(getLoadItemsTaskClass(), createLoadItemsIntent(), new IListener<Bundle>()
 		{
+			@Override
 			public void handle (Bundle b)
 			{
 				mLoadItemsTaskId = null;

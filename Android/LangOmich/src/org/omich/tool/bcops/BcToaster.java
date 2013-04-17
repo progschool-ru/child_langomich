@@ -15,6 +15,7 @@ public class BcToaster implements IBcToaster
 		mMainThreadHandler = mth;
 	}
 	
+	@Override
 	public void showToast (String msg)
 	{
 		mMainThreadHandler.post(new BcToasterRunnable(mContext, msg));
@@ -31,6 +32,7 @@ public class BcToaster implements IBcToaster
 			mContext = context;
 		}
 
+		@Override
 		public void run ()
 		{
 			Toast.makeText(mContext, mMsg, Toast.LENGTH_SHORT).show();

@@ -87,6 +87,7 @@ public class FirstAddWordActivity extends BcActivity
 			mAddWordTaskId = getBcConnector().startTypicalTask(FirstAddWordTask.class, 
 				intent, new IListener<Bundle>()
 				{
+					@Override
 					public void handle (Bundle bundle)
 					{
 						if(mIsDestroyed)

@@ -3,7 +3,6 @@ package org.omich.lang.apptool.lists;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.omich.lang.app.db.DbBaseRStorage;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,16 +15,10 @@ abstract public class ListAdapter<Item> extends BaseAdapter
 	private List<Item> mItems = new ArrayList<Item>();
 	private boolean mIsDestroyed;
 	private int selectedPosition = -1;
-	private DbBaseRStorage storage;
 	
 	protected ListAdapter (Context context)
 	{
-		mContext = context;		
-		storage = new DbBaseRStorage() {
-			
-			public void destroy() {			
-			}
-		};
+		mContext = context;
 	}
 	
 	
@@ -64,10 +57,14 @@ abstract public class ListAdapter<Item> extends BaseAdapter
 	}
 
 	//==== BaseAdapter ========================================================
+	@Override
 	public int getCount () {return mItems.size();}
+	@Override
 	public Object getItem (int arg0) {return mItems.get(arg0);}
+	@Override
 	public long getItemId (int position) {return position;}
 
+	@Override
 	public View getView (int position, View convertView, ViewGroup parent)
 	{
 		View v = convertView;

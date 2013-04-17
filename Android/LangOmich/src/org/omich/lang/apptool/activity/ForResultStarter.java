@@ -12,7 +12,8 @@ public class ForResultStarter implements IForResultStarter
 {
 	private Activity mActivity;
 	private List<IListener<Intent>> mHandlers = new ArrayList<IListener<Intent>>();	
-	private IListener<Intent> mEmptyHandler = new IListener<Intent>() {public void handle(Intent intent){}};
+	private IListener<Intent> mEmptyHandler = new IListener<Intent>() {@Override
+	public void handle(Intent intent){}};
 	
 	public ForResultStarter (Activity activity)
 	{
@@ -42,6 +43,7 @@ public class ForResultStarter implements IForResultStarter
 	}
 	
 	//==== IForResultStarter ==================================================
+	@Override
 	public void startForResult(Intent intent, IListener<Intent> handler)
 	{
 		if(mActivity == null)

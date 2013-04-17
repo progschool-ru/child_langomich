@@ -8,6 +8,7 @@ public class StdLog implements ILog
 	public StdLog (){this(LOG_ID);}
 	public StdLog (String logId){mLogId = logId;}
 	
+	@Override
 	public void log (String msg, Level level)
 	{
 		switch(level)

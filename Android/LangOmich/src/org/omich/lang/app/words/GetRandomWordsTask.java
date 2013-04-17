@@ -25,6 +25,7 @@ public class GetRandomWordsTask implements IBcTask
 	private int[] mWeight;
 	private int mWordsNumber;
 
+	@Override
 	public void init(BcTaskEnv env)
 	{
 		mDictId = env.extras.getLong(BundleFields.WORD_DICT_ID);
@@ -33,6 +34,7 @@ public class GetRandomWordsTask implements IBcTask
 		mDb = DbCreator.createReadable(env.context);
 	}
 
+	@Override
 	public Bundle execute()
 	{		
 		ArrayList<ListItem> words = new ArrayList<ListItem>(mDb.getRandomWords(mDictId, mWordsNumber, mWeight));

@@ -37,6 +37,7 @@ public class BcConnector implements IBcConnector
 	}
 
 	//==== IBcConnector =======================================================
+	@Override
 	public String startTask (Class<? extends BcService> serviceClass, 
 			Class<? extends IBcTask> taskClass,
 			Intent intent,
@@ -55,6 +56,7 @@ public class BcConnector implements IBcConnector
 		return opId;
 	}
 	
+	@Override
 	public String startTypicalTask (Class<? extends IBcTask> taskClass,
 			Intent intent,
 			IListener<Bundle> finishHandler)
@@ -62,6 +64,7 @@ public class BcConnector implements IBcConnector
 		return startTask (BcService.class, taskClass, intent, new TypicalTaskHandler(finishHandler));
 	}
 	
+	@Override
 	public void cancelTask (String opId)
 	{
 		Intent intent = new Intent(BcService.BROADCAST_PREFIX);
@@ -70,6 +73,7 @@ public class BcConnector implements IBcConnector
 		LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
 	}
 	
+	@Override
 	public void unsubscribeTask (String opId)
 	{
 		TaskReceiver tr = mMap.get(opId);
@@ -132,6 +136,7 @@ public class BcConnector implements IBcConnector
 			mFinishHandler = finishHandler;
 		}
 
+		@Override
 		public void handle (Intent intent)
 		{
 			BcEventHelper.parseEvent(intent, null, null, mFinishHandler, null, null);

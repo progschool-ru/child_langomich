@@ -49,6 +49,7 @@ public class DictSpinner
 	{
 		mDictsAdapter = new DictsListAdapter(context, mBcConnector, withNewDict, new IListenerVoid()
 		{
+			@Override
 			public void handle ()
 			{ 
 				spinner.setSelection(getPositionFromListByIdInDB(currentDictId)); 
@@ -60,11 +61,13 @@ public class DictSpinner
 		spinner.setAdapter(mDictsAdapter);
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() 
         {
-        	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) 
+        	@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) 
         	{
         		itemIsSelected(position);
         	}
-        	public void onNothingSelected(AdapterView<?> arg0) {}
+        	@Override
+			public void onNothingSelected(AdapterView<?> arg0) {}
         });
         mDictsAdapter.reloadItems();
 	}	

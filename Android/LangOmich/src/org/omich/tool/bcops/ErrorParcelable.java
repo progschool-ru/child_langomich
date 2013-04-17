@@ -27,11 +27,13 @@ public class ErrorParcelable implements Parcelable, ILoggable
 	public static final Parcelable.Creator<ErrorParcelable> CREATOR
 			= new Parcelable.Creator<ErrorParcelable>()
 			{
+				@Override
 				public ErrorParcelable createFromParcel(Parcel source)
 				{
 					return new ErrorParcelable(source);
 				}
 
+				@Override
 				public ErrorParcelable[] newArray(int size)
 				{
 					return new ErrorParcelable[size];
@@ -87,8 +89,10 @@ public class ErrorParcelable implements Parcelable, ILoggable
 	}
 
 	//==== Parcelable =========================================================
+	@Override
 	public int describeContents (){return 0;}
 
+	@Override
 	public void writeToParcel(Parcel dest, int flags)
 	{
 		dest.writeString(className);
@@ -107,11 +111,13 @@ public class ErrorParcelable implements Parcelable, ILoggable
 	}
 
 	//==== ILoggable =========================================================
+	@Override
 	public String getShortLogMessage()
 	{
 		return simpleName + ": " + LogUtil.getNotNullMessage(message);
 	}
 
+	@Override
 	public String getFullLogMessage()
 	{               
 		return simpleName + ": " 

@@ -23,6 +23,7 @@ public class AddDictTask implements IBcTask
 	private String mTaskSuccessText;
 	private IWStorage mDb;
 
+	@Override
 	public void init(BcTaskEnv env)
 	{
 		mBcToaster = env.bcToaster;
@@ -31,6 +32,7 @@ public class AddDictTask implements IBcTask
 		mDb = DbCreator.createWritable(env.context);
 	}
 
+	@Override
 	public Bundle execute()
 	{	
 		long id = mDb.addDict(mName);

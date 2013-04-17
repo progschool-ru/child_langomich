@@ -3,13 +3,13 @@
              
     <item
 		android:id="@+id/app_menu_item_button_add_word"
-		android:icon="@drawable/app_ic_action_bar_add_word" 
+		android:icon="@drawable/content_new" 
 		android:showAsAction="always" >
     </item>
  
     <item 
         android:id="@+id/app_menu_item_button_game"
-        android:icon="@drawable/app_ic_action_bar_game" 
+        android:icon="@drawable/av_play" 
         android:showAsAction="always" >
     </item>
     

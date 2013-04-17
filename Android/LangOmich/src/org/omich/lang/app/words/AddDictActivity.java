@@ -68,6 +68,7 @@ public class AddDictActivity extends BcActivity
 			Intent intent = AddDictTask.createIntent(name, taskAddText);
 			mAddDictTaskId = getBcConnector().startTypicalTask(AddDictTask.class, intent, new IListener<Bundle>()
 				{
+					@Override
 					public void handle (Bundle bundle)
 					{
 						if(mIsDestroyed)

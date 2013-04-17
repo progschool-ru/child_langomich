@@ -7,7 +7,9 @@ public class Word implements Parcelable
 {
 	public static final Parcelable.Creator<Word> CREATOR = new Parcelable.Creator<Word>()
 	{
+		@Override
 		public Word createFromParcel (Parcel source)	{return new Word(source);}
+		@Override
 		public Word[] newArray (int size) {return new Word[0];}
 	};
 
@@ -29,8 +31,10 @@ public class Word implements Parcelable
 		time = source.readLong();
 	}
 
+	@Override
 	public int describeContents (){return 0;}
 
+	@Override
 	public void writeToParcel (Parcel dest, int flags)
 	{
 		dest.writeString(nativ);

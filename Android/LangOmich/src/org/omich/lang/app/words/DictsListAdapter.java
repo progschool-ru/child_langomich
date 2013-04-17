@@ -67,6 +67,7 @@ public class DictsListAdapter extends TaskListAdapter<Dict>
 		private String mNewDictText;
 		private boolean mWithNewDict;
 
+		@Override
 		public void init(BcTaskEnv env)
 		{
 			mWithNewDict = env.extras.getBoolean(BundleFields.DICTS_WITH_NEW_DICT);
@@ -74,6 +75,7 @@ public class DictsListAdapter extends TaskListAdapter<Dict>
 			mNewDictText = env.context.getResources().getString(R.string.adddict_title);
 		}
 
+		@Override
 		public Bundle execute()
 		{
 			ArrayList<Dict> dicts = new ArrayList<Dict>(mDb.getDicts());

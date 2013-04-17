@@ -7,7 +7,9 @@ public class Dict implements Parcelable
 {
 	public static final Parcelable.Creator<Dict> CREATOR = new Parcelable.Creator<Dict>()
 	{
+		@Override
 		public Dict createFromParcel (Parcel source)	{return new Dict(source);}
+		@Override
 		public Dict[] newArray (int size) {return new Dict[0];}
 	};
 	
@@ -42,8 +44,10 @@ public class Dict implements Parcelable
 		time = source.readLong();
 	}
 	
+	@Override
 	public int describeContents (){return 0;}
 
+	@Override
 	public void writeToParcel (Parcel dest, int flags)
 	{
 		dest.writeLong(dictId);

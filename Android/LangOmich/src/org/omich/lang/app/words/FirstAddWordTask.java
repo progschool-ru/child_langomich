@@ -28,6 +28,7 @@ public class FirstAddWordTask implements IBcTask
 	private String mTaskSuccessText;
 	private IWStorage mDb;
 
+	@Override
 	public void init(BcTaskEnv env)
 	{
 		mBcToaster = env.bcToaster;
@@ -38,6 +39,7 @@ public class FirstAddWordTask implements IBcTask
 		mDb = DbCreator.createWritable(env.context);
 	}
 
+	@Override
 	public Bundle execute()
 	{
 		long dictId = mDb.addDict(mDict);

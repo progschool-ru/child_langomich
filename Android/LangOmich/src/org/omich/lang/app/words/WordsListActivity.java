@@ -74,17 +74,21 @@ public class WordsListActivity extends ABActivity
 		EditText search = (EditText)findViewById(R.id.wordslist_edit_text);
 		search.addTextChangedListener(new TextWatcher()
 		{
+			@Override
 			public void afterTextChanged(Editable s) 
 			{
 				mWordsAdapter.setNewText(s.toString());
 				mWordsAdapter.reloadItems();
 			}
+			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count){}
 		}); 
 		
 		mDictsAdapter = new DictsListAdapter(this, getBcConnector(), true, new IListenerVoid()
 		{
+			@Override
 			public void handle ()
 			{ 
 				setSelectedPosition();	
@@ -94,6 +98,7 @@ public class WordsListActivity extends ABActivity
 		
 		getActionBar().setListNavigationCallbacks(mDictsAdapter, new OnNavigationListener() 
 		{
+			@Override
 			public boolean onNavigationItemSelected(int position, long itemId) 
 			{
         		int size = mDictsAdapter.getCount();
@@ -110,6 +115,7 @@ public class WordsListActivity extends ABActivity
 		
 		lv.setOnItemClickListener(new OnItemClickListener() 
 		{
+			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 			{
 				ListItem li = (ListItem) lv.getItemAtPosition(position);
@@ -199,6 +205,7 @@ public class WordsListActivity extends ABActivity
 				intent, 
 				new IListener<Bundle>()
 				{
+					@Override
 					public void handle (Bundle bundle)
 					{
 						if(mIsDestroyed)

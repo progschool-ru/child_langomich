@@ -9,11 +9,13 @@ public class StackTraceLoggable implements ILoggable
 		mTrace = trace;
 	}
 
+	@Override
 	public String getShortLogMessage()
 	{
 		return LogUtil.getShortTraceMessage(0, 100);
 	}
 
+	@Override
 	public String getFullLogMessage()
 	{
 		return LogUtil.getStackTrace(mTrace);

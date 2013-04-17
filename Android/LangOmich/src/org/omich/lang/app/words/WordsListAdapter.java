@@ -16,8 +16,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.TextView;
@@ -67,7 +67,7 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 			Word t = item.getWord();
 			SpannableStringBuilder text = new SpannableStringBuilder(t.foreign+" - "+ t.nativ); 
 		    text.setSpan(new StyleSpan(Typeface.BOLD), 0, t.foreign.length(), 
-		    		  Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		    		  Spanned.SPAN_INCLUSIVE_INCLUSIVE);
 		    tvt.setText(text);
 		}
 		
@@ -107,6 +107,7 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 		private long mDictId;
 		private String mText;
 
+		@Override
 		public void init(BcTaskEnv env)
 		{
 			mDictId = env.extras.getLong(BundleFields.WORD_DICT_ID);
@@ -114,6 +115,7 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 			mDb = DbCreator.createReadable(env.context);
 		}
 
+		@Override
 		public Bundle execute()
 		{
 			ArrayList<ListItem> words = new ArrayList<ListItem>(mDb.getWordsByDictIdAndText(mDictId, mText));

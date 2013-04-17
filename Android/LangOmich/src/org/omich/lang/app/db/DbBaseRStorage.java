@@ -35,11 +35,13 @@ abstract public class DbBaseRStorage implements IRStorage
 		if(mPh != null){mPh.handle(progress);}
 	}
 	
+	@Override
 	public List<Dict> getDicts ()
 	{
 		String where = null;
 		return getDicts(where);
 	}	
+	@Override
 	public List<Dict> getDicts (Long mobileTime)
 	{
 		String where = DictsCols.TIME + ">" + mobileTime;
@@ -55,6 +57,7 @@ abstract public class DbBaseRStorage implements IRStorage
 		
 		DbHelper.iterateCursorAndClose(cursor, new CursorIterator()
 		{
+			@Override
 			public void handle(Cursor cursor)
 			{
 				Dict dict = new Dict(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getLong(3));
@@ -65,6 +68,7 @@ abstract public class DbBaseRStorage implements IRStorage
 		return answer;
 	}		
 	
+	@Override
 	public List<ListItem> getWordsByDictId (Long dictId)
 	{
 		String where = WordsCols.DICT_ID + "=" + dictId +" AND "+WordsCols.NATIV + "<> ?";
@@ -76,6 +80,7 @@ abstract public class DbBaseRStorage implements IRStorage
 		
 		DbHelper.iterateCursorAndClose(cursor, new CursorIterator()
 		{
+			@Override
 			public void handle(Cursor cursor)
 			{
 				Word word = new Word(cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getLong(3));
@@ -85,6 +90,7 @@ abstract public class DbBaseRStorage implements IRStorage
 		
 		return insertSeparators(answer);
 	}
+	@Override
 	public List<ListItem> getWordsByDictIdAndText (Long dictId, String text)
 	{
 		final List<Word> answer = new ArrayList<Word>();
@@ -107,6 +113,7 @@ abstract public class DbBaseRStorage implements IRStorage
 		}
 		DbHelper.iterateCursorAndClose(cursor, new CursorIterator()
 		{
+			@Override
 			public void handle(Cursor cursor)
 			{
 				Word word = new Word(cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getLong(3));
@@ -116,6 +123,7 @@ abstract public class DbBaseRStorage implements IRStorage
 		return insertSeparators(answer);
 	}
 	
+	@Override
 	public List<ListItem> getWordsByTime (Long mobileTime)
 	{
 		String where = WordsCols.TIME + ">" + mobileTime;
@@ -127,6 +135,7 @@ abstract public class DbBaseRStorage implements IRStorage
 		
 		DbHelper.iterateCursorAndClose(cursor, new CursorIterator()
 		{
+			@Override
 			public void handle(Cursor cursor)
 			{
 				Word word = new Word(cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getLong(3), cursor.getLong(4));
@@ -153,6 +162,7 @@ abstract public class DbBaseRStorage implements IRStorage
 		return result;
 	}
 	
+	@Override
 	public List<ListItem> getRandomWords(Long dictId, int n, int weight[])
 	{
 		int N = 10;// количество рейтингов
