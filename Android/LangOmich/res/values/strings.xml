@@ -31,8 +31,8 @@
     
     <string name="editWord_title">Editor of the word</string>
     <string name="editWord_text_dict">Dictionary:</string>
-    <string name="editWord_text_nativ">In a native language:</string>
-    <string name="editWord_text_foreign">In a foreign language:</string>
+    <string name="editWord_text_nativ">In a native language</string>
+    <string name="editWord_text_foreign">In a foreign language</string>
     <string name="editWord_text_cancel">Cancel</string>
     <string name="editWord_text_edit">Edit</string>   
     <string name="editWord_text_empty">You did not enter</string>
@@ -55,8 +55,8 @@
     <string name="addword_text_add">Add</string>   
     <string name="addword_text_cancel">Cancel</string>  
     <string name="addword_text_dict">Dictionary:</string>    
-    <string name="addword_text_foreign">In a foreign language:</string>
-    <string name="addword_text_native">In a native language:</string>   
+    <string name="addword_text_foreign">In a foreign language</string>
+    <string name="addword_text_native">In a native language</string>   
     <string name="addword_report_empty">You did not enter</string> 
     <string name="addword_report_added">Added the word</string>
     

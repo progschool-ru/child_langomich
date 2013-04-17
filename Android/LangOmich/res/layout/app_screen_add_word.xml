@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -14,78 +14,92 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="10dp"
-            android:visibility="gone"
-            android:spinnerMode="dialog"/>
-                
+            android:spinnerMode="dialog"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <EditText
         android:id="@+id/addword_nativEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/addword_text_native"
-        android:ems="10" />
-    
+        android:ems="10"
+        android:layout_marginRight="14dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        android:layout_above="@+id/addword_dictSpinner"
+        android:hint="@string/addword_text_native" />
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-        
-    	<TextView
-    	    android:id="@+id/addword_errorReport_nativ"
-    	    android:layout_width="wrap_content"
-    	    android:layout_height="wrap_content"
-    	    android:layout_centerHorizontal="true" />
-    
-	</RelativeLayout>
+        android:layout_height="wrap_content">
 
-    <EditText
+        <TextView
+            android:id="@+id/addword_errorReport_nativ"
+            android:layout_above="@+id/addword_nativEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="24dp" >
+
+        <TextView
+            android:id="@+id/addword_centerHorizontal"
+            android:layout_above="@id/addword_errorReport_nativ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+     </RelativeLayout>
+
+     <RelativeLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignParentLeft="true"
+         android:layout_alignParentTop="true" >
+
+         <TextView
+            android:id="@+id/addword_errorReport_foreign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+	 </RelativeLayout>
+
+     <EditText
         android:id="@+id/addword_foreignEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/addword_text_foreign"
-        android:ems="10" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/relativeLayout1"
+        android:ems="10"
+        android:layout_marginRight="14dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/addword_text_foreign" />
+     
+    <Button
+        android:id="@+id/addword_button_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/addword_nativEdit"
+        android:layout_below="@+id/addword_foreignEdit"
+        android:onClick="onCancelButton"
+        android:text="@string/addword_text_cancel" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-        
-    	<TextView
-    	    android:id="@+id/addword_errorReport_foreign"
-    	    android:layout_width="wrap_content"
-    	    android:layout_height="wrap_content"
-    	    android:layout_centerHorizontal="true" />
-    
-	</RelativeLayout>
+    <Button
+        android:id="@+id/addword_button_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/addword_nativEdit"
+        android:layout_below="@+id/addword_foreignEdit"
+        android:layout_marginRight="18dp"
+        android:onClick="onAddButton"
+        android:text="@string/addword_text_add" />    
 
-	<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    		
-		<TextView
-    	    android:id="@+id/addword_centerHorizontal"
-    	    android:layout_width="wrap_content"
-    	    android:layout_height="wrap_content"
-    	    android:layout_centerHorizontal="true" />
-    	           
-	    <Button
-	        android:id="@+id/addword_button_cancel"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_toLeftOf="@+id/addword_centerHorizontal"
-	        android:onClick="onCancelButton"
-	        android:text="@string/addword_text_cancel" />
-
-        <Button
-            android:id="@+id/addword_button_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/addword_centerHorizontal"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:onClick="onAddButton"
-            android:text="@string/addword_text_add" />
-
-    </RelativeLayout>
-    
-</LinearLayout>
+</RelativeLayout>
