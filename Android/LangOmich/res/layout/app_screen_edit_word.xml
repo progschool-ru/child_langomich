@@ -24,8 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/editWord_dictSpinner"
         android:ems="10"
-        android:layout_marginRight="14dp"
-        android:layout_marginLeft="14dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="30dp"
         android:hint="@string/editWord_text_nativ" />
@@ -72,8 +72,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/relativeLayout1"
-        android:layout_marginRight="14dp"
-        android:layout_marginLeft="14dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="10dp"
         android:ems="10"
@@ -82,28 +82,42 @@
         <requestFocus />
     </EditText>
 
-    <Button
-        android:id="@+id/editWord_button_edit"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/editWord_edit_foreign"
-        android:layout_below="@+id/editWord_edit_foreign"
-        android:layout_weight="0.20"
-        android:onClick="onEditButton"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
-        android:text="@string/editWord_text_edit" />
+        android:layout_below="@+id/editWord_edit_foreign" >
+                
+        <TextView
+            android:id="@+id/addword_centerHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+                   
+        <Button
+            android:id="@+id/addword_button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/addword_centerHorizontal"            
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="6dp"
+            android:onClick="onCancelButton"
+            android:text="@string/addword_text_cancel" />
 
-    <Button
-        android:id="@+id/editWord_button_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editWord_edit_foreign"
-        android:layout_below="@+id/editWord_edit_foreign"
-        android:layout_weight="0.34"
-        android:onClick="onCancelButton"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
-        android:text="@string/editWord_text_cancel" />
+        <Button
+            android:id="@+id/addword_button_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/addword_centerHorizontal"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"            
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="6dp"
+            android:onClick="onAddButton"
+            android:text="@string/addword_text_add" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
