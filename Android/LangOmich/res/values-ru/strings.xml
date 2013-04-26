@@ -31,8 +31,8 @@
     
     <string name="editWord_title">Редактор слова</string>
     <string name="editWord_text_dict">Словарь:</string>
-    <string name="editWord_text_nativ">На родном языке:</string>
-    <string name="editWord_text_foreign">На иностранном языке:</string>
+    <string name="editWord_text_nativ">На родном языке</string>
+    <string name="editWord_text_foreign">На иностранном языке</string>
     <string name="editWord_text_cancel">Отмена</string>
     <string name="editWord_text_edit">Изменить</string>   
     <string name="editWord_text_empty">Вы ничего не ввели</string>
@@ -55,8 +55,8 @@
     <string name="addword_text_add">Добавить</string>   
     <string name="addword_text_cancel">Отмена</string>  
     <string name="addword_text_dict">Словарь:</string>
-    <string name="addword_text_foreign">На иностранном языке:</string>
-    <string name="addword_text_native">На родном языке:</string>    
+    <string name="addword_text_foreign">На иностранном языке</string>
+    <string name="addword_text_native">На родном языке</string>    
     <string name="addword_report_empty">Вы ничего не ввели</string> 
     <string name="addword_report_added">Слово добавлено</string> 
 

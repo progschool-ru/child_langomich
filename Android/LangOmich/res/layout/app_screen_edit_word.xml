@@ -12,7 +12,8 @@
             android:id="@+id/editWord_dictSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="8dp"            
+            android:layout_above="@+id/editWord_edit_nativ"
             android:layout_marginTop="10dp"
             android:spinnerMode="dialog"
             android:visibility="gone" />
@@ -22,70 +23,53 @@
         android:id="@+id/editWord_edit_nativ"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/editWord_dictSpinner"
+        android:layout_below="@+id/editWord_dictSpinner"
         android:ems="10"
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="30dp"
         android:hint="@string/editWord_text_nativ" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/editWord_edit_nativ" >
-
-        <TextView
-            android:id="@+id/editWord_errorReport_nativ"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" />
+        android:layout_below="@id/editWord_edit_nativ" 
+        android:id="@+id/editWord_errorReport_nativ">
         
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/editWord_errorReport_foreign"
+        <TextView            
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true" />        
     </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/editWord_centerHorizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
-
+    
     <EditText
         android:id="@+id/editWord_edit_foreign"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/relativeLayout1"
+        android:layout_below="@+id/editWord_errorReport_nativ"
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="2dp"
         android:ems="10"
-        android:hint="@string/editWord_text_foreign" >
+        android:hint="@string/editWord_text_foreign" />
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:id="@+id/editWord_errorReport_foreign"
+        android:layout_below="@+id/editWord_edit_foreign">
 
-        <requestFocus />
-    </EditText>
+        <TextView            
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editWord_edit_foreign" >
+        android:layout_below="@+id/editWord_errorReport_foreign" >
                 
         <TextView
             android:id="@+id/addword_centerHorizontal"
@@ -100,7 +84,6 @@
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/addword_centerHorizontal"            
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginBottom="6dp"
             android:onClick="onCancelButton"
             android:text="@string/addword_text_cancel" />
@@ -111,8 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/addword_centerHorizontal"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"            
-            android:layout_marginLeft="8dp"
+            android:layout_alignParentTop="true" 
             android:layout_marginRight="8dp"
             android:layout_marginBottom="6dp"
             android:onClick="onAddButton"
