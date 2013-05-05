@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -127,7 +128,7 @@ public class WordsListActivity extends ABActivity
 						ListItem item = (ListItem)mWordsAdapter.getItem(mWordsAdapter.getSelectedPosition());
 						if(item.getWord() != null)
 						{
-							sideScreen.startAnimation(animationSideOut);
+//							sideScreen.startAnimation(animationSideOut);
 							sideScreen.setVisibility(View.INVISIBLE);
 							returnButton.setVisibility(View.INVISIBLE);					
 						}

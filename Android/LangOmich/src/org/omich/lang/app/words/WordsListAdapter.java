@@ -39,7 +39,8 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 	public void setNewText(String text)
 	{
 		this.text = text;
-	}	
+	}		
+	
 	//==== TaskListAdapter ===================================================
 	@Override
 	protected Class<? extends IBcTask> getLoadItemsTaskClass (){return LoadWordsTask.class;}
