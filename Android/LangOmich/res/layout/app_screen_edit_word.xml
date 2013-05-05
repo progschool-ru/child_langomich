@@ -72,33 +72,33 @@
         android:layout_below="@+id/editWord_errorReport_foreign" >
                 
         <TextView
-            android:id="@+id/addword_centerHorizontal"
+            android:id="@+id/editWord_centerHorizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true" />
                    
         <Button
-            android:id="@+id/addword_button_cancel"
+            android:id="@+id/editWord_button_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/addword_centerHorizontal"            
+            android:layout_toLeftOf="@+id/editWord_centerHorizontal"            
             android:layout_marginLeft="8dp"
             android:layout_marginBottom="6dp"
             android:onClick="onCancelButton"
-            android:text="@string/addword_text_cancel" />
+            android:text="@string/editWord_text_cancel" />
 
         <Button
-            android:id="@+id/addword_button_add"
+            android:id="@+id/editWord_button_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/addword_centerHorizontal"
+            android:layout_alignLeft="@+id/editWord_centerHorizontal"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true" 
             android:layout_marginRight="8dp"
             android:layout_marginBottom="6dp"
-            android:onClick="onAddButton"
-            android:text="@string/addword_text_add" />
+            android:onClick="onEditButton"
+            android:text="@string/editWord_text_edit" />
 
     </RelativeLayout>
 

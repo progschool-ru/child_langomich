@@ -14,6 +14,7 @@ import org.omich.tool.bcops.IBcTask;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -61,15 +62,23 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 		TextView tvt = (TextView)view.findViewById(R.id.item_wordslist_text);
 		if(item.getWord() == null)
 		{						
-			tvt.setText("Rating ".concat(Integer.toString(item.sep.rating)));
+			SpannableStringBuilder text = new SpannableStringBuilder("RATING ".concat(Integer.toString(item.sep.rating)));
+			text.setSpan(new StyleSpan(Typeface.BOLD), 0, text.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+			tvt.setText(text);
+			tvt.setTextColor(Color.GRAY);
+			tvt.setTextSize(15);
+			tvt.setPadding(14, 5, 14, 0);
 		}
 		else
 		{
 			Word t = item.getWord();
-			SpannableStringBuilder text = new SpannableStringBuilder(t.foreign+" - "+ t.nativ); 
+			SpannableStringBuilder text = new SpannableStringBuilder(t.foreign+"\r\n"+ t.nativ); 
 		    text.setSpan(new StyleSpan(Typeface.BOLD), 0, t.foreign.length(), 
 		    		  Spanned.SPAN_INCLUSIVE_INCLUSIVE);
 		    tvt.setText(text);
+		    tvt.setTextColor(Color.BLACK);
+		    tvt.setTextSize(17);
+		    tvt.setPadding(14, 10, 14, 10);
 		}
 		
 		View sideScreen = view.findViewById(R.id.item_wordlist_screen_side);
