@@ -235,4 +235,11 @@ public class GameActivity extends BcActivity
 			setScreen(GAME);
 		}
 	}
+	
+	@Override
+	public void onBackPressed() 
+	{
+		finish();
+		super.onBackPressed();
+	}
 }

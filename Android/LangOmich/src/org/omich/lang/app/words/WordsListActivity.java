@@ -169,7 +169,6 @@ public class WordsListActivity extends ABActivity
 		}
 		else if(id == R.id.app_menu_item_button_game)
 		{
-			startActivity(new Intent(this, GameActivity.class));
 			finish();
 		}
 		return true;
@@ -184,6 +183,7 @@ public class WordsListActivity extends ABActivity
 		intent.putExtra("foreign", word.foreign);
 		startActivityForResult(intent, REQUEST_CODE_EDIT_WORD);
 	}	
+	
 	public void onReturn (View v)
 	{		
 		if(mWordsAdapter.getSelectedPosition() == -1)
@@ -193,6 +193,7 @@ public class WordsListActivity extends ABActivity
 		returnButton.setVisibility(View.INVISIBLE);
 		mWordsAdapter.setSelectedPosition(-1);
 	}	
+	
 	public void onDelete (View v)
 	{
 		if(word == null || mDeleteWordTaskId != null)
@@ -300,5 +301,11 @@ public class WordsListActivity extends ABActivity
 		super.onDestroy();
 	}
 	
+	@Override
+	public void onBackPressed() 
+	{
+		finish();
+		super.onBackPressed();
+	}
 	//=========================================================================
 }
