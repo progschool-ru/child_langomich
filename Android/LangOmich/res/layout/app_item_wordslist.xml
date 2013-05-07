@@ -12,7 +12,7 @@
             android:paddingRight="14dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp" 
-            android:minHeight="37dp"                          
+            android:minHeight="48dp"
             android:gravity="center_vertical"
             android:layout_centerVertical="true"
             android:textSize="18sp"
@@ -23,9 +23,9 @@
 	<TextView
 	    android:id="@+id/border_line"
 	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
+	    android:layout_height="2dp"
 	    android:background="@drawable/border_shape"
-	    android:layout_below="@+id/item_wordlist_button_return" 
+	    android:layout_below="@+id/item_wordslist_text" 
 	    />
 
     <View

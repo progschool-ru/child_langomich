@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.StyleSpan;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
@@ -65,9 +66,11 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 			SpannableStringBuilder text = new SpannableStringBuilder("RATING ".concat(Integer.toString(item.sep.rating)));
 			text.setSpan(new StyleSpan(Typeface.BOLD), 0, text.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 			tvt.setText(text);
+			
 			tvt.setTextColor(Color.GRAY);
-			tvt.setTextSize(15);
-			tvt.setPadding(14, 5, 14, 0);		
+			tvt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+			
+			tvt.setPadding(14, 25, 14, 3);
 			TextView line = (TextView)view.findViewById(R.id.border_line);
 			line.setVisibility(TextView.VISIBLE);
 		}
@@ -78,9 +81,10 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 		    text.setSpan(new StyleSpan(Typeface.BOLD), 0, t.foreign.length(), 
 		    		  Spanned.SPAN_INCLUSIVE_INCLUSIVE);
 		    tvt.setText(text);
+		    
 		    tvt.setTextColor(Color.BLACK);
-		    tvt.setTextSize(17);
-		    tvt.setPadding(14, 10, 14, 10);
+		    tvt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+		    
 		    TextView line = (TextView)view.findViewById(R.id.border_line);
 			line.setVisibility(TextView.GONE);
 		}
