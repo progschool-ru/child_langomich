@@ -67,18 +67,22 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 			tvt.setText(text);
 			tvt.setTextColor(Color.GRAY);
 			tvt.setTextSize(15);
-			tvt.setPadding(14, 5, 14, 0);
+			tvt.setPadding(14, 5, 14, 0);		
+			TextView line = (TextView)view.findViewById(R.id.border_line);
+			line.setVisibility(TextView.VISIBLE);
 		}
 		else
 		{
 			Word t = item.getWord();
-			SpannableStringBuilder text = new SpannableStringBuilder(t.foreign+"\r\n"+ t.nativ); 
+			SpannableStringBuilder text = new SpannableStringBuilder(t.foreign+" - "+ t.nativ); 
 		    text.setSpan(new StyleSpan(Typeface.BOLD), 0, t.foreign.length(), 
 		    		  Spanned.SPAN_INCLUSIVE_INCLUSIVE);
 		    tvt.setText(text);
 		    tvt.setTextColor(Color.BLACK);
 		    tvt.setTextSize(17);
 		    tvt.setPadding(14, 10, 14, 10);
+		    TextView line = (TextView)view.findViewById(R.id.border_line);
+			line.setVisibility(TextView.GONE);
 		}
 		
 		View sideScreen = view.findViewById(R.id.item_wordlist_screen_side);
