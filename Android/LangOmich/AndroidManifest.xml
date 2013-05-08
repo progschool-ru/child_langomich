@@ -5,20 +5,17 @@
     android:versionName="1.0" >
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-sdk android:minSdkVersion="11" android:targetSdkVersion="15"/>
+    <uses-sdk android:minSdkVersion="11" android:targetSdkVersion="17"/>
     
     <application
         android:icon="@drawable/ic_launcher"
+        android:allowBackup="true"
         android:label="@string/app_name" android:theme="@style/Theme.LangTheme">
         <service android:name="org.omich.tool.bcops.BcService" android:exported="false"/>
 
         <activity
             android:name=".app.words.GameActivity"
             android:label="@string/training_lable">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>            
         </activity>     
         <activity
             android:name=".app.words.WelcomeActivity"
@@ -47,6 +44,16 @@
             android:name=".app.words.WordsListActivity"
             android:label="@string/wordslist_title">
         </activity> 
+        <activity-alias
+            android:name=".Launcher"
+            android:targetActivity=".app.words.GameActivity"
+            android:label="@string/app_name"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
         
     </application>
 	
