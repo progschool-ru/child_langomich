@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-	<LinearLayout 
-    	android:focusable="true"
-    	android:focusableInTouchMode="true" 
-		android:layout_width="0px"
-    	android:layout_height="0px" />
-	
     <EditText
         android:id="@+id/wordslist_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="43dp"
-        android:hint="@string/wordslist_text_search" />
-    
+        android:hint="@string/wordslist_text_search"
+        />    
     <ListView
         android:id="@+id/wordslist_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/wordslist_edit_text" />  
-</RelativeLayout>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+		/>  
+</LinearLayout>
