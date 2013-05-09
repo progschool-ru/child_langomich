@@ -5,7 +5,6 @@ import org.omich.lang.apptool.activity.BcActivity;
 import org.omich.tool.events.Listeners.IListener;
 import org.omich.tool.events.Listeners.IListenerInt;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -94,7 +93,7 @@ public class EditWordActivity extends BcActivity
                 if(newNativ.equals(""))
                 {
                         TextView errorView = (TextView) findViewById(R.id.addword_errorReport_nativ);
-                        errorView.setTextColor(Color.RED);
+                        errorView.setTextColor(getErrorColor());
                         errorView.setText(R.string.addword_report_empty);
                         error = true;
                 }
@@ -102,7 +101,7 @@ public class EditWordActivity extends BcActivity
                 if(newForeign.equals(""))
                 {
                         TextView errorView = (TextView) findViewById(R.id.addword_errorReport_nativ);
-                        errorView.setTextColor(Color.RED);
+                        errorView.setTextColor(getErrorColor());
                         errorView.setText(R.string.addword_report_empty);
                         error = true;
                 }
@@ -131,5 +130,10 @@ public class EditWordActivity extends BcActivity
         {               
                 setResult(RESULT_CANCELED);
                 finish();
-        }               
+        }
+        
+    	private int getErrorColor()
+    	{
+    		return getResources().getColor(R.color.lang_addWord_error);
+    	}
 }

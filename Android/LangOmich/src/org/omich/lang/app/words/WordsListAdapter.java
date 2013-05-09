@@ -14,7 +14,6 @@ import org.omich.tool.bcops.IBcTask;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -28,11 +27,13 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 {
 	private long dictId = -1;
 	private String text = "";
+	private final Context context;
 	
 	public WordsListAdapter (Context context, IBcConnector conn, Long dictId)
 	{
 		super(context, conn);		
 		this.dictId = dictId;
+		this.context = context;
 	}
 	public void setNewDictId(Long dictId)
 	{
@@ -66,8 +67,8 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 			SpannableStringBuilder text = new SpannableStringBuilder("RATING ".concat(Integer.toString(item.sep.rating)));
 			text.setSpan(new StyleSpan(Typeface.BOLD), 0, text.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 			tvt.setText(text);
-			
-			tvt.setTextColor(Color.GRAY);
+
+			tvt.setTextColor(context.getResources().getColor(R.color.lang_wordsList_groupTitle));
 			tvt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 			
 			tvt.setPadding(14, 25, 14, 3);
@@ -82,7 +83,7 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 		    		  Spanned.SPAN_INCLUSIVE_INCLUSIVE);
 		    tvt.setText(text);
 		    
-		    tvt.setTextColor(Color.BLACK);
+		    tvt.setTextColor(context.getResources().getColor(R.color.lang_wordsList_word));
 		    tvt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 		    
 		    TextView line = (TextView)view.findViewById(R.id.border_line);

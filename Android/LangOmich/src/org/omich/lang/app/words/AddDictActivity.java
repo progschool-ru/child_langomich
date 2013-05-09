@@ -9,7 +9,6 @@ import org.omich.tool.events.Listeners.IListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -60,7 +59,7 @@ public class AddDictActivity extends BcActivity
 		if(name.equals(""))
 		{
 			TextView errorView = (TextView) findViewById(R.id.adddict_errorReport);
-			errorView.setTextColor(Color.RED);
+			errorView.setTextColor(getErrorColor());
 			errorView.setText(R.string.adddict_report__empty);
 		}
 		else
@@ -80,7 +79,7 @@ public class AddDictActivity extends BcActivity
 						if(dictId == -1)
 						{
 							TextView errorView = (TextView) findViewById(R.id.adddict_errorReport);
-							errorView.setTextColor(Color.RED);
+							errorView.setTextColor(getErrorColor());
 							errorView.setText(R.string.adddict_report_in_base);														
 						}
 						else if(changeDictInPreferences)
@@ -106,5 +105,11 @@ public class AddDictActivity extends BcActivity
 	{	
 	    setResult(RESULT_CANCELED);			
 		finish();
-	}	
+	}
+	
+	
+	private int getErrorColor()
+	{
+		return getResources().getColor(R.color.lang_addDict_error);
+	}
 }

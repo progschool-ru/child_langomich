@@ -6,4 +6,10 @@
     <style name="MyDrowDownStyle" parent="@android:style/Widget.Holo.Light.Spinner">
         <item name="android:spinnerMode">dialog</item>
     </style>
+    
+    <color name="lang_general_error">#f00</color>
+    <color name="lang_addDict_error">@color/lang_general_error</color>
+    <color name="lang_addWord_error">@color/lang_general_error</color>
+    <color name="lang_wordsList_groupTitle">@android:color/secondary_text_dark</color>
+    <color name="lang_wordsList_word">@android:color/primary_text_dark</color>
 </resources>

@@ -8,7 +8,6 @@ import org.omich.tool.events.Listeners.IListenerInt;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -93,7 +92,7 @@ public class AddWordActivity extends BcActivity
 		if(nativ.equals(""))
 		{
 			TextView errorView = (TextView) findViewById(R.id.addword_errorReport_nativ);
-			errorView.setTextColor(Color.RED);
+			errorView.setTextColor(getErrorColor());
 			errorView.setText(R.string.addword_report_empty);
 			error = true;
 		}
@@ -101,7 +100,7 @@ public class AddWordActivity extends BcActivity
 		if(foreign.equals(""))
 		{
 			TextView errorView = (TextView) findViewById(R.id.addword_errorReport_foreign);
-			errorView.setTextColor(Color.RED);
+			errorView.setTextColor(getErrorColor());
 			errorView.setText(R.string.addword_report_empty);
 			error = true;
 		}	
@@ -129,5 +128,10 @@ public class AddWordActivity extends BcActivity
 	{
 		setResult(RESULT_CANCELED);
 		finish();
+	}
+	
+	private int getErrorColor()
+	{
+		return getResources().getColor(R.color.lang_addWord_error);
 	}
 }

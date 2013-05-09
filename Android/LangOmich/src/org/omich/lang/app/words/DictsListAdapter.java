@@ -49,7 +49,6 @@ public class DictsListAdapter extends TaskListAdapter<Dict>
 	protected void fillViewByData (View view, int position, Dict item)
 	{
 		TextView tv = (TextView)view.findViewById(R.id.item_dictslist_text);
-		tv.setTextColor(0xff000000);
 		tv.setText(item.name);
 	}
 	
