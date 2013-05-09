@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.LangTheme.AbTheme">
+        <item name="actionBarStyle">@style/LangAbStyle</item>
+    </style>
+    <style name="LangAbStyle" parent="@style/ActionBar.Solid.Lang">
+        <item name="background">@drawable/lang_ab_background_gradient</item>
+    </style>
+</resources>

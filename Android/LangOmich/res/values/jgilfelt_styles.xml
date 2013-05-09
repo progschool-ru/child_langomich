@@ -34,7 +34,6 @@
     </style>
 
     <style name="ActionBar.Solid.Lang" parent="@style/Widget.Sherlock.ActionBar.Solid">
-        <item name="background">@drawable/ab_solid_lang</item>
         <item name="backgroundStacked">@drawable/ab_stacked_solid_lang</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_lang</item>
         <item name="progressBarStyle">@style/ProgressBar.Lang</item>

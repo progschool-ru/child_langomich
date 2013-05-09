@@ -24,7 +24,7 @@
 	    android:id="@+id/border_line"
 	    android:layout_width="fill_parent"
 	    android:layout_height="2dp"
-	    android:background="@drawable/border_shape"
+	    android:background="@drawable/lang_border_shape"
 	    android:layout_below="@+id/item_wordslist_text" 
 	    />
 
