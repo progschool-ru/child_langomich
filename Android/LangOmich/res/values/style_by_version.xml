@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.LangTheme.AbTheme">
+        <item name="actionDropDownStyle">@style/LangDrowDownStyle</item>
         <item name="actionBarStyle">@style/LangAbStyle</item>
     </style>
+
+    <style name="LangDrowDownStyle" parent="@style/Widget.Sherlock.Spinner.DropDown.ActionBar">
+        <!-- item name="spinnerMode">dialog</item-->
+    </style>
+
     <style name="LangAbStyle" parent="@style/ActionBar.Solid.Lang">
         <item name="background">@drawable/lang_ab_background_gradient</item>
     </style>

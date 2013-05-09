@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <style name="Theme.LangTheme" parent="@style/Theme.Lang">
-        <item name="android:actionDropDownStyle">@style/MyDrowDownStyle</item>
-    </style>
-    <style name="MyDrowDownStyle" parent="@android:style/Widget.Holo.Light.Spinner">
-        <item name="android:spinnerMode">dialog</item>
+        <item name="android:windowBackground">@drawable/wall</item>
     </style>
     
     <color name="lang_general_error">#f00</color>
