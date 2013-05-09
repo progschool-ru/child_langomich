@@ -1,10 +1,11 @@
 package org.omich.lang.apptool.activity;
 
-import android.app.Activity;
+import com.actionbarsherlock.app.SherlockActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 
-public class AppActivity extends Activity
+public class AppActivity extends SherlockActivity
 {
 	private ForResultStarter mForResultStarter;
 	

@@ -9,8 +9,12 @@ import org.omich.lang.apptool.activity.ABActivity;
 import org.omich.tool.events.Listeners.IListener;
 import org.omich.tool.events.Listeners.IListenerVoid;
 
-import android.app.ActionBar;
-import android.app.ActionBar.OnNavigationListener;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -18,10 +22,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -61,8 +61,8 @@ public class WordsListActivity extends ABActivity
 		setContentView(R.layout.app_screen_wordslist);	
 		sp = PreferenceManager.getDefaultSharedPreferences(this);
 		
-		getActionBar().setDisplayShowTitleEnabled(false);
-		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		
 		final ListView lv = (ListView)findViewById(R.id.wordslist_list);
 	
@@ -97,7 +97,7 @@ public class WordsListActivity extends ABActivity
 		});
 		mDictsAdapter.reloadItems();
 		
-		getActionBar().setListNavigationCallbacks(mDictsAdapter, new OnNavigationListener() 
+		getSupportActionBar().setListNavigationCallbacks(mDictsAdapter, new OnNavigationListener() 
 		{
 			@Override
 			public boolean onNavigationItemSelected(int position, long itemId) 
@@ -154,7 +154,7 @@ public class WordsListActivity extends ABActivity
 	@Override 
 	public boolean onCreateOptionsMenu(Menu menu) 
 	{
-		  MenuInflater inflater = getMenuInflater();
+		  MenuInflater inflater = getSupportMenuInflater();
 		  inflater.inflate(R.menu.menu_words_list, menu);	
 
 		  return super.onCreateOptionsMenu(menu);
@@ -225,7 +225,7 @@ public class WordsListActivity extends ABActivity
 		long dictId = sp.getLong(PreferenceFields.DICT_ID, -1);
 		if(dictId != -1)
 		{
-			getActionBar().setSelectedNavigationItem(getPositionByTableId(dictId));
+			getSupportActionBar().setSelectedNavigationItem(getPositionByTableId(dictId));
 		}				
 	}
 	private int getPositionByTableId(long dictId)

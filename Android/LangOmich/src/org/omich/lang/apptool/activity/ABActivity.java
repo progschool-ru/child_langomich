@@ -1,8 +1,9 @@
 package org.omich.lang.apptool.activity;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class ABActivity extends BcActivity
 {

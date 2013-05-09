@@ -6,16 +6,17 @@ import org.omich.lang.app.db.Dict;
 import org.omich.lang.apptool.activity.BcActivity;
 import org.omich.tool.events.Listeners.IListenerVoid;
 
-import android.app.ActionBar;
-import android.app.ActionBar.OnNavigationListener;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -57,8 +58,8 @@ public class GameActivity extends BcActivity
 			getForResultStarter().startForResult(new Intent(this, WordsListActivity.class), null);			
 		}
 		
-		getActionBar().setDisplayShowTitleEnabled(false);
-		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		
 		mDictsAdapter = new DictsListAdapter(this, getBcConnector(), false, new IListenerVoid()
 		{
@@ -70,7 +71,7 @@ public class GameActivity extends BcActivity
 		});
 		mDictsAdapter.reloadItems();
 	
-		getActionBar().setListNavigationCallbacks(mDictsAdapter, new OnNavigationListener() 
+		getSupportActionBar().setListNavigationCallbacks(mDictsAdapter, new OnNavigationListener() 
 		{
 			@Override
 			public boolean onNavigationItemSelected(int position, long itemId) 
@@ -157,7 +158,7 @@ public class GameActivity extends BcActivity
 	@Override 
 	public boolean onCreateOptionsMenu(Menu menu) 
 	{
-		  MenuInflater inflater = getMenuInflater();
+		  MenuInflater inflater = getSupportMenuInflater();
 		  inflater.inflate(R.menu.menu_game, menu);	
 
 		  return super.onCreateOptionsMenu(menu);
@@ -211,7 +212,7 @@ public class GameActivity extends BcActivity
 		long dictId = sp.getLong(PreferenceFields.DICT_ID, -1);
 		if(dictId != -1)
 		{
-			getActionBar().setSelectedNavigationItem(getPositionByTableId(dictId));
+			getSupportActionBar().setSelectedNavigationItem(getPositionByTableId(dictId));
 		}				
 	}
 	private int getPositionByTableId(long dictId)

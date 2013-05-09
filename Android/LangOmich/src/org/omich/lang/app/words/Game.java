@@ -134,7 +134,7 @@ public class Game
 			if(realNumber > 0)
 			{
 				ListItem item = words.get(currentNumber);
-				if(item.getWord() != null && !item.getWord().nativ.isEmpty())
+				if(item.getWord() != null && item.getWord().nativ.length() > 0)
 				{
 					word = words.get(currentNumber).getWord();
 					currentNumber++;
