@@ -6,7 +6,7 @@
         <item name="actionBarStyle">@style/LangAbStyle</item>
     </style>
 
-    <style name="LangDrowDownStyle" parent="@style/Widget.Sherlock.Spinner.DropDown.ActionBar">
+    <style name="LangDrowDownStyle" parent="@style/DropDownNav.Lang">
         <!-- item name="spinnerMode">dialog</item-->
     </style>
 
