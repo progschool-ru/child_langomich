@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.LangTheme.AbTheme">
+        <item name="android:windowContentOverlay">@drawable/abs__ab_solid_shadow_holo</item>
         <item name="android:actionDropDownStyle">@style/LangDrowDownStyle</item>
         <item name="android:actionBarStyle">@style/LangAbStyle</item>
     </style>
