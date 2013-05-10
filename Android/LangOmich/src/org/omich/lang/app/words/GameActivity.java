@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.TextView;
 
 public class GameActivity extends BcActivity
@@ -30,8 +29,8 @@ public class GameActivity extends BcActivity
 	
 	private TextView tvn;
 	private TextView tvf;
-	private Button bt1;
-	private Button bt2;
+	private TextView bt1;
+	private TextView bt2;
 	private int currentScreen = GAME;
 
 	private Game game;
@@ -83,8 +82,8 @@ public class GameActivity extends BcActivity
 
 		tvn = (TextView)findViewById(R.id.item_wordslist_text_nativ);
 		tvf = (TextView)findViewById(R.id.item_wordslist_text_foreign);
-		bt1 = (Button)findViewById(R.id.button_1);
-		bt2 = (Button)findViewById(R.id.button_2);
+		bt1 = (TextView)findViewById(R.id.button_1);
+		bt2 = (TextView)findViewById(R.id.button_2);
 		
 		game = new Game(this, sp.getLong(PreferenceFields.DICT_ID, -1), new IListenerVoid()
 		{
@@ -185,8 +184,8 @@ public class GameActivity extends BcActivity
 		{
 			tvn.setText("");
 			tvf.setText("");		
-			bt1.setText("\n"+getString(R.string.training_text_i_know)+"\n");
-			bt2.setText("\n"+getString(R.string.training_text_i_dont_know)+"\n");
+			bt1.setText(getString(R.string.training_text_i_know));
+			bt2.setText(getString(R.string.training_text_i_dont_know));
 			bt1.setVisibility(View.INVISIBLE);
 			bt2.setVisibility(View.INVISIBLE);
 			game.getNextWord();
@@ -195,15 +194,15 @@ public class GameActivity extends BcActivity
 		else if(screen == I_KNOW)
 		{
 			tvf.setText(game.getText(game.FOREIGN));
-			bt1.setText("\n"+getString(R.string.training_text_is_true)+"\n");
-			bt2.setText("\n"+getString(R.string.training_text_is_false)+"\n");
+			bt1.setText(getString(R.string.training_text_is_true));
+			bt2.setText(getString(R.string.training_text_is_false));
 			currentScreen = I_KNOW;	
 		}
 		else if(screen == I_DONT_KNOW)
 		{
 			tvf.setText(game.getText(game.FOREIGN));
 			bt1.setVisibility(View.INVISIBLE);
-			bt2.setText("\n"+getString(R.string.training_text_is_next)+"\n");
+			bt2.setText(getString(R.string.training_text_is_next));
 			currentScreen = I_DONT_KNOW;
 		}		
 	}	
