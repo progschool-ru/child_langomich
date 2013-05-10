@@ -3,14 +3,16 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:focusableInTouchMode="true"
+    >
     <EditText
         android:id="@+id/wordslist_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="43dp"
         android:hint="@string/wordslist_text_search"
-        />    
+        />
     <ListView
         android:id="@+id/wordslist_list"
         android:layout_width="match_parent"
