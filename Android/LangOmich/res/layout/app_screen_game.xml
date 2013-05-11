@@ -8,7 +8,6 @@
         android:id="@+id/item_wordslist_text_nativ"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -16,21 +15,18 @@
         android:layout_marginTop="36dp"
         android:textSize="25sp"
         android:textIsSelectable="true"
-        />
-    
+        />    
+
     <TextView
         android:id="@+id/item_wordslist_text_foreign"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/item_wordslist_text_nativ"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_centerVertical="true"
         android:gravity="center"
-        android:textSize="25sp"
-        android:textStyle="bold"
         android:textIsSelectable="true"
-        />
+        android:textSize="25sp"
+        android:textStyle="bold" />
     
     <Button
         android:id="@+id/button_1"
