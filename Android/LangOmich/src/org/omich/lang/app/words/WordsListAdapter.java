@@ -69,9 +69,7 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 			tvt.setText(text);
 
 			tvt.setTextColor(context.getResources().getColor(R.color.lang_wordsList_groupTitle));
-			tvt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 			
-			tvt.setPadding(14, 25, 14, 3);
 			TextView line = (TextView)view.findViewById(R.id.border_line);
 			line.setVisibility(TextView.VISIBLE);
 		}
@@ -84,7 +82,6 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 		    tvt.setText(text);
 		    
 		    tvt.setTextColor(context.getResources().getColor(R.color.lang_wordsList_word));
-		    tvt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 		    
 		    TextView line = (TextView)view.findViewById(R.id.border_line);
 			line.setVisibility(TextView.GONE);
