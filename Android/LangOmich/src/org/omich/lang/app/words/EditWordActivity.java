@@ -86,23 +86,27 @@ public class EditWordActivity extends BcActivity
                         return;
                 boolean error = false;
                 
-                String newNativ = ((EditText)findViewById(R.id.editWord_edit_nativ)).getText().toString();
-                String newForeign = ((EditText)findViewById(R.id.editWord_edit_foreign)).getText().toString();
+                String newNativ = ((EditText)findViewById(R.id.editWord_edit_nativ)).getText().toString().trim();
+                String newForeign = ((EditText)findViewById(R.id.editWord_edit_foreign)).getText().toString().trim();
                 String taskAddText = getResources().getString(R.string.editWord_report_changed);
+                
+                TextView errorViewNativ = (TextView) findViewById(R.id.editWord_errorReport_nativ_text);
+                TextView errorViewForeign = (TextView) findViewById(R.id.editWord_errorReport_foreign_text);
+                
+                errorViewNativ.setText("");
+                errorViewForeign.setText("");
                 
                 if(newNativ.equals(""))
                 {
-                        TextView errorView = (TextView) findViewById(R.id.addword_errorReport_nativ);
-                        errorView.setTextColor(getErrorColor());
-                        errorView.setText(R.string.addword_report_empty);
+                        errorViewNativ.setTextColor(getErrorColor());
+                        errorViewNativ.setText(R.string.addword_report_empty);
                         error = true;
                 }
                 
                 if(newForeign.equals(""))
                 {
-                        TextView errorView = (TextView) findViewById(R.id.addword_errorReport_nativ);
-                        errorView.setTextColor(getErrorColor());
-                        errorView.setText(R.string.addword_report_empty);
+                        errorViewForeign.setTextColor(getErrorColor());
+                        errorViewForeign.setText(R.string.addword_report_empty);
                         error = true;
                 }
                 

@@ -85,23 +85,27 @@ public class AddWordActivity extends BcActivity
 		if(mAddWordTaskId != null)
 			return;
 
-		String nativ = ((EditText)findViewById(R.id.addword_nativEdit)).getText().toString();
-		String foreign = ((EditText)findViewById(R.id.addword_foreignEdit)).getText().toString();
+		String nativ = ((EditText)findViewById(R.id.addword_nativEdit)).getText().toString().trim();
+		String foreign = ((EditText)findViewById(R.id.addword_foreignEdit)).getText().toString().trim();
 		String toast = getResources().getString(R.string.addword_report_added);
 
+		TextView errorViewNativ = (TextView) findViewById(R.id.addword_errorReport_nativ_text);
+		TextView errorViewForeign = (TextView) findViewById(R.id.addword_errorReport_foreign_text);
+		
+		errorViewNativ.setText("");
+		errorViewForeign.setText("");
+		
 		if(nativ.equals(""))
 		{
-			TextView errorView = (TextView) findViewById(R.id.addword_errorReport_nativ);
-			errorView.setTextColor(getErrorColor());
-			errorView.setText(R.string.addword_report_empty);
+			errorViewNativ.setTextColor(getErrorColor());
+			errorViewNativ.setText(R.string.addword_report_empty);
 			error = true;
 		}
 		
 		if(foreign.equals(""))
 		{
-			TextView errorView = (TextView) findViewById(R.id.addword_errorReport_foreign);
-			errorView.setTextColor(getErrorColor());
-			errorView.setText(R.string.addword_report_empty);
+			errorViewForeign.setTextColor(getErrorColor());
+			errorViewForeign.setText(R.string.addword_report_empty);
 			error = true;
 		}	
 		if(!error)
