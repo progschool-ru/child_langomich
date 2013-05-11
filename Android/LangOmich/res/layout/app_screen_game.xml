@@ -6,7 +6,6 @@
 
     <TextView
         android:id="@+id/item_wordslist_text_nativ"
-        android:background="#003"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -20,7 +19,6 @@
 
     <TextView
         android:id="@+id/item_wordslist_text_foreign"
-        android:background="#003"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
