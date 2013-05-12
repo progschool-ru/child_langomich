@@ -19,12 +19,13 @@ import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.StyleSpan;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
 public class WordsListAdapter extends TaskListAdapter<ListItem>
 {
+	private static final int PADDING_VERTICAL = 15;
+	private static final int PADDING_HORIZONTAL = 21;
 	private long dictId = -1;
 	private String text = "";
 	private final Context context;
@@ -69,7 +70,8 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 			tvt.setText(text);
 
 			tvt.setTextColor(context.getResources().getColor(R.color.lang_wordsList_groupTitle));
-			
+		    tvt.setPadding(PADDING_HORIZONTAL, PADDING_VERTICAL, PADDING_HORIZONTAL, 0);
+		    
 			TextView line = (TextView)view.findViewById(R.id.border_line);
 			line.setVisibility(TextView.VISIBLE);
 		}
@@ -82,6 +84,7 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 		    tvt.setText(text);
 		    
 		    tvt.setTextColor(context.getResources().getColor(R.color.lang_wordsList_word));
+		    tvt.setPadding(PADDING_HORIZONTAL, PADDING_VERTICAL, PADDING_HORIZONTAL, PADDING_VERTICAL);
 		    
 		    TextView line = (TextView)view.findViewById(R.id.border_line);
 			line.setVisibility(TextView.GONE);
