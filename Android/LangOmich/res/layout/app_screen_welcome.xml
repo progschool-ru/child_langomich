@@ -11,6 +11,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:text="@string/welcome_text_greeting"
         android:textSize="26dip" />
         
@@ -19,10 +21,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_centerHorizontal="true"  
+        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
         android:layout_marginBottom="40dp"
         android:background="@drawable/button_green"
         android:onClick="onStartButton"
+        android:paddingBottom="16dp"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:paddingTop="16dp"
         android:text="@string/welcome_text_start" />
 
 </RelativeLayout>

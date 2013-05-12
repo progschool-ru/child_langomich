@@ -13,7 +13,7 @@
         android:layout_marginRight="12dp"
         android:gravity="center"
         android:layout_marginTop="36dp"
-        android:textSize="25sp"
+        android:textSize="20dp"
         android:textIsSelectable="true"
         />    
 
@@ -27,7 +27,7 @@
         android:layout_marginRight="12dp"
         android:gravity="center"
         android:textIsSelectable="true"
-        android:textSize="25sp"
+        android:textSize="26dp"
         android:textStyle="bold" />
     
     <Button
