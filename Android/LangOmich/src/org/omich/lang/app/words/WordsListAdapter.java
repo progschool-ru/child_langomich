@@ -24,17 +24,13 @@ import android.widget.TextView;
 
 public class WordsListAdapter extends TaskListAdapter<ListItem>
 {
-	private static final int PADDING_VERTICAL = 15;
-	private static final int PADDING_HORIZONTAL = 21;
 	private long dictId = -1;
 	private String text = "";
-	private final Context context;
 	
 	public WordsListAdapter (Context context, IBcConnector conn, Long dictId)
 	{
 		super(context, conn);		
 		this.dictId = dictId;
-		this.context = context;
 	}
 	public void setNewDictId(Long dictId)
 	{
@@ -61,35 +57,27 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 
 	@Override
 	protected void fillViewByData (View view, int position, ListItem item)
-	{	
-		TextView tvt = (TextView)view.findViewById(R.id.item_wordslist_text);
+	{
 		if(item.getWord() == null)
-		{						
-			SpannableStringBuilder text = new SpannableStringBuilder("RATING ".concat(Integer.toString(item.sep.rating)));
-			text.setSpan(new StyleSpan(Typeface.BOLD), 0, text.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-			tvt.setText(text);
-
-			tvt.setTextColor(context.getResources().getColor(R.color.lang_wordsList_groupTitle));
-		    tvt.setPadding(PADDING_HORIZONTAL, PADDING_VERTICAL, PADDING_HORIZONTAL, 0);
-		    
-			TextView line = (TextView)view.findViewById(R.id.border_line);
-			line.setVisibility(TextView.VISIBLE);
+		{
+			TextView tvt = (TextView)view.findViewById(R.id.item_wordslist_ratingText);
+			tvt.setText("RATING " + Integer.toString(item.sep.rating));
+			view.findViewById(R.id.item_wordslist_rating).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.item_wordslist_word).setVisibility(View.GONE);
 		}
 		else
 		{
+			TextView tvt = (TextView)view.findViewById(R.id.item_wordslist_wordText);
 			Word t = item.getWord();
 			SpannableStringBuilder text = new SpannableStringBuilder(t.foreign+" - "+ t.nativ); 
-		    text.setSpan(new StyleSpan(Typeface.BOLD), 0, t.foreign.length(), 
-		    		  Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-		    tvt.setText(text);
-		    
-		    tvt.setTextColor(context.getResources().getColor(R.color.lang_wordsList_word));
-		    tvt.setPadding(PADDING_HORIZONTAL, PADDING_VERTICAL, PADDING_HORIZONTAL, PADDING_VERTICAL);
-		    
-		    TextView line = (TextView)view.findViewById(R.id.border_line);
-			line.setVisibility(TextView.GONE);
+			text.setSpan(new StyleSpan(Typeface.BOLD), 0, t.foreign.length(), 
+					Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+			tvt.setText(text);
+
+			view.findViewById(R.id.item_wordslist_rating).setVisibility(View.GONE);
+			view.findViewById(R.id.item_wordslist_word).setVisibility(View.VISIBLE);
 		}
-		
+
 		View sideScreen = view.findViewById(R.id.item_wordlist_screen_side);
 		if(position != getSelectedPosition())
 				sideScreen.setVisibility(View.INVISIBLE);
