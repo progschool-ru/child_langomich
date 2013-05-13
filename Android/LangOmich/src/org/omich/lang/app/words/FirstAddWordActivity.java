@@ -52,32 +52,37 @@ public class FirstAddWordActivity extends BcActivity
 		if(mAddWordTaskId != null)
 			return;
 
-		String dict = ((EditText)findViewById(R.id.first_addword_dictEdit)).getText().toString(); 
-		String nativ = ((EditText)findViewById(R.id.first_addword_nativEdit)).getText().toString();
-		String foreign = ((EditText)findViewById(R.id.first_addword_foreignEdit)).getText().toString();
+		String dict = ((EditText)findViewById(R.id.first_addword_dictEdit)).getText().toString().trim(); 
+		String nativ = ((EditText)findViewById(R.id.first_addword_nativEdit)).getText().toString().trim();
+		String foreign = ((EditText)findViewById(R.id.first_addword_foreignEdit)).getText().toString().trim();
 		String toast = getResources().getString(R.string.addword_report_added);
+		
+		TextView errorViewDict = (TextView) findViewById(R.id.first_addword_errorReport_dict);
+		TextView errorViewNativ = (TextView) findViewById(R.id.first_addword_errorReport_nativ);
+		TextView errorViewForeign = (TextView) findViewById(R.id.first_addword_errorReport_foreign);
+		
+		errorViewDict.setText("");
+		errorViewNativ.setText("");
+		errorViewForeign.setText("");
 		
 		if(dict.equals(""))
 		{
-			TextView errorView = (TextView) findViewById(R.id.first_addword_errorReport_dict);
-			errorView.setTextColor(getErrorColor());
-			errorView.setText(R.string.addword_report_empty);
+			errorViewDict.setTextColor(getErrorColor());
+			errorViewDict.setText(R.string.addword_report_empty);
 			error = true;
 		}
 		
 		if(nativ.equals(""))
 		{
-			TextView errorView = (TextView) findViewById(R.id.first_addword_errorReport_nativ);
-			errorView.setTextColor(getErrorColor());
-			errorView.setText(R.string.addword_report_empty);
+			errorViewNativ.setTextColor(getErrorColor());
+			errorViewNativ.setText(R.string.addword_report_empty);
 			error = true;
 		}
 		
 		if(foreign.equals(""))
 		{
-			TextView errorView = (TextView) findViewById(R.id.first_addword_errorReport_foreign);
-			errorView.setTextColor(getErrorColor());
-			errorView.setText(R.string.addword_report_empty);
+			errorViewForeign.setTextColor(getErrorColor());
+			errorViewForeign.setText(R.string.addword_report_empty);
 			error = true;
 		}	
 		if(!error)
