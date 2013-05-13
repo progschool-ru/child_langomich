@@ -28,6 +28,7 @@
     <string name="wordslist_report_copied">Copied the word</string>
     <string name="wordslist_report_moved">Moved the word</string>
     <string name="wordslist_text_search">Search</string>
+    <string name="wordslist_text_rating">RATING</string>
     
     <string name="editWord_title">Editor of the word</string>
     <string name="editWord_text_dict">Dictionary:</string>

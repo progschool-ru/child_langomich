@@ -61,7 +61,8 @@ public class WordsListAdapter extends TaskListAdapter<ListItem>
 		if(item.getWord() == null)
 		{
 			TextView tvt = (TextView)view.findViewById(R.id.item_wordslist_ratingText);
-			tvt.setText("RATING " + Integer.toString(item.sep.rating));
+			String rating = view.getResources().getString(R.string.wordslist_text_rating).toUpperCase();
+			tvt.setText(rating.concat(" ").concat(Integer.toString(item.sep.rating)));
 			view.findViewById(R.id.item_wordslist_rating).setVisibility(View.VISIBLE);
 			view.findViewById(R.id.item_wordslist_word).setVisibility(View.GONE);
 		}
