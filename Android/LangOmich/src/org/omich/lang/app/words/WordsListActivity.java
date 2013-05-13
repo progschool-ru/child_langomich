@@ -9,12 +9,6 @@ import org.omich.lang.apptool.activity.ABActivity;
 import org.omich.tool.events.Listeners.IListener;
 import org.omich.tool.events.Listeners.IListenerVoid;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,6 +25,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 public class WordsListActivity extends ABActivity
 {
@@ -106,7 +106,9 @@ public class WordsListActivity extends ABActivity
 			{
         		int size = mDictsAdapter.getCount();
         		if(position + 1 == size) 
-        			startAddDictActivity();    			
+        		{
+        			startAddDictActivity();  
+        		}
         		else
         			onSelectDict(position);				
 				return true;
@@ -266,6 +268,10 @@ public class WordsListActivity extends ABActivity
 				requestCode == REQUEST_CODE_ADD_WORD ||
 				requestCode == REQUEST_CODE_EDIT_WORD )
 					reload();							
+		}
+		if(resultCode == RESULT_CANCELED)
+		{
+			mDictsAdapter.reloadItems();
 		}
 	}	
 	private void reload()
