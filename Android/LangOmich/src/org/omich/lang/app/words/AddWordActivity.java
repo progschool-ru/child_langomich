@@ -6,14 +6,18 @@ import org.omich.lang.apptool.activity.BcActivity;
 import org.omich.tool.events.Listeners.IListener;
 import org.omich.tool.events.Listeners.IListenerInt;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 public class AddWordActivity extends BcActivity
 {
@@ -40,7 +44,29 @@ public class AddWordActivity extends BcActivity
 					startAddDictActivity();
 			}			
 		});
+		addTextViewListeners(this);
 		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+	}
+	
+	private void addTextViewListeners(Context c)
+	{
+		EditText editTextNativ = (EditText) findViewById(R.id.addword_nativEdit);
+		EditText editTextForeign = (EditText) findViewById(R.id.addword_foreignEdit);
+		OnEditorActionListener l = new OnEditorActionListener() 
+		{			
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) 
+			{
+				boolean handled = false;
+		        if (actionId == EditorInfo.IME_ACTION_SEND) {
+		            onAddButton(v);
+		            handled = true;
+		        }
+		        return handled;
+			}
+		};
+		editTextNativ.setOnEditorActionListener(l);
+		editTextForeign.setOnEditorActionListener(l);
 	}
 	
 	@Override
