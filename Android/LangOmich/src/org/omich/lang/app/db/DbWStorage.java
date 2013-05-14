@@ -74,19 +74,13 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 	{
 		try
 		{
-			Long time = new Date().getTime();
-			dictTimeUpdate(getDictIdByWordId(id), time);
-			
-			ContentValues values = new ContentValues();
-			values.put(WordsCols.NATIV, "");		
-			values.put(WordsCols.FOREIGN, "");
-			values.put(WordsCols.TIME, time);
-			String where = WordsCols.ID + "=" + id;
-			mDb.update(TNAME_WORDS, values, where, null);	
+			String where = WordsCols.ID + "=" + id;	
+			mDb.delete(TNAME_WORDS, where, null);
 			return true;
 		}
 		catch(Exception e) {return false;}
 	}
+	
 	@Override
 	public boolean changeWord(long id, String nativ, String foreign, long dictId)
 	{
