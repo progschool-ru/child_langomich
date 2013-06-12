@@ -51,6 +51,8 @@ public class WordsListActivity extends ABActivity
 	private String mCutWordTaskId;
 	private String mDeleteWordTaskId;
 	
+	private boolean isGameReady = false;
+	
 	private SharedPreferences sp;	
 	private DictsListAdapter mDictsAdapter;
 	private boolean mIsDestroyed;	
@@ -176,7 +178,15 @@ public class WordsListActivity extends ABActivity
 		}
 		else if(id == R.id.app_menu_item_button_game)
 		{
-			finish();
+			if(isGameReady)
+				finish();
+			else
+			{
+				isGameReady = true;
+				Intent intent = new Intent(this, GameActivity.class);
+				startActivity(intent);
+				finish();
+			}
 		}
 		return true;
     }		
