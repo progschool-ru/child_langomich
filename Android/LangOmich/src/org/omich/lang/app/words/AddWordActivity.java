@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -51,7 +52,27 @@ public class AddWordActivity extends BcActivity
 	private void addTextViewListeners(Context c)
 	{
 		EditText editTextNativ = (EditText) findViewById(R.id.addword_nativEdit);
-		EditText editTextForeign = (EditText) findViewById(R.id.addword_foreignEdit);
+		
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE); 
+		
+		editTextNativ.requestFocus();
+		
+		final EditText editTextForeign = (EditText) findViewById(R.id.addword_foreignEdit);
+		
+		OnEditorActionListener m = new OnEditorActionListener()
+		{
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+			{
+				boolean handled = false;
+				if(actionId == EditorInfo.IME_ACTION_SEND){
+					editTextForeign.requestFocus();
+					handled = true;
+				}
+				return handled;
+			}
+		};
+		
 		OnEditorActionListener l = new OnEditorActionListener() 
 		{			
 			@Override
@@ -65,7 +86,8 @@ public class AddWordActivity extends BcActivity
 		        return handled;
 			}
 		};
-		editTextNativ.setOnEditorActionListener(l);
+		
+		editTextNativ.setOnEditorActionListener(m);
 		editTextForeign.setOnEditorActionListener(l);
 	}
 	

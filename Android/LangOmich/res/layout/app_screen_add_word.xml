@@ -30,7 +30,9 @@
         android:inputType="text"
     	android:imeOptions="actionSend"
         android:ems="10"
-        android:hint="@string/addword_text_native" />
+        android:hint="@string/addword_text_native" >
+        <requestFocus/>
+    </EditText>
 
     <RelativeLayout
         android:layout_width="match_parent"
