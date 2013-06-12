@@ -28,6 +28,8 @@
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="10dp"
+        android:inputType="text"
+        android:imeOptions="actionSend"
         android:hint="@string/editWord_text_nativ" />
 
     <RelativeLayout
@@ -52,6 +54,8 @@
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="2dp"
+        android:inputType="text"
+        android:imeOptions="actionSend"
         android:ems="10"
         android:hint="@string/editWord_text_foreign" />
     

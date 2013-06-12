@@ -6,10 +6,14 @@ import org.omich.tool.events.Listeners.IListener;
 import org.omich.tool.events.Listeners.IListenerInt;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 public class EditWordActivity extends BcActivity
 {
@@ -42,9 +46,54 @@ public class EditWordActivity extends BcActivity
                                         startAddDictActivity();
                         }                       
                 });
-                ((EditText)findViewById(R.id.editWord_edit_nativ)).setText(nativ);
-                ((EditText)findViewById(R.id.editWord_edit_foreign)).setText(foreign);          
+                setEditTextListeners();      
         }
+        
+        private void setEditTextListeners()
+        {
+        	getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE); 
+        	
+        	EditText nativ_et = (EditText)findViewById(R.id.editWord_edit_nativ);
+        	final EditText foreign_et = (EditText) findViewById(R.id.editWord_edit_foreign);
+        	nativ_et.setText(nativ);
+        	foreign_et.setText(foreign);
+        	
+        	nativ_et.setSelection(nativ.length());
+        	OnEditorActionListener l = new OnEditorActionListener()
+        	{        		
+        		@Override
+        		public boolean onEditorAction(TextView v, int actionId,
+        				KeyEvent event) 
+        		{
+        			boolean handled = false;
+        			if(actionId == EditorInfo.IME_ACTION_SEND)
+        			{
+        				foreign_et.requestFocus();
+        				foreign_et.setSelection(foreign.length());
+        				handled = true;
+        			}
+            		return handled;
+        		}
+        	};
+        	nativ_et.setOnEditorActionListener(l);
+        	OnEditorActionListener m = new OnEditorActionListener()
+        	{
+        		@Override
+        		public boolean onEditorAction(TextView v, int actionId,
+        				KeyEvent event) 
+        		{
+        			boolean handled = false;
+        			if(actionId == EditorInfo.IME_ACTION_SEND)
+        			{
+        				onEditButton(v);
+        				handled = true;
+        			}
+        			return handled;
+        		}
+        	};
+        	foreign_et.setOnEditorActionListener(m);
+        }
+        
         @Override
         protected void onActivityResult(int requestCode, int resultCode, Intent data) 
         {
