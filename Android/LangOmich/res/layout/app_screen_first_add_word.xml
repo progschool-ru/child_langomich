@@ -54,6 +54,8 @@
     <EditText
         android:id="@+id/first_addword_nativEdit"
         android:layout_width="match_parent"
+        android:inputType="text"
+        android:imeOptions="actionSend"
         android:layout_height="wrap_content"    
         android:ems="10" />
     
@@ -80,6 +82,8 @@
         android:id="@+id/first_addword_foreignEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="text"
+        android:imeOptions="actionSend"
         android:ems="10" />
 
     <RelativeLayout

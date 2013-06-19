@@ -10,9 +10,13 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 public class FirstAddWordActivity extends BcActivity
 {
@@ -27,10 +31,56 @@ public class FirstAddWordActivity extends BcActivity
 		super.onCreate(b);
 		setContentView(R.layout.app_screen_first_add_word);
 
-		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		((EditText)findViewById(R.id.first_addword_dictEdit)).setText(getResources().getString(R.string.first_addword_text_exemple_dict));
-		((EditText)findViewById(R.id.first_addword_nativEdit)).setText(getResources().getString(R.string.first_addword_text_exemple_nativ));
-		((EditText)findViewById(R.id.first_addword_foreignEdit)).setText(getResources().getString(R.string.first_addword_text_exemple_foreign));
+		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());		
+		addOnEditListeners();
+	}
+	
+	private void addOnEditListeners()
+	{
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE); 
+		
+		EditText dictName = ((EditText)findViewById(R.id.first_addword_dictEdit));
+		EditText nativEdit = ((EditText)findViewById(R.id.first_addword_nativEdit));
+		final EditText foreignEdit = ((EditText)findViewById(R.id.first_addword_foreignEdit));
+
+		dictName.setText(getResources().getString(R.string.first_addword_text_exemple_dict));
+		nativEdit.setText(getResources().getString(R.string.first_addword_text_exemple_nativ));
+		nativEdit.requestFocus();
+		nativEdit.setSelection(nativEdit.getText().length());
+		foreignEdit.setText(getResources().getString(R.string.first_addword_text_exemple_foreign));
+		
+		OnEditorActionListener l1 = new OnEditorActionListener() 
+		{			
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				boolean handled = false;
+				if(actionId == EditorInfo.IME_ACTION_SEND)
+				{
+					foreignEdit.requestFocus();
+					foreignEdit.setSelection(foreignEdit.getText().length());
+					handled = true;
+				}
+				return handled;
+			}
+		};
+		
+		OnEditorActionListener l2 = new OnEditorActionListener()
+		{
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+			{
+				boolean  handled = false;
+				if(actionId == EditorInfo.IME_ACTION_SEND)
+				{
+					onAddButton(v);
+					handled = true;
+				}
+				return handled;
+			}
+		};
+		
+		nativEdit.setOnEditorActionListener(l1);
+		foreignEdit.setOnEditorActionListener(l2);
 	}
 	
 	@Override
