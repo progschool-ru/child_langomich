@@ -190,6 +190,8 @@ abstract public class DbBaseRStorage implements IRStorage
 		if(allSize < n)
 		{
 			answer = getWordsByDictId(dictId);
+			allSize += 10; // добавляем еще несколько элементов в рейтинг, чтобы правильно выборка работала
+			allSize = Math.min(answer.size(), allSize);
 			List<ListItem> answer2 = new ArrayList<ListItem>();
 			for(int i = allSize; i > 0; i--)
 			{
@@ -299,8 +301,6 @@ abstract public class DbBaseRStorage implements IRStorage
 		for(int i = 0; i < list.size(); i++)
 		{
 			if(list.get(i).getWord() == null)
-				list.remove(i);
-			else if(list.get(i).getWord().nativ.equals(""))
 				list.remove(i);
 		}
 		return list;
