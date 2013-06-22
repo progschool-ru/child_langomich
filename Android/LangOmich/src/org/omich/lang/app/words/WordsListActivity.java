@@ -326,6 +326,8 @@ public class WordsListActivity extends ABActivity
 	public void onBackPressed() 
 	{
 		finish();
+		Intent intent = new Intent(this, GameActivity.class);
+		startActivity(intent);
 		super.onBackPressed();
 	}
 	//=========================================================================

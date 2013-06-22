@@ -6,12 +6,6 @@ import org.omich.lang.app.db.Dict;
 import org.omich.lang.apptool.activity.BcActivity;
 import org.omich.tool.events.Listeners.IListenerVoid;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -20,6 +14,12 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 public class GameActivity extends BcActivity
 {
@@ -168,6 +168,7 @@ public class GameActivity extends BcActivity
 		int id = item.getItemId();
 		if(id == R.id.app_menu_item_button_dictionary)
 		{
+			finish();
 			getForResultStarter().startForResult(new Intent(this, WordsListActivity.class), null);
 		}
 		return true;
