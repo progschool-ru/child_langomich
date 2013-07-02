@@ -5,6 +5,8 @@ import org.omich.lang.app.BundleFields;
 import org.omich.lang.app.PreferenceFields;
 import org.omich.lang.apptool.activity.BcActivity;
 import org.omich.tool.events.Listeners.IListener;
+
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -14,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -36,18 +39,35 @@ public class FirstAddWordActivity extends BcActivity
 	}
 	
 	private void addOnEditListeners()
-	{
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE); 
-		
+	{					
 		EditText dictName = ((EditText)findViewById(R.id.first_addword_dictEdit));
-		EditText nativEdit = ((EditText)findViewById(R.id.first_addword_nativEdit));
+		final EditText nativEdit = ((EditText)findViewById(R.id.first_addword_nativEdit));
 		final EditText foreignEdit = ((EditText)findViewById(R.id.first_addword_foreignEdit));
-
+		
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+						
 		dictName.setText(getResources().getString(R.string.first_addword_text_exemple_dict));
 		nativEdit.setText(getResources().getString(R.string.first_addword_text_exemple_nativ));
-		nativEdit.requestFocus();
-		nativEdit.setSelection(nativEdit.getText().length());
 		foreignEdit.setText(getResources().getString(R.string.first_addword_text_exemple_foreign));
+		
+		dictName.requestFocus();
+		dictName.setSelection(dictName.getText().length());
+		
+		OnEditorActionListener l0 = new OnEditorActionListener()
+		{
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+			{
+				boolean handled = false;
+				if(actionId == EditorInfo.IME_ACTION_SEND)
+				{
+					nativEdit.requestFocus();
+					nativEdit.setSelection(nativEdit.getText().length());
+					handled = true;
+				}
+				return handled;
+			}
+		};
 		
 		OnEditorActionListener l1 = new OnEditorActionListener() 
 		{			
@@ -79,6 +99,7 @@ public class FirstAddWordActivity extends BcActivity
 			}
 		};
 		
+		dictName.setOnEditorActionListener(l0);
 		nativEdit.setOnEditorActionListener(l1);
 		foreignEdit.setOnEditorActionListener(l2);
 	}
