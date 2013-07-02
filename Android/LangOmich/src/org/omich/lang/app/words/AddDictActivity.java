@@ -11,10 +11,14 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 public class AddDictActivity extends BcActivity
 {
@@ -33,6 +37,32 @@ public class AddDictActivity extends BcActivity
 		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		changeDictInPreferences = getIntent().getBooleanExtra("changeDictInPreferences", true);
 		getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		addListener();
+	}
+
+	public void addListener()
+	{
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+		EditText name = (EditText)findViewById(R.id.adddict_dictNameEdit);
+		name.requestFocus();
+		
+		OnEditorActionListener listener = new OnEditorActionListener()
+		{
+			@Override
+			public boolean onEditorAction(TextView v, int actionId,
+					KeyEvent event) 
+			{
+				boolean handled = false;
+				if(actionId == EditorInfo.IME_ACTION_SEND)
+				{
+					onCreateButton(v);
+					handled = true;
+				}
+				return handled;
+			}
+		};
+		
+		name.setOnEditorActionListener(listener);
 	}
 	
 	@Override
@@ -55,12 +85,13 @@ public class AddDictActivity extends BcActivity
 
 		String name = ((EditText)findViewById(R.id.adddict_dictNameEdit)).getText().toString();
 		String taskAddText = getResources().getString(R.string.adddict_report_added);
+		String taskReportError = getResources().getString(R.string.adddict_report_empty);
 
 		if(name.equals(""))
 		{
 			TextView errorView = (TextView) findViewById(R.id.adddict_errorReport);
 			errorView.setTextColor(getErrorColor());
-			errorView.setText(R.string.adddict_report__empty);
+			errorView.setText(taskReportError);
 		}
 		else
 		{
