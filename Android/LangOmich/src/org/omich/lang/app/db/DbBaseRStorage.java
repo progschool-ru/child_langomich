@@ -190,7 +190,7 @@ abstract public class DbBaseRStorage implements IRStorage
 		if(allSize < n)
 		{
 			answer = getWordsByDictId(dictId);
-			allSize += 10; // добавляем еще несколько элементов в рейтинг, чтобы правильно выборка работала
+			allSize += N; // добавляем еще несколько элементов в рейтинг, чтобы правильно выборка работала
 			allSize = Math.min(answer.size(), allSize);
 			List<ListItem> answer2 = new ArrayList<ListItem>();
 			for(int i = allSize; i > 0; i--)
