@@ -34,5 +34,4 @@ public class BundleFields
 	public static final String IS_LOGGED_IN	       = "isLoggedIn";
 	public static final String COOKIE	   		   = "cookie";
 	public static final String MOBILE_TIME	   	   = "mobileTime";
-	public static final String SERVER_TIME	   	   = "serverTime";
 }

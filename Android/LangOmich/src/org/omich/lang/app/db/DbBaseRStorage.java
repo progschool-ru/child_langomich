@@ -50,7 +50,7 @@ abstract public class DbBaseRStorage implements IRStorage
 	private List<Dict> getDicts (String where)
 	{
 		Cursor cursor = mDb.query(TNAME_DICTS, 
-				new String[]{DictsCols.ID, DictsCols.SERVER_ID, DictsCols.NAME, DictsCols.TIME}, 
+				new String[]{DictsCols.ID, DictsCols.NAME}, 
 				where, null, null, null, null);
 			
 		final List<Dict> answer = new ArrayList<Dict>();
@@ -60,7 +60,7 @@ abstract public class DbBaseRStorage implements IRStorage
 			@Override
 			public void handle(Cursor cursor)
 			{
-				Dict dict = new Dict(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getLong(3));
+				Dict dict = new Dict(cursor.getLong(0), cursor.getString(1));
 				answer.add(dict);
 			}
 		});

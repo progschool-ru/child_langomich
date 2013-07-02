@@ -57,8 +57,13 @@ abstract public class ListAdapter<Item> extends BaseAdapter
 	}
 
 	//==== BaseAdapter ========================================================
+	
+	
 	@Override
-	public int getCount () {return mItems.size();}
+	public int getCount () 
+	{
+		return mItems.size();
+	}
 	@Override
 	public Object getItem (int arg0) {return mItems.get(arg0);}
 	@Override

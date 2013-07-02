@@ -20,7 +20,6 @@ public class SQLiteHelper extends SQLiteOpenHelper
 			+ TNAME_DICTS + "("
 				+ DictsCols.ID              + " integer not null primary key autoincrement, "
 				+ DictsCols.TIME            + " integer not null, "
-				+ DictsCols.SERVER_ID       + " text unique, "
 				+ DictsCols.NAME            + " text unique)";
 
 	private static final String CREATE_WORDS_QUERY = "create table "
@@ -38,7 +37,6 @@ public class SQLiteHelper extends SQLiteOpenHelper
 	{
 		public static final String ID          = "_id";
 		public static final String NAME        = "name";
-		public static final String SERVER_ID   = "serverId";
 		public static final String TIME        = "time";
 	}
 

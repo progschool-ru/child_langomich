@@ -140,52 +140,8 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 		Long time = new Date().getTime();
 		values.put(DictsCols.TIME, time);
 		return mDb.insert(TNAME_DICTS, null, values);
-	}	
-	@Override
-	public long addDict (String serverId, String name)
-	{
-		name = name.trim();
-		String where = DictsCols.SERVER_ID + "= ?";
-		Cursor cursor = mDb.query(TNAME_DICTS, new String[]{DictsCols.ID}, 
-				where, new String[]{serverId}, null, null, null);	
-		long dictId = 0;
-		if(cursor.moveToFirst()) // изменение имени словаря (при изменении имени на сервере)
-		{
-			ContentValues values = new ContentValues();		
-			values.put(DictsCols.NAME, name);
-			Long time = new Date().getTime();
-			values.put(DictsCols.TIME, time);
-			mDb.update(TNAME_DICTS, values, where, null);
-			dictId = cursor.getLong(0);
-		}
-		else
-		{
-			where = DictsCols.NAME + "= ?";
-			cursor = mDb.query(TNAME_DICTS, new String[]{DictsCols.ID}, 
-					where, new String[]{name}, null, null, null);	
-			if(cursor.moveToFirst()) // присваивание serverId новому словарю созданому на мобильном (или повоторное присваивание)
-			{
-				ContentValues values = new ContentValues();		
-				values.put(DictsCols.SERVER_ID, serverId);
-				Long time = new Date().getTime();
-				values.put(DictsCols.TIME, time);
-				mDb.update(TNAME_DICTS, values, where, null);
-				dictId = cursor.getLong(0);
-			}
-			else // создание нового словаря на мобильном по имени и id словаря созданого на сервере
-			{
-				ContentValues values = new ContentValues();
-				values.put(DictsCols.NAME, name);
-				values.put(DictsCols.SERVER_ID, serverId);
-				Long time = new Date().getTime();
-				values.put(DictsCols.TIME, time);
-		
-				dictId =  mDb.insert(TNAME_DICTS, null, values);					
-			}
-		}	
-		cursor.close();
-		return dictId;
-	}	
+	}
+	
 	@Override
 	public boolean setRating (long id, int rating)
 	{
