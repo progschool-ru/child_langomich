@@ -18,7 +18,7 @@
     
     <EditText
             android:id="@+id/adddict_dictNameEdit"            
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
             android:imeOptions="actionSend"
@@ -29,36 +29,42 @@
 
         <TextView
             android:id="@+id/adddict_errorReport"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_below="@+id/adddict_dictNameEdit" 
             />
-        <Button
-            android:layout_width="fill_parent"
+        <RelativeLayout 
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/adddict_errorReport"
-            android:layout_toLeftOf="@+id/center_view"
-            android:layout_marginLeft="8dp"
-            android:text="@string/adddict_text_cancel" 
-            android:onClick="onCancelButton"/>
-        
-        <TextView
-            android:id="@+id/center_view"
-            android:layout_below="@+id/adddict_errorReport"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/adddict_errorReport"
-            android:layout_toRightOf="@+id/center_view"
-            android:layout_marginRight="8dp"
-            android:text="@string/adddict_text_create"
-            android:onClick="onCreateButton"/>                        
+            android:layout_below="@+id/adddict_errorReport">
+            
+	        <TextView
+	            android:id="@+id/center_view"
+	            android:layout_below="@+id/adddict_errorReport"
+	            android:layout_centerHorizontal="true"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            />
+	        
+	        <Button
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@+id/adddict_errorReport"
+	            android:layout_toLeftOf="@+id/center_view"
+	            android:layout_marginLeft="8dp"
+	            android:text="@string/adddict_text_cancel" 
+	            android:onClick="onCancelButton"/>               
+	        
+	        <Button
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@+id/adddict_errorReport"
+	            android:layout_toRightOf="@+id/center_view"
+	            android:layout_marginRight="8dp"
+	            android:text="@string/adddict_text_create"
+	            android:onClick="onCreateButton"/> 
+	   </RelativeLayout>
         
 </RelativeLayout>
