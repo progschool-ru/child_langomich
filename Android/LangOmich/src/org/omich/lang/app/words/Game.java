@@ -86,7 +86,7 @@ public class Game
 					}
 					break;
 			    case DOWNGRADE:
-					if(word.rating > 0)
+					if(word.rating > 1)
 					{
 						setNewRating(word.id,word.rating - 1);
 					}
