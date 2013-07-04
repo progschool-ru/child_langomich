@@ -18,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -83,12 +84,21 @@ public class WordsListActivity extends ABActivity
 			public void afterTextChanged(Editable s) 
 			{
 				mWordsAdapter.setNewText(s.toString());
-				mWordsAdapter.reloadItems();
+				reload();
 			}
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count){}
+		});
+		
+		search.setOnFocusChangeListener(new OnFocusChangeListener()
+		{
+			@Override
+			public void onFocusChange(View v, boolean hasFocus)
+			{				
+				reload();
+			}			
 		});
 		
 		mDictsAdapter = new DictsListAdapter(this, getBcConnector(), true, new IListenerVoid()
