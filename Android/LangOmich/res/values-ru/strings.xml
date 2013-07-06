@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <string name="welcome_title">Умный словарь</string> 
-    <string name="welcome_text_greeting">Приветствуем вас в нашем замечательном приложении. Оно сделает вас в сто раз умнее, только надо добавить первое слово.</string> 
+    <string name="welcome_text_greeting">Приветствуем вас в Умном словаре. Нажмите «Старт» чтобы добавить первое слово</string> 
     <string name="welcome_text_start">Начать</string> 
         
     <string name="app_name">LangOmich</string>   
     
     <string name="training_lable">Игра</string>
     <string name="training_text_die_nativ">Словарь пуст</string>
-    <string name="training_text_die_english">Dictionary is empty</string>
     <string name="training_text_i_know">Знаю</string>
     <string name="training_text_i_dont_know">Не знаю</string>
     <string name="training_text_is_true">Верно</string>
@@ -16,10 +15,10 @@
     <string name="training_text_is_next">Продолжить</string>
  
     <string name="adddict_title">Hовый словарь</string>
-    <string name="adddict_lable">Введите имя нового словаря:</string>
+    <string name="adddict_lable">Название словаря:</string>
     <string name="adddict_text_create">Создать</string>
     <string name="adddict_text_cancel">Отмена</string>
-    <string name="adddict_report__empty">Вы ничего не ввели</string>
+    <string name="adddict_report__empty">Введите что-нибудь</string>
     <string name="adddict_report_in_base">Словарь с таким именем уже существует</string>
     <string name="adddict_report_added">Словарь успешно добавлен</string>
        
@@ -30,13 +29,13 @@
     <string name="wordslist_text_search">Поиск</string>
     <string name="wordslist_text_rating">Рейтинг</string>
     
-    <string name="editWord_title">Редактор слова</string>
+    <string name="editWord_title">Изменить слово</string>
     <string name="editWord_text_dict">Словарь:</string>
     <string name="editWord_text_nativ">На родном языке</string>
     <string name="editWord_text_foreign">На иностранном языке</string>
     <string name="editWord_text_cancel">Отмена</string>
-    <string name="editWord_text_edit">Изменить</string>   
-    <string name="editWord_text_empty">Вы ничего не ввели</string>
+    <string name="editWord_text_edit">Сохранить</string>   
+    <string name="editWord_text_empty">Введите что-нибудь</string>
     <string name="editWord_report_changed">Слово успешно изменено</string>
         
     <string name="dictslist_title">Выбирите словарь</string>
@@ -53,16 +52,16 @@
     <string name="newaccount_text_cancel">Отмена</string>
     
     <string name="addword_title">Добавить слово</string>
-    <string name="addword_text_add">Добавить</string>   
+    <string name="addword_text_add">Сохранить</string>   
     <string name="addword_text_cancel">Отмена</string>  
     <string name="addword_text_dict">Словарь:</string>
     <string name="addword_text_foreign">На иностранном языке</string>
     <string name="addword_text_native">На родном языке</string>    
-    <string name="addword_report_empty">Вы ничего не ввели</string> 
+    <string name="addword_report_empty">Введите что-нибудь</string> 
     <string name="addword_report_added">Слово добавлено</string> 
 
     <string name="first_addword_text_exemple_dict">Английский</string>
-    <string name="first_addword_text_exemple_nativ">Привет</string>
+    <string name="first_addword_text_exemple_nativ">Здравствуйте</string>
     <string name="first_addword_text_exemple_foreign">Hello</string>
         
     <string name="timing_report_success">Синхронизация прошла успешно</string> 

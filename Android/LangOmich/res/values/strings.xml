@@ -1,45 +1,44 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <string name="welcome_title">Smart dictionary</string> 
-    <string name="welcome_text_greeting">Welcome to our wonderful application. It will make you a hundred times smarter, just have to add the first word.</string> 
+    <string name="welcome_text_greeting">Welcome to Smart Dictionary. Click «Start» to add the first word</string> 
     <string name="welcome_text_start">Start</string> 
     
     <string name="app_name">LangOmich</string>   
     
     <string name="training_lable">Game</string>
     <string name="training_text_die_nativ">Dictionary is empty</string>
-    <string name="training_text_die_english">Dictionary is empty</string>
     <string name="training_text_i_know">Know</string>
-    <string name="training_text_i_dont_know">Dont know</string>
-    <string name="training_text_is_true">True</string>
-    <string name="training_text_is_false">False</string>
-    <string name="training_text_is_next">Next</string>
+    <string name="training_text_i_dont_know">Don\'t know</string>
+    <string name="training_text_is_true">Right</string>
+    <string name="training_text_is_false">Wrong</string>
+    <string name="training_text_is_next">Continue</string>
  
     <string name="adddict_title">New dictionary</string>
-    <string name="adddict_lable">Enter a name for dictionary:</string>
+    <string name="adddict_lable">Dictionary name:</string>
     <string name="adddict_text_create">Create</string>
     <string name="adddict_text_cancel">Cancel</string>
-    <string name="adddict_report_empty">You did not enter</string>
+    <string name="adddict_report_empty">Type in something</string>
     <string name="adddict_report_in_base">Dictionary with the same name already exists</string>
-    <string name="adddict_report_added">Added the dictionary</string>
+    <string name="adddict_report_added">Dictionary was added</string>
        
     <string name="wordslist_title">Dictionary</string>
-    <string name="wordslist_report_deleted">Deleted the word</string>
-    <string name="wordslist_report_copied">Copied the word</string>
-    <string name="wordslist_report_moved">Moved the word</string>
+    <string name="wordslist_report_deleted">Word was deleted</string>
+    <string name="wordslist_report_copied">Word was copied</string>
+    <string name="wordslist_report_moved">Word was moved</string>
     <string name="wordslist_text_search">Search</string>
     <string name="wordslist_text_rating">Rating</string>
     
-    <string name="editWord_title">Editor of the word</string>
+    <string name="editWord_title">Edit the word</string>
     <string name="editWord_text_dict">Dictionary:</string>
-    <string name="editWord_text_nativ">In a native language</string>
-    <string name="editWord_text_foreign">In a foreign language</string>
+    <string name="editWord_text_nativ">Native</string>
+    <string name="editWord_text_foreign">Foreign</string>
     <string name="editWord_text_cancel">Cancel</string>
-    <string name="editWord_text_edit">Edit</string>   
-    <string name="editWord_text_empty">You did not enter</string>
-    <string name="editWord_report_changed">Changed the word</string>
+    <string name="editWord_text_edit">Save</string>   
+    <string name="editWord_text_empty">Type in something</string>
+    <string name="editWord_report_changed">Word was changed successfully</string>
     
-    <string name="dictslist_title">Select a dictionary</string>
+    <string name="dictslist_title">Choose a dictionary</string>
     <string name="dictslist_text_cancel">Cancel</string>
     
     <string name="settings_title">Settings</string>
@@ -53,18 +52,18 @@
     <string name="newaccount_text_cancel">Cancel</string>
     
     <string name="addword_title">Add the word</string>
-    <string name="addword_text_add">Add</string>   
+    <string name="addword_text_add">Save</string>   
     <string name="addword_text_cancel">Cancel</string>  
     <string name="addword_text_dict">Dictionary:</string>    
-    <string name="addword_text_foreign">In a foreign language</string>
-    <string name="addword_text_native">In a native language</string>   
-    <string name="addword_report_empty">You did not enter</string> 
-    <string name="addword_report_added">Added the word</string>
+    <string name="addword_text_foreign">Foreign</string>
+    <string name="addword_text_native">Native</string>   
+    <string name="addword_report_empty">Type in something</string> 
+    <string name="addword_report_added">Word was added</string>
     
     <string name="first_addword_text_exemple_dict">Russian</string>
     <string name="first_addword_text_exemple_nativ">Hello</string>
-    <string name="first_addword_text_exemple_foreign">Привет</string>
+    <string name="first_addword_text_exemple_foreign">Здравствуйте</string>
     
-    <string name="timing_report_success">Synchronization was successful</string> 
+    <string name="timing_report_success">Synchronized successfully</string> 
     
 </resources>

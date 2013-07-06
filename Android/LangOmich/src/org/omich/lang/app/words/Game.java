@@ -27,7 +27,6 @@ public class Game
 	private ArrayList<ListItem> words;
 	
 	private String dictIsEmptyNativ;
-	private String dictIsEmptyEnglish;
 	
 	private String mSetRatingTaskId;
 	private String mGetRandomWordsTaskId;	
@@ -48,7 +47,6 @@ public class Game
 
 		mBcConnector = new BcConnector(context);
 		dictIsEmptyNativ = context.getResources().getString(R.string.training_text_die_nativ);
-		dictIsEmptyEnglish = context.getResources().getString(R.string.training_text_die_english);
 		setNewDict(dictId);
 	}
 	public void setNewDict(long dictId)
@@ -151,7 +149,7 @@ public class Game
 				}
 			}
 			else if(realNumber == 0)
-				word = new Word(dictIsEmptyNativ, dictIsEmptyEnglish, 0, -1);
+				word = new Word(dictIsEmptyNativ, "", 0, -1);
 			else
 			{
 				currentNumber++;
