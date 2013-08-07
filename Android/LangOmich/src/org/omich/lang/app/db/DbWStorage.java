@@ -1,13 +1,17 @@
 package org.omich.lang.app.db;
 
+import static org.omich.lang.app.db.SQLiteHelper.TNAME_DICTS;
+import static org.omich.lang.app.db.SQLiteHelper.TNAME_WORDS;
+
 import java.util.Date;
+
 import org.omich.lang.app.db.SQLiteHelper.DictsCols;
+import org.omich.lang.app.db.SQLiteHelper.WordsCols;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
-import static org.omich.lang.app.db.SQLiteHelper.*;
 
 public class DbWStorage extends DbBaseRStorage implements IWStorage
 {
@@ -50,8 +54,6 @@ public class DbWStorage extends DbBaseRStorage implements IWStorage
 	{	
 		nativ = nativ.trim();
 		foreign = foreign.trim();
-		mDb.delete(TNAME_WORDS, WordsCols.DICT_ID + " = " + dictId + " AND " 
-				+ WordsCols.FOREIGN + " = ? ", new String[]{foreign});
 			
 		Long time = new Date().getTime();
 		long id = 0;
