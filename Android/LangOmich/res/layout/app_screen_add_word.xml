@@ -20,53 +20,24 @@
     </RelativeLayout>
 
     <EditText
-        android:id="@+id/addword_nativEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/addword_dictSpinner"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="10dp"
-        android:inputType="text"
-    	android:imeOptions="actionSend"
-        android:ems="10"
-        android:hint="@string/addword_text_native" >
-        <requestFocus/>
-    </EditText>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:layout_below="@+id/addword_nativEdit"
-        android:id="@+id/addword_errorReport_nativ">
-
-        <TextView
-            android:id="@+id/addword_errorReport_nativ_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"            
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
-
-    <EditText
         android:id="@+id/addword_foreignEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="2dp"
-        android:layout_below="@+id/addword_errorReport_nativ"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/addword_dictSpinner"
         android:ems="10"
         android:hint="@string/addword_text_foreign" 
         android:inputType="text"
     	android:imeOptions="actionSend"/>
     
-    
     <RelativeLayout
-        android:id="@+id/addword_errorReport_foreign"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
-        android:layout_below="@+id/addword_foreignEdit" >
+        android:layout_below="@+id/addword_foreignEdit"
+        android:id="@+id/addword_errorReport_foreign">
 
         <TextView
             android:id="@+id/addword_errorReport_foreign_text"
@@ -75,10 +46,38 @@
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
+    <EditText
+        android:id="@+id/addword_nativEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addword_errorReport_foreign"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="2dp"
+        android:inputType="text"
+    	android:imeOptions="actionSend"
+        android:ems="10"
+        android:hint="@string/addword_text_native" >
+        <requestFocus/>
+    </EditText>
+    
+    <RelativeLayout
+        android:id="@+id/addword_errorReport_nativ"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:layout_below="@+id/addword_nativEdit" >
+
+        <TextView
+            android:id="@+id/addword_errorReport_nativ_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"            
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
-        android:layout_below="@+id/addword_errorReport_foreign">
+        android:layout_below="@+id/addword_errorReport_nativ">
                 
         <TextView
             android:id="@+id/addword_centerHorizontal"

@@ -61,8 +61,8 @@ public class FirstAddWordActivity extends BcActivity
 				boolean handled = false;
 				if(actionId == EditorInfo.IME_ACTION_SEND)
 				{
-					nativEdit.requestFocus();
-					nativEdit.setSelection(nativEdit.getText().length());
+					foreignEdit.requestFocus();
+					foreignEdit.setSelection(foreignEdit.getText().length());
 					handled = true;
 				}
 				return handled;
@@ -76,8 +76,7 @@ public class FirstAddWordActivity extends BcActivity
 				boolean handled = false;
 				if(actionId == EditorInfo.IME_ACTION_SEND)
 				{
-					foreignEdit.requestFocus();
-					foreignEdit.setSelection(foreignEdit.getText().length());
+					onAddButton(v);
 					handled = true;
 				}
 				return handled;
@@ -92,7 +91,8 @@ public class FirstAddWordActivity extends BcActivity
 				boolean  handled = false;
 				if(actionId == EditorInfo.IME_ACTION_SEND)
 				{
-					onAddButton(v);
+					nativEdit.requestFocus();
+					nativEdit.setSelection(nativEdit.getText().length());					
 					handled = true;
 				}
 				return handled;

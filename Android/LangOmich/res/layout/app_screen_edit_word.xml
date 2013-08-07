@@ -18,42 +18,16 @@
             android:spinnerMode="dialog"
             android:visibility="gone" />
     </RelativeLayout>
-
-    <EditText
-        android:id="@+id/editWord_edit_nativ"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editWord_dictSpinner"
-        android:ems="10"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="10dp"
-        android:inputType="text"
-        android:imeOptions="actionSend"
-        android:hint="@string/editWord_text_nativ" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/editWord_edit_nativ" 
-        android:id="@+id/editWord_errorReport_nativ">
-        
-        <TextView            
-            android:id="@+id/editWord_errorReport_nativ_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" />        
-    </RelativeLayout>
     
     <EditText
         android:id="@+id/editWord_edit_foreign"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editWord_errorReport_nativ"
+        android:layout_below="@+id/editWord_dictSpinner"
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="10dp"
         android:inputType="text"
         android:imeOptions="actionSend"
         android:ems="10"
@@ -72,10 +46,36 @@
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
+    <EditText
+        android:id="@+id/editWord_edit_nativ"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editWord_errorReport_foreign"
+        android:ems="10"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="2dp"
+        android:inputType="text"
+        android:imeOptions="actionSend"
+        android:hint="@string/editWord_text_nativ" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editWord_errorReport_foreign" >
+        android:layout_below="@id/editWord_edit_nativ" 
+        android:id="@+id/editWord_errorReport_nativ">
+        
+        <TextView            
+            android:id="@+id/editWord_errorReport_nativ_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />        
+    </RelativeLayout>
+        
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editWord_errorReport_nativ" >
                 
         <TextView
             android:id="@+id/editWord_centerHorizontal"

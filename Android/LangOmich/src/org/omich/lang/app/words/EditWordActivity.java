@@ -53,12 +53,12 @@ public class EditWordActivity extends BcActivity
         {
         	getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE); 
         	
-        	EditText nativ_et = (EditText)findViewById(R.id.editWord_edit_nativ);
-        	final EditText foreign_et = (EditText) findViewById(R.id.editWord_edit_foreign);
+        	final EditText nativ_et = (EditText)findViewById(R.id.editWord_edit_nativ);
+        	EditText foreign_et = (EditText) findViewById(R.id.editWord_edit_foreign);
         	nativ_et.setText(nativ);
         	foreign_et.setText(foreign);
         	
-        	nativ_et.setSelection(nativ.length());
+        	foreign_et.setSelection(foreign.length());
         	OnEditorActionListener l = new OnEditorActionListener()
         	{        		
         		@Override
@@ -68,8 +68,7 @@ public class EditWordActivity extends BcActivity
         			boolean handled = false;
         			if(actionId == EditorInfo.IME_ACTION_SEND)
         			{
-        				foreign_et.requestFocus();
-        				foreign_et.setSelection(foreign.length());
+        				onEditButton(v);
         				handled = true;
         			}
             		return handled;
@@ -85,7 +84,8 @@ public class EditWordActivity extends BcActivity
         			boolean handled = false;
         			if(actionId == EditorInfo.IME_ACTION_SEND)
         			{
-        				onEditButton(v);
+        				nativ_et.requestFocus();
+        				nativ_et.setSelection(nativ.length());
         				handled = true;
         			}
         			return handled;

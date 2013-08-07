@@ -51,13 +51,13 @@ public class AddWordActivity extends BcActivity
 	
 	private void addTextViewListeners(Context c)
 	{
-		EditText editTextNativ = (EditText) findViewById(R.id.addword_nativEdit);
+		final EditText editTextNativ = (EditText) findViewById(R.id.addword_nativEdit);
 		
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE); 
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE); 				
 		
-		editTextNativ.requestFocus();
+		EditText editTextForeign = (EditText) findViewById(R.id.addword_foreignEdit);
 		
-		final EditText editTextForeign = (EditText) findViewById(R.id.addword_foreignEdit);
+		editTextForeign.requestFocus();
 		
 		OnEditorActionListener m = new OnEditorActionListener()
 		{
@@ -66,7 +66,7 @@ public class AddWordActivity extends BcActivity
 			{
 				boolean handled = false;
 				if(actionId == EditorInfo.IME_ACTION_SEND){
-					editTextForeign.requestFocus();
+					onAddButton(v);
 					handled = true;
 				}
 				return handled;
@@ -79,8 +79,8 @@ public class AddWordActivity extends BcActivity
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) 
 			{
 				boolean handled = false;
-		        if (actionId == EditorInfo.IME_ACTION_SEND) {
-		            onAddButton(v);
+		        if (actionId == EditorInfo.IME_ACTION_SEND) {		            
+		            editTextNativ.requestFocus();
 		            handled = true;
 		        }
 		        return handled;
