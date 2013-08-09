@@ -61,8 +61,8 @@
     <string name="addword_report_added">Word was added</string>
     
     <string name="first_addword_text_exemple_dict">Russian</string>
-    <string name="first_addword_text_exemple_nativ">Здравствуйте</string>
-    <string name="first_addword_text_exemple_foreign">Hello</string>
+    <string name="first_addword_text_exemple_nativ">Hello</string>
+    <string name="first_addword_text_exemple_foreign">Здравствуйте</string>
     
     <string name="timing_report_success">Synchronized successfully</string> 
     

@@ -149,7 +149,7 @@ public class Game
 				}
 			}
 			else if(realNumber == 0)
-				word = new Word(dictIsEmptyNativ, "", 0, -1);
+				getRandomWords();
 			else
 			{
 				currentNumber++;
