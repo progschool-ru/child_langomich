@@ -6,9 +6,10 @@ public interface IRStorage
 {
 	void destroy();
 	List<ListItem> getWordsByTime (Long mobileTime);
-	List<ListItem> getWordsByDictId (Long dictId);
+	List<Word> getWordsByDictId (Long dictId);
+	List<ListItem> getListItemsByDictId (Long dictId);
 	List<ListItem> getWordsByDictIdAndText (Long dictId, String text);
-	List<ListItem> getRandomWords (Long dictId, int n, int weight[]);
+	List<Word> getRandomWords (Long dictId, int n, int weight[]);
 	List<Dict> getDicts ();
 	List<Dict> getDicts (Long mobileTime);
 }

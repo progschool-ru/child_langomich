@@ -69,7 +69,7 @@ abstract public class DbBaseRStorage implements IRStorage
 	}		
 	
 	@Override
-	public List<ListItem> getWordsByDictId (Long dictId)
+	public List<Word> getWordsByDictId (Long dictId)
 	{
 		String where = WordsCols.DICT_ID + "=" + dictId +" AND "+WordsCols.NATIV + "<> ?";
 		Cursor cursor = mDb.query(TNAME_WORDS, 
@@ -88,8 +88,15 @@ abstract public class DbBaseRStorage implements IRStorage
 			}
 		});
 		
-		return insertSeparators(answer);
+		return answer;
 	}
+	
+	@Override
+	public List<ListItem> getListItemsByDictId (Long dictId)
+	{
+		return insertSeparators(getWordsByDictId(dictId));
+	}
+
 	@Override
 	public List<ListItem> getWordsByDictIdAndText (Long dictId, String text)
 	{
@@ -163,146 +170,175 @@ abstract public class DbBaseRStorage implements IRStorage
 	}
 	
 	@Override
-	public List<ListItem> getRandomWords(Long dictId, int n, int weight[])
+	public List<Word> getRandomWords(Long dictId, int numberOfWordsInGame, int weight[])
 	{
-		int N = 10;// количество рейтингов
-		List<ListItem> answer = new ArrayList<ListItem>();
-		if(n < 1)
-			return checkAnswers(answer);
-		String query = "SELECT count(*), "+WordsCols.RATING+" FROM "+TNAME_WORDS+
-				" WHERE "+WordsCols.DICT_ID+" = "+dictId+" AND "+WordsCols.NATIV + "<> ?"+
-				" GROUP BY "+WordsCols.RATING; 
-		Cursor cursor = mDb.rawQuery(query, new String[]{""});			
-		int allSize = 0;
-		int size[] = new int[N];
-		int table[] = new int[N];
-		int max[] = new int[N];	
-		for(int i = 0; i < N; i++) {max[i] = 0; size[i] = 0; table[i] = 0;}
+		if(numberOfWordsInGame < 1)
+			return new ArrayList<Word>();
+		
+		//n - кол-во слов в выборке.
+		int NUM_OF_RATINGS = 10;// количество рейтингов
+		
+		
+		
+		//количество слов в каждом рейтинге.
+		String queryNumberOfWordsPerRating = "SELECT count(*), "+WordsCols.RATING+" FROM "+TNAME_WORDS+
+				" WHERE "+WordsCols.DICT_ID+" = "+dictId+" AND "+WordsCols.NATIV + "<> ''"+
+				" GROUP BY "+WordsCols.RATING;
+		
+		
+		Cursor cursor = mDb.rawQuery(queryNumberOfWordsPerRating, null);
+		int numberOfWordsInDict= 0;
+		int numberOfWordsPerRating[] = new int[NUM_OF_RATINGS];
 		while(cursor.moveToNext())
 		{
-			int i = cursor.getInt(1);
-			size[i] = cursor.getInt(0);
-			allSize = allSize + size[i];
+			int rating = cursor.getInt(1);
+			numberOfWordsPerRating[rating] = cursor.getInt(0);
+			numberOfWordsInDict = numberOfWordsInDict + numberOfWordsPerRating[rating];
 		}
 		cursor.close();		
 		
 		Random random = new Random();
-		if(allSize < n)
+
+		//Если слов в словаре меньше, чем мы просили для игры, то просто возвращаем все слова.
+		if(numberOfWordsInDict < numberOfWordsInGame)
 		{
-			answer = getWordsByDictId(dictId);
-			allSize += N; // добавляем еще несколько элементов в рейтинг, чтобы правильно выборка работала
-			allSize = Math.min(answer.size(), allSize);
-			List<ListItem> answer2 = new ArrayList<ListItem>();
-			for(int i = allSize; i > 0; i--)
-			{
-				int r = random.nextInt(i);
-				ListItem word = answer.get(r);
-				answer2.add(word);
-				answer.remove(r);
-			}
-			return checkAnswers(answer2);
-		}		
-		int r = 0;
-		int k = 0;
-		for(int i = 0; i < n; i++) // заполнение таблицы: сколько слов каждого рейтинга должно быть в выборке
-		{
-			r = 0;
-			for(int j = 0; j < N; j++)
-				if(size[j] - table[j] > 0)
-				{
-					r = r + weight[j];
-					max[j] = r;
-				}
-			k = random.nextInt(r);
-			for(int j = N-1; j >= 0; j--)
-				if(k < max[j])
-					r = j;			
-			table[r]++;			
+			return shuffleWords( getWordsByDictId(dictId) );
 		}
-		int list[] = new int[n];
-		k = 0;
-		allSize = 0;
-		for(int i = 0; i < N; i++)// заполнение списка: номера слов для выборки
+
+		
+		
+		
+		
+		// заполнение таблицы: сколько слов каждого рейтинга должно быть в выборке
+		int wordsInGamePerRating[] = new int[NUM_OF_RATINGS];
+		for(int i = 0; i < numberOfWordsInGame; i++)
 		{
-			if(table[i] > 0)
+			int accumulativeWeightsOfRatingsForCurrentWord[] = new int[NUM_OF_RATINGS];	
+
+			//Здесь мы определяем, из каких рейтингов можно выбирать очередное слово.
+			int accumulativeWeight = 0;
+			for(int j = 0; j < NUM_OF_RATINGS; j++)
 			{
-				if(table[i] < size[i])
+				if(numberOfWordsPerRating[j] - wordsInGamePerRating[j] > 0)
 				{
-					int m[] = new int[size[i]];
-					for(int j = 0; j < size[i]; j++) m[j] = 1;
-					for(int j = 0; j < table[i]; j++)
+					accumulativeWeight = accumulativeWeight + weight[j];
+					accumulativeWeightsOfRatingsForCurrentWord[j] = accumulativeWeight;
+				}
+			}
+			
+			//Здесь мы определяем из какого рейтинга будет очередное слово.
+			int k = random.nextInt(accumulativeWeight);
+			int rating = 0;
+			for(int j = NUM_OF_RATINGS-1; j >= 0; j--)
+			{
+				if(k < accumulativeWeightsOfRatingsForCurrentWord[j])
+				{
+					rating = j;
+				}
+			}
+			wordsInGamePerRating[rating]++;			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		// заполнение списка: номера слов для выборки
+		int selectedWordsIndices[] = new int[numberOfWordsInGame];
+		int numberOfSelectedWords = 0;
+		int numberOfWordsForAllPreviousRatings = 0;
+		for(int currentRating = 0; currentRating < NUM_OF_RATINGS; currentRating++)
+		{
+			if(wordsInGamePerRating[currentRating] > 0)
+			{
+				if(wordsInGamePerRating[currentRating] < numberOfWordsPerRating[currentRating])
+				{
+					//Определяем, какие слова из рейтинга будем брать для игры.
+					boolean choosenWordsOfCurrentRating[] = new boolean[numberOfWordsPerRating[currentRating]];
+					for(int j = 0; j < wordsInGamePerRating[currentRating]; j++)
 					{
-						r = random.nextInt(size[i] - j);
+						int r = random.nextInt(numberOfWordsPerRating[currentRating] - j);
 						int ind = -1;
-						for(int q = 0; q < size[i]; q++)
+						for(int q = 0; q < numberOfWordsPerRating[currentRating]; q++)
 						{
-							if(m[q]!=0) ind++;
+							if(!choosenWordsOfCurrentRating[q])
+							{
+								ind++;
+							}
 							if(ind == r)
 							{
-								m[q] = 0;
+								choosenWordsOfCurrentRating[q] = true;
 								break;
 							}
 						}
 					}
-					int l = 0;
-					for(int j = 0; j < size[i]; j++)
+					
+					
+					int wordsInCurrentRating = numberOfWordsPerRating[currentRating];
+					int wordsInGameForCurrentRating = wordsInGamePerRating[currentRating];
+					for(
+						int j = 0, l = 0;
+						j < wordsInCurrentRating && l < wordsInGameForCurrentRating;
+						j++)
 					{
-						if(m[j] == 0)
+						if(choosenWordsOfCurrentRating[j])
 						{
-							list[k] = allSize+j;
-							k++;
+							selectedWordsIndices[numberOfSelectedWords] = numberOfWordsForAllPreviousRatings+j;
+							numberOfSelectedWords++;
 							l++;
-							if(l == table[i])
-								break;
 						}
 					}
 				}
-				else if(table[i] == size[i])
-					for(int j = 0; j < size[i]; j++)
+				else if(wordsInGamePerRating[currentRating] == numberOfWordsPerRating[currentRating])
+				{
+					for(int j = 0; j < numberOfWordsPerRating[currentRating]; j++)
 					{
-						list[k] = allSize+j;					
-						k++;
-					}	
+						selectedWordsIndices[numberOfSelectedWords] = numberOfWordsForAllPreviousRatings+j;					
+						numberOfSelectedWords++;
+					}
+				}
+				//else {} этого случая быть не может,
+				//потому что на этапе определения количества слов, контролировалось,
+				//что мы не можем не можем взять слов больше, чем есть в рейтинге. 
 			}
-			allSize = allSize + size[i];
-		}				
-		query = "SELECT "+ WordsCols.NATIV+", "+WordsCols.FOREIGN+", "+WordsCols.RATING+", "+WordsCols.ID+
-				" FROM "+TNAME_WORDS+" WHERE "+WordsCols.DICT_ID+" = "+dictId+" AND "+WordsCols.NATIV + "<> ?"+
+			numberOfWordsForAllPreviousRatings += numberOfWordsPerRating[currentRating];
+		}
+
+
+		//Выбираем слова с нужными номерами.
+		String query = "SELECT "+ WordsCols.NATIV+", "+WordsCols.FOREIGN+", "+WordsCols.RATING+", "+WordsCols.ID+
+				" FROM "+TNAME_WORDS+" WHERE "+WordsCols.DICT_ID+" = "+dictId+" AND "+WordsCols.NATIV + "<> ''"+
 				" ORDER BY "+WordsCols.RATING;
-		cursor = mDb.rawQuery(query, new String[]{""});
+		cursor = mDb.rawQuery(query, null);
 		
-		k = 0;
-		r = 0;
-		while(cursor.moveToNext())
+		List<Word> answer = new ArrayList<Word>();
+		int indexOfWord = 0;
+		int positionInIdeciesArray = 0;
+		while(cursor.moveToNext() && positionInIdeciesArray < numberOfWordsInGame)
 		{	
-			if(k == list[r])
+			if(indexOfWord == selectedWordsIndices[positionInIdeciesArray])
 			{
 				Word word = new Word(cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getLong(3));
-				answer.add(new ListItem(word));
-				r++;
+				answer.add(word);
+				positionInIdeciesArray++;
 			}
-			k++;
-			if(r  == n)
-				break;
+			indexOfWord++;
 		}
-		List<ListItem> answer2 = new ArrayList<ListItem>();
-		for(int i = n; i > 0; i--)
-		{
-			r = random.nextInt(i);
-			ListItem word = answer.get(r);
-			answer2.add(word);
-			answer.remove(r);
-		}			
-		return checkAnswers(answer2);
+		return shuffleWords(answer);
 	}
 	
-	private List<ListItem> checkAnswers(List<ListItem> list)
+	private List<Word> shuffleWords(List<Word> words)
 	{
-		for(int i = 0; i < list.size(); i++)
+		List<Word> answer = new ArrayList<Word>(words.size());
+		Random random = new Random();
+		for(int i = words.size(); i > 0; --i)
 		{
-			if(list.get(i).getWord() == null)
-				list.remove(i);
+			int r = random.nextInt(i);
+			answer.add(words.remove(r));
 		}
-		return list;
+		return answer;
 	}
 }
