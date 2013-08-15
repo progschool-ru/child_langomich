@@ -24,7 +24,7 @@ public class Game
 	private int currentNumber = 0;
 	private Word word;
 	private int[] weight = {512, 256, 128, 64, 32, 16, 8, 4, 2, 1};
-	private ArrayList<ListItem> words;
+	private ArrayList<Word> words;
 	
 	private String dictIsEmptyNativ;
 	
@@ -115,8 +115,8 @@ public class Game
 									return;
 								
 								mGetRandomWordsTaskId = null;
-			
-								words = b.<ListItem>getParcelableArrayList(BundleFields.WORDS_LIST);	
+								words = new ArrayList<Word>();
+								words = b.<Word>getParcelableArrayList(BundleFields.WORDS_LIST);	
 								if(words == null)
 									realNumber = 0;
 								else
@@ -134,19 +134,10 @@ public class Game
 		if(!isUpdate)
 		{
 			if(realNumber > 0)
-			{
-				ListItem item = words.get(currentNumber);
-				if(item.getWord() != null && item.getWord().nativ.length() > 0)
-				{
-					word = words.get(currentNumber).getWord();
-					currentNumber++;
-				}
-				else
-				{
-					currentNumber++;
-					currentNumber %= words.size();
-					word = words.get(currentNumber).getWord();
-				}
+			{							
+				currentNumber++;
+				currentNumber %= words.size();
+				word = words.get(currentNumber);				
 			}
 			else if(realNumber == 0)
 				getRandomWords();
