@@ -140,7 +140,7 @@ public class Game
 				word = words.get(currentNumber);				
 			}
 			else if(realNumber == 0)
-				getRandomWords();
+				word = new Word(dictIsEmptyNativ, "", 0, -1);
 			else
 			{
 				currentNumber++;
