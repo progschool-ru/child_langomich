@@ -16,6 +16,7 @@
 
         <activity
             android:name=".app.words.GameActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/training_lable">
         </activity>     
         <activity
