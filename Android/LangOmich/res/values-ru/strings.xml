@@ -18,7 +18,7 @@
     <string name="adddict_lable">Название словаря:</string>
     <string name="adddict_text_create">Создать</string>
     <string name="adddict_text_cancel">Отмена</string>
-    <string name="adddict_report__empty">Введите что-нибудь</string>
+    <string name="adddict_report_empty">Введите что-нибудь</string>
     <string name="adddict_report_in_base">Словарь с таким именем уже существует</string>
     <string name="adddict_report_added">Словарь успешно добавлен</string>
        
